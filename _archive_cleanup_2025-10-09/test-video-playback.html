@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Playback Test</title>
+    <style>
+        body {
+            font-family: system-ui;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        video {
+            width: 100%;
+            max-width: 500px;
+            margin: 20px 0;
+            border: 2px solid #333;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .error { background: #fee; color: #c00; }
+        .success { background: #efe; color: #060; }
+        .info { background: #eef; color: #006; }
+    </style>
+</head>
+<body>
+    <h1>🎬 Video Playback Test</h1>
+
+    <div class="info status">
+        <strong>Testing:</strong> /videos/reels/Create_a_viral_202509090401 (6).mp4
+    </div>
+
+    <video id="testVideo" controls preload="metadata">
+        <source src="/videos/reels/Create_a_viral_202509090401 (6).mp4" type="video/mp4">
+        Your browser doesn't support HTML5 video.
+    </video>
+
+    <div id="status"></div>
+
+    <h2>Video Properties:</h2>
+    <pre id="props"></pre>
+
+    <script>
+        const video = document.getElementById('testVideo');
+        const status = document.getElementById('status');
+        const props = document.getElementById('props');
+
+        function updateStatus(msg, type = 'info') {
+            status.innerHTML = `<div class="${type} status">${msg}</div>`;
+        }
+
+        function updateProps() {
+            const info = {
+                src: video.src,
+                currentSrc: video.currentSrc,
+                readyState: video.readyState + ' (' + ['EMPTY', 'METADATA', 'CURRENT_DATA', 'FUTURE_DATA', 'ENOUGH_DATA'][video.readyState] + ')',
+                networkState: video.networkState + ' (' + ['EMPTY', 'IDLE', 'LOADING', 'NO_SOURCE'][video.networkState] + ')',
+                duration: video.duration + 's',
+                currentTime: video.currentTime + 's',
+                paused: video.paused,
+                error: video.error ? {
+                    code: video.error.code,
+                    message: video.error.message
+                } : null
+            };
+            props.textContent = JSON.stringify(info, null, 2);
+        }
+
+        // Event listeners
+        video.addEventListener('loadstart', () => {
+            updateStatus('📥 Loading started...', 'info');
+            updateProps();
+        });
+
+        video.addEventListener('loadedmetadata', () => {
+            updateStatus('✅ Metadata loaded successfully!', 'success');
+            updateProps();
+        });
+
+        video.addEventListener('canplay', () => {
+            updateStatus('✅ Video can play!', 'success');
+            updateProps();
+        });
+
+        video.addEventListener('error', (e) => {
+            updateStatus(`❌ Error: ${video.error ? video.error.message : 'Unknown error'}`, 'error');
+            updateProps();
+        });
+
+        video.addEventListener('stalled', () => {
+            updateStatus('⏸ Network stalled', 'info');
+        });
+
+        // Initial update
+        updateProps();
+        setInterval(updateProps, 1000);
+    </script>
+</body>
+</html>

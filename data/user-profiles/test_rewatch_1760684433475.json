@@ -1,0 +1,17 @@
+{
+  "userId": "test_rewatch_1760684433475",
+  "level": "A2",
+  "watchedVideos": [
+    "langfeed_a_rubber_duck_202509272339_gfm1d_mp4"
+  ],
+  "interactions": [],
+  "interests": {},
+  "seenThemes": {},
+  "knownWords": [],
+  "behaviorPatterns": {
+    "avgCompletionRate": 0.76,
+    "avgWatchTime": 20,
+    "skipRate": 0.2,
+    "rewatchRate": 0.05
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "userId": "test_rewatch_1760685000523",
+  "level": "B1",
+  "watchedVideos": [
+    "langfeed_character_young_energetic_202509141716_o0uqa_mp4"
+  ],
+  "interactions": [
+    {
+      "videoId": "langfeed_character_young_energetic_202509141716_o0uqa_mp4",
+      "type": "rewatch",
+      "timestamp": "2025-10-17T07:10:00.532Z"
+    }
+  ],
+  "interests": {},
+  "seenThemes": {},
+  "knownWords": [],
+  "behaviorPatterns": {
+    "avgCompletionRate": 0.76,
+    "avgWatchTime": 20,
+    "skipRate": 0.2,
+    "rewatchRate": 0.05
+  }
+}

@@ -1,0 +1,540 @@
+<!-- 💳 PAYWALL MODAL COMPONENT -->
+<!-- Beautiful, conversion-optimized paywall with A/B testing -->
+
+<style>
+.paywall-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.paywall-overlay.active {
+    display: flex;
+}
+
+.paywall-modal {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 24px;
+    padding: 40px;
+    max-width: 500px;
+    width: 90%;
+    color: white;
+    text-align: center;
+    animation: slideUp 0.4s ease-out;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.paywall-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.paywall-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+.paywall-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    animation: bounce 1s infinite;
+}
+
+.paywall-headline {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.paywall-subheadline {
+    font-size: 18px;
+    opacity: 0.9;
+    margin-bottom: 32px;
+}
+
+.paywall-features {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 32px;
+    text-align: left;
+}
+
+.paywall-feature {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+    font-size: 16px;
+}
+
+.paywall-feature:last-child {
+    margin-bottom: 0;
+}
+
+.paywall-feature-icon {
+    font-size: 24px;
+    margin-right: 12px;
+    min-width: 30px;
+}
+
+.paywall-pricing {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.paywall-plan {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+}
+
+.paywall-plan:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.paywall-plan.selected {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: white;
+}
+
+.paywall-plan-badge {
+    background: #4CAF50;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: inline-block;
+}
+
+.paywall-plan-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.paywall-plan-price {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.paywall-plan-period {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.paywall-cta {
+    width: 100%;
+    padding: 18px 32px;
+    font-size: 18px;
+    font-weight: bold;
+    background: white;
+    color: #667eea;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 16px;
+}
+
+.paywall-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.paywall-trial-cta {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+}
+
+.paywall-footer {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.paywall-footer a {
+    color: white;
+    text-decoration: underline;
+}
+
+.paywall-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 9999;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.4s ease-out;
+}
+
+.paywall-banner.active {
+    display: flex;
+}
+
+.paywall-banner-content {
+    flex: 1;
+}
+
+.paywall-banner-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.paywall-banner-subtitle {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.paywall-banner-cta {
+    padding: 12px 24px;
+    background: white;
+    color: #667eea;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 8px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@media (max-width: 600px) {
+    .paywall-modal {
+        padding: 24px;
+    }
+
+    .paywall-headline {
+        font-size: 24px;
+    }
+
+    .paywall-pricing {
+        flex-direction: column;
+    }
+}
+</style>
+
+<!-- Paywall Modal -->
+<div id="paywallOverlay" class="paywall-overlay">
+    <div class="paywall-modal">
+        <button class="paywall-close" onclick="closePaywall()">×</button>
+        
+        <div class="paywall-icon">🚀</div>
+        <h2 class="paywall-headline" id="paywallHeadline">Unlock Unlimited Learning</h2>
+        <p class="paywall-subheadline" id="paywallSubheadline">
+            Continue your Spanish journey with unlimited access
+        </p>
+
+        <div class="paywall-features">
+            <div class="paywall-feature">
+                <span class="paywall-feature-icon">🎬</span>
+                <span>Unlimited videos</span>
+            </div>
+            <div class="paywall-feature">
+                <span class="paywall-feature-icon">🎮</span>
+                <span>Unlimited games</span>
+            </div>
+            <div class="paywall-feature">
+                <span class="paywall-feature-icon">🤖</span>
+                <span>Unlimited AI conversations</span>
+            </div>
+            <div class="paywall-feature">
+                <span class="paywall-feature-icon">📊</span>
+                <span>Advanced analytics</span>
+            </div>
+            <div class="paywall-feature">
+                <span class="paywall-feature-icon">💾</span>
+                <span>Offline downloads</span>
+            </div>
+            <div class="paywall-feature">
+                <span class="paywall-feature-icon">🚫</span>
+                <span>No ads</span>
+            </div>
+        </div>
+
+        <div class="paywall-pricing">
+            <div class="paywall-plan" data-plan="monthly" onclick="selectPlan('monthly')">
+                <div class="paywall-plan-name">Monthly</div>
+                <div class="paywall-plan-price">$9.99</div>
+                <div class="paywall-plan-period">per month</div>
+            </div>
+            <div class="paywall-plan selected" data-plan="yearly" onclick="selectPlan('yearly')">
+                <div class="paywall-plan-badge">SAVE 17%</div>
+                <div class="paywall-plan-name">Yearly</div>
+                <div class="paywall-plan-price">$99</div>
+                <div class="paywall-plan-period">per year</div>
+            </div>
+        </div>
+
+        <button class="paywall-cta paywall-trial-cta" onclick="startTrial()">
+            🎁 Start 7-Day Free Trial
+        </button>
+
+        <button class="paywall-cta" onclick="upgradeNow()">
+            Upgrade Now
+        </button>
+
+        <div class="paywall-footer">
+            Cancel anytime • <a href="#" onclick="restorePurchase()">Restore purchase</a>
+        </div>
+    </div>
+</div>
+
+<!-- Paywall Banner (alternative design) -->
+<div id="paywallBanner" class="paywall-banner">
+    <div class="paywall-banner-content">
+        <div class="paywall-banner-title">🎉 You've reached your daily limit</div>
+        <div class="paywall-banner-subtitle">Upgrade to Premium for unlimited learning</div>
+    </div>
+    <button class="paywall-banner-cta" onclick="showPaywall()">Upgrade</button>
+    <button class="paywall-close" onclick="closeBanner()" style="position: relative; top: 0; right: 0;">×</button>
+</div>
+
+<script>
+let selectedPlan = 'yearly';
+let paywallConfig = null;
+
+// Initialize paywall
+async function initPaywall(userId) {
+    try {
+        // Get A/B tested paywall configuration
+        const response = await fetch(`/api/subscription/paywall/${userId}`);
+        const data = await response.json();
+        
+        if (data.success) {
+            paywallConfig = data.config;
+            applyPaywallConfig();
+        }
+    } catch (error) {
+        console.error('Error initializing paywall:', error);
+    }
+}
+
+// Apply A/B tested configuration
+function applyPaywallConfig() {
+    if (!paywallConfig) return;
+
+    // Apply messaging
+    document.getElementById('paywallHeadline').textContent = paywallConfig.messaging.headline;
+    document.getElementById('paywallSubheadline').textContent = paywallConfig.messaging.subheadline;
+
+    // Apply design (modal vs banner vs fullpage)
+    // This is simplified - in production, you'd have different layouts
+}
+
+// Show paywall
+function showPaywall(reason = 'limit_reached') {
+    const overlay = document.getElementById('paywallOverlay');
+    overlay.classList.add('active');
+
+    // Track paywall view
+    trackPaywallEvent('view', { reason });
+}
+
+// Close paywall
+function closePaywall() {
+    const overlay = document.getElementById('paywallOverlay');
+    overlay.classList.remove('active');
+
+    trackPaywallEvent('close');
+}
+
+// Show banner
+function showBanner() {
+    const banner = document.getElementById('paywallBanner');
+    banner.classList.add('active');
+
+    trackPaywallEvent('banner_view');
+}
+
+// Close banner
+function closeBanner() {
+    const banner = document.getElementById('paywallBanner');
+    banner.classList.remove('active');
+}
+
+// Select pricing plan
+function selectPlan(plan) {
+    selectedPlan = plan;
+    
+    // Update UI
+    document.querySelectorAll('.paywall-plan').forEach(el => {
+        el.classList.remove('selected');
+    });
+    document.querySelector(`[data-plan="${plan}"]`).classList.add('selected');
+}
+
+// Start free trial
+async function startTrial() {
+    try {
+        const userId = getCurrentUserId(); // Implement this based on your auth system
+        
+        const response = await fetch('/api/subscription/trial/start', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, planName: 'premium' })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            trackPaywallEvent('trial_started');
+            alert('🎉 Your 7-day free trial has started! Enjoy unlimited access.');
+            closePaywall();
+            window.location.reload();
+        } else {
+            alert(data.error || 'Unable to start trial. You may have already used your free trial.');
+        }
+    } catch (error) {
+        console.error('Error starting trial:', error);
+        alert('Something went wrong. Please try again.');
+    }
+}
+
+// Upgrade now
+async function upgradeNow() {
+    try {
+        const userId = getCurrentUserId();
+        
+        const response = await fetch('/api/subscription/checkout/create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId,
+                planName: 'premium',
+                billingCycle: selectedPlan === 'yearly' ? 'yearly' : 'monthly'
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            trackPaywallEvent('upgrade_clicked', { plan: selectedPlan });
+            
+            // Redirect to checkout page (Stripe, etc.)
+            window.location.href = data.session.url;
+        }
+    } catch (error) {
+        console.error('Error creating checkout session:', error);
+        alert('Something went wrong. Please try again.');
+    }
+}
+
+// Restore purchase
+function restorePurchase() {
+    alert('To restore your purchase, please log in with your original account.');
+}
+
+// Check usage limit before action
+async function checkUsageLimitBeforeAction(action) {
+    try {
+        const userId = getCurrentUserId();
+        
+        const response = await fetch('/api/subscription/check-limit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, limitType: action })
+        });
+
+        const data = await response.json();
+
+        if (data.showPaywall) {
+            showPaywall(`${action}_limit_reached`);
+            return false;
+        }
+
+        return data.allowed;
+    } catch (error) {
+        console.error('Error checking usage limit:', error);
+        return true; // Allow action if check fails
+    }
+}
+
+// Track usage after action
+async function trackUsageAfterAction(action) {
+    try {
+        const userId = getCurrentUserId();
+        
+        const response = await fetch('/api/subscription/track-usage', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, usageType: action })
+        });
+
+        const data = await response.json();
+
+        if (data.showUpgradeHint) {
+            showBanner();
+        }
+
+        if (data.showPaywall) {
+            showPaywall(`${action}_limit_reached`);
+        }
+    } catch (error) {
+        console.error('Error tracking usage:', error);
+    }
+}
+
+// Track paywall events for analytics
+function trackPaywallEvent(event, metadata = {}) {
+    if (typeof gtag !== 'undefined') {
+        gtag('event', event, {
+            event_category: 'paywall',
+            ...metadata
+        });
+    }
+}
+
+// Helper: Get current user ID (implement based on your auth system)
+function getCurrentUserId() {
+    // This should return the actual logged-in user ID
+    return localStorage.getItem('userId') || 'guest';
+}
+</script>
+

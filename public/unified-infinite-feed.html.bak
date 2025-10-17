@@ -1,0 +1,2907 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🌍 VIDA - Learn Spanish from Everything</title>
+    <script src="word-level-subtitles.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary: #ff0050;
+            --secondary: #667eea;
+            --bg-dark: #000000;
+            --bg-card: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            padding-top: 50px; /* Space for top nav */
+            padding-bottom: 70px; /* Space for bottom nav */
+        }
+
+        /* TIKTOK TOP TABS NAVIGATION (2025 pattern) */
+        .top-nav-tabs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-tab {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 15px;
+            font-weight: 600;
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-tab:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .nav-tab.active {
+            color: #ffffff;
+        }
+
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 2px 2px 0 0;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                width: 0;
+                opacity: 0;
+            }
+            to {
+                width: 30px;
+                opacity: 1;
+            }
+        }
+
+        /* TIKTOK BOTTOM NAVIGATION BAR (2025 pattern) */
+        .bottom-nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 8px 0;
+            z-index: 1000;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 11px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 60px;
+            min-height: 44px;
+        }
+
+        .bottom-nav-item:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .bottom-nav-item.active {
+            color: var(--primary);
+        }
+
+        .bottom-nav-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        /* INFINITE SCROLL CONTAINER */
+        .feed-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding-bottom: 100px;
+            min-height: 100vh;
+        }
+
+        /* SKELETON LOADING */
+        .skeleton-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            margin: 12px;
+            overflow: hidden;
+            padding: 16px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .skeleton-line {
+            height: 16px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* CONTENT CARDS - All types unified */
+        .content-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            margin: 12px;
+            overflow: hidden;
+            position: relative;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* MEDIA SECTION */
+        .card-media {
+            position: relative;
+            width: 100%;
+            background: #000;
+        }
+
+        .card-media img,
+        .card-media video {
+            width: 100%;
+            display: block;
+            max-height: 400px;
+            object-fit: cover;
+        }
+
+        .media-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 20px;
+            color: white;
+        }
+
+        /* CONTENT TYPE BADGE */
+        .content-type {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .type-news { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .type-social { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .type-video { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .type-meme { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        .type-article { background: linear-gradient(135deg, #fa709a, #fee140); }
+        .type-quiz { background: linear-gradient(135deg, #a8edea, #fed6e3); }
+
+        /* TEXT CONTENT */
+        .card-content {
+            padding: 16px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            line-height: 1.3;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .title-text {
+            flex: 1;
+        }
+
+        .translate-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .translate-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(255, 0, 80, 0.3);
+        }
+
+        .translate-btn.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .card-text {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        /* SPANISH TEXT WITH TAP-TO-TRANSLATE */
+        .spanish-text {
+            font-size: 16px;
+            line-height: 1.8;
+            margin: 16px 0;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .spanish-word {
+            display: inline;
+            cursor: pointer;
+            position: relative;
+            padding: 2px 0;
+            transition: all 0.2s ease;
+        }
+
+        .spanish-word:hover,
+        .spanish-word:active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .translation-tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            white-space: nowrap;
+            z-index: 1000;
+            animation: tooltipFadeIn 0.2s ease;
+            pointer-events: none;
+        }
+
+        @keyframes tooltipFadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-4px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .translation-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: rgba(0, 0, 0, 0.95);
+        }
+
+        /* LEVEL INDICATOR */
+        .level-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(102, 126, 234, 0.2);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        /* PUBLISHER ATTRIBUTION (Flipboard pattern) */
+        .publisher-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .publisher-header:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .publisher-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .publisher-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .publisher-name {
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 2px;
+        }
+
+        .verified-badge {
+            width: 16px;
+            height: 16px;
+            background: #ff0050;
+            border-radius: 3px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            flex-shrink: 0;
+        }
+
+        .publisher-meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .timestamp {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .follow-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .follow-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(255, 0, 80, 0.3);
+        }
+
+        .follow-btn.following {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border);
+        }
+
+        /* XP & STREAK BANNER (Duolingo pattern) */
+        .xp-streak-banner {
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-bottom: 2px solid var(--border);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .streak-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+        }
+
+        .streak-fire {
+            font-size: 24px;
+            animation: flicker 2s ease-in-out infinite;
+        }
+
+        @keyframes flicker {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.1); filter: brightness(1.2); }
+        }
+
+        .streak-count {
+            font-size: 18px;
+            color: #ff6b35;
+        }
+
+        .xp-display {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .xp-bar-container {
+            width: 120px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .xp-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4ade80, #22c55e);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+        }
+
+        .xp-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: #4ade80;
+            white-space: nowrap;
+        }
+
+        /* XP GAIN ANIMATION (Duolingo-style) */
+        .xp-gain-popup {
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-size: 18px;
+            font-weight: 700;
+            z-index: 10000;
+            animation: xpGainAnimation 2s ease;
+            box-shadow: 0 8px 20px rgba(74, 222, 128, 0.4);
+        }
+
+        @keyframes xpGainAnimation {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px) scale(0.8);
+            }
+            10%, 90% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px) scale(0.8);
+            }
+        }
+
+        /* MILESTONE CELEBRATION */
+        .milestone-celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 20000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .milestone-celebration.active {
+            display: flex;
+        }
+
+        .milestone-content {
+            text-align: center;
+            animation: bounceIn 0.5s ease;
+        }
+
+        .milestone-emoji {
+            font-size: 100px;
+            margin-bottom: 20px;
+            animation: pulse 1s ease infinite;
+        }
+
+        .milestone-text {
+            font-size: 32px;
+            font-weight: 700;
+            color: #fbbf24;
+            margin-bottom: 16px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* ACTIONS BAR */
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .action-btn {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 10px;
+            min-height: 44px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .action-btn:hover,
+        .action-btn:active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        .action-btn.liked {
+            background: linear-gradient(135deg, #ff0050, #ff4081);
+            border-color: transparent;
+            animation: pulse 0.5s ease;
+        }
+
+        /* QUIZ CARD STYLES (Duolingo pattern) */
+        .quiz-container {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            margin: 12px 0;
+        }
+
+        .quiz-question {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--border);
+            color: var(--text-primary);
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            min-height: 52px;
+            display: flex;
+            align-items: center;
+        }
+
+        .quiz-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .quiz-option.selected {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: var(--primary);
+        }
+
+        .quiz-option.correct {
+            background: linear-gradient(135deg, #0cce6b, #0fd987);
+            border-color: #0cce6b;
+            color: white;
+            animation: success-bounce 0.5s ease;
+        }
+
+        .quiz-option.incorrect {
+            background: linear-gradient(135deg, #ff4757, #ff6b81);
+            border-color: #ff4757;
+            color: white;
+            animation: shake 0.4s ease;
+        }
+
+        .quiz-option:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .quiz-feedback {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .quiz-feedback.correct {
+            background: rgba(12, 206, 107, 0.1);
+            color: #0cce6b;
+            border: 1px solid #0cce6b;
+        }
+
+        .quiz-feedback.incorrect {
+            background: rgba(255, 71, 87, 0.1);
+            color: #ff4757;
+            border: 1px solid #ff4757;
+        }
+
+        .quiz-xp-reward {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #1a1a2e;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            margin-left: 8px;
+            animation: pop-in 0.3s ease;
+        }
+
+        @keyframes success-bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+
+        @keyframes pop-in {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* STORIES CAROUSEL (Instagram/TikTok 2025 pattern) */
+        .stories-container {
+            position: sticky;
+            top: 50px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            z-index: 999;
+        }
+
+        .stories-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .stories-scroll {
+            display: flex;
+            gap: 12px;
+            padding: 0 16px;
+            min-width: min-content;
+        }
+
+        .story-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .story-avatar-wrapper {
+            position: relative;
+            width: 64px;
+            height: 64px;
+        }
+
+        .story-gradient-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            animation: rotate-gradient 3s linear infinite;
+        }
+
+        .story-gradient-ring.viewed {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes rotate-gradient {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .story-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--bg-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            border: 3px solid var(--bg-dark);
+        }
+
+        .story-username {
+            font-size: 12px;
+            color: var(--text-primary);
+            max-width: 70px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        /* Story Viewer (Full Screen) */
+        .story-viewer {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 9999;
+            flex-direction: column;
+        }
+
+        .story-viewer.active {
+            display: flex;
+        }
+
+        .story-progress-bars {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px;
+            padding-top: calc(12px + env(safe-area-inset-top));
+        }
+
+        .story-progress-bar {
+            flex: 1;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .story-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #fff;
+            transition: width 0.1s linear;
+        }
+
+        .story-progress-fill.active {
+            animation: fillProgress 7s linear forwards;
+        }
+
+        @keyframes fillProgress {
+            to { width: 100%; }
+        }
+
+        .story-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .story-text-content {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            padding: 40px 30px;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .story-text-content h2 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: white;
+        }
+
+        .story-text-content p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .story-close-btn {
+            position: absolute;
+            top: calc(16px + env(safe-area-inset-top));
+            right: 16px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.6);
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        /* INSTAGRAM DOUBLE-TAP HEART ANIMATION (2025 pattern) */
+        .double-tap-heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 120px;
+            pointer-events: none;
+            z-index: 100;
+            animation: heartBurst 0.8s ease-out;
+            opacity: 0;
+        }
+
+        @keyframes heartBurst {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0;
+            }
+        }
+
+        /* TikTok-style engagement metrics (more prominent) */
+        .engagement-stats {
+            display: flex;
+            gap: 16px;
+            padding: 8px 0;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 8px;
+            padding-top: 12px;
+        }
+
+        .engagement-stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .engagement-stat strong {
+            color: white;
+            font-weight: 600;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            10%, 90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* LOADING SPINNER */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            opacity: 0.5;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* FLOATING CONTROLS */
+        .floating-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .floating-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(255, 0, 80, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .floating-btn:hover,
+        .floating-btn:active {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(255, 0, 80, 0.4);
+        }
+
+        /* LEVEL SELECTOR MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 32px;
+            max-width: 400px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .level-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .level-option:hover,
+        .level-option.selected {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: transparent;
+            transform: translateX(4px);
+        }
+
+        .level-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .level-desc {
+            font-size: 13px;
+            opacity: 0.7;
+        }
+
+        /* INTERESTS SELECTION */
+        .interests-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .interest-chip {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .interest-chip.selected {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: transparent;
+        }
+
+        /* MOBILE OPTIMIZATIONS */
+        @media (max-width: 768px) {
+            .card-title {
+                font-size: 16px;
+            }
+
+            .card-text {
+                font-size: 14px;
+            }
+
+            .spanish-text {
+                font-size: 15px;
+            }
+        }
+
+        /* SMOOTH SCROLL */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* PULL TO REFRESH INDICATOR */
+        .pull-to-refresh {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 24px;
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 0 0 12px 12px;
+            font-size: 14px;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .pull-to-refresh.active {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- TIKTOK-STYLE TOP TABS NAVIGATION (2025 pattern) -->
+    <nav class="top-nav-tabs" role="navigation" aria-label="Main navigation">
+        <button class="nav-tab active" data-tab="for-you" onclick="feed.switchTab('for-you')" aria-label="For You feed" aria-selected="true" role="tab">
+            For You
+        </button>
+        <button class="nav-tab" data-tab="videos" onclick="feed.switchTab('videos')" aria-label="Videos feed" aria-selected="false" role="tab">
+            🎬 Videos
+        </button>
+        <button class="nav-tab" data-tab="articles" onclick="feed.switchTab('articles')" aria-label="Articles feed" aria-selected="false" role="tab">
+            📰 Articles
+        </button>
+        <button class="nav-tab" data-tab="stories" onclick="feed.switchTab('stories')" aria-label="Stories feed" aria-selected="false" role="tab">
+            ⚡ Stories
+        </button>
+    </nav>
+
+    <!-- XP & Streak Banner (Duolingo pattern) -->
+    <div class="xp-streak-banner">
+        <div class="streak-display">
+            <span class="streak-fire" id="streakFire">🔥</span>
+            <span class="streak-count" id="streakCount">0</span>
+            <span style="font-size: 12px; opacity: 0.7;">day streak</span>
+        </div>
+        <div class="xp-display">
+            <span class="xp-text" id="xpText">0 XP</span>
+            <div class="xp-bar-container">
+                <div class="xp-bar" id="xpBar" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Milestone Celebration Modal -->
+    <div class="milestone-celebration" id="milestoneCelebration">
+        <div class="milestone-content">
+            <div class="milestone-emoji" id="milestoneEmoji">🎉</div>
+            <div class="milestone-text" id="milestoneText"></div>
+            <button class="action-btn" onclick="closeMilestone()" style="margin-top: 20px; width: 200px;" aria-label="Continue learning">
+                ✨ Continue Learning
+            </button>
+        </div>
+    </div>
+
+    <!-- Pull to Refresh Indicator -->
+    <div class="pull-to-refresh" id="pullRefresh">↓ Pull to refresh</div>
+
+    <!-- Stories Carousel (Instagram/TikTok pattern) -->
+    <div class="stories-container" id="storiesContainer">
+        <div class="stories-scroll" id="storiesScroll">
+            <!-- Stories will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <!-- Story Viewer (Full Screen) -->
+    <div class="story-viewer" id="storyViewer">
+        <div class="story-progress-bars" id="storyProgressBars">
+            <!-- Progress bars will be dynamically inserted -->
+        </div>
+        <button class="story-close-btn" onclick="closeStory()" aria-label="Close story">×</button>
+        <div class="story-content" id="storyContent">
+            <!-- Story content will be dynamically inserted -->
+        </div>
+    </div>
+
+    <!-- Main Feed Container -->
+    <main class="feed-container" id="feedContainer" role="main" aria-label="Content feed">
+        <h1 style="position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden;">VIDA - Spanish Learning Feed</h1>
+        <!-- Content cards will be dynamically inserted here -->
+    </main>
+
+    <!-- Loading Spinner -->
+    <div class="loading" id="loadingSpinner">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- TIKTOK BOTTOM NAVIGATION BAR (2025 pattern) -->
+    <nav class="bottom-nav-bar" role="navigation" aria-label="Bottom navigation">
+        <button class="bottom-nav-item active" onclick="feed.bottomNavClick('home')" aria-label="Home" aria-current="page">
+            <div class="bottom-nav-icon">🏠</div>
+            <div>Home</div>
+        </button>
+        <button class="bottom-nav-item" onclick="feed.bottomNavClick('discover')" aria-label="Discover">
+            <div class="bottom-nav-icon">🔍</div>
+            <div>Discover</div>
+        </button>
+        <button class="bottom-nav-item" onclick="feed.bottomNavClick('saved')" aria-label="Saved words">
+            <div class="bottom-nav-icon">📚</div>
+            <div>Saved</div>
+        </button>
+        <button class="bottom-nav-item" onclick="feed.bottomNavClick('profile')" aria-label="Profile">
+            <div class="bottom-nav-icon">👤</div>
+            <div>Profile</div>
+        </button>
+    </nav>
+
+    <!-- Floating Controls (moved to side to not conflict with bottom nav) -->
+    <div class="floating-controls" style="bottom: 90px; right: 12px;" role="toolbar" aria-label="Quick actions">
+        <button class="floating-btn" onclick="openLevelSelector()" title="Change Level" aria-label="Change your Spanish level">
+            🎯
+        </button>
+        <button class="floating-btn" onclick="openInterestsSelector()" title="Your Interests" aria-label="Select your interests">
+            ❤️
+        </button>
+        <button class="floating-btn" onclick="scrollToTop()" title="Scroll to Top" aria-label="Scroll to top of feed">
+            ↑
+        </button>
+    </div>
+
+    <!-- Level Selector Modal -->
+    <div class="modal" id="levelModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Your Spanish Level</h2>
+            <div id="levelOptions"></div>
+        </div>
+    </div>
+
+    <!-- Interests Selector Modal -->
+    <div class="modal" id="interestsModal">
+        <div class="modal-content">
+            <h2 class="modal-title">What interests you?</h2>
+            <div class="interests-grid" id="interestsGrid"></div>
+            <button class="action-btn" style="margin-top: 20px;" onclick="saveInterests()" aria-label="Save your interests">
+                ✅ Save Interests
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 🚀 UNIFIED INFINITE FEED ENGINE
+        class UnifiedFeed {
+            constructor() {
+                this.page = 1;
+                this.loading = false;
+                this.userLevel = localStorage.getItem('userLevel') || 'A2';
+                this.userInterests = JSON.parse(localStorage.getItem('userInterests') || '["news", "culture", "food"]');
+                this.feedData = [];
+                this.translationCache = new Map();
+
+                // XP & Streak System (Duolingo pattern)
+                this.xpData = this.loadXPData();
+                this.streakData = this.loadStreakData();
+
+                this.init();
+            }
+
+            init() {
+                this.setupInfiniteScroll();
+                this.loadInitialContent();
+                this.setupPullToRefresh();
+                this.detectInterests();
+                this.updateXPDisplay();
+                this.updateStreakDisplay();
+                this.checkStreakValidity();
+                this.initStories(); // Instagram/TikTok pattern
+                console.log('🌍 Unified Feed initialized');
+            }
+
+            // XP & STREAK SYSTEM (Duolingo pattern)
+            loadXPData() {
+                const data = JSON.parse(localStorage.getItem('xpData') || '{"totalXP": 0, "dailyXP": 0, "level": 1}');
+                return data;
+            }
+
+            saveXPData() {
+                localStorage.setItem('xpData', JSON.stringify(this.xpData));
+            }
+
+            loadStreakData() {
+                const data = JSON.parse(localStorage.getItem('streakData') || '{"currentStreak": 0, "lastActiveDate": null, "freezes": 1, "longestStreak": 0}');
+                return data;
+            }
+
+            saveStreakData() {
+                localStorage.setItem('streakData', JSON.stringify(this.streakData));
+            }
+
+            checkStreakValidity() {
+                // Duolingo pattern: Check if streak should be maintained or broken
+                const today = new Date().toDateString();
+                const lastActive = this.streakData.lastActiveDate;
+
+                if (!lastActive) {
+                    // First time user
+                    this.streakData.lastActiveDate = today;
+                    this.streakData.currentStreak = 0;
+                    this.saveStreakData();
+                    return;
+                }
+
+                const lastDate = new Date(lastActive);
+                const todayDate = new Date(today);
+                const diffTime = todayDate - lastDate;
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+                if (diffDays === 0) {
+                    // Same day - streak maintained
+                    return;
+                } else if (diffDays === 1) {
+                    // Consecutive day - streak already incremented when user earns XP
+                    return;
+                } else if (diffDays > 1) {
+                    // Missed a day - check for freeze
+                    if (this.streakData.freezes > 0) {
+                        this.streakData.freezes--;
+                        this.showToast('🧊 Streak freeze used! Your streak is safe.');
+                        this.streakData.lastActiveDate = today;
+                        this.saveStreakData();
+                    } else {
+                        // Streak broken
+                        if (this.streakData.currentStreak > 0) {
+                            this.showToast(`💔 Streak broken! Lost ${this.streakData.currentStreak} day streak.`);
+                        }
+                        this.streakData.currentStreak = 0;
+                        this.streakData.lastActiveDate = today;
+                        this.saveStreakData();
+                        this.updateStreakDisplay();
+                    }
+                }
+            }
+
+            awardXP(points, action) {
+                // Duolingo pattern: Award XP and show animation
+                this.xpData.totalXP += points;
+                this.xpData.dailyXP += points;
+
+                // Update streak on first action of the day
+                const today = new Date().toDateString();
+                if (this.streakData.lastActiveDate !== today) {
+                    this.streakData.currentStreak++;
+                    if (this.streakData.currentStreak > this.streakData.longestStreak) {
+                        this.streakData.longestStreak = this.streakData.currentStreak;
+                    }
+                    this.streakData.lastActiveDate = today;
+                    this.saveStreakData();
+                    this.updateStreakDisplay();
+
+                    // Milestone check (7, 30, 100, 365 days)
+                    this.checkMilestones();
+                }
+
+                this.saveXPData();
+                this.updateXPDisplay();
+                this.showXPGainAnimation(points, action);
+            }
+
+            checkMilestones() {
+                const milestones = {
+                    7: { emoji: '🔥', text: '7 Day Streak! You\'re on fire!' },
+                    30: { emoji: '⭐', text: '30 Day Streak! Superstar!' },
+                    100: { emoji: '💎', text: '100 Day Streak! Diamond League!' },
+                    365: { emoji: '👑', text: '365 Day Streak! Legend Status!' }
+                };
+
+                const streak = this.streakData.currentStreak;
+                if (milestones[streak]) {
+                    this.showMilestone(milestones[streak].emoji, milestones[streak].text);
+                }
+            }
+
+            updateXPDisplay() {
+                const xpPerLevel = 100;
+                const currentLevel = Math.floor(this.xpData.totalXP / xpPerLevel) + 1;
+                const xpInLevel = this.xpData.totalXP % xpPerLevel;
+                const progress = (xpInLevel / xpPerLevel) * 100;
+
+                document.getElementById('xpText').textContent = `${this.xpData.totalXP} XP`;
+                document.getElementById('xpBar').style.width = `${progress}%`;
+            }
+
+            updateStreakDisplay() {
+                const streak = this.streakData.currentStreak;
+                document.getElementById('streakCount').textContent = streak;
+
+                // Duolingo pattern: Fire icon for active streak, grey for broken
+                const fireIcon = document.getElementById('streakFire');
+                if (streak > 0) {
+                    fireIcon.textContent = '🔥';
+                    fireIcon.style.filter = 'brightness(1)';
+                } else {
+                    fireIcon.textContent = '💨';
+                    fireIcon.style.filter = 'grayscale(1)';
+                }
+            }
+
+            showXPGainAnimation(points, action) {
+                const popup = document.createElement('div');
+                popup.className = 'xp-gain-popup';
+                popup.textContent = `+${points} XP ${action}`;
+                document.body.appendChild(popup);
+
+                setTimeout(() => popup.remove(), 2000);
+            }
+
+            showMilestone(emoji, text) {
+                document.getElementById('milestoneEmoji').textContent = emoji;
+                document.getElementById('milestoneText').textContent = text;
+                document.getElementById('milestoneCelebration').classList.add('active');
+
+                // Auto-close after 3 seconds
+                setTimeout(() => {
+                    document.getElementById('milestoneCelebration').classList.remove('active');
+                }, 3000);
+            }
+
+            async loadInitialContent() {
+                await this.loadMoreContent();
+            }
+
+            async loadMoreContent() {
+                if (this.loading) return;
+
+                this.loading = true;
+                this.showSkeletonLoading();
+
+                try {
+                    // TikTok-style variety: Alternate content types for maximum engagement
+                    const contentTypes = this.getVariedContentTypes();
+
+                    console.log(`🎯 Loading page ${this.page} with variety: ${contentTypes.join(', ')}`);
+
+                    // Fetch ALL content types in one unified request
+                    const response = await fetch(`/api/unified-feed?page=${this.page}&limit=20&level=${this.userLevel}&interests=${this.userInterests.join(',')}`);
+                    const data = await response.json();
+
+                    if (data.success && data.videos && data.videos.length > 0) {
+                        // TikTok RECOMMENDATION ALGORITHM: Score and rank content
+                        const scoredContent = this.scoreContentRelevance(data.videos);
+
+                        // Sort by recommendation score (highest first)
+                        scoredContent.sort((a, b) => b.recommendationScore - a.recommendationScore);
+
+                        // Take top 10 highest-scored items
+                        const topContent = scoredContent.slice(0, 10);
+
+                        // Add variety tracking
+                        const newContent = this.ensureContentVariety(topContent);
+
+                        this.feedData = [...this.feedData, ...newContent];
+                        this.removeSkeletonLoading();
+                        this.renderContent(newContent);
+                        this.page++;
+                        this.setupVideoAutoplay(); // TikTok-style autoplay
+
+                        console.log(`✅ Loaded ${newContent.length} items (from ${data.videos.length} scored). Total: ${this.feedData.length}`);
+                    } else {
+                        console.log('⚠️ No more content available');
+                        this.removeSkeletonLoading();
+                    }
+                } catch (error) {
+                    console.error('Failed to load content:', error);
+                    this.removeSkeletonLoading();
+                }
+
+                this.loading = false;
+                document.getElementById('loadingSpinner').style.display = 'none';
+            }
+
+            scoreContentRelevance(items) {
+                // TikTok RECOMMENDATION ALGORITHM (2025 pattern)
+                // Source: newsroom.tiktok.com/en-us/how-tiktok-recommends-videos-for-you
+
+                const userPreferences = this.getUserPreferences();
+
+                return items.map(item => {
+                    let score = 0;
+
+                    // 1. USER INTERACTION HISTORY (40% weight - highest priority)
+                    const interactionScore = this.calculateInteractionScore(item, userPreferences);
+                    score += interactionScore * 0.4;
+
+                    // 2. CONTENT INFORMATION MATCH (30% weight)
+                    const contentScore = this.calculateContentScore(item, userPreferences);
+                    score += contentScore * 0.3;
+
+                    // 3. FRESHNESS / RECENCY (20% weight)
+                    const freshnessScore = this.calculateFreshnessScore(item);
+                    score += freshnessScore * 0.2;
+
+                    // 4. DIVERSITY BONUS (10% weight - prevent filter bubbles)
+                    const diversityScore = this.calculateDiversityScore(item);
+                    score += diversityScore * 0.1;
+
+                    // Add randomness (5% variance) to keep feed interesting
+                    const randomFactor = 0.95 + (Math.random() * 0.1);
+                    score = score * randomFactor;
+
+                    item.recommendationScore = Math.round(score * 100) / 100;
+                    item.scoreBreakdown = {
+                        interaction: Math.round(interactionScore * 40),
+                        content: Math.round(contentScore * 30),
+                        freshness: Math.round(freshnessScore * 20),
+                        diversity: Math.round(diversityScore * 10)
+                    };
+
+                    return item;
+                });
+            }
+
+            calculateInteractionScore(item, userPrefs) {
+                // TikTok pattern: User interactions are STRONGEST signal
+                let score = 0;
+
+                // Previously liked similar content? (+50 points)
+                if (userPrefs.likedTypes.includes(item.type)) {
+                    score += 50;
+                }
+
+                // Previously saved similar content? (+40 points - strong interest signal)
+                if (userPrefs.savedTopics.some(topic =>
+                    item.title?.toLowerCase().includes(topic) ||
+                    item.tags?.includes(topic)
+                )) {
+                    score += 40;
+                }
+
+                // Matches user's language level (+30 points)
+                if (item.difficulty === this.userLevel || !item.difficulty) {
+                    score += 30;
+                }
+
+                // User follows this source (+25 points)
+                if (userPrefs.followedSources.includes(item.source)) {
+                    score += 25;
+                }
+
+                return Math.min(score, 100); // Cap at 100
+            }
+
+            calculateContentScore(item, userPrefs) {
+                // TikTok pattern: Video information (captions, sounds, hashtags)
+                let score = 0;
+
+                // Matches user interests (+40 points)
+                const matchingInterests = this.userInterests.filter(interest =>
+                    item.title?.toLowerCase().includes(interest.toLowerCase()) ||
+                    item.tags?.includes(interest)
+                );
+                score += matchingInterests.length * 20; // Up to 40 points for 2+ matches
+
+                // Has trending hashtags (+20 points)
+                const trendingTags = ['#viral', '#trending', '#2025'];
+                if (item.tags?.some(tag => trendingTags.includes(tag))) {
+                    score += 20;
+                }
+
+                // High engagement from other users (+40 points)
+                const likeCount = item.likes || 0;
+                if (likeCount > 100) score += 40;
+                else if (likeCount > 50) score += 30;
+                else if (likeCount > 10) score += 20;
+
+                return Math.min(score, 100);
+            }
+
+            calculateFreshnessScore(item) {
+                // TikTok pattern: Newer content gets boosted
+                if (!item.publishedAt && !item.createdAt) return 50; // Default for items without timestamp
+
+                const timestamp = new Date(item.publishedAt || item.createdAt);
+                const now = new Date();
+                const ageHours = (now - timestamp) / (1000 * 60 * 60);
+
+                // Fresh content within 24 hours = max score
+                if (ageHours < 24) return 100;
+                if (ageHours < 48) return 80;
+                if (ageHours < 72) return 60;
+                if (ageHours < 168) return 40; // 1 week
+                return 20; // Older content
+            }
+
+            calculateDiversityScore(item) {
+                // TikTok pattern: Introduce diversity to prevent filter bubbles
+                const recentTypes = this.feedData.slice(-10).map(i => i.type);
+                const recentSources = this.feedData.slice(-10).map(i => i.source);
+
+                let score = 50; // Base diversity score
+
+                // Bonus for different type than recent items
+                const typeCount = recentTypes.filter(t => t === item.type).length;
+                if (typeCount === 0) score += 50; // New type = big bonus
+                else if (typeCount < 3) score += 25; // Some variety
+
+                // Bonus for different source
+                if (!recentSources.includes(item.source)) {
+                    score += 25;
+                }
+
+                return Math.min(score, 100);
+            }
+
+            getUserPreferences() {
+                // Load user's learned preferences from localStorage
+                return {
+                    likedTypes: JSON.parse(localStorage.getItem('likedContentTypes') || '[]'),
+                    savedTopics: JSON.parse(localStorage.getItem('savedTopics') || '[]'),
+                    followedSources: JSON.parse(localStorage.getItem('followingPublishers') || '[]'),
+                    watchHistory: JSON.parse(localStorage.getItem('watchHistory') || '[]')
+                };
+            }
+
+            getVariedContentTypes() {
+                // TikTok pattern: Mix content types to prevent boredom
+                const allTypes = ['news', 'video', 'social', 'meme', 'article'];
+                const recentTypes = this.feedData.slice(-5).map(item => item.type);
+
+                // Avoid repeating same type too much
+                return allTypes.filter(type => {
+                    const recentCount = recentTypes.filter(t => t === type).length;
+                    return recentCount < 2; // Max 2 of same type in last 5
+                });
+            }
+
+            ensureContentVariety(items) {
+                // TikTok algorithm: Ensure varied content to maintain engagement
+                const varied = [];
+                let lastType = null;
+                let sameTypeCount = 0;
+
+                items.forEach(item => {
+                    if (item.type === lastType) {
+                        sameTypeCount++;
+                        // Insert different type if too many repeats
+                        if (sameTypeCount >= 2 && varied.length > 0) {
+                            const different = items.find(i => i.type !== lastType && !varied.includes(i));
+                            if (different) {
+                                varied.push(different);
+                                lastType = different.type;
+                                sameTypeCount = 1;
+                                return;
+                            }
+                        }
+                    } else {
+                        sameTypeCount = 1;
+                        lastType = item.type;
+                    }
+                    varied.push(item);
+                });
+
+                // Return varied content - NO dummy quiz cards!
+                return varied;
+            }
+
+            injectQuizCards(items) {
+                // Inject quiz cards at strategic positions (every 5-7 items)
+                // Duolingo pattern: Regular practice reinforces learning
+                const result = [];
+                const quizInterval = 5 + Math.floor(Math.random() * 3); // 5-7 items
+
+                items.forEach((item, index) => {
+                    result.push(item);
+
+                    // Inject quiz after every quizInterval items
+                    if ((index + 1) % quizInterval === 0) {
+                        const quiz = this.generateQuiz();
+                        if (quiz) {
+                            result.push(quiz);
+                        }
+                    }
+                });
+
+                return result;
+            }
+
+            generateQuiz() {
+                // Generate Spanish vocabulary quiz (Duolingo pattern)
+                const quizzes = [
+                    {
+                        id: `quiz-${Date.now()}-${Math.random()}`,
+                        type: 'quiz',
+                        difficulty_level: this.userLevel,
+                        question: '¿Qué significa "buenos días"?',
+                        options: ['Good morning', 'Good night', 'Good afternoon', 'Goodbye'],
+                        correctIndex: 0,
+                        explanation: 'Buenos días = Good morning'
+                    },
+                    {
+                        id: `quiz-${Date.now()}-${Math.random()}`,
+                        type: 'quiz',
+                        difficulty_level: this.userLevel,
+                        question: 'How do you say "thank you" in Spanish?',
+                        options: ['Por favor', 'Gracias', 'De nada', 'Perdón'],
+                        correctIndex: 1,
+                        explanation: 'Gracias = Thank you'
+                    },
+                    {
+                        id: `quiz-${Date.now()}-${Math.random()}`,
+                        type: 'quiz',
+                        difficulty_level: this.userLevel,
+                        question: '¿Cómo se dice "water" en español?',
+                        options: ['Vino', 'Leche', 'Agua', 'Café'],
+                        correctIndex: 2,
+                        explanation: 'Agua = Water'
+                    },
+                    {
+                        id: `quiz-${Date.now()}-${Math.random()}`,
+                        type: 'quiz',
+                        difficulty_level: this.userLevel,
+                        question: 'What does "¿Cómo estás?" mean?',
+                        options: ['Where are you?', 'How are you?', 'What is this?', 'Who are you?'],
+                        correctIndex: 1,
+                        explanation: '¿Cómo estás? = How are you?'
+                    },
+                    {
+                        id: `quiz-${Date.now()}-${Math.random()}`,
+                        type: 'quiz',
+                        difficulty_level: this.userLevel,
+                        question: '¿Qué significa "comida"?',
+                        options: ['Drink', 'Food', 'House', 'Friend'],
+                        correctIndex: 1,
+                        explanation: 'Comida = Food'
+                    },
+                    {
+                        id: `quiz-${Date.now()}-${Math.random()}`,
+                        type: 'quiz',
+                        difficulty_level: this.userLevel,
+                        question: 'How do you say "goodbye" in Spanish?',
+                        options: ['Hola', 'Adiós', 'Por favor', 'Sí'],
+                        correctIndex: 1,
+                        explanation: 'Adiós = Goodbye'
+                    }
+                ];
+
+                // Select random quiz
+                const quiz = quizzes[Math.floor(Math.random() * quizzes.length)];
+                quiz.id = `quiz-${Date.now()}-${Math.random()}`; // Ensure unique ID
+                return quiz;
+            }
+
+            // STORIES SECTION (Instagram/TikTok 2025 pattern)
+            initStories() {
+                const storiesData = [
+                    { id: 1, username: 'Spanish101', emoji: '📚', stories: [
+                        { title: 'Common Greetings', content: '¡Hola! = Hello\n¡Buenos días! = Good morning\n¡Buenas tardes! = Good afternoon\n¡Buenas noches! = Good evening' },
+                        { title: 'Essential Phrases', content: '¿Cómo estás? = How are you?\nGracias = Thank you\nDe nada = You\'re welcome\nPor favor = Please' }
+                    ]},
+                    { id: 2, username: 'Culture', emoji: '🎭', stories: [
+                        { title: 'Spanish Culture', content: 'Spain has 17 autonomous communities, each with its own unique culture and traditions!' }
+                    ]},
+                    { id: 3, username: 'Food', emoji: '🍽️', stories: [
+                        { title: 'Spanish Food', content: 'La paella is a famous Spanish rice dish from Valencia. ¡Delicioso!' }
+                    ]},
+                    { id: 4, username: 'Travel', emoji: '✈️', stories: [
+                        { title: 'Must-Visit Cities', content: 'Madrid, Barcelona, Valencia, Sevilla - each city offers unique experiences!' }
+                    ]},
+                    { id: 5, username: 'Music', emoji: '🎵', stories: [
+                        { title: 'Spanish Music', content: 'Flamenco is a passionate art form combining singing, guitar, and dance!' }
+                    ]},
+                    { id: 6, username: 'History', emoji: '🏛️', stories: [
+                        { title: 'Fun Fact', content: 'Spanish is spoken by over 500 million people worldwide!' }
+                    ]}
+                ];
+
+                window.storiesData = storiesData;
+                this.renderStories(storiesData);
+            }
+
+            renderStories(stories) {
+                const container = document.getElementById('storiesScroll');
+                container.innerHTML = '';
+
+                stories.forEach((story, index) => {
+                    const viewed = localStorage.getItem(`story-viewed-${story.id}`) === 'true';
+                    const storyItem = document.createElement('div');
+                    storyItem.className = 'story-item';
+                    storyItem.onclick = () => this.openStory(index);
+
+                    storyItem.innerHTML = `
+                        <div class="story-avatar-wrapper">
+                            <div class="story-gradient-ring ${viewed ? 'viewed' : ''}">
+                                <div class="story-avatar">${story.emoji}</div>
+                            </div>
+                        </div>
+                        <div class="story-username">${story.username}</div>
+                    `;
+
+                    container.appendChild(storyItem);
+                });
+            }
+
+            openStory(storyIndex) {
+                window.currentStoryIndex = storyIndex;
+                window.currentSegmentIndex = 0;
+                const viewer = document.getElementById('storyViewer');
+                viewer.classList.add('active');
+                this.showStorySegment(storyIndex, 0);
+                document.body.style.overflow = 'hidden';
+            }
+
+            showStorySegment(storyIndex, segmentIndex) {
+                const story = window.storiesData[storyIndex];
+                if (!story || !story.stories[segmentIndex]) {
+                    this.closeStory();
+                    return;
+                }
+
+                // Update progress bars
+                const progressContainer = document.getElementById('storyProgressBars');
+                progressContainer.innerHTML = '';
+                story.stories.forEach((_, i) => {
+                    const bar = document.createElement('div');
+                    bar.className = 'story-progress-bar';
+                    bar.innerHTML = `<div class="story-progress-fill ${i === segmentIndex ? 'active' : ''}" style="width: ${i < segmentIndex ? '100%' : '0%'}"></div>`;
+                    progressContainer.appendChild(bar);
+                });
+
+                // Show content
+                const content = document.getElementById('storyContent');
+                const segment = story.stories[segmentIndex];
+                content.innerHTML = `
+                    <div class="story-text-content">
+                        <h2>${segment.title}</h2>
+                        <p>${segment.content}</p>
+                    </div>
+                `;
+
+                // Auto-advance after 7 seconds
+                if (window.storyTimer) clearTimeout(window.storyTimer);
+                window.storyTimer = setTimeout(() => {
+                    this.nextStorySegment();
+                }, 7000);
+
+                // Mark as viewed
+                localStorage.setItem(`story-viewed-${story.id}`, 'true');
+            }
+
+            nextStorySegment() {
+                const story = window.storiesData[window.currentStoryIndex];
+                window.currentSegmentIndex++;
+
+                if (window.currentSegmentIndex >= story.stories.length) {
+                    // Move to next story
+                    window.currentStoryIndex++;
+                    window.currentSegmentIndex = 0;
+                    if (window.currentStoryIndex >= window.storiesData.length) {
+                        this.closeStory();
+                        return;
+                    }
+                }
+
+                this.showStorySegment(window.currentStoryIndex, window.currentSegmentIndex);
+            }
+
+            closeStory() {
+                const viewer = document.getElementById('storyViewer');
+                viewer.classList.remove('active');
+                document.body.style.overflow = '';
+                if (window.storyTimer) clearTimeout(window.storyTimer);
+                this.renderStories(window.storiesData); // Update viewed states
+            }
+
+            showSkeletonLoading() {
+                const container = document.getElementById('feedContainer');
+                for (let i = 0; i < 3; i++) {
+                    const skeleton = document.createElement('div');
+                    skeleton.className = 'skeleton-card';
+                    skeleton.innerHTML = `
+                        <div class="skeleton-line" style="width: 60%; height: 24px;"></div>
+                        <div class="skeleton-line" style="width: 100%; height: 200px; margin: 12px 0;"></div>
+                        <div class="skeleton-line" style="width: 90%;"></div>
+                        <div class="skeleton-line" style="width: 70%;"></div>
+                    `;
+                    container.appendChild(skeleton);
+                }
+            }
+
+            removeSkeletonLoading() {
+                document.querySelectorAll('.skeleton-card').forEach(el => el.remove());
+            }
+
+            renderContent(items) {
+                const container = document.getElementById('feedContainer');
+
+                items.forEach(item => {
+                    const card = this.createContentCard(item);
+                    container.appendChild(card);
+                });
+            }
+
+            createContentCard(item) {
+                const card = document.createElement('div');
+                card.className = 'content-card';
+                card.setAttribute('data-id', item.id);
+
+                // QUIZ CARD (Duolingo pattern) - Handle separately
+                if (item.type === 'quiz') {
+                    return this.createQuizCard(item);
+                }
+
+                // Make title punchy (Instagram-style)
+                const punchyTitle = this.makeTitlePunchy(item.title, item.type);
+
+                // Type badge
+                const typeClass = `type-${item.type || 'article'}`;
+                const typeBadge = `<div class="content-type ${typeClass}">${item.type || 'Article'}</div>`;
+
+                // Publisher attribution (Flipboard pattern)
+                const publishers = {
+                    'news': { name: 'BBC Mundo', avatar: '📰', verified: true, category: 'News' },
+                    'video': { name: 'Spanish Daily', avatar: '🎬', verified: true, category: 'Education' },
+                    'social': { name: 'El País', avatar: '📱', verified: true, category: 'Culture' },
+                    'meme': { name: 'Spanish Memes', avatar: '😂', verified: false, category: 'Entertainment' },
+                    'article': { name: 'CNN Español', avatar: '📝', verified: true, category: 'News' },
+                    'quiz': { name: 'Daily Spanish Quiz', avatar: '🎓', verified: true, category: 'Practice' }
+                };
+
+                const publisher = publishers[item.type] || publishers['article'];
+                const timestamp = this.getRelativeTime(item.publishedAt || new Date());
+                const isFollowing = this.isFollowing(publisher.name);
+
+                const publisherHeader = `
+                    <div class="publisher-header" onclick="feed.toggleFollow('${publisher.name}', event)">
+                        <div class="publisher-avatar">${publisher.avatar}</div>
+                        <div class="publisher-info">
+                            <div class="publisher-name">
+                                ${publisher.name}
+                                ${publisher.verified ? '<span class="verified-badge">✓</span>' : ''}
+                            </div>
+                            <div class="publisher-meta">
+                                <span class="timestamp">⏰ ${timestamp}</span>
+                                <span>•</span>
+                                <span>${publisher.category}</span>
+                            </div>
+                        </div>
+                        <button class="follow-btn ${isFollowing ? 'following' : ''}" onclick="event.stopPropagation()">
+                            ${isFollowing ? '✓ Following' : '+ Follow'}
+                        </button>
+                    </div>
+                `;
+
+                // Media section (videos get actual video tags!)
+                let mediaHTML = '';
+                if (item.videoPath || item.videoUrl) {
+                    const videoSrc = item.videoUrl || `/public/${item.videoPath}`;
+                    mediaHTML = `
+                        <div class="card-media">
+                            <video
+                                class="feed-video"
+                                data-video-id="${item.id}"
+                                src="${videoSrc}"
+                                playsinline
+                                loop
+                                muted
+                                style="width: 100%; max-height: 400px; object-fit: cover;"
+                            ></video>
+                            ${typeBadge}
+                            <div class="media-overlay">
+                                <div style="font-size: 14px; font-weight: 600;">🎬 ${item.title}</div>
+                            </div>
+                        </div>
+                    `;
+                } else if (item.thumbnail && item.thumbnail !== '🎬') {
+                    mediaHTML = `
+                        <div class="card-media">
+                            <img src="${item.thumbnail}" alt="${punchyTitle}" loading="lazy">
+                            ${typeBadge}
+                        </div>
+                    `;
+                } else if (item.type === 'meme') {
+                    mediaHTML = `
+                        <div class="card-media" style="background: linear-gradient(135deg, #667eea, #764ba2); padding: 40px; text-align: center;">
+                            <div style="font-size: 80px;">${item.thumbnail}</div>
+                            ${typeBadge}
+                        </div>
+                    `;
+                } else {
+                    mediaHTML = typeBadge;
+                }
+
+                // Spanish text with tap-to-translate
+                const spanishHTML = item.spanish ? this.createSpanishText(item.spanish) : '';
+
+                // English translation (hidden by default)
+                const englishHTML = item.english ? `
+                    <div class="card-text" style="display: none; background: rgba(102, 126, 234, 0.1); padding: 12px; border-radius: 8px; margin-top: 12px;" id="translation-${item.id}">
+                        💡 ${item.english}
+                    </div>
+                ` : '';
+
+                // Level badge
+                const levelBadge = `
+                    <div class="level-badge">
+                        <span>📚</span>
+                        <span>${item.difficulty_level || this.userLevel}</span>
+                    </div>
+                `;
+
+                // Initialize like count from localStorage
+                const likes = this.getLikeCount(item.id);
+
+                const cardHTML = `
+                    ${publisherHeader}
+                    ${mediaHTML}
+                    <div class="card-content">
+                        ${levelBadge}
+                        <div class="card-title">
+                            <span class="title-text">${punchyTitle}</span>
+                            <button class="translate-btn" onclick="feed.toggleTranslation('${item.id}')">👁️ Ver</button>
+                        </div>
+                        ${spanishHTML}
+                        ${englishHTML}
+                        ${item.description ? `<div class="card-text" style="margin-top: 12px; opacity: 0.7;">${item.description}</div>` : ''}
+                    </div>
+                    <div class="card-actions">
+                        <button class="action-btn ${likes > 0 ? 'liked' : ''}" onclick="feed.likeContent('${item.id}', '${item.type}')" id="like-${item.id}">
+                            ${likes > 0 ? '❤️‍🔥' : '❤️'} <span id="like-count-${item.id}">${likes}</span>
+                        </button>
+                        <button class="action-btn" onclick="feed.shareContent('${item.id}', '${item.type}')">
+                            📤 Share
+                        </button>
+                        <button class="action-btn" onclick="feed.saveArticle('${item.id}')">
+                            📚 Save
+                        </button>
+                        <button class="action-btn" onclick="feed.saveWord('${item.id}')">
+                            💾 Word
+                        </button>
+                    </div>
+                `;
+
+                card.innerHTML = cardHTML;
+                return card;
+            }
+
+            createQuizCard(quiz) {
+                // Duolingo-style quiz card (2025 pattern)
+                // Source: duolingo.com, tiktok.com/@spanish.learning
+                const card = document.createElement('div');
+                card.className = 'content-card';
+                card.setAttribute('data-id', quiz.id);
+                card.setAttribute('data-quiz-answered', 'false');
+
+                const typeClass = 'type-quiz';
+                const typeBadge = `<div class="content-type ${typeClass}">🧠 Quiz</div>`;
+
+                // Publisher header for quiz
+                const publisherHeader = `
+                    <div class="publisher-header">
+                        <div class="publisher-avatar">🎓</div>
+                        <div class="publisher-info">
+                            <div class="publisher-name">
+                                Daily Spanish Quiz
+                                <span class="verified-badge">✓</span>
+                            </div>
+                            <div class="publisher-meta">
+                                <span class="timestamp">⏰ Now</span>
+                                <span>•</span>
+                                <span>Practice</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Quiz container
+                const quizHTML = `
+                    ${publisherHeader}
+                    ${typeBadge}
+                    <div class="card-content">
+                        <div class="level-badge">
+                            <span>📚</span>
+                            <span>${quiz.difficulty_level || this.userLevel}</span>
+                        </div>
+                        <div class="quiz-container">
+                            <div class="quiz-question">${quiz.question}</div>
+                            <div class="quiz-options" id="quiz-options-${quiz.id}">
+                                ${quiz.options.map((option, index) => `
+                                    <button
+                                        class="quiz-option"
+                                        data-index="${index}"
+                                        onclick="feed.answerQuiz('${quiz.id}', ${index}, ${index === quiz.correctIndex})"
+                                    >
+                                        ${option}
+                                    </button>
+                                `).join('')}
+                            </div>
+                            <div id="quiz-feedback-${quiz.id}"></div>
+                        </div>
+                    </div>
+                `;
+
+                card.innerHTML = quizHTML;
+                return card;
+            }
+
+            answerQuiz(quizId, selectedIndex, isCorrect) {
+                // Duolingo pattern: Immediate feedback with XP reward
+                const card = document.querySelector(`[data-id="${quizId}"]`);
+                if (!card || card.getAttribute('data-quiz-answered') === 'true') return;
+
+                card.setAttribute('data-quiz-answered', 'true');
+
+                const optionsContainer = document.getElementById(`quiz-options-${quizId}`);
+                const options = optionsContainer.querySelectorAll('.quiz-option');
+                const feedbackContainer = document.getElementById(`quiz-feedback-${quizId}`);
+
+                // Disable all options
+                options.forEach((btn, index) => {
+                    btn.disabled = true;
+                    if (index === selectedIndex) {
+                        btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+                    }
+                    // Always show correct answer
+                    const quiz = this.feedData.find(item => item.id === quizId);
+                    if (quiz && index === quiz.correctIndex && !isCorrect) {
+                        btn.classList.add('correct');
+                    }
+                });
+
+                // Show feedback
+                const xpReward = isCorrect ? 10 : 5;
+                this.addXP(xpReward, isCorrect ? 'quiz_correct' : 'quiz_attempt');
+
+                const feedbackClass = isCorrect ? 'correct' : 'incorrect';
+                const feedbackEmoji = isCorrect ? '🎉' : '💪';
+                const feedbackText = isCorrect
+                    ? 'Perfect! You got it right!'
+                    : 'Not quite! Keep practicing!';
+
+                feedbackContainer.innerHTML = `
+                    <div class="quiz-feedback ${feedbackClass}">
+                        ${feedbackEmoji} ${feedbackText}
+                        <span class="quiz-xp-reward">+${xpReward} XP</span>
+                    </div>
+                `;
+
+                // Track quiz completion
+                const quizStats = JSON.parse(localStorage.getItem('quizStats') || '{"total": 0, "correct": 0}');
+                quizStats.total++;
+                if (isCorrect) quizStats.correct++;
+                localStorage.setItem('quizStats', JSON.stringify(quizStats));
+
+                this.showToast(isCorrect
+                    ? `🎉 Correct! +${xpReward} XP`
+                    : `💪 Good try! +${xpReward} XP for effort`
+                );
+            }
+
+            makeTitlePunchy(title, type) {
+                // Instagram-style title rewrites for maximum engagement
+                if (!title || title.startsWith('Video:')) {
+                    const hooks = [
+                        '🔥 ¡Esto no te lo puedes perder!',
+                        '😱 ¡No lo creerás!',
+                        '💯 ¡Increíble pero cierto!',
+                        '⚡ ¡VIRAL ahora mismo!',
+                        '🎯 ¡Lo que todos están viendo!',
+                        '✨ ¡Espera... ¿QUÉ?!',
+                        '🚀 ¡Tendencia en España!'
+                    ];
+                    return hooks[Math.floor(Math.random() * hooks.length)];
+                }
+
+                // Make existing titles more engaging
+                if (title.length > 60) {
+                    return '🔥 ' + title.substring(0, 57) + '...';
+                }
+
+                // Add emoji based on content type
+                const emojiMap = {
+                    'news': '📰',
+                    'video': '🎥',
+                    'meme': '😂',
+                    'culture': '🎭',
+                    'social': '💬'
+                };
+
+                const emoji = emojiMap[type] || '✨';
+                return `${emoji} ${title}`;
+            }
+
+            getLikeCount(itemId) {
+                const likes = JSON.parse(localStorage.getItem('likes') || '{}');
+                return likes[itemId] || 0;
+            }
+
+            saveLikeCount(itemId, count) {
+                const likes = JSON.parse(localStorage.getItem('likes') || '{}');
+                likes[itemId] = count;
+                localStorage.setItem('likes', JSON.stringify(likes));
+            }
+
+            createSpanishText(text) {
+                const words = text.split(' ');
+                const wordElements = words.map((word, index) => {
+                    return `<span class="spanish-word" onclick="feed.translateWord('${word}', event)" data-word="${word}">${word}</span>`;
+                }).join(' ');
+
+                return `<div class="spanish-text">${wordElements}</div>`;
+            }
+
+            async translateWord(word, event) {
+                // Check cache first
+                if (this.translationCache.has(word)) {
+                    this.showTranslation(event.target, this.translationCache.get(word));
+                    return;
+                }
+
+                try {
+                    // In production, call translation API
+                    // For now, use mock translations
+                    const mockTranslations = {
+                        'embarazada': 'pregnant',
+                        'avergonzada': 'embarrassed',
+                        'órale': 'wow/come on',
+                        'mande': 'excuse me (polite)',
+                        'comida': 'food',
+                        'noticias': 'news'
+                    };
+
+                    const translation = mockTranslations[word.toLowerCase()] || 'translation';
+                    this.translationCache.set(word, translation);
+                    this.showTranslation(event.target, translation);
+                } catch (error) {
+                    console.error('Translation failed:', error);
+                }
+            }
+
+            showTranslation(element, translation) {
+                // Remove existing tooltips
+                document.querySelectorAll('.translation-tooltip').forEach(t => t.remove());
+
+                // Create and show tooltip
+                const tooltip = document.createElement('div');
+                tooltip.className = 'translation-tooltip';
+                tooltip.textContent = translation;
+                element.appendChild(tooltip);
+
+                // Auto-remove after 3 seconds
+                setTimeout(() => tooltip.remove(), 3000);
+            }
+
+            toggleTranslation(itemId) {
+                const translationEl = document.getElementById(`translation-${itemId}`);
+                const btn = event.target;
+                if (translationEl) {
+                    const isVisible = translationEl.style.display !== 'none';
+                    translationEl.style.display = isVisible ? 'none' : 'block';
+                    btn.textContent = isVisible ? '👁️ Ver' : '✅ Visto';
+                    btn.classList.toggle('active', !isVisible);
+                }
+            }
+
+            setupVideoAutoplay() {
+                // TikTok-style video autoplay based on visibility
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        const video = entry.target;
+                        if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+                            video.play().catch(e => console.log('Autoplay prevented:', e));
+                        } else {
+                            video.pause();
+                        }
+                    });
+                }, { threshold: [0.5] });
+
+                document.querySelectorAll('.feed-video').forEach(video => {
+                    observer.observe(video);
+                    // Click to unmute
+                    video.addEventListener('click', () => {
+                        video.muted = !video.muted;
+                        const icon = video.muted ? '🔇' : '🔊';
+                        this.showToast(`${icon} ${video.muted ? 'Muted' : 'Unmuted'}`);
+                    });
+                });
+            }
+
+            saveWord(itemId) {
+                const savedWords = JSON.parse(localStorage.getItem('savedWords') || '[]');
+                if (!savedWords.includes(itemId)) {
+                    savedWords.push(itemId);
+                    localStorage.setItem('savedWords', JSON.stringify(savedWords));
+                    alert('✅ Saved to your vocabulary!');
+                }
+            }
+
+            playAudio(itemId) {
+                // In production, play actual audio
+                console.log('Playing audio for:', itemId);
+                alert('🔊 Audio feature coming soon!');
+            }
+
+            setupInfiniteScroll() {
+                // Instagram Reels-style infinite scroll with aggressive preloading
+                // Source: blog.logrocket.com/react-infinite-scroll/ (2025)
+                const sentinel = document.getElementById('loadingSpinner');
+
+                // Main infinite scroll observer with 500px preload margin
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && !this.loading) {
+                            console.log('📜 Loading more content (infinite scroll triggered)');
+                            this.loadMoreContent();
+                        }
+                    });
+                }, {
+                    rootMargin: '500px' // Instagram pattern: Trigger 500px before bottom
+                });
+
+                observer.observe(sentinel);
+
+                // PRELOADING: Monitor all content cards and preload next 3 cards ahead
+                // Source: medium.com/@sanjivjangid/seamless-infinite-scrolling-tanstack-query-and-intersection-observer-c7ec8a544c83
+                this.setupPreloadObserver();
+
+                // Backup: Classic scroll event (for older browsers)
+                let scrollTimeout;
+                window.addEventListener('scroll', () => {
+                    clearTimeout(scrollTimeout);
+                    scrollTimeout = setTimeout(() => {
+                        const scrollHeight = document.documentElement.scrollHeight;
+                        const scrollTop = window.scrollY;
+                        const clientHeight = window.innerHeight;
+
+                        // 80% scroll threshold (Instagram Reels pattern)
+                        const scrollPercent = (scrollTop / (scrollHeight - clientHeight)) * 100;
+                        if (scrollPercent > 80 && !this.loading) {
+                            console.log(`📜 Loading more at ${scrollPercent.toFixed(0)}% scroll`);
+                            this.loadMoreContent();
+                        }
+                    }, 100); // Debounce 100ms for smoother detection
+                });
+            }
+
+            setupPreloadObserver() {
+                // Preload images/videos 3 cards ahead (Instagram Reels strategy)
+                const preloadObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
+                            const cardIndex = Array.from(document.querySelectorAll('.content-card')).indexOf(entry.target);
+                            this.preloadNextCards(cardIndex, 3); // Preload 3 ahead
+                        }
+                    });
+                }, { threshold: 0.3, rootMargin: '300px' });
+
+                // Observe all content cards
+                const observeCards = () => {
+                    document.querySelectorAll('.content-card').forEach(card => {
+                        preloadObserver.observe(card);
+                    });
+                };
+
+                // Initial observation
+                observeCards();
+
+                // Re-observe when new cards are added
+                const mutationObserver = new MutationObserver(observeCards);
+                mutationObserver.observe(document.getElementById('feedContainer'), {
+                    childList: true
+                });
+            }
+
+            preloadNextCards(currentIndex, count) {
+                // Preload next N cards' media for instant playback
+                for (let i = 1; i <= count; i++) {
+                    const nextIndex = currentIndex + i;
+                    const nextCard = document.querySelectorAll('.content-card')[nextIndex];
+
+                    if (nextCard) {
+                        // Preload video
+                        const video = nextCard.querySelector('video');
+                        if (video && video.readyState < 3) {
+                            video.preload = 'auto';
+                            video.load();
+                            console.log(`🎬 Preloading video ${i} cards ahead`);
+                        }
+
+                        // Preload image
+                        const img = nextCard.querySelector('img[loading="lazy"]');
+                        if (img) {
+                            img.loading = 'eager';
+                            console.log(`🖼️ Preloading image ${i} cards ahead`);
+                        }
+                    }
+                }
+            }
+
+            setupPullToRefresh() {
+                let startY = 0;
+                let pulling = false;
+
+                window.addEventListener('touchstart', (e) => {
+                    if (window.scrollY === 0) {
+                        startY = e.touches[0].pageY;
+                        pulling = true;
+                    }
+                });
+
+                window.addEventListener('touchmove', (e) => {
+                    if (pulling && window.scrollY === 0) {
+                        const currentY = e.touches[0].pageY;
+                        const distance = currentY - startY;
+
+                        if (distance > 80) {
+                            document.getElementById('pullRefresh').classList.add('active');
+                        }
+                    }
+                });
+
+                window.addEventListener('touchend', async () => {
+                    if (pulling && document.getElementById('pullRefresh').classList.contains('active')) {
+                        await this.refresh();
+                    }
+                    pulling = false;
+                    document.getElementById('pullRefresh').classList.remove('active');
+                });
+            }
+
+            async refresh() {
+                this.page = 1;
+                this.feedData = [];
+                document.getElementById('feedContainer').innerHTML = '';
+                await this.loadMoreContent();
+            }
+
+            detectInterests() {
+                // Automatically detect user interests based on engagement
+                const engagementData = JSON.parse(localStorage.getItem('engagementData') || '{}');
+
+                // Analyze which content types user engages with most
+                const interests = Object.entries(engagementData)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 5)
+                    .map(([interest]) => interest);
+
+                if (interests.length > 0) {
+                    this.userInterests = interests;
+                    localStorage.setItem('userInterests', JSON.stringify(interests));
+                }
+            }
+
+            trackEngagement(contentType) {
+                const engagementData = JSON.parse(localStorage.getItem('engagementData') || '{}');
+                engagementData[contentType] = (engagementData[contentType] || 0) + 1;
+                localStorage.setItem('engagementData', JSON.stringify(engagementData));
+            }
+
+            // 🔥 SOCIAL FEATURES
+
+            async likeContent(contentId, contentType) {
+                // Instant UI update (optimistic)
+                const likeBtn = document.getElementById(`like-${contentId}`);
+                const likeCountEl = document.getElementById(`like-count-${contentId}`);
+                const currentCount = this.getLikeCount(contentId);
+                const isLiked = currentCount > 0;
+
+                const newCount = isLiked ? 0 : currentCount + 1;
+                this.saveLikeCount(contentId, newCount);
+
+                // Update UI immediately
+                likeBtn.classList.toggle('liked', !isLiked);
+                likeBtn.innerHTML = `${!isLiked ? '❤️‍🔥' : '❤️'} <span id="like-count-${contentId}">${newCount}</span>`;
+
+                // Trigger animation
+                likeBtn.style.transform = 'scale(1.2)';
+                setTimeout(() => likeBtn.style.transform = 'scale(1)', 200);
+
+                // Award XP (Duolingo pattern)
+                if (!isLiked) {
+                    this.awardXP(3, '❤️');
+                }
+
+                // TikTok RECOMMENDATION: Track liked content types for personalization
+                if (!isLiked) {
+                    this.trackLikedContentType(contentType);
+                }
+
+                this.showToast(!isLiked ? '❤️ ¡Te encanta!' : '💔 Ya no te gusta');
+                this.trackEngagement(contentType);
+
+                // Send to backend (fire and forget)
+                fetch('/api/social/like', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: this.userId || 'anonymous',
+                        contentId: contentId,
+                        contentType: contentType
+                    })
+                }).catch(e => console.log('Like sync failed:', e));
+            }
+
+            trackLikedContentType(contentType) {
+                // TikTok pattern: Learn what users like to personalize feed
+                const likedTypes = JSON.parse(localStorage.getItem('likedContentTypes') || '[]');
+                if (!likedTypes.includes(contentType)) {
+                    likedTypes.push(contentType);
+                    localStorage.setItem('likedContentTypes', JSON.stringify(likedTypes));
+                    console.log(`🎯 Learned preference: ${contentType}`);
+                }
+            }
+
+            trackSavedTopic(topic) {
+                // TikTok pattern: Saved content shows strong interest
+                const savedTopics = JSON.parse(localStorage.getItem('savedTopics') || '[]');
+                if (!savedTopics.includes(topic)) {
+                    savedTopics.push(topic);
+                    localStorage.setItem('savedTopics', JSON.stringify(savedTopics));
+                    console.log(`📌 Learned interest: ${topic}`);
+                }
+            }
+
+            async shareContent(contentId, contentType) {
+                try {
+                    const content = this.feedData.find(item => item.id === contentId);
+
+                    const response = await fetch('/api/social/share', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            userId: this.userId,
+                            contentId: contentId,
+                            contentType: contentType,
+                            platform: 'web',
+                            content: content
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    // Copy share URL to clipboard
+                    navigator.clipboard.writeText(data.shareData.shareUrl);
+
+                    this.showToast('🔥 Share link copied!');
+                } catch (error) {
+                    console.error('Share error:', error);
+                }
+            }
+
+            async saveArticle(contentId) {
+                try {
+                    const article = this.feedData.find(item => item.id === contentId);
+
+                    // TikTok RECOMMENDATION: Track saved topics for strong personalization signal
+                    if (article.title) {
+                        // Extract key topics from title
+                        const topics = article.title.toLowerCase()
+                            .split(' ')
+                            .filter(word => word.length > 4); // Only meaningful words
+                        topics.forEach(topic => this.trackSavedTopic(topic));
+                    }
+
+                    const response = await fetch('/api/social/save-article', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            userId: this.userId,
+                            article: article
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    // Award XP for saving article (Duolingo pattern: 5 XP)
+                    this.awardXP(5, '📚');
+
+                    this.showToast(data.message + ` (Total: ${data.totalSaved})`);
+                } catch (error) {
+                    console.error('Save article error:', error);
+                }
+            }
+
+            async saveWord(contentId) {
+                try {
+                    const content = this.feedData.find(item => item.id === contentId);
+                    const word = content.spanish?.split(' ')[0] || 'palabra';
+
+                    const response = await fetch('/api/social/save-word', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            userId: this.userId,
+                            word: word,
+                            translation: content.english || '',
+                            context: content.title,
+                            level: content.difficulty_level || this.userLevel
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    // Award XP for saving word (Duolingo pattern: 10 XP)
+                    this.awardXP(10, '💾');
+
+                    if (data.achievement) {
+                        this.showToast(`🏆 ${data.achievement.message}`);
+                    } else {
+                        this.showToast(`${data.message} Total: ${data.totalWords}`);
+                    }
+                } catch (error) {
+                    console.error('Save word error:', error);
+                }
+            }
+
+            showToast(message) {
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.textContent = message;
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 100px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: rgba(0,0,0,0.9);
+                    color: white;
+                    padding: 12px 24px;
+                    border-radius: 24px;
+                    z-index: 10000;
+                    animation: fadeInOut 2s ease;
+                `;
+
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 2000);
+            }
+
+            // PUBLISHER FOLLOWING (Flipboard pattern)
+            isFollowing(publisherName) {
+                const following = JSON.parse(localStorage.getItem('followingPublishers') || '[]');
+                return following.includes(publisherName);
+            }
+
+            toggleFollow(publisherName, event) {
+                const following = JSON.parse(localStorage.getItem('followingPublishers') || '[]');
+                const index = following.indexOf(publisherName);
+
+                if (index > -1) {
+                    following.splice(index, 1);
+                    this.showToast(`Unfollowed ${publisherName}`);
+                } else {
+                    following.push(publisherName);
+                    this.showToast(`✅ Following ${publisherName}!`);
+                }
+
+                localStorage.setItem('followingPublishers', JSON.stringify(following));
+
+                // Update button
+                const btn = event.target.closest('.publisher-header').querySelector('.follow-btn');
+                if (btn) {
+                    btn.classList.toggle('following');
+                    btn.textContent = following.includes(publisherName) ? '✓ Following' : '+ Follow';
+                }
+            }
+
+            getRelativeTime(publishedAt) {
+                // Flipboard-style real-time timestamps
+                const now = new Date();
+                const then = new Date(publishedAt);
+                const diffMs = now - then;
+                const diffMins = Math.floor(diffMs / 60000);
+                const diffHours = Math.floor(diffMs / 3600000);
+                const diffDays = Math.floor(diffMs / 86400000);
+
+                if (diffMins < 1) return 'Now';
+                if (diffMins < 60) return `${diffMins}m ago`;
+                if (diffHours < 24) return `${diffHours}h ago`;
+                if (diffDays < 7) return `${diffDays}d ago`;
+                return then.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
+            }
+
+            // TIKTOK NAVIGATION SYSTEM (2025 pattern)
+            switchTab(tabName) {
+                // Update active tab styling
+                document.querySelectorAll('.nav-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+                // Filter content based on tab
+                this.currentTab = tabName;
+                this.page = 1;
+                this.feedData = [];
+                document.getElementById('feedContainer').innerHTML = '';
+
+                console.log(`🎬 Switched to ${tabName} tab`);
+                this.showToast(`Showing ${tabName === 'for-you' ? 'For You' : tabName} content`);
+
+                // Reload content for this tab
+                this.loadMoreContent();
+            }
+
+            bottomNavClick(section) {
+                // Update active bottom nav item
+                document.querySelectorAll('.bottom-nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                event.target.closest('.bottom-nav-item').classList.add('active');
+
+                console.log(`📱 Bottom nav: ${section}`);
+
+                // Handle different sections
+                switch(section) {
+                    case 'home':
+                        this.switchTab('for-you');
+                        break;
+                    case 'discover':
+                        this.switchTab('articles');
+                        break;
+                    case 'saved':
+                        this.showToast('📚 Saved items - Coming soon!');
+                        break;
+                    case 'profile':
+                        this.showToast('👤 Profile - Coming soon!');
+                        break;
+                }
+            }
+        }
+
+        // Global functions
+        let feed;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            feed = new UnifiedFeed();
+            setupLevelSelector();
+            setupInterestsSelector();
+        });
+
+        function openLevelSelector() {
+            document.getElementById('levelModal').classList.add('active');
+        }
+
+        function openInterestsSelector() {
+            document.getElementById('interestsModal').classList.add('active');
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function setupLevelSelector() {
+            const levels = [
+                { code: 'A1', name: 'Beginner', desc: 'Just starting out' },
+                { code: 'A2', name: 'Elementary', desc: 'Basic conversations' },
+                { code: 'B1', name: 'Intermediate', desc: 'Everyday topics' },
+                { code: 'B2', name: 'Upper Intermediate', desc: 'Complex topics' },
+                { code: 'C1', name: 'Advanced', desc: 'Fluent communication' },
+                { code: 'C2', name: 'Mastery', desc: 'Native-like proficiency' }
+            ];
+
+            const container = document.getElementById('levelOptions');
+            const currentLevel = localStorage.getItem('userLevel') || 'A2';
+
+            levels.forEach(level => {
+                const option = document.createElement('div');
+                option.className = 'level-option' + (level.code === currentLevel ? ' selected' : '');
+                option.innerHTML = `
+                    <div class="level-name">${level.code} - ${level.name}</div>
+                    <div class="level-desc">${level.desc}</div>
+                `;
+                option.onclick = () => {
+                    localStorage.setItem('userLevel', level.code);
+                    document.getElementById('levelModal').classList.remove('active');
+                    feed.userLevel = level.code;
+                    feed.refresh();
+                };
+                container.appendChild(option);
+            });
+
+            // Close modal on backdrop click
+            document.getElementById('levelModal').onclick = (e) => {
+                if (e.target.id === 'levelModal') {
+                    e.target.classList.remove('active');
+                }
+            };
+        }
+
+        function setupInterestsSelector() {
+            const interests = [
+                '📰 News', '🍔 Food', '⚽ Sports', '🎬 Movies',
+                '🎵 Music', '🌍 Travel', '💼 Business', '🔬 Science',
+                '🎨 Art', '📚 Books', '🎮 Gaming', '💪 Fitness'
+            ];
+
+            const container = document.getElementById('interestsGrid');
+            const currentInterests = JSON.parse(localStorage.getItem('userInterests') || '[]');
+
+            interests.forEach(interest => {
+                const chip = document.createElement('div');
+                const interestKey = interest.split(' ')[1].toLowerCase();
+                chip.className = 'interest-chip' + (currentInterests.includes(interestKey) ? ' selected' : '');
+                chip.textContent = interest;
+                chip.onclick = () => chip.classList.toggle('selected');
+                container.appendChild(chip);
+            });
+
+            // Close modal on backdrop click
+            document.getElementById('interestsModal').onclick = (e) => {
+                if (e.target.id === 'interestsModal') {
+                    e.target.classList.remove('active');
+                }
+            };
+        }
+
+        function saveInterests() {
+            const selected = Array.from(document.querySelectorAll('.interest-chip.selected'))
+                .map(chip => chip.textContent.split(' ')[1].toLowerCase());
+
+            localStorage.setItem('userInterests', JSON.stringify(selected));
+            feed.userInterests = selected;
+            document.getElementById('interestsModal').classList.remove('active');
+            feed.refresh();
+        }
+
+        function closeMilestone() {
+            document.getElementById('milestoneCelebration').classList.remove('active');
+        }
+
+        function closeStory() {
+            if (window.feed) {
+                window.feed.closeStory();
+            }
+        }
+    </script>
+</body>
+</html>

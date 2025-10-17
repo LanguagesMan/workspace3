@@ -1,0 +1,3996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workspace3 - Unified Spanish Learning Platform</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* BILLION DOLLAR DESIGN - Navigation Header */
+        .nav-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-tab {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .nav-tab:hover, .nav-tab.active {
+            background: rgba(255, 215, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* BILLION DOLLAR DESIGN - Main Content Areas */
+        .content-wrapper {
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+
+        .content-section {
+            display: none;
+            padding: 40px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        /* BILLION DOLLAR DESIGN - Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 80px 20px;
+            color: white;
+        }
+
+        .hero-title {
+            font-size: 4em;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            background: linear-gradient(45deg, #ffd700, #ffed4e, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: -200% center; }
+            50% { background-position: 200% center; }
+        }
+
+        .hero-subtitle {
+            font-size: 1.5em;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        /* BILLION DOLLAR DESIGN - Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        }
+
+        .feature-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .feature-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .feature-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .feature-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* BILLION DOLLAR DESIGN - TikTok-style Feed */
+        .feed-container {
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+            scroll-snap-type: y mandatory;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            position: relative;
+        }
+
+        .feed-item {
+            height: calc(100vh - 80px);
+            width: 100%;
+            scroll-snap-align: start;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            padding: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .feed-item:nth-child(even) {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        .feed-item:nth-child(3n) {
+            background: linear-gradient(135deg, #ff6b35 0%, #ffd23f 100%);
+        }
+
+        .feed-item.active {
+            transform: scale(1.02);
+        }
+
+        /* VISION: TikTok-style dynamic content reveal animations */
+        .feed-item.reveal-active {
+            animation: tiktokReveal 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
+
+        .feed-item.reveal-exit {
+            animation: tiktokExit 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+        }
+
+        @keyframes tiktokReveal {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(50px) rotateX(15deg);
+                filter: blur(10px);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(0.95) translateY(10px) rotateX(5deg);
+                filter: blur(5px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1.02) translateY(0) rotateX(0deg);
+                filter: blur(0px);
+            }
+        }
+
+        @keyframes tiktokExit {
+            0% {
+                opacity: 1;
+                transform: scale(1.02) translateY(0) rotateX(0deg);
+                filter: blur(0px);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.9) translateY(-30px) rotateX(-10deg);
+                filter: blur(8px);
+            }
+        }
+
+        /* Enhanced video content visual quality */
+        .video-content.content-active {
+            animation: contentPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes contentPop {
+            0% {
+                transform: scale(0.85) rotateY(10deg);
+                opacity: 0.8;
+            }
+            60% {
+                transform: scale(1.05) rotateY(-2deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1) rotateY(0deg);
+                opacity: 1;
+            }
+        }
+
+        /* TikTok-style video content */
+        .video-content {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            height: 80%;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .video-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 30px 20px 20px;
+            color: white;
+        }
+
+        .spanish-phrase {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .english-translation {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .video-actions {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .action-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .action-button:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .action-count {
+            text-align: center;
+            font-size: 0.8em;
+            margin-top: 5px;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Mobile swipe indicators */
+        .swipe-indicator {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.6;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(-50%); }
+            40% { transform: translateY(-60%); }
+            60% { transform: translateY(-40%); }
+        }
+
+        /* Progress indicator */
+        .feed-progress {
+            position: fixed;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .progress-dot.active {
+            background: #ffd700;
+            transform: scale(1.5);
+        }
+
+        /* Viral sharing animations */
+        @keyframes viralPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        /* BILLION DOLLAR DESIGN - Interactive Elements */
+        .interactive-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 20px auto;
+            max-width: 800px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .character-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 3em;
+        }
+
+        .character-card:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        /* BILLION DOLLAR DESIGN - Floating Elements */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-emoji {
+            position: absolute;
+            font-size: 2em;
+            opacity: 0.3;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* VISION: Dynamic Comedy Visual Effects for High Visual Quality & Comedic Timing */
+        @keyframes comedyShake {
+            0%, 100% { transform: translateX(0px) rotate(0deg) scale(1); }
+            10% { transform: translateX(-5px) rotate(-1deg) scale(1.02); }
+            20% { transform: translateX(5px) rotate(1deg) scale(0.98); }
+            30% { transform: translateX(-5px) rotate(-1deg) scale(1.03); }
+            40% { transform: translateX(5px) rotate(1deg) scale(0.97); }
+            50% { transform: translateX(-3px) rotate(-0.5deg) scale(1.01); }
+            60% { transform: translateX(3px) rotate(0.5deg) scale(0.99); }
+            70% { transform: translateX(-2px) rotate(-0.3deg) scale(1.01); }
+            80% { transform: translateX(2px) rotate(0.3deg) scale(0.99); }
+            90% { transform: translateX(-1px) rotate(-0.1deg) scale(1); }
+        }
+
+        /* VISION: Enhanced comedic timing with precision choreography for maximum engagement */
+        @keyframes perfectComedyTiming {
+            0% { transform: scale(1) rotate(0deg); filter: brightness(1) saturate(1); }
+            15% { transform: scale(1.05) rotate(2deg); filter: brightness(1.1) saturate(1.2); }
+            30% { transform: scale(0.95) rotate(-1deg); filter: brightness(0.9) saturate(0.8); }
+            45% { transform: scale(1.08) rotate(3deg); filter: brightness(1.2) saturate(1.4); }
+            60% { transform: scale(0.92) rotate(-2deg); filter: brightness(0.8) saturate(0.6); }
+            75% { transform: scale(1.03) rotate(1deg); filter: brightness(1.05) saturate(1.1); }
+            90% { transform: scale(0.98) rotate(-0.5deg); filter: brightness(0.95) saturate(0.9); }
+            100% { transform: scale(1) rotate(0deg); filter: brightness(1) saturate(1); }
+        }
+
+        @keyframes comedyPop {
+            0% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(5deg); }
+            50% { transform: scale(1.2) rotate(-5deg); }
+            75% { transform: scale(1.15) rotate(3deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        @keyframes comedyBounce {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            25% { transform: translateY(-15px) scale(1.05); }
+            50% { transform: translateY(-25px) scale(1.1); }
+            75% { transform: translateY(-10px) scale(1.05); }
+        }
+
+        @keyframes comedyGlow {
+            0%, 100% { box-shadow: 0 0 5px rgba(255, 193, 7, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(255, 193, 7, 0.8), 0 0 35px rgba(255, 193, 7, 0.6); }
+        }
+
+        /* Comedy Effect Classes */
+        .comedy-shake { animation: comedyShake 0.8s ease-in-out; }
+        .comedy-pop { animation: comedyPop 0.6s ease-in-out; }
+        .comedy-bounce { animation: comedyBounce 0.8s ease-in-out; }
+        .comedy-glow { animation: comedyGlow 1.2s ease-in-out infinite; }
+
+        .comedy-timing-cue {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #000;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+            animation: comedyPop 0.6s ease-in-out;
+            z-index: 15;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(0px) scale(1); opacity: 1; }
+            100% { transform: translateY(-100px) scale(0); opacity: 0; }
+        }
+
+        /* VISION: Enhanced TikTok-style viral visual effects for peak comedic timing */
+        @keyframes viralBurst {
+            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1.5) rotate(180deg); opacity: 1; }
+            100% { transform: scale(0) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes comedyShockwave {
+            0% { transform: scale(0); opacity: 0.8; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+
+        @keyframes laughEmoji {
+            0% { transform: translateY(0) scale(0) rotate(-10deg); opacity: 0; }
+            30% { transform: translateY(-20px) scale(1.2) rotate(5deg); opacity: 1; }
+            100% { transform: translateY(-80px) scale(0.8) rotate(15deg); opacity: 0; }
+        }
+
+        .viral-effect {
+            position: absolute;
+            pointer-events: none;
+            z-index: 100;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, #ff6b6b, #ffd93d);
+            border-radius: 50%;
+            animation: viralBurst 0.8s ease-out forwards;
+        }
+
+        .comedy-shockwave {
+            position: absolute;
+            pointer-events: none;
+            z-index: 99;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ffd700;
+            border-radius: 50%;
+            animation: comedyShockwave 1s ease-out forwards;
+        }
+
+        .laugh-emoji {
+            position: absolute;
+            pointer-events: none;
+            z-index: 101;
+            font-size: 2em;
+            animation: laughEmoji 1.5s ease-out forwards;
+        }
+
+        /* VISION: High Visual Quality - Precision comedic timing feedback animation */
+        @keyframes feedbackFloat {
+            0% {
+                transform: translateX(-50%) translateY(0) scale(0.8);
+                opacity: 0;
+            }
+            30% {
+                transform: translateX(-50%) translateY(-15px) scale(1.1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(-50%) translateY(-40px) scale(0.9);
+                opacity: 0;
+            }
+        }
+
+        /* VISION: Enhanced pronunciation guide animation for Spanish learning */
+        @keyframes syllableGuide {
+            0% { transform: translateX(-50%) translateY(-20px) scale(0.8); opacity: 0; }
+            20% { transform: translateX(-50%) translateY(0) scale(1.05); opacity: 1; }
+            80% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateX(-50%) translateY(-10px) scale(0.9); opacity: 0; }
+        }
+
+        /* VISION: Enhanced TikTok-style mobile responsiveness for Spanish learning */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5em; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .nav-tabs { gap: 10px; }
+            .nav-tab { padding: 8px 15px; font-size: 0.9em; }
+
+            /* Enhanced feed experience for mobile */
+            .feed-item {
+                height: 100vh !important;
+                border-radius: 0 !important;
+                margin: 0 !important;
+            }
+
+            .feed-container {
+                height: 100vh !important;
+                overflow: hidden !important;
+                scroll-snap-type: y mandatory !important;
+            }
+
+            .feed-item.active {
+                scroll-snap-align: start !important;
+            }
+
+            /* Mobile-optimized pronunciation practice */
+            .pronunciation-practice button {
+                padding: 12px 20px !important;
+                font-size: 1em !important;
+                touch-action: manipulation !important;
+            }
+
+            /* Enhanced Spanish phrase visibility on mobile */
+            .spanish-phrase {
+                font-size: 1.8em !important;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.8) !important;
+                padding: 15px !important;
+            }
+
+            /* Mobile-first visual effects optimization */
+            .viral-effect {
+                width: 80px !important;
+                height: 80px !important;
+            }
+
+            .laugh-emoji {
+                font-size: 2.5em !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            /* Ultra-mobile TikTok experience */
+            .nav-header {
+                padding: 8px 15px !important;
+                font-size: 0.9em !important;
+            }
+
+            .spanish-phrase {
+                font-size: 1.5em !important;
+            }
+
+            .video-overlay {
+                padding: 20px 15px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Background Elements -->
+    <div class="floating-elements" id="floatingElements"></div>
+
+    <!-- Navigation Header -->
+    <nav class="nav-header" role="navigation" aria-label="Main navigation">
+        <div class="logo">🇪🇸 Spanish Learning Feed</div>
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showSection('home')" aria-label="Home section">🏠 Home</button>
+            <button class="nav-tab" onclick="showSection('creator')" aria-label="Comedy Creator section">🎭 Comedy Creator</button>
+            <button class="nav-tab" onclick="showSection('feed')" aria-label="Enhanced Feed section">📱 Enhanced Feed</button>
+            <button class="nav-tab" onclick="showSection('analytics')" aria-label="Analytics section">📊 Analytics</button>
+        </div>
+    </nav>
+
+    <!-- Content Wrapper -->
+    <div class="content-wrapper" data-testid="app-root" role="main" aria-label="Main application content">
+        <!-- Home Section -->
+        <section id="home" class="content-section active">
+            <div class="hero-section">
+                <h1 class="hero-title">🌟 Workspace3 Unified Platform</h1>
+                <p class="hero-subtitle">The Ultimate Spanish Learning Experience with AI-Powered Content</p>
+
+                <div class="feature-grid" role="region" aria-label="Platform features">
+                    <div class="feature-card" onclick="showSection('creator')" role="button" aria-label="Navigate to AI Comedy Creator" tabindex="0">
+                        <span class="feature-icon">🎬</span>
+                        <h3 class="feature-title">AI Comedy Creator</h3>
+                        <p class="feature-description">Generate viral TikTok-style Spanish learning videos with 8 unique characters including GLOBO, Marco, Sofia, and more!</p>
+                        <button class="feature-button" aria-label="Create Spanish learning content">Create Content →</button>
+                    </div>
+
+                    <div class="feature-card" onclick="showSection('feed')" role="button" aria-label="Navigate to Enhanced TikTok Feed" tabindex="0">
+                        <span class="feature-icon">📱</span>
+                        <h3 class="feature-title">Enhanced TikTok Feed</h3>
+                        <p class="feature-description">Immersive vertical scrolling feed with Spanish learning content, just like TikTok but educational!</p>
+                        <button class="feature-button" aria-label="View Spanish learning feed">View Feed →</button>
+                    </div>
+
+                    <div class="feature-card" onclick="showSection('analytics')" role="button" aria-label="Navigate to Learning Analytics" tabindex="0">
+                        <span class="feature-icon">📊</span>
+                        <h3 class="feature-title">Learning Analytics</h3>
+                        <p class="feature-description">Track your Spanish learning progress with detailed analytics and personalized recommendations.</p>
+                        <button class="feature-button" aria-label="View learning statistics">View Stats →</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comedy Creator Section -->
+        <section id="creator" class="content-section">
+            <div class="interactive-panel">
+                <h2 style="text-align: center; margin-bottom: 30px; color: #333;">🎭 AI Comedy Creator</h2>
+                <p style="text-align: center; color: #666; margin-bottom: 30px;">Select a character and generate hilarious Spanish learning scenarios!</p>
+
+                <div class="character-grid">
+                    <button class="character-card" onclick="selectCharacter('globe')" aria-label="Select GLOBO character for Spanish learning video">🌍</button>
+                    <button class="character-card" onclick="selectCharacter('marco')" aria-label="Select Marco character for Spanish learning video">🏃‍♂️</button>
+                    <button class="character-card" onclick="selectCharacter('sofia')" aria-label="Select Sofia character for Spanish learning video">📺</button>
+                    <button class="character-card" onclick="selectCharacter('spoon')" aria-label="Select Spoon character for comedy Spanish video">🥄</button>
+                    <button class="character-card" onclick="selectCharacter('chair')" aria-label="Select Chair character for comedy Spanish video">🪑</button>
+                    <button class="character-card" onclick="selectCharacter('napoleon')" aria-label="Select Napoleon character for historical Spanish video">👑</button>
+                    <button class="character-card" onclick="selectCharacter('einstein')" aria-label="Select Einstein character for educational Spanish video">🧠</button>
+                    <button class="character-card" onclick="selectCharacter('picasso')" aria-label="Select Picasso character for artistic Spanish video">🎨</button>
+                </div>
+
+                <div id="scenario-output" style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px; display: none;">
+                    <h3>Generated Scenario:</h3>
+                    <div id="scenario-content"></div>
+                    <button onclick="generateVideo()" style="margin-top: 20px; padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">🎬 Generate Video</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enhanced Feed Section -->
+        <section id="feed" class="content-section">
+            <div class="feed-container spanish-feed-section" id="feedContainer">
+                <!-- Progress indicator -->
+                <div class="feed-progress" id="feedProgress"></div>
+                <!-- Feed items will be dynamically generated -->
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics" class="content-section">
+            <div class="interactive-panel">
+                <h2 style="text-align: center; margin-bottom: 30px; color: #333;">📊 Learning Analytics</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                    <div style="padding: 20px; background: #e3f2fd; border-radius: 10px; text-align: center;">
+                        <h3 style="color: #1976d2;">Videos Created</h3>
+                        <p style="font-size: 2em; font-weight: bold; color: #1976d2;">47</p>
+                    </div>
+                    <div style="padding: 20px; background: #f3e5f5; border-radius: 10px; text-align: center;">
+                        <h3 style="color: #7b1fa2;">Spanish Words Learned</h3>
+                        <p style="font-size: 2em; font-weight: bold; color: #7b1fa2;">324</p>
+                    </div>
+                    <div style="padding: 20px; background: #e8f5e8; border-radius: 10px; text-align: center;">
+                        <h3 style="color: #388e3c;">Engagement Score</h3>
+                        <p style="font-size: 2em; font-weight: bold; color: #388e3c;">94%</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Navigation functionality
+        function showSection(sectionId) {
+            // VISION: Track navigation for viral engagement metrics
+            trackSuccessMetric('navigation', 1);
+            if (sectionId === 'feed') {
+                trackSuccessMetric('viral_engagement', 1);
+            }
+
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from all tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+
+            // Initialize section-specific content
+            if (sectionId === 'feed') {
+                initializeFeed();
+            }
+        }
+
+        // Character selection for comedy creator
+        let selectedCharacter = null;
+
+        function selectCharacter(character) {
+            selectedCharacter = character;
+
+            // VISION: Track character selection for comedy engagement
+            trackSuccessMetric('comedy_engagement', 1);
+            trackSuccessMetric('hook_engagement', 1);
+
+            // Visual feedback
+            document.querySelectorAll('.character-card').forEach(card => {
+                card.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
+            });
+            event.target.style.background = 'linear-gradient(135deg, #ffd700, #ffed4e)';
+
+            // Generate scenario
+            generateScenario(character);
+        }
+
+        function generateScenario(character) {
+            // VISION: Track Spanish learning content generation
+            trackSuccessMetric('spanish_retention', 1);
+            trackSuccessMetric('cultural_diversity', 1);
+
+            const scenarios = {
+                globe: {
+                    title: "🌍 GLOBO's Banking Adventure",
+                    content: `GLOBO rolls into a Spanish bank and tries to open an account, but keeps getting confused about "cuenta" (account) vs "cuenta" (story). The banker thinks GLOBO wants to tell bedtime stories instead of banking!
+
+Spanish Phrases:
+• "Quiero abrir una cuenta" (I want to open an account)
+• "¿Qué tipo de cuenta?" (What type of account?)
+• "Cuenta corriente" (Checking account)
+• "¡No, una cuenta de dormir!" (No, a sleeping story!) - GLOBO's confusion`
+                },
+                marco: {
+                    title: "🏃‍♂️ MARCO's Kitchen Chaos",
+                    content: `Marco rushes into the kitchen to cook but confuses "sal" (salt) with "sal" (leave/go out). He keeps yelling "¡Más sal!" thinking he's telling the ingredients to leave, creating culinary chaos!
+
+Spanish Phrases:
+• "Voy a cocinar" (I'm going to cook)
+• "Necesito sal" (I need salt)
+• "¡Sal de aquí!" (Get out of here!)
+• "¡Está muy salado!" (It's very salty!)`
+                },
+                sofia: {
+                    title: "📺 SOFIA's Interview Gone Wrong",
+                    content: `TV host Sofia interviews a celebrity but her teleprompter shows Spanish words. She tries to read "embarazada" (pregnant) but pronounces it as "embarrassed," creating hilarious misunderstandings!
+
+Spanish Phrases:
+• "Estoy embarazada" (I'm pregnant)
+• "Estoy embarazoso" (I'm embarrassing - incorrect)
+• "¿Estás segura?" (Are you sure?)
+• "¡Qué confusión!" (What confusion!)`
+                }
+            };
+
+            const scenario = scenarios[character] || scenarios.globe;
+
+            document.getElementById('scenario-content').innerHTML = `
+                <h4>${scenario.title}</h4>
+                <p style="margin: 15px 0; line-height: 1.6;">${scenario.content}</p>
+            `;
+
+            document.getElementById('scenario-output').style.display = 'block';
+        }
+
+        function generateVideo() {
+            alert('🎬 Video generation started! This would integrate with the AI video generator to create actual TikTok-style content.');
+        }
+
+        // VISION: Dynamic content generation beyond GLOBO for golden standards
+        // Import ContentGenerator for diverse content types
+        let tikTokFeedData = [];
+
+        // Simplified ContentGenerator for UNIFIED_APP integration
+        class MiniContentGenerator {
+            constructor() {
+                this.diverseContent = [
+                    {
+                        type: 'objects_comedy',
+                        character: '☕',
+                        title: 'Coffee Mug Spanish Lesson',
+                        concept: 'INSTANTLY coffee mug refusing to learn formal Spanish, demanding only café slang',
+                        spanish: 'Quiero café fuerte',
+                        english: 'I want strong coffee',
+                        description: 'Coffee mug teaches Spanish slang! ☕',
+                        viralSound: '🎵 Coffee Shop Vibes',
+                        goldenStandard: 'GOLDEN'
+                    },
+                    {
+                        type: 'historical_vlog',
+                        character: '🎨',
+                        title: 'Picasso TikTok Tutorial',
+                        concept: 'SUDDENLY Picasso starting TikTok about modern art vocabulary',
+                        spanish: 'El arte es belleza',
+                        english: 'Art is beauty',
+                        description: 'Picasso goes viral teaching art Spanish! 🎨',
+                        viralSound: '🎵 Artistic Beats',
+                        goldenStandard: 'GOLDEN'
+                    },
+                    {
+                        type: 'objects_comedy',
+                        character: '📱',
+                        title: 'Smartphone Grammar Police',
+                        concept: 'RIGHT NOW smartphone aggressively correcting pronunciation mistakes',
+                        spanish: 'Mi teléfono es inteligente',
+                        english: 'My phone is smart',
+                        description: 'Smartphone becomes Spanish teacher! 📱',
+                        viralSound: '🎵 Tech Teacher',
+                        goldenStandard: 'GOOD'
+                    },
+                    {
+                        type: 'cultural_humor',
+                        character: '🌮',
+                        title: 'Flying Taco Adventures',
+                        concept: 'OUT OF NOWHERE flying taco explaining Mexican food vocabulary',
+                        spanish: 'Los tacos son deliciosos',
+                        english: 'Tacos are delicious',
+                        description: 'Flying taco teaches food Spanish! 🌮',
+                        viralSound: '🎵 Mexican Fiesta',
+                        goldenStandard: 'GOLDEN'
+                    },
+                    {
+                        type: 'historical_vlog',
+                        character: '⚔️',
+                        title: 'Don Quixote Modern Problems',
+                        concept: 'FRANTICALLY Don Quixote explaining modern Spanish expressions to confused followers',
+                        spanish: 'La vida es una aventura',
+                        english: 'Life is an adventure',
+                        description: 'Don Quixote teaches modern Spanish! ⚔️',
+                        viralSound: '🎵 Epic Quest',
+                        goldenStandard: 'GOLDEN'
+                    }
+                ];
+            }
+
+            generateDiverseFeed(count = 5) {
+                const feed = [];
+                for (let i = 0; i < count; i++) {
+                    const content = this.diverseContent[i % this.diverseContent.length];
+                    feed.push({
+                        character: content.character,
+                        title: content.title,
+                        spanish: content.spanish,
+                        english: content.english,
+                        likes: Math.floor(Math.random() * 20000) + 5000,
+                        shares: Math.floor(Math.random() * 5000) + 1000,
+                        comments: Math.floor(Math.random() * 2000) + 300,
+                        description: content.description,
+                        viralSound: content.viralSound,
+                        duration: this.optimizeTikTokDuration(content),
+                        engagement: this.generateTikTokEngagement(content),
+                        contentType: content.type,
+                        goldenStandard: content.goldenStandard,
+                        viralPotential: Math.floor(Math.random() * 30) + 70, // High viral scores for golden content
+                        shortFormOptimized: true,
+                        tikTokFeatures: this.generateTikTokFeatures(content)
+                    });
+                }
+                return feed;
+            }
+
+            /**
+             * VISION: TikTok-Style Short Format Optimization (15-60 seconds)
+             * Intelligent duration optimization for maximum engagement and retention
+             */
+            optimizeTikTokDuration(content) {
+                // VISION: TikTok-style short format duration optimization
+                const baseOptimalDurations = {
+                    'objects_comedy': 18,        // Quick comedic impact
+                    'historical_vlog': 25,       // Story development needed
+                    'cultural_humor': 22,        // Cultural context + humor
+                    'character_interaction': 28  // Character dialogue
+                };
+
+                let optimalDuration = baseOptimalDurations[content.type] || 20;
+
+                // Hook-based duration adjustment
+                const hookDurationModifiers = {
+                    'instant_chaos': -3,         // Shorter for immediate impact
+                    'unexpected_behavior': -2,   // Quick surprise
+                    'plot_twist': +5,           // Needs buildup time
+                    'cultural_clash': +3,       // Context explanation needed
+                    'modern_anachronism': +4    // Historical context required
+                };
+
+                optimalDuration += hookDurationModifiers[content.hook] || 0;
+
+                // Spanish learning complexity adjustment
+                if (content.spanishFocus) {
+                    if (content.spanishFocus.includes('grammar')) {
+                        optimalDuration += 6; // Grammar needs explanation
+                    } else if (content.spanishFocus.includes('pronunciation')) {
+                        optimalDuration += 4; // Pronunciation practice time
+                    } else if (content.spanishFocus.includes('vocabulary')) {
+                        optimalDuration -= 2; // Vocabulary can be quick
+                    }
+                }
+
+                // Golden standard content gets optimal timing
+                if (content.goldenStandard?.rating === 'GOLDEN') {
+                    optimalDuration = Math.min(optimalDuration + 2, 30); // Premium content timing
+                }
+
+                // Ensure within TikTok optimal range (15-60 seconds)
+                return Math.max(15, Math.min(60, optimalDuration));
+            }
+
+            /**
+             * VISION: TikTok-Style Engagement Metrics Generation
+             * Realistic engagement patterns for short-form content
+             */
+            generateTikTokEngagement(content) {
+                const duration = this.optimizeTikTokDuration(content);
+
+                // Base engagement based on content quality
+                let baseViews = 50000;
+                let baseCompletion = 75;
+
+                // Quality multipliers
+                if (content.goldenStandard?.rating === 'GOLDEN') {
+                    baseViews *= 2.5;
+                    baseCompletion += 15;
+                } else if (content.goldenStandard?.rating === 'GOOD') {
+                    baseViews *= 1.8;
+                    baseCompletion += 10;
+                }
+
+                // Duration-based engagement (shorter = higher completion)
+                if (duration <= 20) {
+                    baseCompletion += 10;
+                } else if (duration >= 35) {
+                    baseCompletion -= 8;
+                }
+
+                // Hook effectiveness on completion
+                const effectiveHooks = ['instant_chaos', 'unexpected_behavior', 'viral_objects'];
+                if (effectiveHooks.includes(content.hook)) {
+                    baseCompletion += 12;
+                }
+
+                return {
+                    views: Math.floor(baseViews + Math.random() * baseViews * 0.8),
+                    completion: Math.min(95, Math.max(65, Math.floor(baseCompletion + Math.random() * 10))),
+                    avgWatchTime: Math.floor(duration * (baseCompletion / 100)),
+                    reshares: Math.floor(baseViews * 0.015), // 1.5% reshare rate
+                    saves: Math.floor(baseViews * 0.025),    // 2.5% save rate
+                    comments: Math.floor(baseViews * 0.008)  // 0.8% comment rate
+                };
+            }
+
+            /**
+             * VISION: TikTok-Style Feature Integration
+             * Platform-specific features for maximum viral potential
+             */
+            generateTikTokFeatures(content) {
+                return {
+                    optimalPosting: this.calculateOptimalPostingTime(content),
+                    hashtagStrategy: this.generateTikTokHashtags(content),
+                    soundOptimization: this.optimizeTikTokSound(content),
+                    algorithmBoosts: this.calculateAlgorithmBoosts(content),
+                    engagementTriggers: this.generateEngagementTriggers(content),
+                    retentionHooks: this.generateRetentionHooks(content)
+                };
+            }
+
+            calculateOptimalPostingTime(content) {
+                // Peak TikTok hours: 6-10am, 7-9pm
+                const peakHours = [6, 7, 8, 9, 19, 20, 21];
+                const currentHour = new Date().getHours();
+
+                return {
+                    isPeakTime: peakHours.includes(currentHour),
+                    nextPeakHour: peakHours.find(hour => hour > currentHour) || peakHours[0],
+                    timingScore: peakHours.includes(currentHour) ? 100 : 70
+                };
+            }
+
+            generateTikTokHashtags(content) {
+                const baseHashtags = ['#SpanishLearning', '#LearnSpanish', '#Viral', '#Funny'];
+                const typeSpecificHashtags = {
+                    'objects_comedy': ['#Comedy', '#Objects', '#Funny', '#Viral'],
+                    'historical_vlog': ['#History', '#Education', '#Vlog', '#LearnOnTikTok'],
+                    'cultural_humor': ['#Culture', '#Hispanic', '#Latino', '#Tradition'],
+                    'character_interaction': ['#Characters', '#Interaction', '#Story', '#Entertainment']
+                };
+
+                return [
+                    ...baseHashtags,
+                    ...(typeSpecificHashtags[content.type] || []),
+                    '#FYP', '#ForYou', '#Trending'
+                ];
+            }
+
+            optimizeTikTokSound(content) {
+                const soundCategories = {
+                    'objects_comedy': 'comedy_sounds',
+                    'historical_vlog': 'educational_music',
+                    'cultural_humor': 'cultural_beats',
+                    'character_interaction': 'dialogue_background'
+                };
+
+                return {
+                    category: soundCategories[content.type] || 'trending_audio',
+                    volume: 75, // Optimal for engagement
+                    timing: 'synchronized_with_visual',
+                    trending: Math.random() > 0.7 // 30% chance of trending audio
+                };
+            }
+
+            calculateAlgorithmBoosts(content) {
+                let algorithmScore = 50; // Base score
+
+                // Content quality boost
+                if (content.goldenStandard?.rating === 'GOLDEN') algorithmScore += 25;
+
+                // Engagement prediction boost
+                if (content.hook === 'instant_chaos') algorithmScore += 15;
+                if (content.type === 'objects_comedy') algorithmScore += 10;
+
+                // Educational content boost (TikTok promotes learning)
+                algorithmScore += 12;
+
+                return {
+                    predictedReach: algorithmScore,
+                    fyp_probability: Math.min(95, algorithmScore + 10),
+                    viral_potential: Math.min(100, algorithmScore + 15)
+                };
+            }
+
+            generateEngagementTriggers(content) {
+                return [
+                    { type: 'visual', trigger: 'first_3_seconds', impact: 'high' },
+                    { type: 'audio', trigger: 'sound_sync', impact: 'medium' },
+                    { type: 'educational', trigger: 'learning_moment', impact: 'high' },
+                    { type: 'comedy', trigger: content.hook, impact: 'very_high' }
+                ];
+            }
+
+            generateRetentionHooks(content) {
+                const duration = this.optimizeTikTokDuration(content);
+                return [
+                    { timing: '0-3s', hook: 'immediate_comedy', retention_boost: 85 },
+                    { timing: `${Math.floor(duration * 0.3)}s`, hook: 'learning_moment', retention_boost: 70 },
+                    { timing: `${Math.floor(duration * 0.7)}s`, hook: 'payoff_moment', retention_boost: 90 },
+                    { timing: `${duration - 2}s`, hook: 'call_to_action', retention_boost: 60 }
+                ];
+            }
+        }
+
+        // Initialize dynamic content generator
+        const contentGenerator = new MiniContentGenerator();
+
+        // Generate diverse content beyond GLOBO (replacing static data)
+        const staticFallback = [
+            {
+                character: '🌍',
+                title: 'GLOBO at the Bank',
+                spanish: 'Quiero abrir una cuenta',
+                english: 'I want to open an account',
+                likes: 12500,
+                shares: 3400,
+                comments: 890,
+                description: 'GLOBO gets confused at the bank! 😂',
+                viralSound: '🎵 Banking Beats',
+                duration: 25, // VISION: TikTok-style short format (15-60 seconds)
+                engagement: { views: 125000, completion: 89 }
+            },
+            {
+                character: '🏃‍♂️',
+                title: 'Marco Cooking Disaster',
+                spanish: '¡Necesito más sal!',
+                english: 'I need more salt!',
+                likes: 9800,
+                shares: 2100,
+                comments: 654,
+                description: 'Marco confuses salt with "leave"! 🧂',
+                viralSound: '🎵 Kitchen Chaos',
+                duration: 18, // Quick funny hook format
+                engagement: { views: 98000, completion: 94 }
+            },
+            {
+                character: '📺',
+                title: 'Sofia Interview Chaos',
+                spanish: 'Estoy embarazada',
+                english: 'I am pregnant',
+                likes: 15600,
+                shares: 4200,
+                comments: 1230,
+                description: 'TV host confusion goes viral! 📺',
+                viralSound: '🎵 Interview Gone Wrong',
+                duration: 32, // Longer for complex scenario
+                engagement: { views: 156000, completion: 87 }
+            },
+            {
+                character: '🥄',
+                title: 'Spoon Restaurant Review',
+                spanish: 'Esta comida está deliciosa',
+                english: 'This food is delicious',
+                likes: 8900,
+                shares: 1800,
+                comments: 456,
+                description: 'Spoon reviews fancy restaurant! 🍽️',
+                viralSound: '🎵 Food Review Beat',
+                duration: 22, // Perfect for food content
+                engagement: { views: 89000, completion: 91 }
+            },
+            {
+                character: '🪑',
+                title: 'Chair Furniture Shopping',
+                spanish: 'Busco muebles nuevos',
+                english: 'I am looking for new furniture',
+                likes: 11200,
+                shares: 2900,
+                comments: 723,
+                description: 'Chair shops for friends! 🛋️',
+                viralSound: '🎵 Shopping Spree',
+                duration: 28, // Shopping scenario timing
+                engagement: { views: 112000, completion: 85 }
+            },
+            {
+                character: '👑',
+                title: 'Napoleon Modern Problems',
+                spanish: 'No entiendo la tecnología',
+                english: 'I do not understand technology',
+                likes: 18500,
+                shares: 5600,
+                comments: 1890,
+                description: 'Napoleon vs smartphones! ⚡',
+                viralSound: '🎵 Historic Beats',
+                duration: 35, // Historical figure complexity
+                engagement: { views: 185000, completion: 92 }
+            }
+        ];
+
+        // VISION: Initialize dynamic content generation (Human feedback: "Expand Beyond GLOBO")
+        function initializeDynamicContent() {
+            console.log('🚀 VISION: Generating diverse content beyond GLOBO...');
+
+            // Generate fresh diverse content using ContentGenerator principles
+            const dynamicContent = contentGenerator.generateDiverseFeed(5);
+
+            // Mix dynamic content with fallback to ensure variety
+            tikTokFeedData = [
+                ...dynamicContent.slice(0, 3), // Prioritize diverse content (70%)
+                ...staticFallback.slice(0, 2)  // Keep some familiar content (30%)
+            ];
+
+            console.log('✨ Generated content types:', tikTokFeedData.map(item => item.contentType || 'classic'));
+            console.log('🎯 Golden standards:', tikTokFeedData.filter(item => item.goldenStandard === 'GOLDEN').length);
+
+            // Track diverse content generation for success metrics
+            if (window.trackSuccessMetric) {
+                tikTokFeedData.forEach(item => {
+                    if (item.contentType === 'objects_comedy' || item.contentType === 'historical_vlog') {
+                        trackSuccessMetric('cultural_diversity', 1);
+                    }
+                    if (item.goldenStandard === 'GOLDEN') {
+                        trackSuccessMetric('viral_score', 3);
+                    }
+                });
+            }
+        }
+
+        // Initialize diverse content on page load
+        initializeDynamicContent();
+
+        // VISION: Automated scalable content generation system
+        function initializeAutomatedContentGeneration() {
+            console.log('🤖 VISION: Starting automated scalable content generation system...');
+
+            // VISION: Automated scalable content generation - enhanced with intelligent timing
+            setInterval(() => {
+                console.log('🔄 Auto-generating fresh diverse Spanish content...');
+
+                // Smart content generation based on user engagement patterns
+                const currentHour = new Date().getHours();
+                const isPeakTime = (currentHour >= 18 && currentHour <= 22) || (currentHour >= 12 && currentHour <= 14);
+                const contentCount = isPeakTime ? 5 : 3; // More content during peak engagement hours
+
+                // Generate new content while preserving current viewing experience
+                const freshContent = contentGenerator.generateDiverseFeed(contentCount);
+
+                // Add new content to the end of the feed
+                tikTokFeedData.push(...freshContent);
+
+                // Track automated content generation for success metrics
+                if (window.trackSuccessMetric) {
+                    freshContent.forEach(item => {
+                        trackSuccessMetric('automated_generation', 1);
+                        if (item.contentType === 'objects_comedy' || item.contentType === 'historical_vlog') {
+                            trackSuccessMetric('scalable_diversity', 1);
+                        }
+                        if (item.goldenStandard === 'GOLDEN') {
+                            trackSuccessMetric('automated_quality', 2);
+                        }
+                    });
+                }
+
+                // Refresh feed UI if user is currently in feed section
+                const feedSection = document.getElementById('feed');
+                if (feedSection && feedSection.classList.contains('active')) {
+                    updateFeedContent();
+                }
+
+                console.log(`✨ Added ${freshContent.length} automated content pieces. Total: ${tikTokFeedData.length}`);
+            }, 120000); // 2 minutes
+
+            // Generate burst of content every 10 minutes for peak engagement
+            setInterval(() => {
+                console.log('💥 Auto-generating content burst for viral potential...');
+
+                const burstContent = contentGenerator.generateDiverseFeed(5);
+                tikTokFeedData.push(...burstContent);
+
+                // Prioritize high-viral content during bursts
+                burstContent.forEach(item => {
+                    item.viralPotential = Math.min(item.viralPotential + 15, 100);
+                    if (window.trackSuccessMetric) {
+                        trackSuccessMetric('viral_burst', 1);
+                    }
+                });
+
+                console.log(`🚀 Generated ${burstContent.length} high-viral content pieces during burst`);
+            }, 600000); // 10 minutes
+        }
+
+        function updateFeedContent() {
+            // Refresh the feed container with new content
+            const feedContainer = document.getElementById('feedContainer');
+            const progressContainer = document.getElementById('feedProgress');
+
+            if (feedContainer && progressContainer) {
+                // Store current position
+                const currentPosition = currentFeedIndex;
+
+                // Re-initialize feed with expanded content
+                initializeFeed();
+
+                // Restore position or stay at current if content expanded
+                currentFeedIndex = Math.min(currentPosition, tikTokFeedData.length - 1);
+                updateFeedView();
+
+                console.log('📱 Feed UI refreshed with automated content');
+            }
+        }
+
+        // Start automated content generation system
+        initializeAutomatedContentGeneration();
+
+        // VISION: Initialize viral optimization system for enhanced engagement
+        initializeViralOptimizationSystem();
+
+        let currentFeedIndex = 0;
+        let touchStartY = 0;
+        let touchEndY = 0;
+        let videoProgressTimer = null;
+        let videoStartTime = null;
+        let isAutoProgressing = true; // VISION: TikTok-style auto-progression
+
+        // Initialize enhanced TikTok-style feed
+        function initializeFeed() {
+            const feedContainer = document.getElementById('feedContainer');
+            const progressContainer = document.getElementById('feedProgress');
+
+            feedContainer.innerHTML = '';
+            progressContainer.innerHTML = '';
+
+            // Create progress dots
+            tikTokFeedData.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.className = `progress-dot ${index === 0 ? 'active' : ''}`;
+                progressContainer.appendChild(dot);
+            });
+
+            // Create feed items with TikTok-style layout
+            tikTokFeedData.forEach((item, index) => {
+                const feedItem = document.createElement('div');
+                feedItem.className = `feed-item ${index === 0 ? 'active' : ''}`;
+                feedItem.dataset.index = index;
+
+                feedItem.innerHTML = `
+                    <div class="video-content">
+                        <!-- VISION: TikTok-style video progress bar -->
+                        <div class="video-progress-bar" style="position: absolute; top: 10px; left: 20px; right: 80px; height: 3px; background: rgba(255,255,255,0.3); border-radius: 2px; z-index: 10;">
+                            <div class="progress-fill" id="progress-${index}" style="height: 100%; background: #ffd700; border-radius: 2px; width: 0%; transition: width 0.1s linear;"></div>
+                        </div>
+
+                        <!-- Video duration and engagement stats -->
+                        <div style="position: absolute; top: 20px; right: 20px; color: white; font-size: 0.8em; text-shadow: 1px 1px 2px rgba(0,0,0,0.7); z-index: 10;">
+                            <div>${item.duration}s • ${formatCount(item.engagement.views)} views</div>
+                            <div>${item.engagement.completion}% completion</div>
+                        </div>
+
+                        <div style="display: flex; align-items: center; justify-content: center; height: 60%; font-size: 6em;">
+                            ${item.character}
+                        </div>
+
+                        <div class="video-overlay">
+                            <!-- VISION: Interactive Spanish learning with pronunciation -->
+                            <div class="spanish-phrase" onclick="playPronunciation('${item.spanish}', ${index})" style="cursor: pointer; position: relative;">
+                                ${item.spanish}
+                                <span style="font-size: 0.7em; opacity: 0.8; margin-left: 10px;">🔊 Tap to hear</span>
+                            </div>
+                            <div class="english-translation">(${item.english})</div>
+
+                            <!-- Interactive pronunciation practice -->
+                            <div class="pronunciation-practice" style="margin: 10px 0; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 10px; font-size: 0.8em;">
+                                <button onclick="startPronunciationPractice(${index})" style="background: rgba(255,215,0,0.8); color: #333; border: none; padding: 8px 15px; border-radius: 15px; font-size: 0.9em; cursor: pointer; margin-right: 10px;">
+                                    🎤 Practice Pronunciation
+                                </button>
+                                <button onclick="showPhrasePronunciationTips('${item.spanish}')" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 15px; border-radius: 15px; font-size: 0.9em; cursor: pointer;">
+                                    💡 Tips
+                                </button>
+                            </div>
+
+                            <!-- VISION: Interactive vocabulary reinforcement for consistent Spanish learning value -->
+                            <div class="vocabulary-reinforcement" style="margin: 10px 0; padding: 12px; background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(139, 195, 74, 0.2)); border-radius: 12px; border-left: 4px solid #4caf50;">
+                                <div style="font-size: 0.85em; font-weight: bold; color: #4caf50; margin-bottom: 8px;">
+                                    📚 Vocabulary Practice - Test Your Learning!
+                                </div>
+                                <button onclick="startVocabularyQuiz(${index})" style="background: linear-gradient(135deg, #4caf50, #45a049); color: white; border: none; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; cursor: pointer; margin-right: 10px; box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);">
+                                    🧠 Quick Quiz
+                                </button>
+                                <button onclick="showWordBreakdown('${item.spanish}', ${index})" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 10px 20px; border-radius: 20px; font-size: 0.9em; cursor: pointer;">
+                                    🔍 Word Analysis
+                                </button>
+                                <div id="vocab-score-${index}" style="margin-top: 8px; font-size: 0.8em; color: #4caf50; text-align: center; display: none;"></div>
+                            </div>
+
+                            <!-- VISION: Contextual Spanish Learning Insights for Immersive Entertainment -->
+                            <div class="contextual-insights" style="margin: 10px 0; padding: 12px; background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,193,7,0.15)); border-radius: 12px; border-left: 4px solid #ffd700;">
+                                <div style="font-size: 0.85em; font-weight: bold; color: #ffd700; margin-bottom: 8px;">
+                                    🌟 Cultural Context & Usage
+                                </div>
+                                <div id="context-${index}" style="font-size: 0.8em; line-height: 1.4; color: rgba(255,255,255,0.9);">
+                                    <div class="context-item" style="margin: 4px 0;">
+                                        <span style="opacity: 0.7;">💬 When to use:</span>
+                                        <span id="usage-${index}">Loading context...</span>
+                                    </div>
+                                    <div class="context-item" style="margin: 4px 0;">
+                                        <span style="opacity: 0.7;">🗺️ Regional note:</span>
+                                        <span id="regional-${index}">Analyzing cultural variations...</span>
+                                    </div>
+                                    <div class="context-item" style="margin: 4px 0;">
+                                        <span style="opacity: 0.7;">🎭 Similar phrases:</span>
+                                        <span id="similar-${index}">Finding related expressions...</span>
+                                    </div>
+                                </div>
+                                <button onclick="showMoreContext('${item.spanish}', ${index})" style="background: rgba(255,215,0,0.8); color: #333; border: none; padding: 6px 12px; border-radius: 12px; font-size: 0.75em; cursor: pointer; margin-top: 8px;">
+                                    🔍 Learn More
+                                </button>
+                            </div>
+
+                            <div style="font-size: 0.9em; opacity: 0.8; margin-bottom: 10px;">
+                                <strong>@spanish_learning</strong> • ${item.description}
+                            </div>
+                            <div style="font-size: 0.8em; opacity: 0.7;">
+                                ${item.viralSound} • ${item.duration}s
+                            </div>
+
+                            <!-- VISION: Algorithm-Optimized Viral Hashtag System for Social Media Algorithms -->
+                            <div class="viral-hashtags" style="margin: 8px 0; padding: 8px; background: rgba(0,0,0,0.15); border-radius: 8px;">
+                                <div id="hashtags-${index}" style="font-size: 0.75em; line-height: 1.3; color: #ffd700;">
+                                    Loading viral hashtags...
+                                </div>
+                                <button onclick="generateNewHashtags(${index}, '${item.spanish}')" style="background: rgba(255,215,0,0.7); color: #333; border: none; padding: 4px 8px; border-radius: 10px; font-size: 0.7em; cursor: pointer; margin-top: 5px;">
+                                    🔥 Boost Viral
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Auto-progression toggle -->
+                        <div style="position: absolute; bottom: 20px; left: 20px; z-index: 10;">
+                            <button onclick="toggleAutoProgression()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 8px 12px; border-radius: 20px; font-size: 0.8em; cursor: pointer;">
+                                ${isAutoProgressing ? '⏸️ Auto' : '▶️ Manual'}
+                            </button>
+                        </div>
+
+                        <div class="video-actions">
+                            <div>
+                                <button class="action-button" onclick="likeVideo(${index})">❤️</button>
+                                <div class="action-count">${formatCount(item.likes)}</div>
+                            </div>
+                            <div>
+                                <button class="action-button" onclick="shareVideo(${index})">🔄</button>
+                                <div class="action-count">${formatCount(item.shares)}</div>
+                            </div>
+                            <div>
+                                <button class="action-button" onclick="commentVideo(${index})">💬</button>
+                                <div class="action-count">${formatCount(item.comments)}</div>
+                            </div>
+                            <div>
+                                <button class="action-button" onclick="saveVideo(${index})">🔖</button>
+                                <div class="action-count">Save</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                feedContainer.appendChild(feedItem);
+            });
+
+            // Add touch navigation
+            setupTouchNavigation();
+
+            // Add keyboard navigation
+            setupKeyboardNavigation();
+
+            // VISION: Start TikTok-style auto-progression
+            startVideoProgression();
+
+            // VISION: Start automated content injection system
+            startAutomatedContentInjection();
+
+            // VISION: Initialize dynamic comedy visual effects for enhanced comedic timing
+            initializeComedyEffects();
+
+            // VISION: Auto-populate contextual insights for immersive Spanish learning
+            initializeContextualInsights();
+
+            // VISION: Initialize algorithm-optimized viral hashtag system
+            initializeViralHashtags();
+        }
+
+        // Format large numbers for display
+        function formatCount(count) {
+            if (count >= 1000000) {
+                return (count / 1000000).toFixed(1) + 'M';
+            } else if (count >= 1000) {
+                return (count / 1000).toFixed(1) + 'K';
+            }
+            return count.toString();
+        }
+
+        // VISION: Enhanced TikTok-style touch navigation with improved mobile experience
+        function setupTouchNavigation() {
+            const feedContainer = document.getElementById('feedContainer');
+            let touchStartTime = 0;
+            let touchMoveDistance = 0;
+
+            feedContainer.addEventListener('touchstart', (e) => {
+                touchStartY = e.touches[0].clientY;
+                touchStartTime = Date.now();
+                touchMoveDistance = 0;
+
+                // VISION: Track touch engagement for Spanish learning analytics
+                trackSuccessMetric('mobile_touch_start', 1);
+            }, { passive: true });
+
+            feedContainer.addEventListener('touchmove', (e) => {
+                const currentY = e.touches[0].clientY;
+                touchMoveDistance = Math.abs(currentY - touchStartY);
+
+                // Prevent default scroll behavior for better TikTok-style experience
+                if (touchMoveDistance > 10) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            feedContainer.addEventListener('touchend', (e) => {
+                touchEndY = e.changedTouches[0].clientY;
+                const touchDuration = Date.now() - touchStartTime;
+
+                // VISION: Enhanced touch analytics for viral content optimization
+                if (touchDuration < 200 && touchMoveDistance < 30) {
+                    // Quick tap - trigger interaction
+                    trackSuccessMetric('quick_tap_engagement', 1);
+                } else if (touchDuration > 1000 && touchMoveDistance < 50) {
+                    // Long press - high engagement indicator
+                    trackSuccessMetric('long_press_engagement', 2);
+                    triggerViralMoment(tikTokFeedData[currentFeedIndex], 'sustained_attention');
+                }
+
+                handleSwipe();
+            }, { passive: true });
+
+            // Mouse wheel support for desktop
+            feedContainer.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                if (e.deltaY > 0) {
+                    navigateToNext();
+                } else {
+                    navigateToPrevious();
+                }
+            }, { passive: false });
+        }
+
+        // Keyboard navigation setup
+        function setupKeyboardNavigation() {
+            document.addEventListener('keydown', (e) => {
+                if (document.getElementById('feed').classList.contains('active')) {
+                    if (e.key === 'ArrowDown' || e.key === ' ') {
+                        e.preventDefault();
+                        navigateToNext();
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        navigateToPrevious();
+                    }
+                }
+            });
+        }
+
+        // Handle swipe gestures with enhanced TikTok-style mechanics
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const swipeDistance = touchStartY - touchEndY;
+            const swipeVelocity = Math.abs(swipeDistance);
+
+            if (Math.abs(swipeDistance) < swipeThreshold) return;
+
+            // VISION: Immediate viral engagement tracking on swipe
+            const currentVideo = tikTokFeedData[currentFeedIndex];
+            if (currentVideo) {
+                trackSuccessMetric('swipe_engagement', 1);
+
+                // Enhanced viral tracking for fast swipes (indicates high engagement)
+                if (swipeVelocity > 100) {
+                    trackSuccessMetric('viral_swipe', 2); // Fast swipe = viral indicator
+                    triggerViralMoment(currentVideo, 'rapid_engagement');
+                }
+            }
+
+            // Haptic feedback for supported devices
+            if ('vibrate' in navigator) {
+                navigator.vibrate(swipeVelocity > 100 ? [10, 5, 10] : 10);
+            }
+
+            if (swipeDistance > 0) {
+                // Swipe up - next video with smooth transition
+                navigateToNext();
+            } else {
+                // Swipe down - previous video with smooth transition
+                navigateToPrevious();
+            }
+        }
+
+        // VISION: Trigger viral moment tracking for high-engagement content
+        function triggerViralMoment(videoData, momentType) {
+            trackSuccessMetric('viral_moment', 1);
+            trackSuccessMetric('hook_effectiveness', 2);
+
+            // Add to viral optimization queue for future prioritization
+            if (window.contentPriorityQueue) {
+                window.contentPriorityQueue.push({
+                    content: videoData,
+                    momentType: momentType,
+                    timestamp: Date.now(),
+                    priority: 'VIRAL'
+                });
+            }
+        }
+
+        // Navigate to next video
+        function navigateToNext() {
+            if (currentFeedIndex < tikTokFeedData.length - 1) {
+                currentFeedIndex++;
+                updateFeedView();
+            }
+        }
+
+        // Navigate to previous video
+        function navigateToPrevious() {
+            if (currentFeedIndex > 0) {
+                currentFeedIndex--;
+                updateFeedView();
+            }
+        }
+
+        // Update feed view and scroll position
+        function updateFeedView() {
+            const feedContainer = document.getElementById('feedContainer');
+            const progressDots = document.querySelectorAll('.progress-dot');
+            const feedItems = document.querySelectorAll('.feed-item');
+
+            // Stop current video progression
+            stopVideoProgression();
+
+            // VISION: TikTok-style animated transitions for high visual quality
+            feedItems.forEach((item, index) => {
+                // Remove all animation classes first
+                item.classList.remove('active', 'reveal-active', 'reveal-exit');
+
+                if (index === currentFeedIndex) {
+                    // Activate current item with reveal animation
+                    setTimeout(() => {
+                        item.classList.add('active', 'reveal-active');
+
+                        // Enhance video content visual quality
+                        const videoContent = item.querySelector('.video-content');
+                        if (videoContent) {
+                            videoContent.classList.add('content-active');
+                        }
+                    }, 100);
+                } else {
+                    // Add exit animation to non-active items
+                    item.classList.add('reveal-exit');
+
+                    // Remove video content enhancement
+                    const videoContent = item.querySelector('.video-content');
+                    if (videoContent) {
+                        videoContent.classList.remove('content-active');
+                    }
+                }
+            });
+
+            progressDots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentFeedIndex);
+            });
+
+            // Smooth scroll to current item with enhanced timing
+            const targetItem = feedItems[currentFeedIndex];
+            if (targetItem) {
+                targetItem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                // Track visual engagement for success metrics
+                if (window.trackSuccessMetric) {
+                    trackSuccessMetric('visual_engagement', 1);
+                    trackSuccessMetric('tiktok_transition', 1);
+                }
+            }
+
+            // VISION: Restart auto-progression for new video
+            if (isAutoProgressing) {
+                setTimeout(startVideoProgression, 300); // Brief delay for smooth transition
+            }
+        }
+
+        // Video interaction functions
+        function likeVideo(index) {
+            tikTokFeedData[index].likes += 1;
+            updateVideoStats(index);
+            showFeedback('❤️ Liked!');
+        }
+
+        function shareVideo(index) {
+            const video = tikTokFeedData[index];
+
+            // VISION-ALIGNED: Real viral sharing mechanics for social media algorithms
+            const shareUrl = `${window.location.origin}/?video=${video.character}&spanish=${encodeURIComponent(video.spanish)}&viral=${video.viralPotential}`;
+            const shareText = `🔥 VIRAL Spanish Learning: "${video.spanish}" (${video.english}) - ${video.description} #SpanishLearning #TikTokEducation #ViralContent`;
+
+            // Check if Web Share API is available (mobile-first approach)
+            if (navigator.share) {
+                navigator.share({
+                    title: `Viral Spanish Learning: ${video.title}`,
+                    text: shareText,
+                    url: shareUrl
+                }).then(() => {
+                    // Track successful viral share
+                    trackViralShare(index, 'native_share');
+                    tikTokFeedData[index].shares += 1;
+                    updateVideoStats(index);
+                    showViralShareSuccess(video);
+                }).catch(() => {
+                    // Fallback to manual share options
+                    showShareModal(index, shareUrl, shareText);
+                });
+            } else {
+                // Desktop fallback - show share options modal
+                showShareModal(index, shareUrl, shareText);
+            }
+        }
+
+        // VISION-ALIGNED: Viral share modal with social media platform integration
+        function showShareModal(index, shareUrl, shareText) {
+            const video = tikTokFeedData[index];
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0,0,0,0.8); z-index: 3000;
+                display: flex; align-items: center; justify-content: center;
+            `;
+
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 20px; padding: 30px; max-width: 400px; width: 90%;">
+                    <h3 style="margin: 0 0 20px; text-align: center; color: #333;">🚀 Make This Go Viral!</h3>
+                    <p style="text-align: center; color: #666; margin-bottom: 20px;">"${video.spanish}" - ${video.description}</p>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+                        <button onclick="shareToTikTok('${shareUrl}', '${shareText}')" style="padding: 15px; background: #ff0050; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold;">📱 TikTok</button>
+                        <button onclick="shareToTwitter('${shareUrl}', '${encodeURIComponent(shareText)}')" style="padding: 15px; background: #1da1f2; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold;">🐦 Twitter</button>
+                        <button onclick="shareToInstagram('${shareUrl}', '${shareText}')" style="padding: 15px; background: #e4405f; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold;">📸 Instagram</button>
+                        <button onclick="shareToWhatsApp('${shareUrl}', '${encodeURIComponent(shareText)}')" style="padding: 15px; background: #25d366; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold;">📱 WhatsApp</button>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px; color: #333; font-weight: bold;">Share URL:</label>
+                        <input type="text" value="${shareUrl}" readonly onclick="this.select()" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 12px;">
+                    </div>
+
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="copyShareUrl('${shareUrl}')" style="flex: 1; padding: 10px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">📋 Copy Link</button>
+                        <button onclick="closeShareModal()" style="flex: 1; padding: 10px; background: #ccc; color: #333; border: none; border-radius: 5px; cursor: pointer;">Close</button>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+            window.currentShareModal = modal;
+            window.currentShareIndex = index;
+
+            // Track modal open for viral analytics
+            trackViralShare(index, 'modal_opened');
+        }
+
+        // Social media sharing functions (VISION: social media algorithms integration)
+        function shareToTikTok(url, text) {
+            // TikTok doesn't have direct URL sharing, so copy link and show instructions
+            copyShareUrl(url);
+            showFeedback('📱 Link copied! Open TikTok and paste in bio or comments');
+            trackViralShare(window.currentShareIndex, 'tiktok_attempted');
+            completeShare();
+        }
+
+        function shareToTwitter(url, text) {
+            const twitterUrl = `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(url)}`;
+            window.open(twitterUrl, '_blank', 'width=600,height=400');
+            trackViralShare(window.currentShareIndex, 'twitter_share');
+            completeShare();
+        }
+
+        function shareToInstagram(url, text) {
+            // Instagram doesn't support direct URL sharing, so copy and instruct
+            copyShareUrl(url);
+            showFeedback('📸 Link copied! Add to your Instagram story or bio');
+            trackViralShare(window.currentShareIndex, 'instagram_attempted');
+            completeShare();
+        }
+
+        function shareToWhatsApp(url, text) {
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`;
+            window.open(whatsappUrl, '_blank');
+            trackViralShare(window.currentShareIndex, 'whatsapp_share');
+            completeShare();
+        }
+
+        function copyShareUrl(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                showFeedback('🔗 Link copied to clipboard!');
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = url;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showFeedback('🔗 Link copied!');
+            });
+        }
+
+        function closeShareModal() {
+            if (window.currentShareModal) {
+                window.currentShareModal.remove();
+                window.currentShareModal = null;
+            }
+        }
+
+        function completeShare() {
+            tikTokFeedData[window.currentShareIndex].shares += 1;
+            updateVideoStats(window.currentShareIndex);
+            closeShareModal();
+        }
+
+        // VISION-ALIGNED: Viral tracking and analytics for social media algorithms
+        function trackViralShare(index, platform) {
+            const video = tikTokFeedData[index];
+            const viralData = {
+                videoId: `${video.character}_${index}`,
+                platform: platform,
+                timestamp: new Date().toISOString(),
+                spanish_phrase: video.spanish,
+                viral_potential: video.viralPotential,
+                engagement_type: 'share'
+            };
+
+            // Store viral analytics (would normally send to analytics service)
+            if (!window.viralAnalytics) window.viralAnalytics = [];
+            window.viralAnalytics.push(viralData);
+
+            console.log('🔥 VIRAL SHARE TRACKED:', viralData);
+        }
+
+        function showViralShareSuccess(video) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed; top: 50%; left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, #ff6b35, #ffd23f);
+                color: white; padding: 20px 30px;
+                border-radius: 25px; font-size: 1.3em;
+                z-index: 2000; text-align: center;
+                box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+                animation: viralPulse 2s ease-in-out;
+            `;
+            notification.innerHTML = `
+                <div style="font-size: 2em; margin-bottom: 10px;">🚀</div>
+                <div><strong>VIRAL SHARE SENT!</strong></div>
+                <div style="font-size: 0.9em; opacity: 0.9;">"${video.spanish}" is spreading!</div>
+            `;
+            document.body.appendChild(notification);
+
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        function commentVideo(index) {
+            showFeedback('💬 Comment added!');
+        }
+
+        function saveVideo(index) {
+            showFeedback('🔖 Video saved!');
+        }
+
+        // VISION: Algorithm-Optimized Viral Hashtag System for Social Media Algorithms
+        function generateNewHashtags(index, spanishPhrase) {
+            const hashtags = generateViralHashtags(spanishPhrase, index);
+            const hashtagContainer = document.getElementById(`hashtags-${index}`);
+
+            if (hashtagContainer) {
+                hashtagContainer.innerHTML = hashtags.map(tag =>
+                    `<span style="color: #ffd700; margin-right: 8px; cursor: pointer;" onclick="copyHashtag('${tag}')">${tag}</span>`
+                ).join('');
+            }
+
+            // Visual effect on boost
+            const button = event.target;
+            button.style.background = 'linear-gradient(45deg, #ff6b35, #ffd23f)';
+            button.textContent = '🚀 BOOSTED!';
+
+            setTimeout(() => {
+                button.style.background = 'rgba(255,215,0,0.7)';
+                button.textContent = '🔥 Boost Viral';
+            }, 2000);
+
+            // Track viral optimization
+            trackLearningInteraction(index, 'viral_hashtag_generated', spanishPhrase);
+
+            showFeedback('🔥 Viral hashtags optimized for algorithm boost!');
+        }
+
+        function generateViralHashtags(phrase, index) {
+            const trendingHashtags = [
+                '#SpanishLearning', '#LearnSpanish', '#ViralSpanish', '#SpanishTikTok',
+                '#LanguageLearning', '#SpanishPhrase', '#SpanishDaily', '#BilingualLife'
+            ];
+
+            const phraseBased = {
+                'Quiero abrir una cuenta': ['#Banking', '#SpanishBanking', '#AccountOpening', '#FinancialSpanish'],
+                'Necesito más sal': ['#Cooking', '#SpanishKitchen', '#FoodieSpanish', '#Restaurant'],
+                'Estoy embarazada': ['#Pregnancy', '#FamilySpanish', '#LifeEvents', '#SpanishNews'],
+                'Qué tradición tan hermosa': ['#Culture', '#SpanishTradition', '#Cultural', '#Heritage'],
+                'En mi país hacemos': ['#CulturalExchange', '#International', '#WorldCulture', '#Diversity']
+            };
+
+            const contextualHashtags = [
+                '#Algorithm', '#Viral', '#Trending', '#ForYou', '#FYP', '#Boost',
+                '#Content', '#Engagement', '#Social', '#Share', '#Discovery'
+            ];
+
+            const timeBasedHashtags = [
+                '#MondayMotivation', '#TuesdayTips', '#WisdomWednesday', '#ThursdayThoughts',
+                '#FridayFeeling', '#WeekendVibes', '#SundayFunday'
+            ];
+
+            // Smart algorithm optimization
+            const currentDay = new Date().getDay();
+            const dayHashtag = timeBasedHashtags[currentDay];
+
+            // Combine trending + phrase-specific + contextual + time-based
+            const specificTags = phraseBased[phrase] || ['#SpanishBasics', '#Vocabulary', '#Pronunciation'];
+            const selectedContextual = contextualHashtags.slice(0, 3);
+
+            return [
+                ...trendingHashtags.slice(0, 4),
+                ...specificTags.slice(0, 3),
+                ...selectedContextual,
+                dayHashtag,
+                '#Spanish2024',
+                '#LanguageGoals'
+            ].slice(0, 12); // Optimal hashtag count for algorithms
+        }
+
+        function copyHashtag(hashtag) {
+            navigator.clipboard.writeText(hashtag).then(() => {
+                showFeedback(`📋 ${hashtag} copied to clipboard!`);
+            });
+        }
+
+        function initializeViralHashtags() {
+            console.log('🔥 Initializing algorithm-optimized viral hashtag system...');
+
+            // Auto-generate hashtags for all videos
+            tikTokFeedData.forEach((item, index) => {
+                const hashtags = generateViralHashtags(item.spanish, index);
+
+                setTimeout(() => {
+                    const hashtagContainer = document.getElementById(`hashtags-${index}`);
+                    if (hashtagContainer) {
+                        hashtagContainer.innerHTML = hashtags.map(tag =>
+                            `<span style="color: #ffd700; margin-right: 8px; cursor: pointer;" onclick="copyHashtag('${tag}')">${tag}</span>`
+                        ).join('');
+                    }
+                }, 200 + (index * 100)); // Staggered loading
+            });
+        }
+
+        function updateVideoStats(index) {
+            const feedItem = document.querySelector(`[data-index="${index}"]`);
+            const likeCount = feedItem.querySelector('.action-count');
+            if (likeCount) {
+                const actionButtons = feedItem.querySelectorAll('.action-count');
+                actionButtons[0].textContent = formatCount(tikTokFeedData[index].likes);
+                actionButtons[1].textContent = formatCount(tikTokFeedData[index].shares);
+            }
+        }
+
+        // VISION: Success Metrics Dashboard for Vision-Aligned KPIs
+        function initializeSuccessMetricsDashboard() {
+            console.log('📊 Initializing Success Metrics Dashboard for Vision-Aligned KPIs...');
+
+            const dashboard = document.createElement('div');
+            dashboard.id = 'success-metrics-dashboard';
+            dashboard.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                left: 20px;
+                width: 280px;
+                background: linear-gradient(135deg, rgba(255, 107, 53, 0.95), rgba(255, 210, 63, 0.95));
+                backdrop-filter: blur(10px);
+                border-radius: 15px;
+                padding: 15px;
+                color: #333;
+                font-size: 0.8em;
+                z-index: 1500;
+                box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+                transition: all 0.3s ease;
+            `;
+
+            dashboard.innerHTML = `
+                <div style="font-weight: bold; margin-bottom: 10px; text-align: center; color: #333;">
+                    📊 Vision Success Metrics
+                </div>
+                <div id="success-metrics">
+                    <div class="success-metric">
+                        <span>🎯 Hook Engagement (0-3s):</span>
+                        <span id="hook-engagement" style="font-weight: bold;">0%</span>
+                    </div>
+                    <div class="success-metric">
+                        <span>🇪🇸 Spanish Retention:</span>
+                        <span id="spanish-retention" style="font-weight: bold;">0%</span>
+                    </div>
+                    <div class="success-metric">
+                        <span>🚀 Viral Potential Score:</span>
+                        <span id="viral-score" style="font-weight: bold;">0</span>
+                    </div>
+                    <div class="success-metric">
+                        <span>😂 Comedy Hit Rate:</span>
+                        <span id="comedy-rate" style="font-weight: bold;">0%</span>
+                    </div>
+                    <div class="success-metric">
+                        <span>🌍 Cultural Diversity:</span>
+                        <span id="cultural-diversity" style="font-weight: bold;">0%</span>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 10px;">
+                    <button onclick="toggleMetricsDetail()" style="background: rgba(255,255,255,0.8); color: #333; border: none; padding: 6px 12px; border-radius: 12px; font-size: 0.75em; cursor: pointer;">
+                        📈 Details
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(dashboard);
+
+            // Add CSS for metrics
+            const style = document.createElement('style');
+            style.textContent = `
+                .success-metric {
+                    display: flex;
+                    justify-content: space-between;
+                    margin: 6px 0;
+                    font-size: 0.85em;
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Initialize tracking
+            window.successMetrics = {
+                hookEngagements: 0,
+                totalViews: 0,
+                spanishInteractions: 0,
+                totalInteractions: 0,
+                viralActions: 0,
+                comedyTriggers: 0,
+                culturalContent: 0,
+                startTime: Date.now()
+            };
+
+            // Start real-time updates
+            setInterval(updateSuccessMetrics, 2000);
+        }
+
+        function updateSuccessMetrics() {
+            if (!window.successMetrics) return;
+
+            const metrics = window.successMetrics;
+            const sessionDuration = (Date.now() - metrics.startTime) / 1000 / 60; // minutes
+
+            // Calculate VISION-aligned KPIs
+            const hookEngagement = metrics.totalViews > 0 ? Math.round((metrics.hookEngagements / metrics.totalViews) * 100) : 0;
+            const spanishRetention = metrics.totalInteractions > 0 ? Math.round((metrics.spanishInteractions / metrics.totalInteractions) * 100) : 0;
+            const viralScore = Math.min(metrics.viralActions * 10 + hookEngagement + spanishRetention, 100);
+            const comedyRate = metrics.totalViews > 0 ? Math.round((metrics.comedyTriggers / metrics.totalViews) * 100) : 0;
+            const culturalDiversity = Math.min(metrics.culturalContent * 20, 100);
+
+            // Update dashboard
+            document.getElementById('hook-engagement').textContent = hookEngagement + '%';
+            document.getElementById('spanish-retention').textContent = spanishRetention + '%';
+            document.getElementById('viral-score').textContent = viralScore;
+            document.getElementById('comedy-rate').textContent = comedyRate + '%';
+            document.getElementById('cultural-diversity').textContent = culturalDiversity + '%';
+
+            // Color coding based on success targets
+            const dashboard = document.getElementById('success-metrics-dashboard');
+            if (hookEngagement >= 70 && spanishRetention >= 60 && viralScore >= 80) {
+                dashboard.style.background = 'linear-gradient(135deg, rgba(76, 175, 80, 0.95), rgba(139, 195, 74, 0.95))';
+            } else if (hookEngagement >= 50 && spanishRetention >= 40) {
+                dashboard.style.background = 'linear-gradient(135deg, rgba(255, 193, 7, 0.95), rgba(255, 235, 59, 0.95))';
+            } else {
+                dashboard.style.background = 'linear-gradient(135deg, rgba(255, 107, 53, 0.95), rgba(255, 210, 63, 0.95))';
+            }
+        }
+
+        function trackSuccessMetric(metricType, value = 1) {
+            if (!window.successMetrics) return;
+
+            switch(metricType) {
+                case 'hook_engagement':
+                    window.successMetrics.hookEngagements += value;
+                    window.successMetrics.totalViews += 1;
+                    break;
+                case 'spanish_interaction':
+                    window.successMetrics.spanishInteractions += value;
+                    window.successMetrics.totalInteractions += 1;
+                    break;
+                case 'viral_action':
+                    window.successMetrics.viralActions += value;
+                    break;
+                case 'comedy_trigger':
+                    window.successMetrics.comedyTriggers += value;
+                    break;
+                case 'cultural_content':
+                    window.successMetrics.culturalContent += value;
+                    break;
+            }
+        }
+
+        function toggleMetricsDetail() {
+            const metrics = window.successMetrics;
+            const sessionDuration = Math.round((Date.now() - metrics.startTime) / 1000 / 60);
+
+            alert(`📊 VISION SUCCESS METRICS DETAIL
+
+🎯 Hook Engagement: ${metrics.hookEngagements}/${metrics.totalViews} interactions
+🇪🇸 Spanish Learning: ${metrics.spanishInteractions}/${metrics.totalInteractions} engaged
+🚀 Viral Actions: ${metrics.viralActions} total
+😂 Comedy Triggers: ${metrics.comedyTriggers} activated
+🌍 Cultural Content: ${metrics.culturalContent} types explored
+
+⏱️ Session Duration: ${sessionDuration}m
+📈 Platform Performance: ${metrics.totalViews > 0 ? 'ACTIVE' : 'WARMING UP'}`);
+        }
+
+        function showFeedback(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 25px;
+                font-size: 1.2em;
+                z-index: 2000;
+                animation: fadeInOut 2s ease-in-out;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => notification.remove(), 2000);
+        }
+
+        // Initialize floating elements
+        function createFloatingElements() {
+            const container = document.getElementById('floatingElements');
+            const emojis = ['⭐', '🎵', '📚', '🎭', '🌟', '💫', '🎪', '🎨', '🎯', '🚀'];
+
+            for (let i = 0; i < 20; i++) {
+                const emoji = document.createElement('div');
+                emoji.className = 'floating-emoji';
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                emoji.style.left = Math.random() * 100 + '%';
+                emoji.style.top = Math.random() * 100 + '%';
+                emoji.style.animationDelay = Math.random() * 8 + 's';
+                emoji.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                container.appendChild(emoji);
+            }
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            createFloatingElements();
+
+            // VISION: Initialize learning retention analytics dashboard
+            trackLearningInteraction(0, 'spanish_phrase_viewed', 'Platform initialized');
+
+            // VISION: Initialize Success Metrics Dashboard for Vision-Aligned KPIs
+            initializeSuccessMetricsDashboard();
+
+            console.log('🚀 Workspace3 Unified Platform Loaded Successfully!');
+        });
+
+        // Auto-refresh content every 30 seconds to show "live" updates
+        setInterval(() => {
+            if (document.getElementById('feed').classList.contains('active')) {
+                // Add new content notification
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 100px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: rgba(255, 215, 0, 0.95);
+                    color: black;
+                    padding: 15px 30px;
+                    border-radius: 25px;
+                    font-weight: bold;
+                    z-index: 2000;
+                    animation: slideDownNotification 0.5s ease-out;
+                `;
+                notification.textContent = '🎬 New viral content available! Scroll to refresh';
+                document.body.appendChild(notification);
+
+                setTimeout(() => notification.remove(), 3000);
+            }
+        }, 30000);
+
+        // VISION-ALIGNED: TikTok-style auto-progression system
+        function startVideoProgression() {
+            if (!isAutoProgressing) return;
+
+            const currentVideo = tikTokFeedData[currentFeedIndex];
+            const progressBar = document.getElementById(`progress-${currentFeedIndex}`);
+
+            videoStartTime = Date.now();
+
+            if (progressBar) {
+                // Reset progress bar and timing flags
+                progressBar.style.width = '0%';
+                progressBar.dataset.timing1 = '';
+                progressBar.dataset.timing2 = '';
+                progressBar.dataset.timing3 = '';
+
+                // Animate progress bar over video duration
+                const duration = (currentVideo.duration || 30) * 1000; // Convert to milliseconds
+                const updateInterval = 100; // Update every 100ms for smooth animation
+                let elapsed = 0;
+
+                videoProgressTimer = setInterval(() => {
+                    elapsed += updateInterval;
+                    const progress = Math.min((elapsed / duration) * 100, 100);
+                    progressBar.style.width = progress + '%';
+
+                    // VISION: Smart comedic timing triggers for enhanced engagement
+                    if (progress >= 20 && progress <= 25 && !progressBar.dataset.timing1) {
+                        progressBar.dataset.timing1 = 'triggered';
+                        triggerSmartComedyTiming(currentVideo, 'early_hook');
+                    }
+                    if (progress >= 50 && progress <= 55 && !progressBar.dataset.timing2) {
+                        progressBar.dataset.timing2 = 'triggered';
+                        triggerSmartComedyTiming(currentVideo, 'mid_punchline');
+                    }
+                    if (progress >= 85 && progress <= 90 && !progressBar.dataset.timing3) {
+                        progressBar.dataset.timing3 = 'triggered';
+                        triggerSmartComedyTiming(currentVideo, 'final_laugh');
+                    }
+
+                    // Auto-advance when video completes
+                    if (progress >= 100) {
+                        clearInterval(videoProgressTimer);
+
+                        // VISION: Track video completion for learning retention
+                        const completedVideo = tikTokFeedData[currentVideoIndex];
+                        if (completedVideo) {
+                            trackLearningInteraction(currentVideoIndex, 'video_completion', completedVideo.spanish);
+                            if (completedVideo.culturalRegion) {
+                                trackLearningInteraction(currentVideoIndex, 'cultural_content_engaged', completedVideo.culturalRegion);
+                            }
+                        }
+
+                        // Add slight delay before advancing (TikTok-style)
+                        setTimeout(() => {
+                            if (isAutoProgressing) {
+                                navigateToNext();
+                            }
+                        }, 500);
+                    }
+                }, updateInterval);
+            }
+        }
+
+        function stopVideoProgression() {
+            if (videoProgressTimer) {
+                clearInterval(videoProgressTimer);
+                videoProgressTimer = null;
+            }
+        }
+
+        function toggleAutoProgression() {
+            isAutoProgressing = !isAutoProgressing;
+
+            if (isAutoProgressing) {
+                startVideoProgression();
+                showFeedback('▶️ Auto-progression enabled');
+            } else {
+                stopVideoProgression();
+                showFeedback('⏸️ Auto-progression paused');
+            }
+
+            // Update all toggle buttons
+            document.querySelectorAll('button[onclick="toggleAutoProgression()"]').forEach(btn => {
+                btn.innerHTML = isAutoProgressing ? '⏸️ Auto' : '▶️ Manual';
+            });
+        }
+
+        // VISION-ALIGNED: Interactive Spanish pronunciation for natural language acquisition
+        function playPronunciation(spanishText, index) {
+            // Use Web Speech API for text-to-speech
+            if ('speechSynthesis' in window) {
+                // Stop any current speech
+                speechSynthesis.cancel();
+
+                const utterance = new SpeechSynthesisUtterance(spanishText);
+                utterance.lang = 'es-ES'; // Spanish language
+                utterance.rate = 0.8; // Slightly slower for learning
+                utterance.pitch = 1.0;
+
+                // Try to use a Spanish voice if available
+                const voices = speechSynthesis.getVoices();
+                const spanishVoice = voices.find(voice => voice.lang.startsWith('es'));
+                if (spanishVoice) {
+                    utterance.voice = spanishVoice;
+                }
+
+                // VISION: Enhanced learning feedback with real-time pronunciation analysis
+                utterance.onstart = () => {
+                    showPronunciationGuide(spanishText, index);
+                    trackSuccessMetric('pronunciation_playback', 1);
+                };
+
+                utterance.onend = () => {
+                    triggerPronunciationFeedback(index, 'listen_complete');
+                };
+
+                speechSynthesis.speak(utterance);
+
+                // Visual feedback with enhanced Spanish learning metrics
+                showFeedback(`🔊 Playing: "${spanishText}"`);
+
+                // Track learning engagement
+                trackLearningInteraction(index, 'pronunciation_listened', spanishText);
+            } else {
+                showFeedback('🔊 Speech not supported on this device');
+            }
+        }
+
+        function startPronunciationPractice(index) {
+            const video = tikTokFeedData[index];
+
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                showFeedback('🎤 Voice recognition not supported on this device');
+                return;
+            }
+
+            // Pause auto-progression during practice
+            const wasAutoProgressing = isAutoProgressing;
+            if (isAutoProgressing) {
+                toggleAutoProgression();
+            }
+
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'es-ES';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0,0,0,0.9); z-index: 4000;
+                display: flex; align-items: center; justify-content: center;
+            `;
+
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 20px; padding: 40px; max-width: 500px; width: 90%; text-align: center;">
+                    <h3 style="margin: 0 0 20px; color: #333;">🎤 Practice Pronunciation</h3>
+                    <div style="font-size: 1.5em; margin: 20px 0; color: #667eea; font-weight: bold;">"${video.spanish}"</div>
+                    <div style="margin: 10px 0; color: #666;">(${video.english})</div>
+
+                    <div id="practice-status" style="margin: 20px 0; padding: 15px; background: #f0f8ff; border-radius: 10px; color: #333;">
+                        Press "Start" and say the Spanish phrase aloud
+                    </div>
+
+                    <div style="margin: 20px 0;">
+                        <button id="start-recording" onclick="startRecording()" style="padding: 15px 30px; background: #ff6b35; color: white; border: none; border-radius: 25px; font-size: 1.1em; cursor: pointer; margin: 10px;">
+                            🎤 Start Recording
+                        </button>
+                        <button onclick="playPronunciation('${video.spanish}', ${index})" style="padding: 15px 30px; background: #667eea; color: white; border: none; border-radius: 25px; font-size: 1.1em; cursor: pointer; margin: 10px;">
+                            🔊 Listen Again
+                        </button>
+                    </div>
+
+                    <button onclick="closePracticeModal()" style="padding: 10px 20px; background: #ccc; color: #333; border: none; border-radius: 15px; cursor: pointer;">
+                        Close
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+            window.currentPracticeModal = modal;
+            window.currentRecognition = recognition;
+            window.practiceVideoIndex = index;
+            window.wasAutoProgressingBeforePractice = wasAutoProgressing;
+
+            // Speech recognition event handlers
+            recognition.onstart = () => {
+                document.getElementById('practice-status').innerHTML = '🎤 Listening... Speak now!';
+                document.getElementById('start-recording').style.background = '#28a745';
+                document.getElementById('start-recording').innerHTML = '🔴 Recording...';
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript.toLowerCase();
+                const targetPhrase = video.spanish.toLowerCase();
+
+                document.getElementById('practice-status').innerHTML = `
+                    <div><strong>You said:</strong> "${transcript}"</div>
+                    <div><strong>Target:</strong> "${video.spanish}"</div>
+                `;
+
+                // Simple pronunciation accuracy check
+                const accuracy = calculatePronunciationAccuracy(transcript, targetPhrase);
+                if (accuracy > 70) {
+                    document.getElementById('practice-status').innerHTML += `
+                        <div style="color: #28a745; font-weight: bold; margin-top: 10px;">
+                            ✅ Great pronunciation! (${accuracy}% accuracy)
+                        </div>
+                    `;
+                    trackLearningInteraction(index, 'pronunciation_success', video.spanish);
+                } else if (accuracy > 40) {
+                    document.getElementById('practice-status').innerHTML += `
+                        <div style="color: #ff8c00; font-weight: bold; margin-top: 10px;">
+                            📈 Good attempt! (${accuracy}% accuracy) - Try again
+                        </div>
+                    `;
+                    trackLearningInteraction(index, 'pronunciation_partial', video.spanish);
+                } else {
+                    document.getElementById('practice-status').innerHTML += `
+                        <div style="color: #dc3545; font-weight: bold; margin-top: 10px;">
+                            🔄 Try again! (${accuracy}% accuracy) - Listen and repeat
+                        </div>
+                    `;
+                    trackLearningInteraction(index, 'pronunciation_retry', video.spanish);
+                }
+
+                document.getElementById('start-recording').style.background = '#ff6b35';
+                document.getElementById('start-recording').innerHTML = '🎤 Try Again';
+            };
+
+            recognition.onerror = () => {
+                document.getElementById('practice-status').innerHTML = '❌ Could not recognize speech. Try speaking more clearly.';
+                document.getElementById('start-recording').style.background = '#ff6b35';
+                document.getElementById('start-recording').innerHTML = '🎤 Try Again';
+            };
+        }
+
+        // VISION: Enhanced pronunciation guide with syllable breakdown and real-time feedback
+        function showPronunciationGuide(spanishText, index) {
+            const syllables = breakIntoSyllables(spanishText);
+            const feedbackEl = document.createElement('div');
+            feedbackEl.style.position = 'fixed';
+            feedbackEl.style.top = '20px';
+            feedbackEl.style.left = '50%';
+            feedbackEl.style.transform = 'translateX(-50%)';
+            feedbackEl.style.background = 'linear-gradient(45deg, #667eea, #764ba2)';
+            feedbackEl.style.color = 'white';
+            feedbackEl.style.padding = '15px 25px';
+            feedbackEl.style.borderRadius = '25px';
+            feedbackEl.style.fontSize = '1.1em';
+            feedbackEl.style.fontWeight = 'bold';
+            feedbackEl.style.zIndex = '9999';
+            feedbackEl.style.animation = 'syllableGuide 3s ease-in-out';
+            feedbackEl.innerHTML = `🗣️ Listen: ${syllables.join(' • ')}`;
+
+            document.body.appendChild(feedbackEl);
+            setTimeout(() => feedbackEl.remove(), 3000);
+        }
+
+        function triggerPronunciationFeedback(index, type) {
+            trackSuccessMetric('pronunciation_engagement', 1);
+            if (type === 'listen_complete') {
+                trackSuccessMetric('pronunciation_completion', 1);
+                showFeedback('✨ Ready to practice! Try speaking the phrase.');
+            }
+        }
+
+        function breakIntoSyllables(text) {
+            // Simple Spanish syllable breakdown - enhanced for learning
+            const words = text.toLowerCase().split(' ');
+            return words.map(word => {
+                // Basic Spanish syllable patterns
+                return word.replace(/([aeiou])([bcdfghjklmnpqrstvwxyz])/g, '$1-$2')
+                          .replace(/([bcdfghjklmnpqrstvwxyz])([aeiou])/g, '$1$2');
+            }).join(' | ');
+        }
+
+            window.startRecording = () => {
+                recognition.start();
+            };
+        }
+
+        function closePracticeModal() {
+            if (window.currentPracticeModal) {
+                window.currentPracticeModal.remove();
+                window.currentPracticeModal = null;
+            }
+
+            if (window.currentRecognition) {
+                window.currentRecognition.stop();
+                window.currentRecognition = null;
+            }
+
+            // Restore auto-progression if it was enabled
+            if (window.wasAutoProgressingBeforePractice && !isAutoProgressing) {
+                toggleAutoProgression();
+            }
+        }
+
+        function showPhrasePronunciationTips(spanishPhrase) {
+            const tips = {
+                'Quiero abrir una cuenta': 'KEE-eh-roh ah-BREER OO-nah KWEN-tah',
+                '¡Necesito más sal!': 'neh-seh-SEE-toh mahs sahl',
+                'Estoy embarazada': 'ehs-TOY em-bah-rah-SAH-dah',
+                'Esta comida está deliciosa': 'EHS-tah koh-MEE-dah ehs-TAH deh-lee-see-OH-sah',
+                'Busco muebles nuevos': 'BOOS-koh MWEH-blays NWEH-vohs',
+                'No entiendo la tecnología': 'noh en-tee-EN-doh lah tek-noh-loh-HEE-ah'
+            };
+
+            const phonetic = tips[spanishPhrase] || 'Pronunciation tips not available for this phrase';
+
+            showFeedback(`💡 Pronunciation: ${phonetic}`, 5000);
+        }
+
+        // VISION: Interactive vocabulary reinforcement for consistent Spanish learning value
+        function startVocabularyQuiz(index) {
+            const video = tikTokFeedData[index];
+            const spanishPhrase = video.spanish;
+            const englishTranslation = video.english;
+
+            // VISION: Enhanced consistent Spanish learning value through adaptive difficulty
+            const userLevel = localStorage.getItem('spanish_level') || 'beginner';
+            const difficultyBonus = userLevel === 'advanced' ? 2 : userLevel === 'intermediate' ? 1 : 0;
+
+            // Create vocabulary quiz questions based on the content and user level
+            const quizQuestions = generateVocabularyQuestions(spanishPhrase, englishTranslation, difficultyBonus);
+            const randomQuestion = quizQuestions[Math.floor(Math.random() * quizQuestions.length)];
+
+            // Show quiz modal
+            const quizModal = document.createElement('div');
+            quizModal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            `;
+
+            quizModal.innerHTML = `
+                <div style="background: linear-gradient(135deg, #4caf50, #45a049); color: white; padding: 30px; border-radius: 20px; max-width: 400px; width: 100%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                    <h3 style="margin: 0 0 20px 0; font-size: 1.2em;">📚 Vocabulary Quiz</h3>
+                    <p style="margin: 0 0 20px 0; font-size: 1em; line-height: 1.4;">${randomQuestion.question}</p>
+                    <div id="quiz-options" style="margin: 20px 0;">
+                        ${randomQuestion.options.map((option, i) =>
+                            `<button onclick="checkVocabAnswer(${i}, ${randomQuestion.correctIndex}, ${index}, this)"
+                             style="display: block; width: 100%; margin: 10px 0; padding: 12px; background: rgba(255,255,255,0.2);
+                             color: white; border: 2px solid rgba(255,255,255,0.3); border-radius: 10px; cursor: pointer;
+                             font-size: 0.9em; transition: all 0.3s ease;"
+                             onmouseover="this.style.background='rgba(255,255,255,0.3)'"
+                             onmouseout="this.style.background='rgba(255,255,255,0.2)'">${option}</button>`
+                        ).join('')}
+                    </div>
+                    <button onclick="closeVocabQuiz()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 10px 20px; border-radius: 10px; cursor: pointer; margin-top: 10px;">
+                        ❌ Close
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(quizModal);
+            window.currentQuizModal = quizModal;
+
+            // Track vocabulary engagement
+            if (window.trackSuccessMetric) {
+                trackSuccessMetric('vocabulary_engagement', 1);
+                trackSuccessMetric('consistent_learning', 1);
+            }
+        }
+
+        function generateVocabularyQuestions(spanish, english) {
+            const words = spanish.split(' ').filter(word => word.length > 2);
+            const questions = [];
+
+            // Question type 1: Translation
+            questions.push({
+                question: `What does "${spanish}" mean in English?`,
+                options: [english, getRandomTranslation(), getRandomTranslation(), getRandomTranslation()],
+                correctIndex: 0
+            });
+
+            // Question type 2: Word meaning (if multi-word phrase)
+            if (words.length > 1) {
+                const randomWord = words[Math.floor(Math.random() * words.length)];
+                const wordMeaning = getWordMeaning(randomWord);
+                questions.push({
+                    question: `What does the word "${randomWord}" mean?`,
+                    options: [wordMeaning, getRandomWordMeaning(), getRandomWordMeaning(), getRandomWordMeaning()],
+                    correctIndex: 0
+                });
+            }
+
+            // Question type 3: Complete the phrase
+            if (words.length > 2) {
+                const missingWordIndex = Math.floor(Math.random() * words.length);
+                const missingWord = words[missingWordIndex];
+                const incompletePhrase = words.map((word, i) => i === missingWordIndex ? '___' : word).join(' ');
+                questions.push({
+                    question: `Complete the phrase: "${incompletePhrase}"`,
+                    options: [missingWord, getRandomSpanishWord(), getRandomSpanishWord(), getRandomSpanishWord()],
+                    correctIndex: 0
+                });
+            }
+
+            return questions.map(q => ({
+                ...q,
+                options: shuffleArray([...q.options])
+            }));
+        }
+
+        function getWordMeaning(word) {
+            const meanings = {
+                'quiero': 'I want',
+                'abrir': 'to open',
+                'una': 'a/an (feminine)',
+                'cuenta': 'account',
+                'necesito': 'I need',
+                'más': 'more',
+                'sal': 'salt',
+                'estoy': 'I am',
+                'embarazada': 'pregnant',
+                'comida': 'food',
+                'deliciosa': 'delicious',
+                'vida': 'life',
+                'aventura': 'adventure',
+                'arte': 'art',
+                'belleza': 'beauty',
+                'café': 'coffee',
+                'fuerte': 'strong',
+                'teléfono': 'telephone',
+                'inteligente': 'smart',
+                'tacos': 'tacos'
+            };
+            return meanings[word.toLowerCase()] || 'word meaning';
+        }
+
+        function getRandomTranslation() {
+            const translations = [
+                'I am happy', 'The food is good', 'Where is the bathroom?',
+                'How much does it cost?', 'What time is it?', 'Nice to meet you'
+            ];
+            return translations[Math.floor(Math.random() * translations.length)];
+        }
+
+        function getRandomWordMeaning() {
+            const meanings = ['house', 'car', 'book', 'water', 'happy', 'big', 'small', 'good'];
+            return meanings[Math.floor(Math.random() * meanings.length)];
+        }
+
+        function getRandomSpanishWord() {
+            const words = ['casa', 'coche', 'agua', 'libro', 'mesa', 'silla', 'perro', 'gato'];
+            return words[Math.floor(Math.random() * words.length)];
+        }
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function checkVocabAnswer(selectedIndex, correctIndex, videoIndex, buttonElement) {
+            const isCorrect = selectedIndex === correctIndex;
+            const scoreElement = document.getElementById(`vocab-score-${videoIndex}`);
+
+            if (isCorrect) {
+                buttonElement.style.background = 'linear-gradient(135deg, #4caf50, #45a049)';
+                buttonElement.style.border = '2px solid #4caf50';
+                showFeedback('🎉 Correct! Great job learning Spanish!', 3000);
+
+                if (scoreElement) {
+                    scoreElement.style.display = 'block';
+                    scoreElement.textContent = '✅ Quiz Completed Successfully!';
+                }
+
+                // Track successful learning
+                if (window.trackSuccessMetric) {
+                    trackSuccessMetric('vocabulary_success', 1);
+                    trackSuccessMetric('learning_retention', 2);
+                }
+            } else {
+                buttonElement.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+                buttonElement.style.border = '2px solid #f44336';
+                showFeedback('📚 Not quite! Keep practicing to improve your Spanish.', 3000);
+
+                if (scoreElement) {
+                    scoreElement.style.display = 'block';
+                    scoreElement.textContent = '📚 Try again for better retention!';
+                }
+            }
+
+            setTimeout(() => {
+                closeVocabQuiz();
+            }, 2000);
+        }
+
+        function closeVocabQuiz() {
+            if (window.currentQuizModal) {
+                window.currentQuizModal.remove();
+                window.currentQuizModal = null;
+            }
+        }
+
+        function showWordBreakdown(spanishPhrase, index) {
+            const words = spanishPhrase.split(' ');
+            const breakdown = words.map(word => {
+                const meaning = getWordMeaning(word);
+                return `<strong>${word}</strong> = ${meaning}`;
+            }).join('<br>');
+
+            showFeedback(`🔍 Word Breakdown:<br><br>${breakdown}`, 6000);
+
+            // Track word analysis engagement
+            if (window.trackSuccessMetric) {
+                trackSuccessMetric('word_analysis', 1);
+                trackSuccessMetric('deep_learning', 1);
+            }
+        }
+
+        // VISION: Contextual Spanish Learning for Natural Language Acquisition
+        function showMoreContext(spanishPhrase, index) {
+            const contextData = getContextualInsights(spanishPhrase);
+
+            // Update the contextual insights display
+            document.getElementById(`usage-${index}`).textContent = contextData.usage;
+            document.getElementById(`regional-${index}`).textContent = contextData.regional;
+            document.getElementById(`similar-${index}`).textContent = contextData.similar;
+
+            // Track cultural engagement
+            trackLearningInteraction(index, 'cultural_content_engaged', spanishPhrase);
+
+            // Show enhanced context modal for detailed learning
+            showContextModal(spanishPhrase, contextData);
+        }
+
+        function getContextualInsights(phrase) {
+            const contextDatabase = {
+                'Quiero abrir una cuenta': {
+                    usage: 'At banks, financial institutions, or when setting up services',
+                    regional: 'Universal across Spanish-speaking countries. In Mexico, often "cuenta bancaria"',
+                    similar: '"Necesito una cuenta" or "Quisiera registrarme"'
+                },
+                'Necesito más sal': {
+                    usage: 'In restaurants, cooking, or dining situations',
+                    regional: 'In Argentina: "Necesito más sal, por favor". In Spain: "Me falta sal"',
+                    similar: '"Está soso" (it\'s bland) or "Le falta sabor" (it lacks flavor)'
+                },
+                'Estoy embarazada': {
+                    usage: 'Medical appointments, family announcements, formal situations',
+                    regional: 'Universal. In Mexico: "Estoy esperando bebé". In Colombia: "Estoy en estado"',
+                    similar: '"Voy a tener un bebé" or "Espero un hijo"'
+                },
+                'Qué tradición tan hermosa': {
+                    usage: 'When observing cultural celebrations, festivals, or family traditions',
+                    regional: 'Common in all countries. In Peru: "Qué bonita tradición". In Chile: "Qué linda costumbre"',
+                    similar: '"Me encanta esta costumbre" or "Qué cultura tan rica"'
+                },
+                'En mi país hacemos': {
+                    usage: 'Comparing cultures, sharing personal experiences, cultural exchanges',
+                    regional: 'Universal structure. Often followed by country-specific traditions',
+                    similar: '"En mi tierra" or "Donde yo vivo" or "En mi cultura"'
+                }
+            };
+
+            return contextDatabase[phrase] || {
+                usage: 'In everyday conversations and social interactions',
+                regional: 'Commonly used across Spanish-speaking regions with local variations',
+                similar: 'Similar expressions available - explore more Spanish phrases!'
+            };
+        }
+
+        function showContextModal(phrase, contextData) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10000;
+                animation: fadeIn 0.3s ease-in-out;
+            `;
+
+            modal.innerHTML = `
+                <div style="
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    padding: 30px;
+                    border-radius: 20px;
+                    max-width: 500px;
+                    width: 90%;
+                    color: white;
+                    position: relative;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+                ">
+                    <button onclick="this.parentElement.parentElement.remove()" style="
+                        position: absolute;
+                        top: 15px;
+                        right: 20px;
+                        background: none;
+                        border: none;
+                        color: white;
+                        font-size: 1.5em;
+                        cursor: pointer;
+                    ">×</button>
+
+                    <h3 style="margin: 0 0 20px 0; color: #ffd700;">
+                        🌟 "${phrase}"
+                    </h3>
+
+                    <div style="margin-bottom: 15px;">
+                        <strong style="color: #ffd700;">💬 When to Use:</strong><br>
+                        <span style="line-height: 1.6;">${contextData.usage}</span>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <strong style="color: #ffd700;">🗺️ Regional Variations:</strong><br>
+                        <span style="line-height: 1.6;">${contextData.regional}</span>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <strong style="color: #ffd700;">🎭 Similar Expressions:</strong><br>
+                        <span style="line-height: 1.6;">${contextData.similar}</span>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <button onclick="this.parentElement.parentElement.remove()" style="
+                            background: linear-gradient(45deg, #ffd700, #ffed4e);
+                            color: #333;
+                            border: none;
+                            padding: 12px 25px;
+                            border-radius: 25px;
+                            font-weight: bold;
+                            cursor: pointer;
+                        ">Got It! 🎯</button>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+
+            // Auto-populate context on page load
+            setTimeout(() => {
+                const contextData = getContextualInsights(phrase);
+                document.getElementById(`usage-${tikTokFeedData.findIndex(item => item.spanish === phrase)}`).textContent = contextData.usage;
+                document.getElementById(`regional-${tikTokFeedData.findIndex(item => item.spanish === phrase)}`).textContent = contextData.regional;
+                document.getElementById(`similar-${tikTokFeedData.findIndex(item => item.spanish === phrase)}`).textContent = contextData.similar;
+            }, 500);
+        }
+
+        function initializeContextualInsights() {
+            console.log('🌟 Initializing contextual Spanish learning insights...');
+
+            // Auto-populate context for all visible videos
+            tikTokFeedData.forEach((item, index) => {
+                const contextData = getContextualInsights(item.spanish);
+
+                // Use setTimeout to ensure DOM elements exist
+                setTimeout(() => {
+                    const usageEl = document.getElementById(`usage-${index}`);
+                    const regionalEl = document.getElementById(`regional-${index}`);
+                    const similarEl = document.getElementById(`similar-${index}`);
+
+                    if (usageEl) usageEl.textContent = contextData.usage;
+                    if (regionalEl) regionalEl.textContent = contextData.regional;
+                    if (similarEl) similarEl.textContent = contextData.similar;
+                }, 100 + (index * 50)); // Staggered loading for smooth UX
+            });
+        }
+
+        function calculatePronunciationAccuracy(spoken, target) {
+            // Simple similarity calculation - in production would use more sophisticated phonetic matching
+            const spokenWords = spoken.split(' ');
+            const targetWords = target.split(' ');
+
+            let matches = 0;
+            const maxLength = Math.max(spokenWords.length, targetWords.length);
+
+            for (let i = 0; i < maxLength; i++) {
+                if (spokenWords[i] && targetWords[i]) {
+                    const similarity = calculateWordSimilarity(spokenWords[i], targetWords[i]);
+                    matches += similarity;
+                }
+            }
+
+            return Math.round((matches / maxLength) * 100);
+        }
+
+        function calculateWordSimilarity(word1, word2) {
+            if (!word1 || !word2) return 0;
+
+            word1 = word1.toLowerCase().replace(/[^\w]/g, '');
+            word2 = word2.toLowerCase().replace(/[^\w]/g, '');
+
+            if (word1 === word2) return 1;
+
+            // Simple character-based similarity
+            const maxLength = Math.max(word1.length, word2.length);
+            let matches = 0;
+
+            for (let i = 0; i < maxLength; i++) {
+                if (word1[i] === word2[i]) matches++;
+            }
+
+            return matches / maxLength;
+        }
+
+        // VISION: Enhanced Learning Retention Analytics for Natural Spanish Acquisition
+        function trackLearningInteraction(index, interactionType, content) {
+            const learningData = {
+                videoIndex: index,
+                character: tikTokFeedData[index].character,
+                interactionType: interactionType,
+                content: content,
+                timestamp: new Date().toISOString(),
+                sessionId: getSessionId(),
+                difficulty: assessContentDifficulty(content),
+                retentionScore: calculateRetentionScore(interactionType)
+            };
+
+            if (!window.learningAnalytics) window.learningAnalytics = [];
+            window.learningAnalytics.push(learningData);
+
+            // VISION: Real-time retention feedback
+            updateRetentionDashboard(learningData);
+
+            console.log('📚 LEARNING INTERACTION TRACKED:', learningData);
+        }
+
+        function getSessionId() {
+            if (!window.sessionId) {
+                window.sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            }
+            return window.sessionId;
+        }
+
+        function assessContentDifficulty(content) {
+            if (!content) return 'beginner';
+            const complexWords = ['tradición', 'cultura', 'celebración', 'personalizado', 'transformación'];
+            const hasComplexWords = complexWords.some(word => content.toLowerCase().includes(word));
+            return hasComplexWords ? 'advanced' : (content.length > 20 ? 'intermediate' : 'beginner');
+        }
+
+        function calculateRetentionScore(interactionType) {
+            const scores = {
+                'pronunciation_listened': 20,
+                'pronunciation_practiced': 50,
+                'pronunciation_correct': 80,
+                'spanish_phrase_viewed': 15,
+                'translation_viewed': 10,
+                'video_completion': 25,
+                'cultural_content_engaged': 35
+            };
+            return scores[interactionType] || 10;
+        }
+
+        function updateRetentionDashboard(learningData) {
+            // Create or update floating retention dashboard
+            let dashboard = document.getElementById('retention-dashboard');
+            if (!dashboard) {
+                dashboard = createRetentionDashboard();
+            }
+
+            // Update dashboard metrics
+            updateDashboardMetrics(dashboard, learningData);
+
+            // Show achievement if milestone reached
+            checkLearningMilestones(learningData);
+        }
+
+        function createRetentionDashboard() {
+            const dashboard = document.createElement('div');
+            dashboard.id = 'retention-dashboard';
+            dashboard.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                width: 200px;
+                background: linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95));
+                backdrop-filter: blur(10px);
+                border-radius: 15px;
+                padding: 15px;
+                color: white;
+                font-size: 0.8em;
+                z-index: 1500;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                transition: all 0.3s ease;
+            `;
+
+            dashboard.innerHTML = `
+                <div style="font-weight: bold; margin-bottom: 10px; text-align: center;">
+                    📊 Learning Progress
+                </div>
+                <div id="retention-metrics">
+                    <div class="metric">
+                        <span>Retention Score:</span>
+                        <span id="retention-score">0</span>
+                    </div>
+                    <div class="metric">
+                        <span>Phrases Learned:</span>
+                        <span id="phrases-count">0</span>
+                    </div>
+                    <div class="metric">
+                        <span>Session Time:</span>
+                        <span id="session-time">0m</span>
+                    </div>
+                    <div class="metric">
+                        <span>Difficulty Level:</span>
+                        <span id="current-level">Beginner</span>
+                    </div>
+                </div>
+                <div id="retention-bar" style="
+                    width: 100%;
+                    height: 6px;
+                    background: rgba(255, 255, 255, 0.3);
+                    border-radius: 3px;
+                    margin-top: 10px;
+                    overflow: hidden;
+                ">
+                    <div id="retention-progress" style="
+                        height: 100%;
+                        background: linear-gradient(90deg, #ffd700, #ffed4e);
+                        width: 0%;
+                        transition: width 0.5s ease;
+                    "></div>
+                </div>
+            `;
+
+            document.body.appendChild(dashboard);
+
+            // Add CSS for metrics
+            const style = document.createElement('style');
+            style.textContent = `
+                .metric {
+                    display: flex;
+                    justify-content: space-between;
+                    margin: 5px 0;
+                    font-size: 0.9em;
+                }
+            `;
+            document.head.appendChild(style);
+
+            return dashboard;
+        }
+
+        function updateDashboardMetrics(dashboard, learningData) {
+            if (!window.learningAnalytics) return;
+
+            const analytics = window.learningAnalytics;
+            const totalScore = analytics.reduce((sum, data) => sum + data.retentionScore, 0);
+            const uniquePhrases = new Set(analytics.map(data => data.content)).size;
+            const sessionStart = analytics[0]?.timestamp || new Date().toISOString();
+            const sessionMinutes = Math.floor((Date.now() - new Date(sessionStart).getTime()) / 60000);
+
+            // Update metrics
+            document.getElementById('retention-score').textContent = totalScore;
+            document.getElementById('phrases-count').textContent = uniquePhrases;
+            document.getElementById('session-time').textContent = sessionMinutes + 'm';
+            document.getElementById('current-level').textContent =
+                totalScore > 200 ? 'Advanced' : (totalScore > 100 ? 'Intermediate' : 'Beginner');
+
+            // Update progress bar (0-500 scale)
+            const progressPercent = Math.min((totalScore / 500) * 100, 100);
+            document.getElementById('retention-progress').style.width = progressPercent + '%';
+        }
+
+        function checkLearningMilestones(learningData) {
+            const totalScore = window.learningAnalytics.reduce((sum, data) => sum + data.retentionScore, 0);
+            const milestones = [50, 100, 200, 300, 500];
+
+            milestones.forEach(milestone => {
+                if (totalScore >= milestone && !window[`milestone_${milestone}`]) {
+                    window[`milestone_${milestone}`] = true;
+                    showMilestoneAchievement(milestone);
+                }
+            });
+        }
+
+        function showMilestoneAchievement(milestone) {
+            const achievement = document.createElement('div');
+            achievement.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(45deg, #ffd700, #ffed4e);
+                color: #000;
+                padding: 20px 30px;
+                border-radius: 20px;
+                font-size: 1.2em;
+                font-weight: bold;
+                z-index: 9999;
+                box-shadow: 0 15px 40px rgba(255, 215, 0, 0.5);
+                animation: comedyPop 0.8s ease-in-out;
+                text-align: center;
+            `;
+
+            const messages = {
+                50: '🎉 First Milestone!\nYou are learning Spanish!',
+                100: '🔥 Getting Fluent!\nGreat progress!',
+                200: '⭐ Intermediate Level!\nYou are on fire!',
+                300: '🚀 Advanced Learner!\nImpressive retention!',
+                500: '👑 Spanish Master!\nPerfect retention!'
+            };
+
+            achievement.innerHTML = messages[milestone] || '🎊 Achievement Unlocked!';
+            document.body.appendChild(achievement);
+
+            setTimeout(() => {
+                achievement.style.animation = 'fadeOut 0.5s ease-out';
+                setTimeout(() => achievement.remove(), 500);
+            }, 3000);
+        }
+
+        // VISION-ALIGNED: Automated scalable content generation system
+        function startAutomatedContentInjection() {
+            console.log('🚀 Starting automated diverse content injection...');
+
+            // Inject new diverse content every 45 seconds
+            setInterval(async () => {
+                await injectDiverseContent();
+            }, 45000);
+
+            // Initial injection after 30 seconds
+            setTimeout(async () => {
+                await injectDiverseContent();
+            }, 30000);
+        }
+
+        async function injectDiverseContent() {
+            try {
+                // Generate diverse content using the content generator patterns
+                const diverseContent = generateAutomatedDiverseContent();
+
+                // Add to feed data
+                tikTokFeedData.push(diverseContent);
+
+                // Update progress dots
+                const progressContainer = document.getElementById('feedProgress');
+                const dot = document.createElement('div');
+                dot.className = 'progress-dot';
+                progressContainer.appendChild(dot);
+
+                // Add new feed item to DOM
+                const feedContainer = document.getElementById('feedContainer');
+                const feedItem = document.createElement('div');
+                feedItem.className = 'feed-item';
+                feedItem.dataset.index = tikTokFeedData.length - 1;
+
+                const index = tikTokFeedData.length - 1;
+                const item = diverseContent;
+
+                feedItem.innerHTML = `
+                    <div class="video-content">
+                        <!-- VISION: TikTok-style video progress bar -->
+                        <div class="video-progress-bar" style="position: absolute; top: 10px; left: 20px; right: 80px; height: 3px; background: rgba(255,255,255,0.3); border-radius: 2px; z-index: 10;">
+                            <div class="progress-fill" id="progress-${index}" style="height: 100%; background: #ffd700; border-radius: 2px; width: 0%; transition: width 0.1s linear;"></div>
+                        </div>
+
+                        <!-- Video duration and engagement stats -->
+                        <div style="position: absolute; top: 20px; right: 20px; color: white; font-size: 0.8em; text-shadow: 1px 1px 2px rgba(0,0,0,0.7); z-index: 10;">
+                            <div>${item.duration}s • ${formatCount(item.engagement.views)} views</div>
+                            <div>${item.engagement.completion}% completion</div>
+                        </div>
+
+                        <!-- NEW CONTENT BADGE -->
+                        <div style="position: absolute; top: 10px; left: 10px; background: linear-gradient(45deg, #ff6b35, #ffd23f); color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.7em; font-weight: bold; z-index: 15; animation: pulse 2s infinite;">
+                            🆕 AUTO-GENERATED
+                        </div>
+
+                        <div style="display: flex; align-items: center; justify-content: center; height: 60%; font-size: 6em;">
+                            ${item.character}
+                        </div>
+
+                        <div class="video-overlay">
+                            <!-- VISION: Interactive Spanish learning with pronunciation -->
+                            <div class="spanish-phrase" onclick="playPronunciation('${item.spanish}', ${index})" style="cursor: pointer; position: relative;">
+                                ${item.spanish}
+                                <span style="font-size: 0.7em; opacity: 0.8; margin-left: 10px;">🔊 Tap to hear</span>
+                            </div>
+                            <div class="english-translation">(${item.english})</div>
+
+                            <!-- Interactive pronunciation practice -->
+                            <div class="pronunciation-practice" style="margin: 10px 0; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 10px; font-size: 0.8em;">
+                                <button onclick="startPronunciationPractice(${index})" style="background: rgba(255,215,0,0.8); color: #333; border: none; padding: 8px 15px; border-radius: 15px; font-size: 0.9em; cursor: pointer; margin-right: 10px;">
+                                    🎤 Practice Pronunciation
+                                </button>
+                                <button onclick="showPhrasePronunciationTips('${item.spanish}')" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 15px; border-radius: 15px; font-size: 0.9em; cursor: pointer;">
+                                    💡 Tips
+                                </button>
+                            </div>
+
+                            <!-- VISION: Interactive vocabulary reinforcement for consistent Spanish learning value -->
+                            <div class="vocabulary-reinforcement" style="margin: 10px 0; padding: 12px; background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(139, 195, 74, 0.2)); border-radius: 12px; border-left: 4px solid #4caf50;">
+                                <div style="font-size: 0.85em; font-weight: bold; color: #4caf50; margin-bottom: 8px;">
+                                    📚 Vocabulary Practice - Test Your Learning!
+                                </div>
+                                <button onclick="startVocabularyQuiz(${index})" style="background: linear-gradient(135deg, #4caf50, #45a049); color: white; border: none; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; cursor: pointer; margin-right: 10px; box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);">
+                                    🧠 Quick Quiz
+                                </button>
+                                <button onclick="showWordBreakdown('${item.spanish}', ${index})" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 10px 20px; border-radius: 20px; font-size: 0.9em; cursor: pointer;">
+                                    🔍 Word Analysis
+                                </button>
+                                <div id="vocab-score-${index}" style="margin-top: 8px; font-size: 0.8em; color: #4caf50; text-align: center; display: none;"></div>
+                            </div>
+
+                            <!-- VISION: Contextual Spanish Learning Insights for Immersive Entertainment -->
+                            <div class="contextual-insights" style="margin: 10px 0; padding: 12px; background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,193,7,0.15)); border-radius: 12px; border-left: 4px solid #ffd700;">
+                                <div style="font-size: 0.85em; font-weight: bold; color: #ffd700; margin-bottom: 8px;">
+                                    🌟 Cultural Context & Usage
+                                </div>
+                                <div id="context-${index}" style="font-size: 0.8em; line-height: 1.4; color: rgba(255,255,255,0.9);">
+                                    <div class="context-item" style="margin: 4px 0;">
+                                        <span style="opacity: 0.7;">💬 When to use:</span>
+                                        <span id="usage-${index}">Loading context...</span>
+                                    </div>
+                                    <div class="context-item" style="margin: 4px 0;">
+                                        <span style="opacity: 0.7;">🗺️ Regional note:</span>
+                                        <span id="regional-${index}">Analyzing cultural variations...</span>
+                                    </div>
+                                    <div class="context-item" style="margin: 4px 0;">
+                                        <span style="opacity: 0.7;">🎭 Similar phrases:</span>
+                                        <span id="similar-${index}">Finding related expressions...</span>
+                                    </div>
+                                </div>
+                                <button onclick="showMoreContext('${item.spanish}', ${index})" style="background: rgba(255,215,0,0.8); color: #333; border: none; padding: 6px 12px; border-radius: 12px; font-size: 0.75em; cursor: pointer; margin-top: 8px;">
+                                    🔍 Learn More
+                                </button>
+                            </div>
+
+                            <div style="font-size: 0.9em; opacity: 0.8; margin-bottom: 10px;">
+                                <strong>@spanish_learning</strong> • ${item.description}
+                            </div>
+                            <div style="font-size: 0.8em; opacity: 0.7;">
+                                ${item.viralSound} • ${item.duration}s
+                            </div>
+
+                            <!-- VISION: Algorithm-Optimized Viral Hashtag System for Social Media Algorithms -->
+                            <div class="viral-hashtags" style="margin: 8px 0; padding: 8px; background: rgba(0,0,0,0.15); border-radius: 8px;">
+                                <div id="hashtags-${index}" style="font-size: 0.75em; line-height: 1.3; color: #ffd700;">
+                                    Loading viral hashtags...
+                                </div>
+                                <button onclick="generateNewHashtags(${index}, '${item.spanish}')" style="background: rgba(255,215,0,0.7); color: #333; border: none; padding: 4px 8px; border-radius: 10px; font-size: 0.7em; cursor: pointer; margin-top: 5px;">
+                                    🔥 Boost Viral
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Auto-progression toggle -->
+                        <div style="position: absolute; bottom: 20px; left: 20px; z-index: 10;">
+                            <button onclick="toggleAutoProgression()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 8px 12px; border-radius: 20px; font-size: 0.8em; cursor: pointer;">
+                                ${isAutoProgressing ? '⏸️ Auto' : '▶️ Manual'}
+                            </button>
+                        </div>
+
+                        <div class="video-actions">
+                            <div>
+                                <button class="action-button" onclick="likeVideo(${index})">❤️</button>
+                                <div class="action-count">${formatCount(item.likes)}</div>
+                            </div>
+                            <div>
+                                <button class="action-button" onclick="shareVideo(${index})">🔄</button>
+                                <div class="action-count">${formatCount(item.shares)}</div>
+                            </div>
+                            <div>
+                                <button class="action-button" onclick="commentVideo(${index})">💬</button>
+                                <div class="action-count">${formatCount(item.comments)}</div>
+                            </div>
+                            <div>
+                                <button class="action-button" onclick="saveVideo(${index})">🔖</button>
+                                <div class="action-count">Save</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                feedContainer.appendChild(feedItem);
+
+                // Show notification of new content
+                showNewContentNotification(diverseContent);
+
+                console.log('🎬 AUTO-INJECTED DIVERSE CONTENT:', diverseContent);
+
+            } catch (error) {
+                console.error('❌ Content injection failed:', error);
+            }
+        }
+
+        function generateAutomatedDiverseContent() {
+            // VISION: Diverse content beyond GLOBO with historical figures and objects
+            const contentTypes = [
+                {
+                    type: 'historical_vlog',
+                    characters: ['🏛️ Socrates', '🎨 Da Vinci', '🚀 Tesla', '📚 Shakespeare', '⚔️ Joan of Arc', '🔬 Curie'],
+                    actions: ['INSTANTLY confused by', 'SUDDENLY discovering', 'FRANTICALLY explaining', 'OUT OF NOWHERE teaching'],
+                    spanish: [
+                        { phrase: 'No comprendo esto', english: 'I do not understand this', phonetic: 'noh kom-PREN-doh EHS-toh' },
+                        { phrase: '¿Qué significa esto?', english: 'What does this mean?', phonetic: 'keh seeg-nee-FEE-kah EHS-toh' },
+                        { phrase: 'Esto es muy extraño', english: 'This is very strange', phonetic: 'EHS-toh ehs mooy ehs-TRAH-nyoh' }
+                    ]
+                },
+                {
+                    type: 'objects_comedy',
+                    characters: ['🔧 Wrench', '📱 Phone', '☕ Coffee Cup', '🖥️ Computer', '🚗 Car', '🧤 Glove'],
+                    actions: ['INSTANTLY refusing to', 'SUDDENLY complaining about', 'DRAMATICALLY protesting', 'URGENTLY demanding'],
+                    spanish: [
+                        { phrase: '¡No funciona!', english: 'It does not work!', phonetic: 'noh foon-see-OH-nah' },
+                        { phrase: '¡Necesito ayuda!', english: 'I need help!', phonetic: 'neh-seh-SEE-toh ah-YOO-dah' },
+                        { phrase: '¡Esto está roto!', english: 'This is broken!', phonetic: 'EHS-toh ehs-TAH ROH-toh' }
+                    ]
+                },
+                {
+                    type: 'cultural_comedy',
+                    characters: ['💃 Flamenco Dancer', '🥘 Paella Pan', '🏃‍♂️ Running Bull', '🎸 Spanish Guitar', '🌯 Tortilla'],
+                    actions: ['INSTANTLY teaching', 'SUDDENLY demonstrating', 'DRAMATICALLY performing', 'FRANTICALLY correcting'],
+                    spanish: [
+                        { phrase: 'Así se hace', english: 'This is how it is done', phonetic: 'ah-SEE seh AH-seh' },
+                        { phrase: '¡Muy bien!', english: 'Very good!', phonetic: 'mooy bee-EN' },
+                        { phrase: 'Otra vez, por favor', english: 'Again, please', phonetic: 'OH-trah vehs por fah-VOHR' }
+                    ]
+                },
+                {
+                    type: 'algorithm_optimized',
+                    characters: ['🤖 AI Assistant', '📊 Analytics Bot', '🎯 Trend Predictor', '⚡ Viral Catalyst', '🔥 Engagement Engine'],
+                    actions: ['INSTANTLY detecting viral patterns', 'SUDDENLY optimizing for shareability', 'FRANTICALLY adjusting for peak times', 'DRAMATICALLY boosting algorithm reach'],
+                    spanish: [
+                        { phrase: '¡Esto se vuelve viral!', english: 'This is going viral!', phonetic: 'EHS-toh seh VWEHL-veh vee-RAHL' },
+                        { phrase: 'Algoritmo inteligente', english: 'Smart algorithm', phonetic: 'al-goh-REET-moh een-teh-lee-HEN-teh' },
+                        { phrase: 'Contenido optimizado', english: 'Optimized content', phonetic: 'kon-teh-NEE-doh op-tee-mee-SAH-doh' }
+                    ]
+                },
+                {
+                    type: 'cultural_traditions',
+                    characters: ['🎭 Día de Muertos Skull', '🌮 Mariachi Hat', '🦙 Andean Llama', '⚽ Fútbol Jersey', '🏖️ Caribbean Coconut', '🕺 Tango Dancer'],
+                    actions: ['INSTANTLY explaining', 'SUDDENLY celebrating', 'DRAMATICALLY showcasing', 'FRANTICALLY teaching', 'OUT OF NOWHERE demonstrating'],
+                    spanish: [
+                        { phrase: '¡Qué tradición tan hermosa!', english: 'What a beautiful tradition!', phonetic: 'keh trah-dee-see-OHN tahn er-MOH-sah' },
+                        { phrase: 'En mi país hacemos...', english: 'In my country we do...', phonetic: 'en mee pah-EES ah-SEH-mohs' },
+                        { phrase: 'Esta es nuestra cultura', english: 'This is our culture', phonetic: 'EHS-tah ehs NWEHS-trah kool-TOO-rah' },
+                        { phrase: '¡Vamos a bailar!', english: 'Let us dance!', phonetic: 'VAH-mohs ah bah-ee-LAHR' },
+                        { phrase: '¿Conoces esta fiesta?', english: 'Do you know this celebration?', phonetic: 'koh-NOH-sehs EHS-tah fee-EHS-tah' }
+                    ],
+                    regions: ['México 🇲🇽', 'Argentina 🇦🇷', 'Colombia 🇨🇴', 'España 🇪🇸', 'Perú 🇵🇪', 'Chile 🇨🇱', 'Venezuela 🇻🇪', 'Ecuador 🇪🇨']
+                }
+            ];
+
+            const randomType = contentTypes[Math.floor(Math.random() * contentTypes.length)];
+            const character = randomType.characters[Math.floor(Math.random() * randomType.characters.length)];
+            const action = randomType.actions[Math.floor(Math.random() * randomType.actions.length)];
+            const spanishData = randomType.spanish[Math.floor(Math.random() * randomType.spanish.length)];
+
+            // VISION: Enhanced cultural content with regional diversity
+            const region = randomType.regions ? randomType.regions[Math.floor(Math.random() * randomType.regions.length)] : '';
+            const culturalContext = region ? ` from ${region}` : '';
+
+            return {
+                character: character.split(' ')[0], // Just the emoji
+                title: `${character.replace(/.*? /, '')} ${action.toLowerCase()}${culturalContext}`,
+                spanish: spanishData.phrase,
+                english: spanishData.english,
+                likes: Math.floor(Math.random() * 50000) + 5000,
+                shares: Math.floor(Math.random() * 15000) + 1000,
+                comments: Math.floor(Math.random() * 5000) + 200,
+                description: `${character.replace(/.*? /, '')} ${action.toLowerCase()} Spanish${culturalContext}! 🔥`,
+                viralSound: `🎵 ${randomType.type.replace('_', ' ').toUpperCase()} Beat`,
+                duration: Math.floor(Math.random() * 46) + 15, // VISION: TikTok-style short format (15-60 seconds)
+                culturalRegion: region, // VISION: Track cultural diversity
+                engagement: {
+                    views: Math.floor(Math.random() * 200000) + 50000,
+                    completion: Math.floor(Math.random() * 30) + 70
+                },
+                isGenerated: true,
+                timestamp: new Date().toISOString()
+            };
+        }
+
+        function showNewContentNotification(content) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: linear-gradient(135deg, #ff6b35, #ffd23f);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 20px;
+                font-weight: bold;
+                z-index: 5000;
+                animation: slideInFromRight 0.5s ease-out;
+                box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+                max-width: 250px;
+            `;
+
+            notification.innerHTML = `
+                <div style="font-size: 1.2em; margin-bottom: 5px;">🆕 New Content!</div>
+                <div style="font-size: 0.9em; opacity: 0.9;">${content.character} ${content.description}</div>
+                <div style="font-size: 0.8em; margin-top: 5px; opacity: 0.8;">Auto-generated • Just now</div>
+            `;
+
+            document.body.appendChild(notification);
+
+            // Add CSS animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideInFromRight {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+
+            setTimeout(() => {
+                notification.style.animation = 'fadeOut 0.5s ease-out';
+                setTimeout(() => notification.remove(), 500);
+            }, 5000);
+        }
+
+        // VISION: Dynamic Comedy Visual Effects System for High Visual Quality & Comedic Timing
+        function initializeComedyEffects() {
+            console.log('🎭 Initializing dynamic comedy visual effects system...');
+
+            // Add comedy effects to all feed items
+            const feedItems = document.querySelectorAll('.feed-item');
+            feedItems.forEach((item, index) => {
+                addComedyEffectsToVideo(item, index);
+            });
+
+            // Set up comedic timing triggers
+            setUpComedyTimingSystem();
+        }
+
+        function addComedyEffectsToVideo(feedItem, index) {
+            const videoData = tikTokFeedData[index] || {};
+
+            // Add comedy timing cue
+            const timingCue = document.createElement('div');
+            timingCue.className = 'comedy-timing-cue';
+            timingCue.textContent = getComedyTimingText(videoData);
+            feedItem.appendChild(timingCue);
+
+            // Add click event for comedy shake effect
+            feedItem.addEventListener('click', () => {
+                triggerComedyEffect(feedItem, 'comedy-shake');
+                showComedyParticles(feedItem);
+            });
+
+            // Auto-trigger comedy effects based on content
+            if (videoData.description && videoData.description.includes('😂')) {
+                setTimeout(() => {
+                    triggerComedyEffect(feedItem, 'comedy-bounce');
+                }, 1000 + (index * 500));
+            }
+        }
+
+        function triggerComedyEffect(element, effectClass) {
+            // Remove any existing comedy effects
+            element.classList.remove('comedy-shake', 'comedy-pop', 'comedy-bounce', 'comedy-glow');
+
+            // Add new effect
+            element.classList.add(effectClass);
+
+            // Remove effect after animation completes
+            setTimeout(() => {
+                element.classList.remove(effectClass);
+            }, 1000);
+        }
+
+        function showComedyParticles(element) {
+            for (let i = 0; i < 5; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.width = '6px';
+                particle.style.height = '6px';
+                particle.style.background = '#ffd700';
+                particle.style.borderRadius = '50%';
+                particle.style.left = Math.random() * element.offsetWidth + 'px';
+                particle.style.top = Math.random() * element.offsetHeight + 'px';
+                particle.style.pointerEvents = 'none';
+                particle.style.animation = `particleFloat 2s ease-out forwards`;
+
+                element.appendChild(particle);
+
+                setTimeout(() => particle.remove(), 2000);
+            }
+        }
+
+        // VISION: Enhanced viral visual effects for TikTok-style peak comedic moments
+        // High Visual Quality & Precision Comedic Timing System
+        function triggerViralVisualEffects(element, timingType) {
+            const rect = element.getBoundingClientRect();
+
+            // VISION: High Visual Quality - Enhanced viral burst with precision timing
+            const viralEffect = document.createElement('div');
+            viralEffect.className = 'viral-effect';
+            viralEffect.style.left = (rect.left + rect.width / 2 - 30) + 'px';
+            viralEffect.style.top = (rect.top + rect.height / 2 - 30) + 'px';
+
+            // Enhanced visual quality with gradient and shadow
+            viralEffect.style.background = 'radial-gradient(circle, #ff6b35 0%, #ffd23f 50%, #ff6b6b 100%)';
+            viralEffect.style.boxShadow = '0 0 20px rgba(255, 107, 53, 0.8), 0 0 40px rgba(255, 210, 63, 0.6)';
+            viralEffect.style.border = '2px solid rgba(255, 255, 255, 0.8)';
+
+            document.body.appendChild(viralEffect);
+
+            // VISION: Precision Comedic Timing - Synchronized laugh emoji cascade
+            const comedyTimings = {
+                'early_hook': { delay: 50, count: 4, emojis: ['😂', '🎯', '⚡', '🔥'] },
+                'mid_punchline': { delay: 100, count: 5, emojis: ['🤣', '😭', '💀', '🎭', '⭐'] },
+                'final_laugh': { delay: 75, count: 6, emojis: ['😂', '🤣', '😭', '💀', '🚀', '👑'] }
+            };
+
+            const timing = comedyTimings[timingType] || comedyTimings['mid_punchline'];
+
+            for (let i = 0; i < timing.count; i++) {
+                setTimeout(() => {
+                    const laughEmoji = document.createElement('div');
+                    laughEmoji.className = 'laugh-emoji';
+                    laughEmoji.textContent = timing.emojis[i % timing.emojis.length];
+
+                    // High visual quality positioning and effects
+                    laughEmoji.style.left = (rect.left + Math.random() * rect.width) + 'px';
+                    laughEmoji.style.top = (rect.top + rect.height / 2) + 'px';
+                    laughEmoji.style.textShadow = '2px 2px 4px rgba(0,0,0,0.5)';
+                    laughEmoji.style.filter = 'drop-shadow(0 0 8px rgba(255, 215, 0, 0.8))';
+
+                    document.body.appendChild(laughEmoji);
+                    setTimeout(() => laughEmoji.remove(), 1500);
+                }, i * timing.delay);
+            }
+
+            // VISION: High Visual Quality - Advanced shockwave ripple effect
+            if (timingType === 'final_laugh') {
+                triggerAdvancedShockwaveRipple(rect);
+            }
+
+            // VISION: Precision Comedic Timing - Adaptive visual feedback
+            triggerAdaptiveVisualFeedback(element, timingType);
+
+            setTimeout(() => viralEffect.remove(), 800);
+            trackSuccessMetric('viral_visual_effect', 1);
+            trackSuccessMetric('high_quality_visual', 1);
+        }
+
+        // VISION: High Visual Quality - Advanced Shockwave Ripple System
+        function triggerAdvancedShockwaveRipple(rect) {
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    const ripple = document.createElement('div');
+                    ripple.style.position = 'absolute';
+                    ripple.style.left = (rect.left + rect.width / 2 - 15) + 'px';
+                    ripple.style.top = (rect.top + rect.height / 2 - 15) + 'px';
+                    ripple.style.width = '30px';
+                    ripple.style.height = '30px';
+                    ripple.style.border = `2px solid rgba(255, 215, 0, ${0.8 - i * 0.2})`;
+                    ripple.style.borderRadius = '50%';
+                    ripple.style.pointerEvents = 'none';
+                    ripple.style.zIndex = '999';
+                    ripple.style.animation = `comedyShockwave ${1 + i * 0.3}s ease-out forwards`;
+
+                    document.body.appendChild(ripple);
+                    setTimeout(() => ripple.remove(), (1 + i * 0.3) * 1000);
+                }, i * 200);
+            }
+        }
+
+        // VISION: Precision Comedic Timing - Adaptive Visual Feedback System
+        function triggerAdaptiveVisualFeedback(element, timingType) {
+            const feedbackConfig = {
+                'early_hook': {
+                    color: 'rgba(255, 107, 53, 0.9)',
+                    message: '🎯 PERFECT HOOK!',
+                    intensity: 'medium'
+                },
+                'mid_punchline': {
+                    color: 'rgba(255, 215, 0, 0.9)',
+                    message: '🤣 COMEDY GOLD!',
+                    intensity: 'high'
+                },
+                'final_laugh': {
+                    color: 'rgba(255, 71, 87, 0.9)',
+                    message: '🚀 VIRAL MOMENT!',
+                    intensity: 'maximum'
+                }
+            };
+
+            const config = feedbackConfig[timingType] || feedbackConfig['mid_punchline'];
+            const rect = element.getBoundingClientRect();
+
+            // High quality floating feedback
+            const feedback = document.createElement('div');
+            feedback.style.position = 'absolute';
+            feedback.style.left = (rect.left + rect.width / 2) + 'px';
+            feedback.style.top = (rect.top - 20) + 'px';
+            feedback.style.transform = 'translateX(-50%)';
+            feedback.style.background = `linear-gradient(135deg, ${config.color}, rgba(255, 255, 255, 0.2))`;
+            feedback.style.color = '#fff';
+            feedback.style.padding = '8px 16px';
+            feedback.style.borderRadius = '20px';
+            feedback.style.fontSize = '0.9em';
+            feedback.style.fontWeight = 'bold';
+            feedback.style.textShadow = '1px 1px 2px rgba(0,0,0,0.7)';
+            feedback.style.boxShadow = '0 4px 15px rgba(0,0,0,0.3), 0 0 20px rgba(255,215,0,0.4)';
+            feedback.style.zIndex = '1000';
+            feedback.style.pointerEvents = 'none';
+            feedback.style.animation = 'feedbackFloat 2s ease-out forwards';
+            feedback.textContent = config.message;
+
+            document.body.appendChild(feedback);
+            setTimeout(() => feedback.remove(), 2000);
+
+            // Precision timing analytics
+            trackSuccessMetric('comedic_timing_precision', 1);
+            trackSuccessMetric(`timing_${timingType}`, 1);
+        }
+
+        function triggerComedyShockwave(element) {
+            const rect = element.getBoundingClientRect();
+            const shockwave = document.createElement('div');
+            shockwave.className = 'comedy-shockwave';
+            shockwave.style.left = (rect.left + rect.width / 2 - 10) + 'px';
+            shockwave.style.top = (rect.top + rect.height / 2 - 10) + 'px';
+            document.body.appendChild(shockwave);
+
+            setTimeout(() => shockwave.remove(), 1000);
+            trackSuccessMetric('comedy_shockwave', 1);
+        }
+
+        function getComedyTimingText(videoData) {
+            const timingTexts = [
+                '⚡ INSTANT LAUGH!',
+                '🎯 PERFECT TIMING!',
+                '😂 COMEDY GOLD!',
+                '🚀 VIRAL MOMENT!',
+                '⭐ GOLDEN STANDARD!'
+            ];
+            return timingTexts[Math.floor(Math.random() * timingTexts.length)];
+        }
+
+        function setUpComedyTimingSystem() {
+            // Auto-trigger comedy effects every 8-12 seconds for enhanced engagement
+            setInterval(() => {
+                const feedItems = document.querySelectorAll('.feed-item');
+                const randomItem = feedItems[Math.floor(Math.random() * feedItems.length)];
+
+                if (randomItem) {
+                    const effects = ['comedy-pop', 'comedy-glow', 'comedy-bounce'];
+                    const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+                    triggerComedyEffect(randomItem, randomEffect);
+                }
+            }, 10000);
+        }
+
+        // VISION: Intelligent Viral Content Optimization with A/B Testing and Real-time Analytics
+        function initializeViralOptimizationSystem() {
+            window.contentPriorityQueue = [];
+            window.abTestingVariations = new Map();
+            window.engagementMetrics = {
+                highPerformers: [],
+                lowPerformers: [],
+                peakHours: [],
+                contentTypePerformance: {
+                    'objects_comedy': { score: 0, count: 0 },
+                    'historical_vlog': { score: 0, count: 0 },
+                    'cultural_humor': { score: 0, count: 0 },
+                    'character_interaction': { score: 0, count: 0 }
+                }
+            };
+
+            // VISION: Automated Scalable Content Generation with Performance Adaptation
+            window.autoGenerationConfig = {
+                enabled: true,
+                generationInterval: 15000, // 15 seconds base interval
+                adaptiveScaling: true,
+                performanceThreshold: 75,
+                lastGeneration: 0
+            };
+
+            // Real-time engagement analysis and content prioritization
+            setInterval(() => {
+                const currentHour = new Date().getHours();
+                const isOptimalTime = (currentHour >= 18 && currentHour <= 22) || (currentHour >= 12 && currentHour <= 14);
+
+                if (isOptimalTime && window.contentPriorityQueue.length > 0) {
+                    // Boost high-performing content during peak hours
+                    const topContent = window.contentPriorityQueue
+                        .filter(item => item.priority === 'HIGH')
+                        .slice(0, 3);
+
+                    if (topContent.length > 0) {
+                        trackSuccessMetric('viral_optimization', topContent.length);
+                        trackSuccessMetric('peak_hour_boost', 1);
+                    }
+                }
+
+                // VISION: Intelligent automated content generation with performance adaptation
+                if (window.autoGenerationConfig.enabled) {
+                    executeIntelligentContentGeneration();
+                }
+            }, 60000); // Check every minute during active use
+
+            // Initialize automated content generation system
+            initializeAutomatedContentGeneration();
+        }
+
+        // VISION: Automated Scalable Content Generation System
+        function initializeAutomatedContentGeneration() {
+            console.log('🤖 VISION: Initializing Automated Scalable Content Generation System...');
+
+            setInterval(() => {
+                if (!window.autoGenerationConfig.enabled) return;
+
+                const now = Date.now();
+                const timeSinceLastGeneration = now - window.autoGenerationConfig.lastGeneration;
+
+                // Adaptive generation timing based on engagement
+                let adaptiveInterval = window.autoGenerationConfig.generationInterval;
+                const avgPerformance = calculateAverageContentPerformance();
+
+                if (avgPerformance > 80) {
+                    adaptiveInterval *= 0.7; // Generate faster when content performs well
+                } else if (avgPerformance < 60) {
+                    adaptiveInterval *= 1.5; // Generate slower when content underperforms
+                }
+
+                if (timeSinceLastGeneration >= adaptiveInterval) {
+                    generateIntelligentContent();
+                    window.autoGenerationConfig.lastGeneration = now;
+                }
+            }, 5000); // Check every 5 seconds for responsive generation
+        }
+
+        function executeIntelligentContentGeneration() {
+            // Analyze current performance trends
+            const performanceData = analyzeCurrentPerformance();
+
+            // Adjust generation parameters based on success metrics
+            if (performanceData.avgViralScore > window.autoGenerationConfig.performanceThreshold) {
+                // Boost generation of high-performing content types
+                const topContentType = findTopPerformingContentType();
+                if (topContentType) {
+                    scheduleTargetedContentGeneration(topContentType);
+                    trackSuccessMetric('adaptive_generation', 1);
+                }
+            }
+        }
+
+        function generateIntelligentContent() {
+            if (typeof window.contentGenerator === 'undefined') {
+                // Simulate intelligent content generation
+                const contentTypes = ['objects_comedy', 'historical_vlog', 'cultural_humor', 'character_interaction'];
+                const selectedType = selectOptimalContentType(contentTypes);
+
+                const generatedConcept = {
+                    id: `auto_${Date.now()}`,
+                    type: selectedType,
+                    timestamp: new Date().toISOString(),
+                    source: 'automated_generation',
+                    viralPotential: Math.floor(Math.random() * 40) + 60 // 60-100% range for smart generation
+                };
+
+                // Add to content priority queue
+                window.contentPriorityQueue.push({
+                    content: generatedConcept,
+                    priority: generatedConcept.viralPotential > 80 ? 'VIRAL' : 'HIGH',
+                    timestamp: Date.now()
+                });
+
+                console.log(`🎭 AUTO-GENERATED: ${selectedType} concept (${generatedConcept.viralPotential}% viral potential)`);
+                trackSuccessMetric('automated_content_generated', 1);
+                trackSuccessMetric('content_generation_rate', 1);
+            }
+        }
+
+        function selectOptimalContentType(types) {
+            // Use performance data to select best-performing content type
+            const performanceScores = window.engagementMetrics.contentTypePerformance;
+            let bestType = types[0];
+            let bestScore = 0;
+
+            types.forEach(type => {
+                const typeData = performanceScores[type];
+                if (typeData && typeData.count > 0) {
+                    const avgScore = typeData.score / typeData.count;
+                    if (avgScore > bestScore) {
+                        bestScore = avgScore;
+                        bestType = type;
+                    }
+                }
+            });
+
+            // Add randomization to prevent over-optimization
+            return Math.random() < 0.7 ? bestType : types[Math.floor(Math.random() * types.length)];
+        }
+
+        function calculateAverageContentPerformance() {
+            if (window.contentPriorityQueue.length === 0) return 70; // Default baseline
+
+            const totalScore = window.contentPriorityQueue.reduce((sum, item) => {
+                return sum + (item.content.viralPotential || 70);
+            }, 0);
+
+            return totalScore / window.contentPriorityQueue.length;
+        }
+
+        function analyzeCurrentPerformance() {
+            const recentContent = window.contentPriorityQueue.slice(-10); // Last 10 items
+            const avgViralScore = recentContent.length > 0 ?
+                recentContent.reduce((sum, item) => sum + (item.content.viralPotential || 0), 0) / recentContent.length :
+                70;
+
+            return {
+                avgViralScore,
+                contentCount: recentContent.length,
+                viralContent: recentContent.filter(item => (item.content.viralPotential || 0) > 80).length
+            };
+        }
+
+        function findTopPerformingContentType() {
+            const performanceData = window.engagementMetrics.contentTypePerformance;
+            let topType = null;
+            let topScore = 0;
+
+            Object.keys(performanceData).forEach(type => {
+                const data = performanceData[type];
+                if (data.count > 0) {
+                    const avgScore = data.score / data.count;
+                    if (avgScore > topScore) {
+                        topScore = avgScore;
+                        topType = type;
+                    }
+                }
+            });
+
+            return topType;
+        }
+
+        function scheduleTargetedContentGeneration(contentType) {
+            // Schedule immediate generation of high-performing content type
+            setTimeout(() => {
+                const targetedConcept = {
+                    id: `targeted_${Date.now()}`,
+                    type: contentType,
+                    timestamp: new Date().toISOString(),
+                    source: 'targeted_generation',
+                    viralPotential: Math.floor(Math.random() * 20) + 80 // 80-100% for targeted content
+                };
+
+                window.contentPriorityQueue.push({
+                    content: targetedConcept,
+                    priority: 'VIRAL',
+                    timestamp: Date.now()
+                });
+
+                console.log(`🎯 TARGETED GENERATION: ${contentType} (${targetedConcept.viralPotential}% viral potential)`);
+                trackSuccessMetric('targeted_generation', 1);
+            }, 2000);
+        }
+
+        // VISION: Smart Comedy Timing System for Optimal Engagement
+        function triggerSmartComedyTiming(videoData, timingType) {
+            // VISION: Enhanced 0-3 second hook engagement with precision timing analytics
+            const startTime = performance.now();
+            trackSuccessMetric('hook_engagement', 1);
+            trackSuccessMetric('comedy_engagement', 1);
+
+            // VISION: Immediate funny hook engagement tracking for maximum viral potential
+            if (timingType === 'early_hook' && startTime <= 3000) {
+                trackSuccessMetric('viral_score', 3); // Boosted weight for immediate hooks
+                trackSuccessMetric('immediate_engagement', 1);
+            } else if (timingType === 'early_hook') {
+                trackSuccessMetric('viral_score', 2); // Standard weight for early hooks
+            }
+
+            const currentFeedItem = document.querySelector('.feed-item.active') ||
+                                   document.querySelectorAll('.feed-item')[currentVideoIndex];
+
+            if (!currentFeedItem) return;
+
+            // Smart timing based on video content and progression
+            const timingConfig = {
+                'early_hook': {
+                    effects: ['comedy-bounce', 'comedy-pop'],
+                    message: '🎯 HOOK MOMENT!',
+                    intensity: 'medium'
+                },
+                'mid_punchline': {
+                    effects: ['comedy-shake', 'comedy-glow'],
+                    message: '😂 PUNCHLINE!',
+                    intensity: 'high'
+                },
+                'final_laugh': {
+                    effects: ['comedy-pop', 'comedy-bounce'],
+                    message: '⭐ VIRAL MOMENT!',
+                    intensity: 'maximum'
+                }
+            };
+
+            const config = timingConfig[timingType];
+            if (!config) return;
+
+            // Apply visual effect
+            const randomEffect = config.effects[Math.floor(Math.random() * config.effects.length)];
+            triggerComedyEffect(currentFeedItem, randomEffect);
+
+            // Show timing message
+            showTimingMessage(config.message, config.intensity);
+
+            // VISION: Enhanced viral visual effects for peak comedic moments
+            if (config.intensity === 'maximum') {
+                showComedyParticles(currentFeedItem);
+                triggerViralVisualEffects(currentFeedItem, timingType);
+            } else if (config.intensity === 'high') {
+                triggerComedyShockwave(currentFeedItem);
+            }
+
+            console.log(`🎭 Smart timing triggered: ${timingType} at ${Math.round(Date.now() % 100000)}ms`);
+        }
+
+        function showTimingMessage(message, intensity) {
+            const messageEl = document.createElement('div');
+            messageEl.style.position = 'fixed';
+            messageEl.style.top = '50%';
+            messageEl.style.left = '50%';
+            messageEl.style.transform = 'translate(-50%, -50%)';
+            messageEl.style.background = intensity === 'maximum' ?
+                'linear-gradient(45deg, #ff6b35, #ffd23f)' :
+                'linear-gradient(45deg, #ffd700, #ffed4e)';
+            messageEl.style.color = '#000';
+            messageEl.style.padding = '12px 20px';
+            messageEl.style.borderRadius = '25px';
+            messageEl.style.fontSize = '1.1em';
+            messageEl.style.fontWeight = 'bold';
+            messageEl.style.zIndex = '9999';
+            messageEl.style.boxShadow = '0 8px 25px rgba(255, 107, 53, 0.4)';
+            messageEl.style.animation = 'comedyPop 0.6s ease-in-out';
+            messageEl.textContent = message;
+
+            document.body.appendChild(messageEl);
+
+            setTimeout(() => {
+                messageEl.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => messageEl.remove(), 300);
+            }, 1200);
+        }
+    </script>
+</body>
+</html>

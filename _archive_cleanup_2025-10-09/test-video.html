@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Playback Test</title>
+    <style>
+        body {
+            background: #000;
+            color: #fff;
+            font-family: sans-serif;
+            padding: 20px;
+        }
+        video {
+            width: 100%;
+            max-width: 500px;
+            background: #000;
+        }
+        .info {
+            margin: 20px 0;
+            padding: 10px;
+            background: #222;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎬 Video Playback Test</h1>
+
+    <div class="info">
+        <div id="status">Loading...</div>
+        <div id="error"></div>
+    </div>
+
+    <video id="test-video" controls muted playsinline>
+        <source src="/videos/reels/Alejandro_handsome_30yearold_202509122036_.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <script>
+        const video = document.getElementById('test-video');
+        const status = document.getElementById('status');
+        const errorDiv = document.getElementById('error');
+
+        video.addEventListener('loadstart', () => {
+            status.textContent = '⏳ Loading video...';
+        });
+
+        video.addEventListener('loadedmetadata', () => {
+            status.textContent = \`✅ Video loaded! Duration: \${video.duration}s, Size: \${video.videoWidth}x\${video.videoHeight}\`;
+        });
+
+        video.addEventListener('canplay', () => {
+            status.textContent += ' | ✅ Can play';
+        });
+
+        video.addEventListener('error', (e) => {
+            const error = video.error;
+            let errorMsg = 'Unknown error';
+
+            if (error) {
+                switch (error.code) {
+                    case 1:
+                        errorMsg = 'MEDIA_ERR_ABORTED: Video fetch aborted';
+                        break;
+                    case 2:
+                        errorMsg = 'MEDIA_ERR_NETWORK: Network error while loading';
+                        break;
+                    case 3:
+                        errorMsg = 'MEDIA_ERR_DECODE: Video decoding failed';
+                        break;
+                    case 4:
+                        errorMsg = 'MEDIA_ERR_SRC_NOT_SUPPORTED: Video format not supported';
+                        break;
+                }
+                errorMsg += \` (\${error.message || 'No message'})\`;
+            }
+
+            status.textContent = '❌ Error loading video';
+            errorDiv.textContent = errorMsg;
+            errorDiv.style.color = '#ff5555';
+        });
+
+        setTimeout(() => {
+            video.play().then(() => {
+                console.log('✅ Playback started');
+            }).catch(err => {
+                console.error('❌ Playback failed:', err);
+            });
+        }, 1000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "userId": "test_rewatch_1760685058070",
+  "level": "B1",
+  "watchedVideos": [
+    "langfeed_barista_creating_insanely_202510091538_5u3rg_mp4"
+  ],
+  "interactions": [
+    {
+      "videoId": "langfeed_barista_creating_insanely_202510091538_5u3rg_mp4",
+      "type": "rewatch",
+      "timestamp": "2025-10-17T07:10:58.074Z"
+    }
+  ],
+  "interests": {},
+  "seenThemes": {},
+  "knownWords": [],
+  "behaviorPatterns": {
+    "avgCompletionRate": 0.76,
+    "avgWatchTime": 20,
+    "skipRate": 0.2,
+    "rewatchRate": 0.05
+  }
+}

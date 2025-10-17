@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🌍 Spanish Learning - Beautiful Feed</title>
+    <style>
+        /* 🍎 APPLE-INSPIRED DESIGN SYSTEM */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        :root {
+            /* Apple Silver & Metallics */
+            --silver: #e8e8ed;
+            --silver-light: #f5f5f7;
+            --silver-dark: #d2d2d7;
+
+            /* Accent Colors */
+            --blue: #007AFF;
+            --purple: #AF52DE;
+            --pink: #FF2D55;
+            --orange: #FF9500;
+            --green: #34C759;
+
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-success: linear-gradient(135deg, #34C759 0%, #00D4FF 100%);
+            --gradient-silver: linear-gradient(135deg, #f5f5f7 0%, #e8e8ed 100%);
+            --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+
+            /* Text */
+            --text-primary: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --text-white: #ffffff;
+
+            /* Shadows */
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12);
+
+            /* Radius */
+            --radius-sm: 12px;
+            --radius-md: 18px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+            background: var(--silver-light);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* CONTAINER */
+        .feed-container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 20px 16px 100px;
+        }
+
+        /* HEADER - Apple Style */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            padding: 16px 20px;
+            margin: -20px -16px 24px;
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .level-badge {
+            background: var(--gradient-silver);
+            padding: 8px 16px;
+            border-radius: var(--radius-lg);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* CARD - Instagram Rounded Style */
+        .card {
+            background: white;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* CARD HEADER */
+        .card-header {
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 0.5px solid var(--silver);
+        }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .card-meta {
+            flex: 1;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .card-subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* CARD MEDIA */
+        .card-media {
+            position: relative;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            aspect-ratio: 16 / 9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+        }
+
+        .card-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* CARD CONTENT */
+        .card-content {
+            padding: 20px;
+        }
+
+        .spanish-text {
+            font-size: 18px;
+            line-height: 1.6;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            padding: 16px;
+            background: var(--silver-light);
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--blue);
+        }
+
+        .spanish-word {
+            display: inline;
+            cursor: pointer;
+            position: relative;
+            padding: 2px 6px;
+            margin: 0 2px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .spanish-word:hover {
+            background: var(--blue);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .english-text {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            padding: 12px;
+            background: rgba(0, 122, 255, 0.05);
+            border-radius: var(--radius-sm);
+            margin-top: 12px;
+        }
+
+        /* ACTIONS - Instagram Style */
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            padding: 16px;
+            border-top: 0.5px solid var(--silver);
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .action-btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .action-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .action-btn-secondary {
+            background: var(--silver-light);
+            color: var(--text-primary);
+        }
+
+        .action-btn-secondary:hover {
+            background: var(--silver);
+        }
+
+        .action-btn.liked {
+            background: var(--gradient-success);
+            color: white;
+            animation: heartBeat 0.5s ease;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(0.95); }
+        }
+
+        /* FLOATING ACTION BUTTON */
+        .fab {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.5);
+        }
+
+        /* STATS BAR */
+        .stats-bar {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-md);
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* LOADING ANIMATION */
+        .loading {
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--silver);
+            border-top-color: var(--blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* FADE IN ANIMATION */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* PULSE ANIMATION - For word clicks */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        /* BOUNCE ANIMATION - For success feedback */
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* SHIMMER ANIMATION - For progress bars */
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .card {
+            animation: fadeInUp 0.5s ease;
+        }
+
+        /* MOBILE OPTIMIZATIONS */
+        @media (max-width: 768px) {
+            .feed-container {
+                padding: 16px 12px 100px;
+            }
+
+            .card {
+                border-radius: var(--radius-md);
+            }
+
+            .spanish-text {
+                font-size: 16px;
+            }
+
+            .stats-bar {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+                padding: 16px;
+            }
+        }
+
+        /* GLASS MORPHISM EFFECT */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* GRADIENT TEXT */
+        .gradient-text {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 🎙️ AUDIO PLAYER - Apple Style */
+        .audio-player {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: var(--gradient-silver);
+            border-radius: var(--radius-md);
+            margin-bottom: 16px;
+        }
+
+        .audio-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-shrink: 0;
+        }
+
+        .audio-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .audio-btn:active {
+            transform: scale(0.95);
+        }
+
+        .audio-btn.loading {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .audio-progress {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .audio-wave {
+            height: 32px;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .audio-bar {
+            width: 4px;
+            background: var(--blue);
+            border-radius: 2px;
+            transition: height 0.1s ease;
+        }
+
+        .audio-time {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .audio-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .speed-btn {
+            padding: 6px 12px;
+            border-radius: 12px;
+            background: white;
+            border: 1px solid var(--silver);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .speed-btn:hover {
+            background: var(--blue);
+            color: white;
+            border-color: var(--blue);
+        }
+
+        .speed-btn.active {
+            background: var(--blue);
+            color: white;
+            border-color: var(--blue);
+        }
+
+        /* 📝 ARTICLE MODAL - Apple Style */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 0.5px solid var(--silver);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: var(--silver-light);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--silver);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--silver);
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+            background: var(--silver-light);
+            transition: all 0.2s ease;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: var(--blue);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+        }
+
+        /* ARTICLE CARD SPECIAL STYLING */
+        .card.article-card {
+            background: linear-gradient(135deg, #667eea15, #764ba215);
+            border: 2px solid var(--purple);
+        }
+
+        .article-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            box-shadow: var(--shadow-md);
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: white;
+            border-radius: var(--radius-sm);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* 🌍 GLOBE AI CHARACTER & CELEBRATION SYSTEM */
+        .globe-ai-celebration {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000;
+            pointer-events: none;
+            font-size: 120px;
+            animation: globeCelebrate 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes globeCelebrate {
+            0% { transform: translate(-50%, -50%) scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.2) rotate(180deg); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1) rotate(360deg); opacity: 0; }
+        }
+
+        .celebration-particle {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1999;
+            animation: particleBurst 1s ease-out forwards;
+        }
+
+        @keyframes particleBurst {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .word-saved-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: var(--gradient-success);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(52, 199, 89, 0.4);
+            animation: badgePop 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes badgePop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        .spanish-word.saved {
+            background: var(--green);
+            color: white;
+            font-weight: 600;
+        }
+
+        .saved-words-panel {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+            z-index: 1500;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .saved-words-panel.open {
+            right: 0;
+        }
+
+        .panel-header {
+            padding: 24px;
+            border-bottom: 0.5px solid var(--silver);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .panel-title {
+            font-size: 24px;
+            font-weight: 700;
+            background: var(--gradient-success);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .panel-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: var(--silver-light);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .saved-word-item {
+            padding: 16px 24px;
+            border-bottom: 0.5px solid var(--silver-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.2s ease;
+        }
+
+        .saved-word-item:hover {
+            background: var(--silver-light);
+        }
+
+        .saved-word-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .saved-word-translation {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .remove-word-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: var(--pink);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .remove-word-btn:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .saved-words-panel {
+                width: 100%;
+                right: -100%;
+            }
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item.active {
+            color: #ff0050;
+        }
+
+        .nav-icon {
+            font-size: 24px;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">🌍 VIDA</div>
+            <div class="level-badge">
+                <span>📚</span>
+                <span id="userLevel">A2</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="feed-container">
+        <!-- STATS BAR -->
+        <div class="stats-bar">
+            <div class="stat">
+                <div class="stat-value" id="wordsLearned">47</div>
+                <div class="stat-label">Words</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="streakDays">12</div>
+                <div class="stat-label">Day Streak</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="minutesToday">23</div>
+                <div class="stat-label">Minutes</div>
+            </div>
+        </div>
+
+        <!-- DAILY GOAL WIDGET -->
+        <div id="dailyGoalWidget" style="background: white; border-radius: var(--radius-lg); padding: 20px; margin-bottom: 24px; box-shadow: var(--shadow-md); animation: fadeInUp 0.5s ease;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="font-size: 28px;">🎯</div>
+                    <div>
+                        <div style="font-size: 18px; font-weight: 700; color: var(--text-primary);">Daily Goal</div>
+                        <div style="font-size: 13px; color: var(--text-secondary);" id="goalProgressText">0/10 words saved</div>
+                    </div>
+                </div>
+                <div style="font-size: 32px; opacity: 0.3;" id="goalEmoji">🔒</div>
+            </div>
+
+            <div style="background: var(--silver); border-radius: 12px; height: 12px; overflow: hidden; position: relative;">
+                <div id="goalProgressBar" style="background: var(--gradient-primary); height: 100%; width: 0%; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 12px; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); animation: shimmer 2s infinite;"></div>
+                </div>
+            </div>
+
+            <div id="goalMessage" style="margin-top: 12px; font-size: 14px; color: var(--text-secondary); text-align: center; display: none;">
+                🎉 Goal complete! +25 XP earned
+            </div>
+        </div>
+
+        <!-- FEED CARDS -->
+        <div id="feedCards">
+            <!-- Cards dynamically loaded here -->
+        </div>
+
+        <!-- LOADING -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <!-- FLOATING ACTION BUTTONS -->
+    <button class="fab" onclick="window.location.href='/video-feed.html'" title="Video Feed" style="bottom: 384px; background: linear-gradient(135deg, #FF2D55 0%, #FF9500 100%);">
+        📹
+    </button>
+    <button class="fab" onclick="window.location.href='/achievements.html'" title="Achievements & Stats" style="bottom: 312px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);">
+        🏆
+    </button>
+    <button class="fab" onclick="window.location.href='/srs-review.html'" title="Review Cards (SRS)" style="bottom: 240px; background: var(--gradient-primary);">
+        🧠
+    </button>
+    <button class="fab" onclick="openSavedWords()" title="Saved Words" style="bottom: 168px; background: var(--gradient-success);">
+        🌍
+    </button>
+    <button class="fab" onclick="openArticleModal()" title="Generate Article" style="bottom: 96px; background: var(--gradient-success);">
+        📝
+    </button>
+    <button class="fab" onclick="loadMore()" title="Load More">+</button>
+
+    <!-- 🌍 SAVED WORDS PANEL -->
+    <div class="saved-words-panel" id="savedWordsPanel">
+        <div class="panel-header">
+            <div>
+                <div class="panel-title">🌍 Your Words</div>
+                <div style="font-size: 14px; color: var(--text-secondary); margin-top: 4px;">
+                    <span id="savedCount">0</span> words saved
+                </div>
+            </div>
+            <button class="panel-close" onclick="closeSavedWords()">✕</button>
+        </div>
+        <div id="savedWordsList" style="flex: 1; overflow-y: auto; padding: 8px 0;">
+            <!-- Saved words appear here -->
+        </div>
+    </div>
+
+    <!-- 📝 ARTICLE GENERATOR MODAL -->
+    <div class="modal" id="articleModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📝 Generate Personalized Article</h2>
+                <button class="modal-close" onclick="closeArticleModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>📚 Topic</label>
+                    <input type="text" id="articleTopic" placeholder="Spanish Food, Travel, Culture..." />
+                </div>
+                <div class="input-group">
+                    <label>🎯 Your Level</label>
+                    <select id="articleLevel">
+                        <option value="A1">A1 - Beginner</option>
+                        <option value="A2" selected>A2 - Elementary</option>
+                        <option value="B1">B1 - Intermediate</option>
+                        <option value="B2">B2 - Upper Intermediate</option>
+                        <option value="C1">C1 - Advanced</option>
+                        <option value="C2">C2 - Mastery</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>💡 Interests (comma separated)</label>
+                    <input type="text" id="articleInterests" placeholder="cooking, travel, sports, culture..." />
+                </div>
+                <button class="action-btn action-btn-primary" onclick="generateArticle()" style="width: 100%; margin-top: 16px;">
+                    ✨ Generate Article
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 🌍 BEAUTIFUL SPANISH LEARNING FEED
+        const API_BASE = 'http://localhost:3001';
+        let page = 1;
+        let loading = false;
+
+        // 🎙️ Audio System
+        const audioPlayers = {};
+        let currentPlayingId = null;
+
+        // 🌍 GLOBE AI & Word Saving System
+        const savedWords = new Set();
+        let wordTranslations = {};
+
+        async function loadFeed() {
+            if (loading) return;
+            loading = true;
+
+            try {
+                const [freqRes, gossipRes] = await Promise.all([
+                    fetch(`${API_BASE}/api/spanish/frequency?level=beginner&count=3`),
+                    fetch(`${API_BASE}/api/spanish/gossip?level=beginner&count=2`)
+                ]);
+
+                const freqData = await freqRes.json();
+                const gossipData = await gossipRes.json();
+
+                console.log('✅ API Response:', { frequency: freqData.success, gossip: gossipData.success });
+
+                const cards = [
+                    ...(freqData.words || []).map(w => ({
+                        id: 'word_' + w.word,
+                        type: 'word',
+                        icon: '📚',
+                        title: w.word.toUpperCase(),
+                        subtitle: `Spanish Word #${w.frequency} - Top ${w.frequency <= 100 ? '100' : w.frequency <= 1000 ? '1K' : '10K'}`,
+                        spanish: w.viralContext,
+                        english: w.translation,
+                        color: '#667eea',
+                        contexts: w.contexts
+                    })),
+                    ...(gossipData.items || []).map((g, i) => ({
+                        id: 'gossip_' + i,
+                        type: 'gossip',
+                        icon: '⭐',
+                        title: g.celebrity,
+                        subtitle: `Celebrity Gossip - Viral Score: ${g.viralScore || 95}`,
+                        spanish: g.gossip,
+                        english: g.translation,
+                        color: '#764ba2',
+                        vocabulary: g.vocabulary
+                    }))
+                ];
+
+                if (cards.length > 0) {
+                    renderCards(cards);
+                    console.log(`✅ Loaded ${cards.length} cards successfully!`);
+                } else {
+                    console.warn('⚠️ No cards loaded - using fallback content');
+                    loadFallbackContent();
+                }
+            } catch (error) {
+                console.error('❌ Failed to load feed:', error);
+                loadFallbackContent();
+            }
+
+            loading = false;
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function loadFallbackContent() {
+            const fallbackCards = [
+                {
+                    id: 'demo_1',
+                    type: 'word',
+                    icon: '🌍',
+                    title: 'HOLA',
+                    subtitle: 'Most Common Spanish Word',
+                    spanish: '¡Hola! ¿Cómo estás hoy? El tiempo está muy bonito.',
+                    english: 'Hello! How are you today? The weather is very nice.',
+                    color: '#667eea'
+                },
+                {
+                    id: 'demo_2',
+                    type: 'gossip',
+                    icon: '⭐',
+                    title: 'Spanish Learning Tips',
+                    subtitle: 'Daily Practice',
+                    spanish: 'Practica español cada día con contenido que te gusta.',
+                    english: 'Practice Spanish every day with content you enjoy.',
+                    color: '#764ba2'
+                }
+            ];
+            renderCards(fallbackCards);
+        }
+
+        function renderCards(cards) {
+            const container = document.getElementById('feedCards');
+
+            cards.forEach(card => {
+                const cardEl = document.createElement('div');
+                cardEl.className = card.type === 'article' ? 'card article-card' : 'card';
+
+                // Article card has special layout
+                if (card.type === 'article') {
+                    cardEl.innerHTML = `
+                        <span class="article-badge">📝 AI Generated</span>
+                        <div class="card-header">
+                            <div class="avatar" style="background: linear-gradient(135deg, ${card.color}, ${card.color}dd)">
+                                ${card.icon}
+                            </div>
+                            <div class="card-meta">
+                                <div class="card-title">${card.title}</div>
+                                <div class="card-subtitle">${card.subtitle}</div>
+                            </div>
+                        </div>
+
+                        <div class="card-content">
+                            <div class="article-meta">
+                                <div class="meta-item">
+                                    <span>🎯</span>
+                                    <span>Level: ${card.level}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span>📚</span>
+                                    <span>${card.structure}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span>💡</span>
+                                    <span>${card.interests}</span>
+                                </div>
+                            </div>
+
+                            <!-- 🎙️ Audio Player -->
+                            <div class="audio-player" id="audio-${card.id}">
+                                <button class="audio-btn" onclick="playAudio('${card.id}', '${escapeText(card.prompt)}')">
+                                    ▶️
+                                </button>
+                                <div class="audio-progress">
+                                    <div class="audio-wave" id="wave-${card.id}">
+                                        ${[8, 12, 16, 20, 16, 12, 20, 16, 12, 8, 16, 20, 16].map(h =>
+                                            `<div class="audio-bar" style="height: ${h}px"></div>`
+                                        ).join('')}
+                                    </div>
+                                    <div class="audio-time">
+                                        <span id="time-${card.id}">0:00</span>
+                                    </div>
+                                </div>
+                                <div class="audio-controls">
+                                    <button class="speed-btn" onclick="setSpeed('${card.id}', 0.75)">0.75x</button>
+                                    <button class="speed-btn active" onclick="setSpeed('${card.id}', 1)">1x</button>
+                                    <button class="speed-btn" onclick="setSpeed('${card.id}', 1.5)">1.5x</button>
+                                </div>
+                            </div>
+
+                            <div class="spanish-text">
+                                ${card.prompt}
+                            </div>
+                        </div>
+
+                        <div class="card-actions">
+                            <button class="action-btn action-btn-secondary" onclick="regenerateArticle('${card.id}')">
+                                🔄 Regenerate
+                            </button>
+                            <button class="action-btn action-btn-primary" onclick="likeCard('${card.id}', this)">
+                                ❤️ Save
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(cardEl);
+                    return;
+                }
+
+                // Normal card layout
+                cardEl.innerHTML = `
+                    <div class="card-header">
+                        <div class="avatar" style="background: linear-gradient(135deg, ${card.color}, ${card.color}dd)">
+                            ${card.icon}
+                        </div>
+                        <div class="card-meta">
+                            <div class="card-title">${card.title}</div>
+                            <div class="card-subtitle">${card.subtitle}</div>
+                        </div>
+                    </div>
+
+                    <div class="card-media" style="background: linear-gradient(135deg, ${card.color}, ${card.color}dd)">
+                        ${card.icon}
+                    </div>
+
+                    <div class="card-content">
+                        <!-- 🎙️ Audio Player -->
+                        <div class="audio-player" id="audio-${card.id}">
+                            <button class="audio-btn" onclick="playAudio('${card.id}', '${escapeText(card.spanish)}')">
+                                ▶️
+                            </button>
+                            <div class="audio-progress">
+                                <div class="audio-wave" id="wave-${card.id}">
+                                    ${[8, 12, 16, 20, 16, 12, 20, 16, 12, 8, 16, 20, 16].map(h =>
+                                        `<div class="audio-bar" style="height: ${h}px"></div>`
+                                    ).join('')}
+                                </div>
+                                <div class="audio-time">
+                                    <span id="time-${card.id}">0:00</span>
+                                </div>
+                            </div>
+                            <div class="audio-controls">
+                                <button class="speed-btn" onclick="setSpeed('${card.id}', 0.75)">0.75x</button>
+                                <button class="speed-btn active" onclick="setSpeed('${card.id}', 1)">1x</button>
+                                <button class="speed-btn" onclick="setSpeed('${card.id}', 1.5)">1.5x</button>
+                            </div>
+                        </div>
+
+                        <div class="spanish-text">
+                            ${createClickableText(card.spanish)}
+                        </div>
+                        <div class="english-text" style="display: none;" id="translation-${card.id}">
+                            ${card.english}
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        <button class="action-btn action-btn-secondary" onclick="toggleTranslation('${card.id}')">
+                            🔄 Translate
+                        </button>
+                        <button class="action-btn action-btn-primary" onclick="likeCard('${card.id}', this)">
+                            ❤️ Save
+                        </button>
+                    </div>
+                `;
+
+                container.appendChild(cardEl);
+            });
+        }
+
+        function createClickableText(text) {
+            return text.split(' ').map(word =>
+                `<span class="spanish-word" onclick="showTranslation('${word}', event)">${word}</span>`
+            ).join(' ');
+        }
+
+        function toggleTranslation(cardId) {
+            const el = document.getElementById(`translation-${cardId}`);
+            if (el) {
+                el.style.display = el.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+
+        function likeCard(cardId, btn) {
+            btn.classList.toggle('liked');
+            const text = btn.classList.contains('liked') ? '💚 Saved' : '❤️ Save';
+            btn.innerHTML = text;
+
+            // Update stats
+            if (btn.classList.contains('liked')) {
+                const wordsEl = document.getElementById('wordsLearned');
+                wordsEl.textContent = parseInt(wordsEl.textContent) + 1;
+            }
+        }
+
+        async function showTranslation(word, event) {
+            const cleanWord = word.replace(/[¿?¡!,.:;]/g, '').toLowerCase();
+
+            // ✨ HAPTIC-STYLE FEEDBACK
+            event.target.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                event.target.style.transform = 'scale(1)';
+            }, 150);
+
+            // Check if already saved
+            if (savedWords.has(cleanWord)) {
+                // ✅ Mark as saved (for tests)
+                event.target.classList.add('saved');
+
+                // 🎉 ALREADY SAVED ANIMATION
+                event.target.style.background = 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)';
+                event.target.style.animation = 'pulse 0.5s ease-out';
+                showGlobeAI('🌍 Ya guardaste esta palabra!');
+                return;
+            }
+
+            // 💫 LOADING STATE
+            event.target.style.opacity = '0.7';
+            event.target.style.cursor = 'wait';
+
+            // Get translation
+            if (!wordTranslations[cleanWord]) {
+                // Simple translation (in production, call translation API)
+                wordTranslations[cleanWord] = `Translation of "${cleanWord}"`;
+            }
+
+            // Save word to SRS system
+            try {
+                const response = await fetch('/api/srs/add-card', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        word: cleanWord,
+                        translation: wordTranslations[cleanWord],
+                        context: event.target.closest('.spanish-text')?.textContent || '',
+                        userId: 'default'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // ✅ SUCCESS ANIMATION
+                    event.target.style.opacity = '1';
+                    event.target.style.cursor = 'pointer';
+
+                    // Save word locally
+                    savedWords.add(cleanWord);
+
+                    // ✅ Mark word as saved visually with .saved class
+                    event.target.classList.add('saved');
+                    event.target.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+
+                    // ✨ CHECK MARK ANIMATION
+                    const originalText = event.target.textContent;
+                    event.target.textContent = '✓ ' + originalText;
+                    event.target.style.background = 'linear-gradient(135deg, #34C759 0%, #00D4FF 100%)';
+
+                    setTimeout(() => {
+                        event.target.textContent = originalText;
+                    }, 1500);
+
+                    // Update saved count with animation
+                    updateSavedCount();
+
+                    // 🎯 Update daily goal progress
+                    updateDailyGoal();
+
+                    // Track activity for gamification
+                    trackActivity('word-saved');
+
+                    // GLOBE AI CELEBRATION!
+                    celebrateWithGlobeAI(event.clientX, event.clientY);
+
+                    console.log(`✅ Word saved to SRS: "${cleanWord}"`);
+                } else {
+                    event.target.style.opacity = '1';
+                    event.target.style.cursor = 'pointer';
+                    console.log(`ℹ️ ${data.message}`);
+                }
+            } catch (error) {
+                console.error('Failed to save to SRS:', error);
+                // Still save locally even if SRS fails
+                event.target.style.opacity = '1';
+                event.target.style.cursor = 'pointer';
+                savedWords.add(cleanWord);
+                event.target.classList.add('saved');
+                updateSavedCount();
+            }
+        }
+
+        // 🏆 GAMIFICATION TRACKING
+        async function trackActivity(activityType, data = {}) {
+            try {
+                await fetch('/api/gamification/track-activity', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: 'default',
+                        activityType,
+                        data
+                    })
+                });
+            } catch (error) {
+                console.error('Failed to track activity:', error);
+            }
+        }
+
+        function loadMore() {
+            document.getElementById('loading').style.display = 'flex';
+            setTimeout(() => {
+                loadFeed();
+            }, 500);
+        }
+
+        // 🎙️ TTS AUDIO PLAYBACK SYSTEM
+        function escapeText(text) {
+            return text.replace(/'/g, "\\'").replace(/"/g, '\\"');
+        }
+
+        async function playAudio(cardId, text) {
+            const btn = document.querySelector(`#audio-${cardId} .audio-btn`);
+
+            // Stop current playing audio
+            if (currentPlayingId && currentPlayingId !== cardId) {
+                stopAudio(currentPlayingId);
+            }
+
+            // Toggle play/pause
+            if (currentPlayingId === cardId && audioPlayers[cardId] && !audioPlayers[cardId].paused) {
+                audioPlayers[cardId].pause();
+                btn.innerHTML = '▶️';
+                currentPlayingId = null;
+                return;
+            }
+
+            // Start loading
+            btn.classList.add('loading');
+            btn.innerHTML = '⏳';
+
+            try {
+                // Check if audio already loaded
+                if (audioPlayers[cardId]) {
+                    audioPlayers[cardId].play();
+                    btn.classList.remove('loading');
+                    btn.innerHTML = '⏸️';
+                    currentPlayingId = cardId;
+                    animateWaveform(cardId);
+                    return;
+                }
+
+                // Fetch TTS audio
+                console.log(`🎙️ Fetching TTS for: "${text.substring(0, 50)}..."`);
+                const response = await fetch(`${API_BASE}/api/tts/generate`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        text: text,
+                        voice: 'female',
+                        language: 'es'
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`TTS failed: ${response.status}`);
+                }
+
+                const audioBlob = await response.blob();
+                const audioUrl = URL.createObjectURL(audioBlob);
+
+                // Create audio element
+                const audio = new Audio(audioUrl);
+                audioPlayers[cardId] = audio;
+
+                // Setup audio events
+                audio.addEventListener('loadedmetadata', () => {
+                    const duration = formatTime(audio.duration);
+                    document.getElementById(`time-${cardId}`).textContent = duration;
+                });
+
+                audio.addEventListener('timeupdate', () => {
+                    const current = formatTime(audio.currentTime);
+                    const duration = formatTime(audio.duration);
+                    document.getElementById(`time-${cardId}`).textContent = `${current} / ${duration}`;
+                });
+
+                audio.addEventListener('ended', () => {
+                    btn.innerHTML = '▶️';
+                    currentPlayingId = null;
+                    resetWaveform(cardId);
+                });
+
+                audio.addEventListener('error', (e) => {
+                    console.error('Audio playback error:', e);
+                    btn.classList.remove('loading');
+                    btn.innerHTML = '❌';
+                });
+
+                // Play audio
+                await audio.play();
+                btn.classList.remove('loading');
+                btn.innerHTML = '⏸️';
+                currentPlayingId = cardId;
+                animateWaveform(cardId);
+
+                console.log(`✅ Playing TTS audio for card: ${cardId}`);
+
+            } catch (error) {
+                console.error('TTS Error:', error);
+                btn.classList.remove('loading');
+                btn.innerHTML = '❌';
+                alert('Failed to generate audio. Please try again.');
+            }
+        }
+
+        function stopAudio(cardId) {
+            if (audioPlayers[cardId]) {
+                audioPlayers[cardId].pause();
+                audioPlayers[cardId].currentTime = 0;
+                const btn = document.querySelector(`#audio-${cardId} .audio-btn`);
+                if (btn) btn.innerHTML = '▶️';
+                resetWaveform(cardId);
+            }
+        }
+
+        function setSpeed(cardId, speed) {
+            if (audioPlayers[cardId]) {
+                audioPlayers[cardId].playbackRate = speed;
+            }
+
+            // Update active button
+            const controls = document.querySelector(`#audio-${cardId} .audio-controls`);
+            if (controls) {
+                controls.querySelectorAll('.speed-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.textContent === `${speed}x`) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
+        }
+
+        function animateWaveform(cardId) {
+            const wave = document.getElementById(`wave-${cardId}`);
+            if (!wave) return;
+
+            const bars = wave.querySelectorAll('.audio-bar');
+            const heights = [8, 12, 16, 20, 16, 12, 20, 16, 12, 8, 16, 20, 16];
+
+            let frame = 0;
+            const animate = () => {
+                if (currentPlayingId !== cardId) {
+                    bars.forEach((bar, i) => {
+                        bar.style.height = `${heights[i]}px`;
+                    });
+                    return;
+                }
+
+                bars.forEach((bar, i) => {
+                    const offset = (frame + i) % heights.length;
+                    const randomFactor = 0.8 + Math.random() * 0.4;
+                    bar.style.height = `${heights[offset] * randomFactor}px`;
+                });
+
+                frame = (frame + 1) % heights.length;
+                if (currentPlayingId === cardId) {
+                    requestAnimationFrame(animate);
+                }
+            };
+
+            animate();
+        }
+
+        function resetWaveform(cardId) {
+            const wave = document.getElementById(`wave-${cardId}`);
+            if (!wave) return;
+
+            const bars = wave.querySelectorAll('.audio-bar');
+            const heights = [8, 12, 16, 20, 16, 12, 20, 16, 12, 8, 16, 20, 16];
+            bars.forEach((bar, i) => {
+                bar.style.height = `${heights[i]}px`;
+            });
+        }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // 📝 PERSONALIZED ARTICLE GENERATION SYSTEM
+        function openArticleModal() {
+            document.getElementById('articleModal').style.display = 'flex';
+        }
+
+        function closeArticleModal() {
+            document.getElementById('articleModal').style.display = 'none';
+        }
+
+        async function generateArticle() {
+            const topic = document.getElementById('articleTopic').value.trim();
+            const level = document.getElementById('articleLevel').value;
+            const interests = document.getElementById('articleInterests').value
+                .split(',')
+                .map(i => i.trim())
+                .filter(i => i);
+
+            if (!topic) {
+                alert('Please enter a topic!');
+                return;
+            }
+
+            closeArticleModal();
+            document.getElementById('loading').style.display = 'flex';
+
+            try {
+                console.log(`📝 Generating personalized article: "${topic}" for ${level}...`);
+
+                const response = await fetch(`${API_BASE}/api/ai/generate-article`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        topic: topic,
+                        userLevel: level,
+                        userInterests: interests
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Article generation failed: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Create article card
+                    const article = {
+                        id: `article_${Date.now()}`,
+                        type: 'article',
+                        icon: '📝',
+                        title: data.title,
+                        subtitle: `Personalized Article - Generated just for you!`,
+                        level: data.level,
+                        structure: data.template.structure,
+                        vocabulary: data.template.vocabulary,
+                        interests: interests.join(', ') || 'general',
+                        prompt: data.prompt,
+                        color: '#AF52DE'
+                    };
+
+                    renderCards([article]);
+
+                    console.log(`✅ Generated article: "${data.title}"`);
+                    console.log(`   Level: ${data.level}`);
+                    console.log(`   Structure: ${data.template.structure}`);
+                    console.log(`   Vocabulary: ${data.template.vocabulary}`);
+                } else {
+                    throw new Error('Article generation returned no data');
+                }
+
+            } catch (error) {
+                console.error('Article generation error:', error);
+                alert('Failed to generate article. Please try again.');
+            }
+
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function regenerateArticle(cardId) {
+            console.log('Regenerate article:', cardId);
+            // Could implement re-generation with same parameters
+            alert('Regenerate feature coming soon!');
+        }
+
+        // Close modal on outside click
+        document.addEventListener('click', (e) => {
+            const modal = document.getElementById('articleModal');
+            if (e.target === modal) {
+                closeArticleModal();
+            }
+        });
+
+        // 🌍 GLOBE AI CELEBRATION SYSTEM
+        function celebrateWithGlobeAI(x, y) {
+            // GLOBE AI character appears and celebrates
+            const globe = document.createElement('div');
+            globe.className = 'globe-ai-celebration';
+            globe.textContent = '🌍';
+            document.body.appendChild(globe);
+
+            setTimeout(() => globe.remove(), 1000);
+
+            // Spawn celebration particles
+            const colors = ['#34C759', '#007AFF', '#AF52DE', '#FF9500', '#FF2D55'];
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'celebration-particle';
+                    particle.style.left = x + 'px';
+                    particle.style.top = y + 'px';
+                    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+                    const angle = (Math.PI * 2 * i) / 20;
+                    const distance = 100 + Math.random() * 100;
+                    const tx = Math.cos(angle) * distance;
+                    const ty = Math.sin(angle) * distance;
+
+                    particle.style.setProperty('--tx', tx + 'px');
+                    particle.style.setProperty('--ty', ty + 'px');
+
+                    document.body.appendChild(particle);
+                    setTimeout(() => particle.remove(), 1000);
+                }, i * 20);
+            }
+
+            // Play celebration sound (if available)
+            console.log('🎉 GLOBE AI celebrates: Word saved!');
+        }
+
+        function showGlobeAI(message) {
+            // Show GLOBE AI message temporarily
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(135deg, #34C759, #00D4FF);
+                color: white;
+                padding: 16px 24px;
+                border-radius: 24px;
+                font-size: 16px;
+                font-weight: 600;
+                box-shadow: 0 8px 24px rgba(52, 199, 89, 0.4);
+                z-index: 2000;
+                animation: slideDown 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideUp 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+        }
+
+        function updateSavedCount() {
+            const countEl = document.getElementById('savedCount');
+            const wordsEl = document.getElementById('wordsLearned');
+
+            // ✨ ANIMATED COUNTER UPDATE
+            countEl.style.animation = 'bounceIn 0.5s ease-out';
+            countEl.textContent = savedWords.size;
+
+            setTimeout(() => {
+                countEl.style.animation = '';
+            }, 500);
+
+            // Update stats bar words count with animation
+            if (wordsEl) {
+                wordsEl.style.animation = 'pulse 0.5s ease-out';
+                const newCount = 47 + savedWords.size;
+
+                // Smooth number animation
+                const oldCount = parseInt(wordsEl.textContent) || 47;
+                if (newCount > oldCount) {
+                    let current = oldCount;
+                    const increment = Math.ceil((newCount - oldCount) / 10);
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= newCount) {
+                            current = newCount;
+                            clearInterval(timer);
+                        }
+                        wordsEl.textContent = current;
+                    }, 30);
+                } else {
+                    wordsEl.textContent = newCount;
+                }
+
+                setTimeout(() => {
+                    wordsEl.style.animation = '';
+                }, 500);
+            }
+        }
+
+        // 🌍 SAVED WORDS PANEL MANAGEMENT
+        function openSavedWords() {
+            const panel = document.getElementById('savedWordsPanel');
+            panel.classList.add('open');
+
+            // Render saved words
+            renderSavedWords();
+        }
+
+        function closeSavedWords() {
+            const panel = document.getElementById('savedWordsPanel');
+            panel.classList.remove('open');
+        }
+
+        function renderSavedWords() {
+            const container = document.getElementById('savedWordsList');
+
+            if (savedWords.size === 0) {
+                container.innerHTML = `
+                    <div style="padding: 40px 24px; text-align: center; color: var(--text-secondary);">
+                        <div style="font-size: 64px; margin-bottom: 16px; animation: pulse 2s ease-in-out infinite;">🌍</div>
+                        <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">No words saved yet</div>
+                        <div style="font-size: 14px;">Tap any Spanish word to save it!</div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = '';
+            let index = 0;
+            savedWords.forEach(word => {
+                const item = document.createElement('div');
+                item.className = 'saved-word-item';
+                item.style.animation = `fadeInUp 0.4s ease ${index * 0.05}s both`;
+
+                // Get difficulty level based on word length (simple heuristic)
+                const difficulty = word.length <= 4 ? 'Beginner' : word.length <= 7 ? 'Intermediate' : 'Advanced';
+                const difficultyColor = word.length <= 4 ? 'var(--green)' : word.length <= 7 ? 'var(--orange)' : 'var(--red)';
+
+                item.innerHTML = `
+                    <div style="flex: 1;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                            <div class="saved-word-text">${word}</div>
+                            <span style="font-size: 10px; padding: 2px 8px; border-radius: 8px; background: ${difficultyColor}20; color: ${difficultyColor}; font-weight: 600;">
+                                ${difficulty}
+                            </span>
+                        </div>
+                        <div class="saved-word-translation">${wordTranslations[word] || 'Translation'}</div>
+                        <div style="display: flex; gap: 8px; margin-top: 8px;">
+                            <button onclick="playSavedWordAudio('${word}')" style="font-size: 16px; background: none; border: none; cursor: pointer; padding: 4px 8px; border-radius: 8px; background: var(--silver);" title="Pronounce">
+                                🔊
+                            </button>
+                            <button onclick="copySavedWord('${word}')" style="font-size: 16px; background: none; border: none; cursor: pointer; padding: 4px 8px; border-radius: 8px; background: var(--silver);" title="Copy">
+                                📋
+                            </button>
+                        </div>
+                    </div>
+                    <button class="remove-word-btn" onclick="removeWord('${word}')" title="Remove">
+                        ✕
+                    </button>
+                `;
+                container.appendChild(item);
+                index++;
+            });
+        }
+
+        // 🔊 PLAY SAVED WORD AUDIO
+        async function playSavedWordAudio(word) {
+            console.log(`🔊 Playing audio for: ${word}`);
+            // Placeholder - integrate with TTS
+            showGlobeAI(`🔊 Pronouncing: ${word}`);
+        }
+
+        // 📋 COPY SAVED WORD
+        function copySavedWord(word) {
+            navigator.clipboard.writeText(word).then(() => {
+                showGlobeAI(`📋 Copied: ${word}`);
+            }).catch(() => {
+                showGlobeAI('❌ Failed to copy');
+            });
+        }
+
+        function removeWord(word) {
+            savedWords.delete(word);
+            updateSavedCount();
+            renderSavedWords();
+
+            // Remove saved class from words in feed
+            document.querySelectorAll('.spanish-word').forEach(el => {
+                const cleanWord = el.textContent.replace(/[¿?¡!,.:;]/g, '').toLowerCase();
+                if (cleanWord === word) {
+                    el.classList.remove('saved');
+                }
+            });
+
+            console.log(`❌ Word removed: "${word}"`);
+        }
+
+        // 🎯 DAILY GOAL TRACKING
+        const DAILY_GOAL = 10; // words to save per day
+
+        function updateDailyGoal() {
+            const progress = savedWords.size;
+            const percentage = Math.min((progress / DAILY_GOAL) * 100, 100);
+
+            // Update progress text
+            document.getElementById('goalProgressText').textContent = `${progress}/${DAILY_GOAL} words saved`;
+
+            // Update progress bar with animation
+            const progressBar = document.getElementById('goalProgressBar');
+            progressBar.style.width = percentage + '%';
+
+            // Update emoji based on progress
+            const goalEmoji = document.getElementById('goalEmoji');
+            if (percentage >= 100) {
+                goalEmoji.textContent = '🎉';
+                goalEmoji.style.opacity = '1';
+                goalEmoji.style.animation = 'pulse 1s ease-in-out infinite';
+
+                // Show completion message
+                const goalMessage = document.getElementById('goalMessage');
+                goalMessage.style.display = 'block';
+                goalMessage.style.animation = 'bounceIn 0.5s ease';
+            } else if (percentage >= 75) {
+                goalEmoji.textContent = '🔥';
+                goalEmoji.style.opacity = '1';
+            } else if (percentage >= 50) {
+                goalEmoji.textContent = '💪';
+                goalEmoji.style.opacity = '0.7';
+            } else if (percentage >= 25) {
+                goalEmoji.textContent = '🌱';
+                goalEmoji.style.opacity = '0.5';
+            } else {
+                goalEmoji.textContent = '🔒';
+                goalEmoji.style.opacity = '0.3';
+            }
+        }
+
+        // Initialize
+        loadFeed();
+        updateDailyGoal();
+    </script>
+
+    <!-- 📱 UNIFIED BOTTOM NAVIGATION -->
+    <nav class="bottom-nav">
+        <a href="/tiktok-videos.html" class="nav-item">
+            <div class="nav-icon">🎬</div>
+            <div class="nav-label">Videos</div>
+        </a>
+        <a href="/unified-infinite-feed.html" class="nav-item">
+            <div class="nav-icon">📱</div>
+            <div class="nav-label">Feed</div>
+        </a>
+        <a href="/home.html" class="nav-item">
+            <div class="nav-icon">🏠</div>
+            <div class="nav-label">Home</div>
+        </a>
+        <a href="/apple-feed.html" class="nav-item active">
+            <div class="nav-icon">📝</div>
+            <div class="nav-label">Practice</div>
+        </a>
+    </nav>
+</body>
+</html>

@@ -1,0 +1,152 @@
+🧠 MASTER PLAN CREATION FOR WORKSPACE3
+
+🎯 PROJECT PURPOSE: Dopamine scroll feed for language learning (like TikTok)
+🏆 TOP APPS TO MATCH: TikTok, Instagram Reels, YouTube Shorts, Duolingo
+
+YOUR MISSION: Create a COMPLETE, DETAILED 100+ step roadmap to make this app match BILLION-DOLLAR quality.
+
+📋 STEP 1: DEEP COMPETITIVE ANALYSIS (30+ minutes)
+
+Use MCPs extensively:
+
+1. **Puppeteer MCP (FREE - unlimited)**: Scrape these live apps
+      - tiktok.com: Extract UI structure, features, user flows
+   - instagram.com/reels: Extract UI structure, features, user flows
+   - duolingo.com: Extract UI structure, features, user flows
+
+2. **GitHub MCP**: Find best implementations
+      - Search: "react-native-snap-carousel" (analyze top 5 repos)
+   - Search: "tiktok-clone" (analyze top 5 repos)
+   - Search: "infinite-scroll" (analyze top 5 repos)
+
+3. **Playwright MCP**: Screenshot inspiration
+      - dribbble.com/search/tiktok: Capture UI designs, interactions
+   - mobbin.com/browse/ios/apps: Capture UI designs, interactions
+
+4. **Analysis Questions**:
+   - What makes TikTok addictive? (interaction patterns, timing, rewards)
+   - What UI patterns do ALL top apps share?
+   - What tech stack enables their performance?
+   - What features create viral growth?
+   - What's the onboarding flow?
+   - How do they handle edge cases?
+
+📋 STEP 2: ARCHITECTURE BLUEPRINT
+
+Based on scraped data, design:
+1. **Component hierarchy** (copy from top apps)
+2. **State management** (what TikTok uses)
+3. **Database schema** (unified across all 6 apps)
+4. **API structure** (REST/GraphQL like top apps)
+5. **Performance optimizations** (lazy loading, caching, etc.)
+6. **Testing strategy** (E2E, unit, integration)
+
+📋 STEP 3: FEATURE ROADMAP (100+ STEPS)
+
+Create MASTER_PLAN.md with structure:
+
+## PHASE 1: FOUNDATION (Steps 1-20)
+- [ ] 1. Set up unified database schema (copy TikTok structure)
+- [ ] 2. Implement core UI framework (match TikTok component library)
+- [ ] 3. Add routing system (analyze TikTok navigation)
+...
+
+## PHASE 2: CORE FEATURES (Steps 21-50)
+- [ ] 21. Build main feed/interface (EXACTLY like TikTok)
+- [ ] 22. Add infinite scroll (copy TikTok scroll mechanics)
+- [ ] 23. Implement search (analyze TikTok search UX)
+...
+
+## PHASE 3: ENGAGEMENT (Steps 51-80)
+- [ ] 51. Add gamification (copy TikTok reward system)
+- [ ] 52. Implement progress tracking (match TikTok analytics)
+- [ ] 53. Build notification system (TikTok engagement tactics)
+...
+
+## PHASE 4: POLISH (Steps 81-100)
+- [ ] 81. Performance optimization (TikTok loading speeds)
+- [ ] 82. Accessibility (WCAG 2.1 AAA like top apps)
+- [ ] 83. Mobile responsiveness (match TikTok mobile UX)
+...
+
+## PHASE 5: VIRAL GROWTH (Steps 101+)
+- [ ] 101. Referral system (analyze viral apps)
+- [ ] 102. Social sharing (TikTok share mechanics)
+- [ ] 103. Content discovery (TikTok recommendation engine)
+...
+
+📋 STEP 4: TECHNICAL SPECIFICATIONS
+
+For EACH step, include:
+- **What**: Exact feature description
+- **Why**: How TikTok does it (cite scraped evidence)
+- **How**: Implementation approach (reference GitHub repos)
+- **Tests**: Playwright test scenarios
+- **Success Criteria**: Metrics that prove it matches top apps
+
+📋 STEP 5: SAVE MASTER PLAN
+
+Save to: /Users/mindful/_projects/workspace3/MASTER_PLAN.md
+
+Format each step as:
+```markdown
+### Step X: [Feature Name]
+
+**Status**: ⏳ Pending / 🔨 In Progress / ✅ Complete
+
+**What**: [Exact description]
+
+**Why**: [How TikTok does it - cite scraped URL/screenshot]
+
+**Reference**:
+- GitHub: [repo link from MCP search]
+- Design: [Dribbble/Mobbin screenshot]
+- Live app: [Firecrawl scraped evidence]
+
+**Implementation**:
+1. [Step-by-step code approach]
+2. [Component structure]
+3. [Integration points]
+
+**Tests**:
+- [ ] Playwright test: [scenario]
+- [ ] Unit test: [coverage]
+- [ ] Manual QA: [checklist]
+
+**Success Criteria**:
+- Matches TikTok UX timing (< 100ms interactions)
+- Passes all tests
+- Screenshot comparison shows visual parity
+```
+
+🚨 CRITICAL REQUIREMENTS:
+
+1. **MCP USAGE**: You MUST actually use Firecrawl, GitHub, and Playwright MCPs
+   - Don't just say "research X" - actually scrape and analyze
+   - Save screenshots to /Users/mindful/_projects/workspace3/screenshots/competitive/
+   - Document EXACT findings with URLs and evidence
+
+2. **SPECIFICITY**: No vague steps like "improve UI"
+   - BAD: "Make feed better"
+   - GOOD: "Implement TikTok-style snap scroll with 90% viewport height cards, rubber-band physics (scraped from tiktok.com interaction patterns)"
+
+3. **COMPLETENESS**: 100+ steps minimum
+   - Every feature TikTok has, we need
+   - Every interaction pattern analyzed and documented
+   - Every edge case handled
+
+4. **EVIDENCE-BASED**: Every decision backed by competitive intelligence
+   - "Because TikTok does it this way: [evidence]"
+   - Not opinions, only facts from scraped data
+
+5. **ACTIONABLE**: Automation can execute each step independently
+   - Clear success criteria
+   - Testable outcomes
+   - No ambiguity
+
+WHEN COMPLETE:
+- Update vision.md with insights
+- Commit MASTER_PLAN.md to git
+- Report: "Master plan complete with [X] steps based on [Y] scraped sources"
+
+BEGIN ANALYSIS NOW. Spend 30+ minutes with MCPs before writing plan.

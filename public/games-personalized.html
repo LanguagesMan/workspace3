@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Personalized Spanish Games - Langflix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 24px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .user-info {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .stat-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        /* Games Grid */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .game-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        .game-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .game-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .game-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .game-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .play-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .play-button:hover {
+            transform: scale(1.05);
+        }
+
+        .play-button:active {
+            transform: scale(0.95);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: #f5f5f5;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .close-button:hover {
+            background: #e0e0e0;
+            transform: scale(1.1);
+        }
+
+        /* Game: Match Madness */
+        .match-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .match-card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .match-card.flipped {
+            background: white;
+            color: #333;
+            border: 3px solid #667eea;
+        }
+
+        .match-card.matched {
+            background: #58cc02;
+            animation: matchPulse 0.5s ease;
+        }
+
+        .match-card.wrong {
+            background: #ff4b4b;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes matchPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* Game: Speed Challenge */
+        .speed-question {
+            background: #f8f9fa;
+            padding: 24px;
+            border-radius: 16px;
+            margin: 24px 0;
+        }
+
+        .speed-word {
+            font-size: 36px;
+            font-weight: 700;
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .speed-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .speed-option {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 3px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .speed-option:hover {
+            border-color: #667eea;
+            transform: scale(1.02);
+        }
+
+        .speed-option.correct {
+            background: #58cc02;
+            border-color: #58cc02;
+            color: white;
+        }
+
+        .speed-option.wrong {
+            background: #ff4b4b;
+            border-color: #ff4b4b;
+            color: white;
+        }
+
+        .timer {
+            font-size: 48px;
+            font-weight: 700;
+            color: #667eea;
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .timer.urgent {
+            color: #ff4b4b;
+            animation: timerPulse 1s infinite;
+        }
+
+        @keyframes timerPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 24px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+
+        /* Game: Word Builder */
+        .word-display {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+            text-align: center;
+            margin: 24px 0;
+            min-height: 50px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .word-tiles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin: 24px 0;
+        }
+
+        .word-tile {
+            background: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            border: 3px solid #667eea;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .word-tile:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .word-tile.used {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        /* Game: Listening Practice */
+        .listening-container {
+            text-align: center;
+        }
+
+        .audio-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            font-size: 48px;
+            cursor: pointer;
+            margin: 32px auto;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .audio-button:hover {
+            transform: scale(1.1);
+        }
+
+        .audio-button:active {
+            transform: scale(0.95);
+        }
+
+        /* Game: Translation Race */
+        .translation-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .translation-card {
+            background: #f8f9fa;
+            padding: 24px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .translation-card:hover {
+            background: #e8e9ea;
+        }
+
+        .translation-card.selected {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Results Screen */
+        .results {
+            text-align: center;
+            padding: 32px;
+        }
+
+        .results-score {
+            font-size: 72px;
+            font-weight: 700;
+            color: #667eea;
+            margin: 24px 0;
+        }
+
+        .results-stars {
+            font-size: 48px;
+            margin: 16px 0;
+        }
+
+        .results-message {
+            font-size: 24px;
+            color: #333;
+            margin: 16px 0;
+        }
+
+        .results-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 32px 0;
+        }
+
+        .result-stat {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 12px;
+        }
+
+        .result-stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .result-stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 24px;
+        }
+
+        .action-button {
+            padding: 16px 32px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-button.primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .action-button.secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .action-button:hover {
+            transform: scale(1.05);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            color: #666;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .match-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .speed-options {
+                grid-template-columns: 1fr;
+            }
+
+            .results-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎮 Personalized Spanish Games</h1>
+            <p class="subtitle">Play games with YOUR vocabulary and level</p>
+            <div class="user-info">
+                <div class="stat-badge" id="userLevel">Level: Loading...</div>
+                <div class="stat-badge" id="userWords">Words: Loading...</div>
+                <div class="stat-badge" id="userXP">XP: Loading...</div>
+            </div>
+        </div>
+
+        <!-- Games Grid -->
+        <div class="games-grid">
+            <!-- Game 1: Match Madness -->
+            <div class="game-card" onclick="startGame('matchMadness')">
+                <div class="game-icon">🃏</div>
+                <div class="game-title">Match Madness</div>
+                <div class="game-description">Match Spanish words with English translations. Inspired by Duolingo Match!</div>
+                <div class="game-meta">
+                    <span>⏱️ 3-5 min</span>
+                    <span>⭐ +50 XP</span>
+                </div>
+                <button class="play-button">Play Now</button>
+            </div>
+
+            <!-- Game 2: Speed Challenge -->
+            <div class="game-card" onclick="startGame('speedChallenge')">
+                <div class="game-icon">⚡</div>
+                <div class="game-title">Speed Challenge</div>
+                <div class="game-description">Fast-paced translations against the clock. Like Drops speed mode!</div>
+                <div class="game-meta">
+                    <span>⏱️ 1 min</span>
+                    <span>⭐ +30 XP</span>
+                </div>
+                <button class="play-button">Play Now</button>
+            </div>
+
+            <!-- Game 3: Word Builder -->
+            <div class="game-card" onclick="startGame('wordBuilder')">
+                <div class="game-icon">🔤</div>
+                <div class="game-title">Word Builder</div>
+                <div class="game-description">Build sentences from scrambled words. Practice word order!</div>
+                <div class="game-meta">
+                    <span>⏱️ 5 min</span>
+                    <span>⭐ +40 XP</span>
+                </div>
+                <button class="play-button">Play Now</button>
+            </div>
+
+            <!-- Game 4: Listening Practice -->
+            <div class="game-card" onclick="startGame('listeningPractice')">
+                <div class="game-icon">🎧</div>
+                <div class="game-title">Listening Practice</div>
+                <div class="game-description">Hear words and identify them. Train your ear!</div>
+                <div class="game-meta">
+                    <span>⏱️ 3 min</span>
+                    <span>⭐ +35 XP</span>
+                </div>
+                <button class="play-button">Play Now</button>
+            </div>
+
+            <!-- Game 5: Translation Race -->
+            <div class="game-card" onclick="startGame('translationRace')">
+                <div class="game-icon">🏃</div>
+                <div class="game-title">Translation Race</div>
+                <div class="game-description">Translate as many words as possible in 90 seconds!</div>
+                <div class="game-meta">
+                    <span>⏱️ 90 sec</span>
+                    <span>⭐ +45 XP</span>
+                </div>
+                <button class="play-button">Play Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Modal -->
+    <div class="modal" id="gameModal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeGame()">×</button>
+            <div id="gameContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3000' : '';
+        let currentUserId = 'guest-user-' + Date.now();
+        let currentGameData = null;
+        let currentGameState = {
+            score: 0,
+            correct: 0,
+            total: 0,
+            startTime: null,
+            results: []
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUserProfile();
+        });
+
+        // Load user profile
+        async function loadUserProfile() {
+            try {
+                const response = await fetch(`${API_BASE}/api/user/profile?userId=${currentUserId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('userLevel').textContent = `Level: ${data.user.level || 'A2'}`;
+                    document.getElementById('userWords').textContent = `Words: ${data.stats.saved || 0}`;
+                    document.getElementById('userXP').textContent = `XP: ${data.user.totalXP || 0}`;
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                document.getElementById('userLevel').textContent = 'Level: A2';
+                document.getElementById('userWords').textContent = 'Words: 0';
+                document.getElementById('userXP').textContent = 'XP: 0';
+            }
+        }
+
+        // Start game
+        async function startGame(gameType) {
+            const modal = document.getElementById('gameModal');
+            const content = document.getElementById('gameContent');
+            
+            modal.classList.add('active');
+            content.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>Loading game...</p></div>';
+            
+            // Reset game state
+            currentGameState = {
+                score: 0,
+                correct: 0,
+                total: 0,
+                startTime: Date.now(),
+                results: []
+            };
+
+            try {
+                switch(gameType) {
+                    case 'matchMadness':
+                        await loadMatchMadness();
+                        break;
+                    case 'speedChallenge':
+                        await loadSpeedChallenge();
+                        break;
+                    case 'wordBuilder':
+                        await loadWordBuilder();
+                        break;
+                    case 'listeningPractice':
+                        await loadListeningPractice();
+                        break;
+                    case 'translationRace':
+                        await loadTranslationRace();
+                        break;
+                }
+            } catch (error) {
+                console.error('Error loading game:', error);
+                content.innerHTML = '<div class="loading"><p>Error loading game. Please try again.</p></div>';
+            }
+        }
+
+        // Close game
+        function closeGame() {
+            document.getElementById('gameModal').classList.remove('active');
+            loadUserProfile(); // Refresh stats
+        }
+
+        // ==========================================
+        // GAME 1: MATCH MADNESS (Duolingo-style)
+        // ==========================================
+        async function loadMatchMadness() {
+            const response = await fetch(`${API_BASE}/api/games/word-match?userId=${currentUserId}&count=8`);
+            const data = await response.json();
+            
+            if (!data.success || !data.words || data.words.length === 0) {
+                throw new Error('No words available');
+            }
+
+            currentGameData = data;
+            
+            // Create pairs
+            const pairs = [];
+            data.words.forEach((word, index) => {
+                pairs.push({ id: index * 2, text: word.word, type: 'spanish', pairId: index });
+                pairs.push({ id: index * 2 + 1, text: word.translation, type: 'english', pairId: index });
+            });
+            
+            // Shuffle
+            shuffleArray(pairs);
+            
+            const html = `
+                <h2>🃏 Match Madness</h2>
+                <p>Match Spanish words with their English translations</p>
+                <div class="match-grid" id="matchGrid"></div>
+            `;
+            
+            document.getElementById('gameContent').innerHTML = html;
+            
+            const grid = document.getElementById('matchGrid');
+            pairs.forEach(pair => {
+                const card = document.createElement('div');
+                card.className = 'match-card';
+                card.dataset.id = pair.id;
+                card.dataset.pairId = pair.pairId;
+                card.dataset.text = pair.text;
+                card.textContent = '?';
+                card.onclick = () => flipCard(card);
+                grid.appendChild(card);
+            });
+            
+            window.matchGame = {
+                flipped: [],
+                matched: new Set(),
+                moves: 0
+            };
+        }
+
+        function flipCard(card) {
+            if (card.classList.contains('matched') || window.matchGame.flipped.length >= 2) return;
+            
+            card.classList.add('flipped');
+            card.textContent = card.dataset.text;
+            window.matchGame.flipped.push(card);
+            
+            if (window.matchGame.flipped.length === 2) {
+                window.matchGame.moves++;
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            const [card1, card2] = window.matchGame.flipped;
+            const match = card1.dataset.pairId === card2.dataset.pairId;
+            
+            setTimeout(() => {
+                if (match) {
+                    card1.classList.add('matched');
+                    card2.classList.add('matched');
+                    window.matchGame.matched.add(card1.dataset.pairId);
+                    
+                    currentGameState.correct++;
+                    currentGameState.score += 10;
+                    
+                    // Check if game complete
+                    if (window.matchGame.matched.size === currentGameData.words.length) {
+                        setTimeout(() => showResults('matchMadness'), 500);
+                    }
+                } else {
+                    card1.classList.add('wrong');
+                    card2.classList.add('wrong');
+                    
+                    setTimeout(() => {
+                        card1.classList.remove('flipped', 'wrong');
+                        card2.classList.remove('flipped', 'wrong');
+                        card1.textContent = '?';
+                        card2.textContent = '?';
+                    }, 500);
+                }
+                
+                window.matchGame.flipped = [];
+            }, 500);
+        }
+
+        // ==========================================
+        // GAME 2: SPEED CHALLENGE (Drops-style)
+        // ==========================================
+        async function loadSpeedChallenge() {
+            const response = await fetch(`${API_BASE}/api/games/speed-round?userId=${currentUserId}&count=20`);
+            const data = await response.json();
+            
+            if (!data.success || !data.words || data.words.length === 0) {
+                throw new Error('No words available');
+            }
+
+            currentGameData = data;
+            currentGameState.currentQuestion = 0;
+            
+            const html = `
+                <h2>⚡ Speed Challenge</h2>
+                <div class="timer" id="timer">60</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+                <div id="speedQuestion"></div>
+            `;
+            
+            document.getElementById('gameContent').innerHTML = html;
+            
+            startTimer(60);
+            showNextSpeedQuestion();
+        }
+
+        function startTimer(seconds) {
+            const timerEl = document.getElementById('timer');
+            let remaining = seconds;
+            
+            window.speedTimer = setInterval(() => {
+                remaining--;
+                timerEl.textContent = remaining;
+                
+                if (remaining <= 10) {
+                    timerEl.classList.add('urgent');
+                }
+                
+                if (remaining <= 0) {
+                    clearInterval(window.speedTimer);
+                    showResults('speedChallenge');
+                }
+            }, 1000);
+        }
+
+        function showNextSpeedQuestion() {
+            const questionIndex = currentGameState.currentQuestion;
+            if (questionIndex >= currentGameData.words.length) {
+                clearInterval(window.speedTimer);
+                showResults('speedChallenge');
+                return;
+            }
+            
+            const word = currentGameData.words[questionIndex];
+            const correctAnswer = word.translation;
+            
+            // Generate wrong options
+            const wrongOptions = currentGameData.words
+                .filter(w => w.translation !== correctAnswer)
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 3)
+                .map(w => w.translation);
+            
+            const allOptions = [correctAnswer, ...wrongOptions];
+            shuffleArray(allOptions);
+            
+            const progress = ((questionIndex + 1) / currentGameData.words.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            
+            const html = `
+                <div class="speed-question">
+                    <div class="speed-word">${word.word}</div>
+                    <div class="speed-options">
+                        ${allOptions.map(option => `
+                            <button class="speed-option" onclick="selectSpeedAnswer('${option}', '${correctAnswer}')">
+                                ${option}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('speedQuestion').innerHTML = html;
+        }
+
+        function selectSpeedAnswer(selected, correct) {
+            const buttons = document.querySelectorAll('.speed-option');
+            buttons.forEach(btn => btn.style.pointerEvents = 'none');
+            
+            const isCorrect = selected === correct;
+            
+            buttons.forEach(btn => {
+                if (btn.textContent.trim() === selected) {
+                    btn.classList.add(isCorrect ? 'correct' : 'wrong');
+                }
+                if (btn.textContent.trim() === correct) {
+                    btn.classList.add('correct');
+                }
+            });
+            
+            if (isCorrect) {
+                currentGameState.correct++;
+                currentGameState.score += 5;
+            }
+            
+            currentGameState.total++;
+            currentGameState.currentQuestion++;
+            
+            setTimeout(() => showNextSpeedQuestion(), 1000);
+        }
+
+        // ==========================================
+        // GAME 3: WORD BUILDER (Sentence Building)
+        // ==========================================
+        async function loadWordBuilder() {
+            const response = await fetch(`${API_BASE}/api/games/sentence-builder?userId=${currentUserId}&count=5`);
+            const data = await response.json();
+            
+            if (!data.success || !data.sentences || data.sentences.length === 0) {
+                throw new Error('No sentences available');
+            }
+
+            currentGameData = data;
+            currentGameState.currentQuestion = 0;
+            
+            showNextWordBuilder();
+        }
+
+        function showNextWordBuilder() {
+            const questionIndex = currentGameState.currentQuestion;
+            if (questionIndex >= currentGameData.sentences.length) {
+                showResults('wordBuilder');
+                return;
+            }
+            
+            const sentence = currentGameData.sentences[questionIndex];
+            const words = [...sentence.words];
+            shuffleArray(words);
+            
+            const html = `
+                <h2>🔤 Word Builder</h2>
+                <p>Build this sentence: <strong>${sentence.english}</strong></p>
+                <div class="word-display" id="userSentence"></div>
+                <div class="word-tiles" id="wordTiles">
+                    ${words.map((word, i) => `
+                        <div class="word-tile" data-word="${word}" onclick="addWord('${word}', ${i})">
+                            ${word}
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="action-buttons">
+                    <button class="action-button secondary" onclick="clearSentence()">Clear</button>
+                    <button class="action-button primary" onclick="checkSentence('${sentence.spanish}')">Check</button>
+                </div>
+            `;
+            
+            document.getElementById('gameContent').innerHTML = html;
+            window.builtSentence = [];
+        }
+
+        function addWord(word, index) {
+            const tile = document.querySelectorAll('.word-tile')[index];
+            if (tile.classList.contains('used')) return;
+            
+            tile.classList.add('used');
+            window.builtSentence.push(word);
+            
+            document.getElementById('userSentence').textContent = window.builtSentence.join(' ');
+        }
+
+        function clearSentence() {
+            window.builtSentence = [];
+            document.getElementById('userSentence').textContent = '';
+            document.querySelectorAll('.word-tile').forEach(tile => {
+                tile.classList.remove('used');
+            });
+        }
+
+        function checkSentence(correct) {
+            const userAnswer = window.builtSentence.join(' ');
+            const isCorrect = userAnswer === correct;
+            
+            if (isCorrect) {
+                currentGameState.correct++;
+                currentGameState.score += 10;
+                alert('✅ Correct!');
+            } else {
+                alert(`❌ Not quite. Correct: ${correct}`);
+            }
+            
+            currentGameState.total++;
+            currentGameState.currentQuestion++;
+            
+            setTimeout(() => showNextWordBuilder(), 500);
+        }
+
+        // ==========================================
+        // GAME 4: LISTENING PRACTICE
+        // ==========================================
+        async function loadListeningPractice() {
+            const response = await fetch(`${API_BASE}/api/games/speed-round?userId=${currentUserId}&count=10`);
+            const data = await response.json();
+            
+            if (!data.success || !data.words || data.words.length === 0) {
+                throw new Error('No words available');
+            }
+
+            currentGameData = data;
+            currentGameState.currentQuestion = 0;
+            
+            showNextListening();
+        }
+
+        function showNextListening() {
+            const questionIndex = currentGameState.currentQuestion;
+            if (questionIndex >= currentGameData.words.length) {
+                showResults('listeningPractice');
+                return;
+            }
+            
+            const word = currentGameData.words[questionIndex];
+            const correctAnswer = word.word;
+            
+            // Generate wrong options
+            const wrongOptions = currentGameData.words
+                .filter(w => w.word !== correctAnswer)
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 3)
+                .map(w => w.word);
+            
+            const allOptions = [correctAnswer, ...wrongOptions];
+            shuffleArray(allOptions);
+            
+            const html = `
+                <div class="listening-container">
+                    <h2>🎧 Listening Practice</h2>
+                    <p>Listen and select the word you hear</p>
+                    <button class="audio-button" onclick="speakWord('${word.word}')">
+                        🔊
+                    </button>
+                    <div class="speed-options">
+                        ${allOptions.map(option => `
+                            <button class="speed-option" onclick="selectListeningAnswer('${option}', '${correctAnswer}')">
+                                ${option}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('gameContent').innerHTML = html;
+            
+            // Auto-play audio
+            setTimeout(() => speakWord(word.word), 500);
+        }
+
+        function speakWord(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'es-ES';
+            utterance.rate = 0.8;
+            speechSynthesis.speak(utterance);
+        }
+
+        function selectListeningAnswer(selected, correct) {
+            const buttons = document.querySelectorAll('.speed-option');
+            buttons.forEach(btn => btn.style.pointerEvents = 'none');
+            
+            const isCorrect = selected === correct;
+            
+            buttons.forEach(btn => {
+                if (btn.textContent.trim() === selected) {
+                    btn.classList.add(isCorrect ? 'correct' : 'wrong');
+                }
+                if (btn.textContent.trim() === correct) {
+                    btn.classList.add('correct');
+                }
+            });
+            
+            if (isCorrect) {
+                currentGameState.correct++;
+                currentGameState.score += 7;
+            }
+            
+            currentGameState.total++;
+            currentGameState.currentQuestion++;
+            
+            setTimeout(() => showNextListening(), 1500);
+        }
+
+        // ==========================================
+        // GAME 5: TRANSLATION RACE
+        // ==========================================
+        async function loadTranslationRace() {
+            const response = await fetch(`${API_BASE}/api/games/speed-round?userId=${currentUserId}&count=30`);
+            const data = await response.json();
+            
+            if (!data.success || !data.words || data.words.length === 0) {
+                throw new Error('No words available');
+            }
+
+            currentGameData = data;
+            currentGameState.currentQuestion = 0;
+            
+            const html = `
+                <h2>🏃 Translation Race</h2>
+                <div class="timer" id="timer">90</div>
+                <p>Translate as many words as possible!</p>
+                <div class="speed-question">
+                    <div class="speed-word" id="raceWord"></div>
+                    <input type="text" id="raceInput" placeholder="Type translation..." 
+                           style="width: 100%; padding: 16px; font-size: 18px; border-radius: 12px; border: 3px solid #667eea; margin: 24px 0;">
+                    <button class="action-button primary" style="width: 100%;" onclick="checkRaceAnswer()">Submit</button>
+                </div>
+                <div style="margin-top: 16px; text-align: center; color: #666;">
+                    Score: <strong id="raceScore">0</strong> | Progress: <strong id="raceProgress">0/30</strong>
+                </div>
+            `;
+            
+            document.getElementById('gameContent').innerHTML = html;
+            
+            startTimer(90);
+            showNextRaceWord();
+            
+            // Allow Enter key to submit
+            document.getElementById('raceInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') checkRaceAnswer();
+            });
+        }
+
+        function showNextRaceWord() {
+            const questionIndex = currentGameState.currentQuestion;
+            if (questionIndex >= currentGameData.words.length) {
+                clearInterval(window.speedTimer);
+                showResults('translationRace');
+                return;
+            }
+            
+            const word = currentGameData.words[questionIndex];
+            document.getElementById('raceWord').textContent = word.word;
+            document.getElementById('raceInput').value = '';
+            document.getElementById('raceInput').focus();
+            document.getElementById('raceProgress').textContent = `${questionIndex}/${currentGameData.words.length}`;
+        }
+
+        function checkRaceAnswer() {
+            const questionIndex = currentGameState.currentQuestion;
+            const word = currentGameData.words[questionIndex];
+            const userAnswer = document.getElementById('raceInput').value.trim().toLowerCase();
+            const correctAnswer = word.translation.toLowerCase();
+            
+            const isCorrect = userAnswer === correctAnswer || 
+                             word.translation.toLowerCase().includes(userAnswer) ||
+                             userAnswer.includes(correctAnswer);
+            
+            if (isCorrect) {
+                currentGameState.correct++;
+                currentGameState.score += 3;
+                document.getElementById('raceScore').textContent = currentGameState.score;
+            }
+            
+            currentGameState.total++;
+            currentGameState.currentQuestion++;
+            
+            showNextRaceWord();
+        }
+
+        // ==========================================
+        // RESULTS SCREEN
+        // ==========================================
+        async function showResults(gameType) {
+            const duration = Math.floor((Date.now() - currentGameState.startTime) / 1000);
+            const accuracy = currentGameState.total > 0 
+                ? Math.round((currentGameState.correct / currentGameState.total) * 100) 
+                : 0;
+            
+            // Calculate stars
+            let stars = '⭐';
+            if (accuracy >= 70) stars = '⭐⭐';
+            if (accuracy >= 90) stars = '⭐⭐⭐';
+            
+            // Get message
+            let message = 'Keep practicing!';
+            if (accuracy >= 90) message = '🎉 Outstanding!';
+            else if (accuracy >= 70) message = '👍 Great job!';
+            else if (accuracy >= 50) message = '👌 Good effort!';
+            
+            const html = `
+                <div class="results">
+                    <h2>Game Complete!</h2>
+                    <div class="results-stars">${stars}</div>
+                    <div class="results-message">${message}</div>
+                    <div class="results-score">${currentGameState.score}</div>
+                    <div class="results-stats">
+                        <div class="result-stat">
+                            <div class="result-stat-value">${currentGameState.correct}/${currentGameState.total}</div>
+                            <div class="result-stat-label">Correct</div>
+                        </div>
+                        <div class="result-stat">
+                            <div class="result-stat-value">${accuracy}%</div>
+                            <div class="result-stat-label">Accuracy</div>
+                        </div>
+                        <div class="result-stat">
+                            <div class="result-stat-value">${duration}s</div>
+                            <div class="result-stat-label">Time</div>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="action-button primary" onclick="startGame('${gameType}')">Play Again</button>
+                        <button class="action-button secondary" onclick="closeGame()">Close</button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('gameContent').innerHTML = html;
+            
+            // Submit results to server
+            submitResults(gameType, duration);
+        }
+
+        async function submitResults(gameType, duration) {
+            try {
+                const response = await fetch(`${API_BASE}/api/games/submit-results`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: currentUserId,
+                        gameType,
+                        results: currentGameState.results,
+                        score: currentGameState.score,
+                        duration
+                    })
+                });
+                
+                const data = await response.json();
+                console.log('Results submitted:', data);
+            } catch (error) {
+                console.error('Error submitting results:', error);
+            }
+        }
+
+        // Utility functions
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+    </script>
+</body>
+</html>
+
+

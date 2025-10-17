@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed - VIDA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'SF Pro Display', sans-serif;
+            background: #FAFAFA;
+            color: #1A1A1A;
+            line-height: 1.6;
+        }
+
+        /* Top header */
+        .header {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid #E5E5E5;
+            padding: 16px 20px;
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        /* Feed container */
+        .feed {
+            max-width: 600px;
+            margin: 0 auto;
+            padding-bottom: 70px;
+        }
+
+        /* Feed item */
+        .item {
+            padding: 20px;
+            background: #fff;
+            margin-bottom: 1px;
+        }
+
+        .item-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .item-meta {
+            flex: 1;
+        }
+
+        .source {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1A1A1A;
+            letter-spacing: -0.2px;
+        }
+
+        .time {
+            font-size: 12px;
+            color: #999;
+            margin-top: 2px;
+        }
+
+        .item-content {
+            margin-bottom: 14px;
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            letter-spacing: -0.3px;
+            color: #1A1A1A;
+        }
+
+        .description {
+            font-size: 15px;
+            color: #444;
+            line-height: 1.65;
+        }
+
+        .description.spanish {
+            font-weight: 400;
+        }
+
+        .description.english {
+            color: #777;
+            font-size: 14px;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #F0F0F0;
+            font-style: italic;
+        }
+
+        .thumbnail {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-top: 12px;
+        }
+
+        /* Video item */
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 177.78%; /* 9:16 aspect ratio */
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Actions */
+        .actions {
+            display: flex;
+            gap: 12px;
+            padding-top: 16px;
+        }
+
+        .action-btn:active {
+            opacity: 0.6;
+        }
+
+        .action-btn .icon {
+            font-size: 18px;
+        }
+
+        /* Translation toggle */
+        .translate-btn {
+            background: #f0f0f0;
+            border: none;
+            border-radius: 16px;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        /* Bottom nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: #666;
+            text-decoration: none;
+            font-size: 10px;
+            padding: 4px 12px;
+        }
+
+        .nav-item.active {
+            color: #007AFF;
+        }
+
+        .nav-icon {
+            font-size: 24px;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        /* Difficulty badge */
+        .difficulty {
+            display: inline-block;
+            background: #EEF2FF;
+            color: #6366F1;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-left: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .translate-btn {
+            background: none;
+            color: #6366F1;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .translate-btn:hover {
+            background: #EEF2FF;
+        }
+
+        .translate-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Clickable words */
+        .clickable-word {
+            cursor: pointer;
+            transition: all 0.15s ease;
+            padding: 2px 0;
+            border-radius: 3px;
+        }
+
+        .clickable-word:hover {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        /* Word popup */
+        .word-popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .word-popup {
+            background: white;
+            padding: 24px 32px;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            max-width: 400px;
+            animation: slideUp 0.3s ease;
+        }
+
+        .spanish-word {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1A1A1A;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .english-word {
+            font-size: 18px;
+            color: #666;
+            text-align: center;
+            font-style: italic;
+            margin-bottom: 16px;
+        }
+
+        .save-word-btn {
+            background: #6366F1;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s ease;
+        }
+
+        .save-word-btn:hover {
+            background: #4F46E5;
+            transform: translateY(-1px);
+        }
+
+        .save-word-btn:active {
+            transform: scale(0.98);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>Feed</h1>
+    </div>
+
+    <!-- Feed -->
+    <div class="feed" id="feed">
+        <div class="loading">Loading feed...</div>
+    </div>
+
+    <!-- Bottom navigation -->
+    <nav class="bottom-nav">
+        <a href="/videos-simple.html" class="nav-item">
+            <div class="nav-icon">🎬</div>
+            <div>Videos</div>
+        </a>
+        <a href="/feed.html" class="nav-item active">
+            <div class="nav-icon">📰</div>
+            <div>Feed</div>
+        </a>
+        <a href="/chat.html" class="nav-item">
+            <div class="nav-icon">💬</div>
+            <div>Chat</div>
+        </a>
+        <a href="/" class="nav-item">
+            <div class="nav-icon">👤</div>
+            <div>Profile</div>
+        </a>
+    </nav>
+
+    <script>
+        let page = 1;
+        let loading = false;
+        let hasMore = true;
+
+        // Load feed
+        async function loadFeed() {
+            if (loading || !hasMore) return;
+
+            loading = true;
+            const feedEl = document.getElementById('feed');
+
+            if (page === 1) {
+                feedEl.innerHTML = '<div class="loading">Loading...</div>';
+            }
+
+            try {
+                const response = await fetch(`/api/feed-articles?level=A2&page=${page}&limit=10&interests=news,culture,food,tech`);
+                const data = await response.json();
+
+                if (page === 1) {
+                    feedEl.innerHTML = '';
+                }
+
+                if (data.success && data.videos) {
+                    data.videos.forEach(item => renderItem(item));
+                    hasMore = data.pagination.hasMore;
+                    page++;
+                } else {
+                    if (page === 1) {
+                        feedEl.innerHTML = '<div class="loading">No content available</div>';
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to load feed:', error);
+                if (page === 1) {
+                    feedEl.innerHTML = '<div class="loading">Failed to load feed</div>';
+                }
+            }
+
+            loading = false;
+        }
+
+        // Render feed item
+        function renderItem(item) {
+            const feedEl = document.getElementById('feed');
+            const itemEl = document.createElement('div');
+            itemEl.className = 'item';
+            itemEl.dataset.id = item.id;
+
+            const timeAgo = item.publishedAt ? getTimeAgo(new Date(item.publishedAt)) : '1h ago';
+
+            itemEl.innerHTML = `
+                <div class="item-header">
+                    <div class="avatar">${getAvatar(item.type)}</div>
+                    <div class="item-meta">
+                        <div class="source">${item.source || 'VIDA'}<span class="difficulty">${item.difficulty_level || 'A2'}</span></div>
+                        <div class="time">${timeAgo}</div>
+                    </div>
+                </div>
+
+                <div class="item-content">
+                    ${item.title ? `<div class="title">${item.title}</div>` : ''}
+                    ${item.thumbnail ? `<img src="${item.thumbnail}" class="thumbnail" alt="" onerror="this.style.display='none'">` : ''}
+                    ${item.spanish ? `<div class="description spanish" id="spanish-${item.id}">${makeWordsClickable(item.spanish, item.id)}</div>` : ''}
+                    ${item.english ? `<div class="description english" id="trans-${item.id}" style="display:none">${item.english}</div>` : ''}
+                </div>
+
+                <div class="actions">
+                    ${item.english ? `<button class="translate-btn" onclick="toggleTranslation('${item.id}')">EN</button>` : ''}
+                </div>
+            `;
+
+            feedEl.appendChild(itemEl);
+        }
+
+        // Get avatar emoji for content type
+        function getAvatar(type) {
+            const avatars = {
+                news: '📰',
+                video: '🎬',
+                social: '💬',
+                article: '📝',
+                meme: '😂',
+                culture: '🎭'
+            };
+            return avatars[type] || '📱';
+        }
+
+        // Time ago helper
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            if (seconds < 60) return 'Just now';
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return `${minutes}m ago`;
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `${hours}h ago`;
+            const days = Math.floor(hours / 24);
+            return `${days}d ago`;
+        }
+
+        // Make words clickable for translation
+        function makeWordsClickable(text, itemId) {
+            return text.split(' ').map((word, idx) => {
+                const cleanWord = word.replace(/[¿?¡!,.:;""]/g, '');
+                return `<span class="clickable-word" onclick="translateWord('${cleanWord}', event)">${word}</span>`;
+            }).join(' ');
+        }
+
+        // Translate individual word popup
+        async function translateWord(word, event) {
+            event.stopPropagation();
+
+            // Remove existing popup
+            const existingPopup = document.querySelector('.word-popup-overlay');
+            if (existingPopup) existingPopup.remove();
+
+            // Create overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'word-popup-overlay';
+            overlay.onclick = () => overlay.remove();
+
+            // Create popup
+            const popup = document.createElement('div');
+            popup.className = 'word-popup';
+            popup.innerHTML = `
+                <div class="spanish-word">${word}</div>
+                <div class="english-word">Loading...</div>
+                <button class="save-word-btn" onclick="saveWord('${word}', event)">Save Word</button>
+            `;
+
+            overlay.appendChild(popup);
+            document.body.appendChild(overlay);
+
+            // Fetch translation
+            try {
+                const response = await fetch(`/api/translate/word?text=${encodeURIComponent(word)}&target=en`);
+                const data = await response.json();
+                if (data.translation) {
+                    popup.querySelector('.english-word').textContent = data.translation;
+                } else {
+                    popup.querySelector('.english-word').textContent = '(translation unavailable)';
+                }
+            } catch (error) {
+                popup.querySelector('.english-word').textContent = '(error)';
+            }
+        }
+
+        // Save word to vocabulary
+        function saveWord(word, event) {
+            event.stopPropagation();
+
+            // Save to localStorage
+            const savedWords = JSON.parse(localStorage.getItem('savedWords') || '[]');
+            if (!savedWords.includes(word)) {
+                savedWords.push(word);
+                localStorage.setItem('savedWords', JSON.stringify(savedWords));
+
+                // Show feedback
+                event.target.textContent = '✓ Saved!';
+                event.target.style.background = '#10B981';
+
+                setTimeout(() => {
+                    document.querySelector('.word-popup-overlay')?.remove();
+                }, 800);
+            }
+        }
+
+        // Toggle like
+        function toggleLike(btn) {
+            const icon = btn.querySelector('.icon');
+            icon.textContent = icon.textContent === '🤍' ? '❤️' : '🤍';
+        }
+
+        // Toggle translation
+        function toggleTranslation(id) {
+            const transEl = document.getElementById(`trans-${id}`);
+            if (transEl) {
+                const isShown = transEl.style.display !== 'none';
+                transEl.style.display = isShown ? 'none' : 'block';
+                event.target.textContent = isShown ? 'Show translation' : 'Hide translation';
+            }
+        }
+
+        // Infinite scroll
+        window.addEventListener('scroll', () => {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+                loadFeed();
+            }
+        });
+
+        // Initial load
+        loadFeed();
+    </script>
+</body>
+</html>

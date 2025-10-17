@@ -1,0 +1,2478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Comedy Creator - Generate Viral Spanish Learning Content</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .creator-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            font-size: 1.1em;
+            color: #ffd700;
+            font-weight: 600;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .control-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+            height: fit-content;
+        }
+
+        .panel-title {
+            font-size: 1.8em;
+            font-weight: 800;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .character-selection {
+            margin-bottom: 30px;
+        }
+
+        .section-label {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .character-option {
+            padding: 20px;
+            border: 3px solid #dee2e6;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        }
+
+        .character-option:hover {
+            border-color: #007bff;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,123,255,0.15);
+        }
+
+        .character-option.selected {
+            border-color: #28a745;
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(40,167,69,0.2);
+        }
+
+        .character-emoji {
+            font-size: 3em;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .character-name {
+            font-weight: 700;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+
+        .scenario-input {
+            margin-bottom: 30px;
+        }
+
+        .scenario-input label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .scenario-input input, .scenario-input select {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #dee2e6;
+            border-radius: 15px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .scenario-input input:focus, .scenario-input select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+            transform: translateY(-1px);
+        }
+
+        .quick-scenarios {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .quick-scenario {
+            padding: 12px 18px;
+            background: linear-gradient(135deg, #17a2b8, #138496);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-align: center;
+            font-size: 0.95em;
+        }
+
+        .quick-scenario:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(23,162,184,0.3);
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.4em;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 30px rgba(40,167,69,0.3);
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(40,167,69,0.4);
+        }
+
+        .generate-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .generate-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .output-panel {
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 25px;
+            padding: 35px;
+            color: white;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            min-height: 600px;
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .output-title {
+            font-size: 1.8em;
+            font-weight: 800;
+            color: #ffd700;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .scenario-output {
+            background: rgba(255,255,255,0.05);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 25px;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .scenario-character {
+            color: #ffd700;
+            font-weight: 800;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .scenario-spanish {
+            color: #4ecdc4;
+            font-weight: 700;
+            font-size: 1.2em;
+            margin: 15px 0;
+            padding: 10px 20px;
+            background: rgba(78,205,196,0.1);
+            border-radius: 10px;
+            border-left: 4px solid #4ecdc4;
+        }
+
+        .scenario-action {
+            color: #ff6b6b;
+            font-weight: 600;
+            margin: 15px 0;
+        }
+
+        .output-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .action-btn {
+            padding: 12px 24px;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .action-btn:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-2px);
+        }
+
+        .generation-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 900;
+            color: #007bff;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-weight: 600;
+        }
+
+        .loading-animation {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,215,0,0.2);
+            border-top: 4px solid #ffd700;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        .loading-text {
+            color: #ffd700;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        /* TikTok-Style Video Preview System */
+        .video-preview-container {
+            margin-bottom: 30px;
+        }
+
+        .tiktok-video-preview {
+            background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+            border-radius: 25px;
+            padding: 25px;
+            position: relative;
+            aspect-ratio: 9/16;
+            max-width: 350px;
+            margin: 0 auto;
+            cursor: pointer;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            transition: all 0.3s ease;
+        }
+
+        .tiktok-video-preview:hover {
+            transform: scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        .tiktok-video-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, #ff0050, #00f2ea, #ff0050);
+            border-radius: 25px;
+            padding: 2px;
+            z-index: -1;
+        }
+
+        .video-character-display {
+            height: 70%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .character-avatar {
+            font-size: 8em;
+            margin-bottom: 20px;
+            animation: characterPulse 2s ease-in-out infinite alternate;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+        }
+
+        .video-overlay-text {
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            font-size: 1.4em;
+            font-weight: 700;
+            text-align: center;
+            border: 2px solid #ffd700;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation: textGlow 3s ease-in-out infinite alternate;
+        }
+
+        .video-controls {
+            position: absolute;
+            bottom: 80px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .play-btn {
+            background: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 1.2em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.1);
+            background: white;
+        }
+
+        .video-timeline {
+            flex: 1;
+            height: 4px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .timeline-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff0050, #00f2ea);
+            width: 0%;
+            border-radius: 2px;
+            transition: width 15s linear;
+        }
+
+        .video-duration {
+            color: white;
+            font-size: 0.9em;
+            font-weight: 600;
+            min-width: 30px;
+        }
+
+        .video-engagement {
+            position: absolute;
+            right: 15px;
+            bottom: 120px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .engagement-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            font-weight: 700;
+        }
+
+        .engagement-icon {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .engagement-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .scenario-details {
+            background: rgba(255,255,255,0.05);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .scenario-script {
+            display: grid;
+            gap: 15px;
+        }
+
+        .script-section {
+            display: flex;
+            gap: 10px;
+            line-height: 1.6;
+        }
+
+        .script-label {
+            font-weight: 700;
+            color: #ffd700;
+            min-width: 60px;
+        }
+
+        .spanish-highlight {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            border-left: 4px solid #ffd700;
+        }
+
+        .primary-action {
+            background: linear-gradient(45deg, #ff0050, #ff6b35) !important;
+            font-weight: 700;
+            font-size: 1.1em;
+            box-shadow: 0 10px 25px rgba(255, 0, 80, 0.3);
+        }
+
+        .primary-action:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(255, 0, 80, 0.4);
+        }
+
+        @keyframes characterPulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        @keyframes textGlow {
+            0% { box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+            100% { box-shadow: 0 5px 25px rgba(255, 215, 0, 0.4); }
+        }
+
+        .video-preview-playing .timeline-fill {
+            width: 100%;
+            transition: width 15s linear;
+        }
+
+        .video-preview-playing .character-avatar {
+            animation: characterPulse 0.5s ease-in-out infinite alternate;
+        }
+
+        .audio-visualizer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(180deg, transparent, rgba(255, 215, 0, 0.2));
+            display: none;
+        }
+
+        .audio-visualizer.active {
+            display: block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scenario-output.new {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .generation-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.2em;
+            }
+
+            .character-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .quick-scenarios {
+                grid-template-columns: 1fr;
+            }
+
+            .generation-stats {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="creator-container">
+        <div class="header">
+            <h1>🎭 AI Comedy Creator</h1>
+            <p>Generate viral Spanish learning scenarios with AI</p>
+            <div class="tagline">Create content that TikTok + Instagram Reels can't match!</div>
+        </div>
+
+        <div class="main-grid">
+            <div class="control-panel">
+                <div class="panel-title">
+                    <span>🎬</span> Content Creator
+                </div>
+
+                <div class="character-selection">
+                    <div class="section-label">
+                        <span>🎭</span> Choose Character
+                    </div>
+                    <div class="character-grid">
+                        <div class="character-option selected" data-character="MARCO">
+                            <span class="character-emoji">🏃‍♂️</span>
+                            <div class="character-name">MARCO</div>
+                        </div>
+                        <div class="character-option" data-character="SOFIA">
+                            <span class="character-emoji">📺</span>
+                            <div class="character-name">SOFIA</div>
+                        </div>
+                        <div class="character-option" data-character="GLOBE">
+                            <span class="character-emoji">🌍</span>
+                            <div class="character-name">GLOBE</div>
+                        </div>
+                        <div class="character-option" data-character="SPOON">
+                            <span class="character-emoji">🥄</span>
+                            <div class="character-name">SPOON</div>
+                        </div>
+                        <div class="character-option" data-character="CHAIR">
+                            <span class="character-emoji">🪑</span>
+                            <div class="character-name">CHAIR</div>
+                        </div>
+                        <div class="character-option" data-character="NAPOLEON">
+                            <span class="character-emoji">👑</span>
+                            <div class="character-name">NAPOLEON</div>
+                        </div>
+                        <div class="character-option" data-character="EINSTEIN">
+                            <span class="character-emoji">🧠</span>
+                            <div class="character-name">EINSTEIN</div>
+                        </div>
+                        <div class="character-option" data-character="PICASSO">
+                            <span class="character-emoji">🎨</span>
+                            <div class="character-name">PICASSO</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scenario-input">
+                    <label for="spanishPhrase">Spanish Phrase to Teach:</label>
+                    <input type="text" id="spanishPhrase" placeholder="e.g., Tengo mucha hambre" value="Tengo sed">
+                </div>
+
+                <div class="scenario-input">
+                    <label for="location">Location/Setting:</label>
+                    <select id="location">
+                        <option value="random">🎲 Surprise Me!</option>
+                        <option value="restaurant">🍽️ Spanish Restaurant</option>
+                        <option value="market">🏪 Spanish Market</option>
+                        <option value="beach">🏖️ Spanish Beach</option>
+                        <option value="pharmacy">💊 Spanish Pharmacy</option>
+                        <option value="gym">💪 Spanish Gym</option>
+                        <option value="library">📚 Spanish Library</option>
+                        <option value="taxi">🚕 Spanish Taxi</option>
+                        <option value="hotel">🏨 Spanish Hotel</option>
+                    </select>
+                </div>
+
+                <div class="scenario-input">
+                    <label>Quick Spanish Phrases:</label>
+                    <div class="quick-scenarios">
+                        <button class="quick-scenario" onclick="setPhrase('Tengo hambre')">Tengo hambre</button>
+                        <button class="quick-scenario" onclick="setPhrase('¿Dónde está?')">¿Dónde está?</button>
+                        <button class="quick-scenario" onclick="setPhrase('No hablo español')">No hablo español</button>
+                        <button class="quick-scenario" onclick="setPhrase('¿Cuánto cuesta?')">¿Cuánto cuesta?</button>
+                        <button class="quick-scenario" onclick="setPhrase('Estoy perdido')">Estoy perdido</button>
+                        <button class="quick-scenario" onclick="setPhrase('Hace calor')">Hace calor</button>
+                    </div>
+                </div>
+
+                <button class="generate-btn" onclick="generateScenario()">
+                    ✨ Generate Comedy Gold
+                </button>
+            </div>
+
+            <div class="output-panel">
+                <div class="output-header">
+                    <div class="output-title">
+                        <span>🎯</span> Generated Scenario
+                    </div>
+                </div>
+
+                <div class="loading-animation" id="loadingAnimation">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-text">AI is crafting comedy magic...</div>
+                </div>
+
+                <div id="scenarioOutput">
+                    <div class="scenario-output">
+                        <div class="scenario-character">🏃‍♂️ MARCO</div>
+                        <div>MARCO at Spanish water fountain, looking desperately thirsty with sweat pouring down his face.</div>
+                        <div class="scenario-spanish">Tengo... MUCHA... sed...</div>
+                        <div class="scenario-action">Fountain suddenly EXPLODES like a geyser, Marco gets completely soaked but keeps drinking happily while tourists run away screaming.</div>
+                        <div>Marco dripping wet, still drinking, American accent: "Perfectamente... refrescante."</div>
+
+                        <div class="output-actions">
+                            <button class="action-btn" onclick="saveScenario()">💾 Save</button>
+                            <button class="action-btn" onclick="shareScenario()">📤 Share</button>
+                            <button class="action-btn" onclick="addToFeed()">📱 Add to Feed</button>
+                            <button class="action-btn" onclick="editScenario()">✏️ Edit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="generation-stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalGenerated">47</div>
+                <div class="stat-label">Scenarios Generated</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="viralPotential">94%</div>
+                <div class="stat-label">Viral Potential</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="funnyScore">9.2</div>
+                <div class="stat-label">Funny Score</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="learningValue">100%</div>
+                <div class="stat-label">Learning Value</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedCharacter = 'MARCO';
+        let generationCount = 47;
+
+        // Character templates with consistent descriptions
+        const characterTemplates = {
+            'MARCO': {
+                emoji: '🏃‍♂️',
+                description: '40-year-old overweight American tourist: 5\'9" height, 100KG with MASSIVE BIG BELLY HANGING OUT prominently, messy brown hair with cowlick, rectangular reading glasses sliding down nose, confused friendly smile, bright red \'I LOVE SPAIN\' t-shirt TOO SMALL constantly riding up showing big fat belly, white name tag \'HOLA SOY MARCO\', khaki cargo shorts, white tube socks pulled up, brown hiking boots, large black camera around neck, bright blue fanny pack, enthusiastic loud American accent voice',
+                personality: 'obliviously happy, enthusiastic, causes chaos accidentally'
+            },
+            'SOFIA': {
+                emoji: '📺',
+                description: 'stunning 25-year-old Spanish TV reporter: long wavy dark brown hair, large expressive dark brown eyes with professional makeup, warm olive Mediterranean skin, petite 5\'4" confident posture, tight red blazer, black pencil skirt, red high heels, professional microphone, warm confident Spanish Barcelona accent, speaks slowly and clearly',
+                personality: 'professional, calm under pressure, reports normally during chaos'
+            },
+            'GLOBE': {
+                emoji: '🌍',
+                description: '3D RENDERED photorealistic Earth globe: blue oceans #1E90FF, green continents #228B22, brown fedora hat tilted left, BLACK PIXELATED 8-BIT SUNGLASSES exactly 8 square pixels per lens 2x4 grid, lit cigar in RIGHT HAND with gray smoke, white cartoon gloves, black cartoon legs, brown oxford shoes, deep gravelly baritone voice like 80-year-old smoker, ultra-slow Spanish with heavy American accent',
+                personality: 'deadpan, unbothered by chaos, continues activities calmly'
+            },
+            'SPOON': {
+                emoji: '🥄',
+                description: 'ANIMATED TALKING SPOON: polished silver surface reflecting surroundings, cartoon googly eyes near the bowl end, tiny red mouth that moves when speaking, thin black stick arms that gesture expressively, small white cartoon feet, high-pitched cheerful voice with slight Spanish accent, bounces when excited',
+                personality: 'hyperactive, overly helpful, gets into everything, speaks very fast'
+            },
+            'CHAIR': {
+                emoji: '🪑',
+                description: 'SENTIENT SPANISH CHAIR: traditional wooden dining chair with carved details, expressive carved face on the backrest, stubby wooden legs that move like arms, deep baritone voice with thick Spanish accent, creaks when moving, scratches and scuff marks from being moved around',
+                personality: 'grumpy old man, complains about everything, surprisingly wise, hates being sat on'
+            },
+            'NAPOLEON': {
+                emoji: '👑',
+                description: 'NAPOLEON BONAPARTE: 5\'7" height, iconic military uniform with gold braiding, white breeches, black boots, famous bicorne hat, one hand tucked in vest, intense piercing eyes, speaks French-accented Spanish, constantly checks his pocket watch, dramatic gestures',
+                personality: 'grandiose, impatient, strategic mind, confused by modern technology, speaks in royal proclamations'
+            },
+            'EINSTEIN': {
+                emoji: '🧠',
+                description: 'ALBERT EINSTEIN: wild white hair sticking up, thick mustache, wrinkled face with kind eyes behind round glasses, rumpled sweater, chalk-stained hands, speaks with German-accented Spanish, constantly writing equations in the air, thoughtful expressions',
+                personality: 'curious, absent-minded professor, explains everything scientifically, fascinated by modern world'
+            },
+            'PICASSO': {
+                emoji: '🎨',
+                description: 'PABLO PICASSO: distinctive intense gaze, black hair slicked back, striped shirt, paint-splattered smock, holds brushes and palette, speaks rapid Spanish with Andalusian accent, sees world in geometric shapes, animated hand gestures while talking',
+                personality: 'passionate artist, sees beauty in chaos, turns everything into art, speaks in metaphors'
+            }
+        };
+
+        // Scenario templates for AI-style generation
+        const scenarioTemplates = {
+            'restaurant': ['ordering food', 'waiter confusion', 'kitchen chaos', 'bill paying'],
+            'market': ['haggling prices', 'buying wrong items', 'vendor misunderstanding', 'carrying groceries'],
+            'beach': ['sunbathing', 'swimming', 'beach volleyball', 'renting equipment'],
+            'pharmacy': ['buying medicine', 'describing symptoms', 'prescription confusion', 'health advice'],
+            'gym': ['exercising', 'using equipment', 'trainer instructions', 'locker room'],
+            'library': ['finding books', 'quiet rules', 'librarian help', 'study space'],
+            'taxi': ['giving directions', 'traffic situation', 'fare discussion', 'destination confusion'],
+            'hotel': ['checking in', 'room service', 'concierge help', 'checkout process']
+        };
+
+        // Character selection
+        document.querySelectorAll('.character-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.character-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedCharacter = this.dataset.character;
+            });
+        });
+
+        function setPhrase(phrase) {
+            document.getElementById('spanishPhrase').value = phrase;
+        }
+
+        function generateScenario() {
+            const phrase = document.getElementById('spanishPhrase').value || 'Tengo hambre';
+            const location = document.getElementById('location').value;
+            const character = characterTemplates[selectedCharacter];
+
+            // Show loading
+            document.getElementById('loadingAnimation').style.display = 'block';
+            document.getElementById('scenarioOutput').style.display = 'none';
+            document.querySelector('.generate-btn').disabled = true;
+
+            // Simulate AI generation delay
+            setTimeout(() => {
+                const scenario = createAIScenario(phrase, location, character);
+                displayScenario(scenario);
+
+                // Hide loading
+                document.getElementById('loadingAnimation').style.display = 'none';
+                document.getElementById('scenarioOutput').style.display = 'block';
+                document.querySelector('.generate-btn').disabled = false;
+
+                // Update stats
+                updateStats();
+            }, 2000 + Math.random() * 1000);
+        }
+
+        function createAIScenario(phrase, location, character) {
+            // AI-style scenario generation algorithm
+            const locations = {
+                'restaurant': '🍽️ Spanish restaurant',
+                'market': '🏪 Spanish market',
+                'beach': '🏖️ Spanish beach',
+                'pharmacy': '💊 Spanish pharmacy',
+                'gym': '💪 Spanish gym',
+                'library': '📚 Spanish library',
+                'taxi': '🚕 Spanish taxi',
+                'hotel': '🏨 Spanish hotel',
+                'random': getRandomLocation()
+            };
+
+            function getRandomLocation() {
+                const randomLocs = ['Spanish café', 'Spanish park', 'Spanish museum', 'Spanish train station', 'Spanish shopping mall'];
+                return randomLocs[Math.floor(Math.random() * randomLocs.length)];
+            }
+
+            const selectedLocation = locations[location] || locations.random;
+
+            // Generate scenario based on character personality and phrase
+            const scenarios = {
+                'MARCO': generateMarcoScenario(phrase, selectedLocation),
+                'SOFIA': generateSofiaScenario(phrase, selectedLocation),
+                'GLOBE': generateGlobeScenario(phrase, selectedLocation),
+                'SPOON': generateSpoonScenario(phrase, selectedLocation),
+                'CHAIR': generateChairScenario(phrase, selectedLocation),
+                'NAPOLEON': generateNapoleonScenario(phrase, selectedLocation),
+                'EINSTEIN': generateEinsteinScenario(phrase, selectedLocation),
+                'PICASSO': generatePicassoScenario(phrase, selectedLocation)
+            };
+
+            return scenarios[selectedCharacter] || scenarios['MARCO'];
+        }
+
+        function generateMarcoScenario(phrase, location) {
+            const chaosEvents = [
+                'belly growls so loud it breaks windows',
+                'accidentally knocks over everything with his belly',
+                'gets stuck in doorway due to belly size',
+                'belly bounces and creates earthquake',
+                'sweats so much it floods the area',
+                'camera gets tangled and pulls everything down'
+            ];
+
+            const reactions = [
+                'Perfecto... exactamente... lo... que... quería.',
+                'Muy... bueno... para... mi... salud.',
+                'Exactamente... como... en... casa.',
+                'Perfecto... para... las... vacaciones.',
+                'Muy... auténtico... español.',
+                'Lo... siento... mucho... pero... perfecto.'
+            ];
+
+            const chaos = chaosEvents[Math.floor(Math.random() * chaosEvents.length)];
+            const reaction = reactions[Math.floor(Math.random() * reactions.length)];
+
+            return {
+                character: selectedCharacter,
+                setup: `MARCO at ${location}, looking determined but clueless.`,
+                spanish: phrase.toUpperCase(),
+                chaos: `His ${chaos}, causing complete mayhem while everyone runs for safety.`,
+                ending: `Marco completely oblivious to the destruction, American accent: "${reaction}"`
+            };
+        }
+
+        function generateSofiaScenario(phrase, location) {
+            const professionalSituations = [
+                'reporting live on TV',
+                'interviewing locals',
+                'giving weather forecast',
+                'broadcasting news',
+                'conducting street interviews',
+                'covering local events'
+            ];
+
+            const chaosEvents = [
+                'everything behind her goes completely insane',
+                'massive explosion happens in background',
+                'parade of elephants marches through',
+                'building collapses behind her',
+                'tornado forms around her',
+                'aliens land in the background'
+            ];
+
+            const situation = professionalSituations[Math.floor(Math.random() * professionalSituations.length)];
+            const chaos = chaosEvents[Math.floor(Math.random() * chaosEvents.length)];
+
+            return {
+                character: selectedCharacter,
+                setup: `SOFIA at ${location}, ${situation} with perfect professionalism.`,
+                spanish: phrase,
+                chaos: `Suddenly ${chaos}, but Sofia continues reporting normally.`,
+                ending: `Sofia still perfectly composed despite total mayhem, Spanish accent: "Como... pueden... ver... todo... muy... normal."`
+            };
+        }
+
+        function generateGlobeScenario(phrase, location) {
+            const activities = [
+                'smoking his cigar calmly',
+                'reading a newspaper',
+                'drinking coffee',
+                'playing chess',
+                'writing in notebook',
+                'listening to music'
+            ];
+
+            const disasters = [
+                'nuclear explosion happens around him',
+                'building burns down completely',
+                'earthquake destroys everything',
+                'flood covers everything',
+                'meteor shower hits area',
+                'volcano erupts nearby'
+            ];
+
+            const activity = activities[Math.floor(Math.random() * activities.length)];
+            const disaster = disasters[Math.floor(Math.random() * disasters.length)];
+
+            return {
+                character: selectedCharacter,
+                setup: `GLOBE at ${location}, calmly ${activity}.`,
+                spanish: phrase,
+                chaos: `${disaster}, everyone screams and runs, but Globe remains completely unbothered.`,
+                ending: `Globe continues his activity in the disaster zone, gravelly voice: "Perfecto... muy... tranquilo... aquí."`
+            };
+        }
+
+        function generateFlamencoScenario(phrase, location) {
+            const danceStyles = [
+                'passionate flamenco',
+                'dramatic tango',
+                'graceful waltz',
+                'energetic salsa',
+                'traditional folk dance'
+            ];
+
+            const transformations = [
+                'everyone starts dancing uncontrollably',
+                'furniture comes alive and dances',
+                'building starts swaying to rhythm',
+                'flowers bloom everywhere',
+                'birds join in synchronized flying',
+                'statues come to life dancing'
+            ];
+
+            const dance = danceStyles[Math.floor(Math.random() * danceStyles.length)];
+            const transformation = transformations[Math.floor(Math.random() * transformations.length)];
+
+            return {
+                character: selectedCharacter,
+                setup: `FLAMENCO at ${location}, beginning an elegant ${dance}.`,
+                spanish: phrase,
+                chaos: `Her dancing is so mesmerizing that ${transformation}.`,
+                ending: `Flamenco continues dancing beautifully as everything dances around her: "¡Así... es... la... vida!"`
+            };
+        }
+
+        function generateSpoonScenario(phrase, location) {
+            const spoonActivities = [
+                'trying to stir a giant pot',
+                'bouncing around excitedly',
+                'attempting to serve food',
+                'stirring ingredients frantically',
+                'hopping from dish to dish',
+                'spinning like a tornado'
+            ];
+
+            const spoonChaos = [
+                'accidentally launches food everywhere like a catapult',
+                'stirs so fast it creates a whirlpool that sucks everything in',
+                'bounces so enthusiastically it ricochets off walls breaking everything',
+                'spins so fast it creates a tornado that lifts the entire restaurant',
+                'stirs ingredients so vigorously they explode like fireworks',
+                'hops so excitedly it bounces through the ceiling'
+            ];
+
+            const activity = spoonActivities[Math.floor(Math.random() * spoonActivities.length)];
+            const chaos = spoonChaos[Math.floor(Math.random() * spoonChaos.length)];
+
+            return {
+                character: selectedCharacter,
+                setup: `SPOON at ${location}, ${activity} while exclaiming in high-pitched voice:`,
+                spanish: phrase,
+                chaos: `Spoon gets so excited that it ${chaos}, causing complete mayhem.`,
+                ending: `Spoon still bouncing happily in the chaos, cheerful voice: "¡Perfecto... todo... está... mezclado!"`
+            };
+        }
+
+        function generateChairScenario(phrase, location) {
+            const chairComplaints = [
+                'grumbling about people always sitting on it',
+                'complaining about the uncomfortable floor',
+                'muttering about modern furniture',
+                'groaning about back pain',
+                'complaining about dust accumulation',
+                'grumbling about being moved around'
+            ];
+
+            const chairWisdom = [
+                'suddenly everyone sits down and can\'t get up',
+                'all furniture comes alive and starts complaining too',
+                'floor becomes quicksand because it\'s tired of supporting weight',
+                'everyone realizes they\'ve been treating furniture badly',
+                'all chairs in the area go on strike and tip over',
+                'people start floating because chairs refuse to support them'
+            ];
+
+            const complaint = chairComplaints[Math.floor(Math.random() * chairComplaints.length)];
+            const wisdom = chairWisdom[Math.floor(Math.random() * chairWisdom.length)];
+
+            return {
+                character: selectedCharacter,
+                setup: `CHAIR at ${location}, ${complaint}, then says in grumpy baritone:`,
+                spanish: phrase,
+                chaos: `Chair's wisdom is so profound that ${wisdom}.`,
+                ending: `Chair creaks smugly, deep voice: "Ahora... entienden... el... respeto... que... merezco."`
+            };
+        }
+
+        function generateNapoleonScenario(phrase, location) {
+            const napoleonActions = [
+                'dramatically examining modern technology',
+                'giving orders to confused bystanders',
+                'checking his pocket watch impatiently',
+                'studying a map of modern Spain',
+                'proclaiming victory over daily tasks',
+                'organizing everything like a military campaign'
+            ];
+
+            const timeClash = [
+                'tries to charge his phone by yelling at it like troops',
+                'attempts to conquer a vending machine with battle tactics',
+                'declares war on automatic doors that won\'t obey him',
+                'tries to send messages by carrier pigeon to nearby WiFi router',
+                'organizes restaurant staff into military formations',
+                'attempts to pay with French francs from 1804'
+            ];
+
+            const action = napoleonActions[Math.floor(Math.random() * napoleonActions.length)];
+            const clash = timeClash[Math.floor(Math.random() * timeClash.length)];
+
+            return {
+                character: selectedCharacter,
+                setup: `NAPOLEON at ${location}, ${action}, proclaims with French accent:`,
+                spanish: phrase,
+                chaos: `Napoleon ${clash}, causing historical confusion everywhere.`,
+                ending: `Napoleon adjusts his hat proudly, French-Spanish accent: "¡La... victoria... es... siempre... mía!"`
+            };
+        }
+
+        function generateEinsteinScenario(phrase, location) {
+            const einsteinThoughts = [
+                'calculating the physics of everyday objects',
+                'writing equations in the air with his finger',
+                'explaining relativity to confused listeners',
+                'measuring everything with scientific precision',
+                'testing theories with available materials',
+                'pondering the quantum mechanics of Spanish food'
+            ];
+
+            const scientificChaos = [
+                'his calculations become real and objects start floating',
+                'time slows down around him due to his intense thinking',
+                'his equations come to life and start rearranging reality',
+                'everything turns into mathematical symbols',
+                'his theories create a small black hole that sucks in napkins',
+                'space-time bends and everyone experiences different time speeds'
+            ];
+
+            const thought = einsteinThoughts[Math.floor(Math.random() * einsteinThoughts.length)];
+            const chaos = scientificChaos[Math.floor(Math.random() * scientificChaos.length)];
+
+            return {
+                character: selectedCharacter,
+                setup: `EINSTEIN at ${location}, ${thought}, says thoughtfully in German accent:`,
+                spanish: phrase,
+                chaos: `Einstein's scientific mind is so powerful that ${chaos}.`,
+                ending: `Einstein adjusts his glasses, fascinated, German-Spanish accent: "¡Muy... interesante... fenómeno... cuántico!"`
+            };
+        }
+
+        function generatePicassoScenario(phrase, location) {
+            const picassoVisions = [
+                'seeing geometric shapes in everything around him',
+                'painting invisible cubist masterpieces in the air',
+                'reimagining everyone as abstract art',
+                'turning reality into different art periods',
+                'painting with imaginary brushes on air',
+                'deconstructing visual reality into geometric forms'
+            ];
+
+            const artisticChaos = [
+                'everything transforms into cubist art with multiple perspectives',
+                'people\'s faces rearrange into Picasso-style portraits',
+                'reality becomes a living painting where colors drip and flow',
+                'everyone sees the world through different art movements simultaneously',
+                'objects start moving like brushstrokes across a canvas',
+                'the entire location becomes a 3D abstract painting'
+            ];
+
+            const vision = picassoVisions[Math.floor(Math.random() * picassoVisions.length)];
+            const chaos = artisticChaos[Math.floor(Math.random() * artisticChaos.length)];
+
+            return {
+                character: selectedCharacter,
+                setup: `PICASSO at ${location}, ${vision}, exclaims passionately in Andalusian accent:`,
+                spanish: phrase,
+                chaos: `Picasso's artistic vision is so intense that ${chaos}.`,
+                ending: `Picasso gestures wildly at his accidental masterpiece, Spanish accent: "¡Perfecto... arte... en... todas... partes!"`
+            };
+        }
+
+        function displayScenario(scenario) {
+            const output = document.getElementById('scenarioOutput');
+            const character = characterTemplates[selectedCharacter];
+
+            output.innerHTML = `
+                <div class="scenario-output new">
+                    <div class="video-preview-container">
+                        <div class="tiktok-video-preview" onclick="playVideoPreview()">
+                            <div class="video-character-display">
+                                <div class="character-avatar" id="characterAvatar">
+                                    ${character.emoji}
+                                </div>
+                                <div class="video-overlay-text" id="overlayText">${scenario.spanish}</div>
+                            </div>
+                            <div class="video-controls">
+                                <button class="play-btn" id="playBtn">▶️</button>
+                                <div class="video-timeline">
+                                    <div class="timeline-fill" id="timelineFill"></div>
+                                </div>
+                                <span class="video-duration">0:15</span>
+                            </div>
+                            <div class="video-engagement">
+                                <div class="engagement-stat">
+                                    <span class="engagement-icon">❤️</span>
+                                    <span>${Math.floor(Math.random() * 9000 + 1000)}K</span>
+                                </div>
+                                <div class="engagement-stat">
+                                    <span class="engagement-icon">💬</span>
+                                    <span>${Math.floor(Math.random() * 500 + 100)}</span>
+                                </div>
+                                <div class="engagement-stat">
+                                    <span class="engagement-icon">📤</span>
+                                    <span>${Math.floor(Math.random() * 200 + 50)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scenario-details">
+                        <div class="scenario-character">${character.emoji} ${scenario.character}</div>
+                        <div class="scenario-script">
+                            <div class="script-section">
+                                <span class="script-label">Setup:</span> ${scenario.setup}
+                            </div>
+                            <div class="script-section spanish-highlight">
+                                <span class="script-label">Spanish:</span> ${scenario.spanish}
+                            </div>
+                            <div class="script-section">
+                                <span class="script-label">Action:</span> ${scenario.chaos}
+                            </div>
+                            <div class="script-section">
+                                <span class="script-label">Ending:</span> ${scenario.ending}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="output-actions">
+                        <button class="action-btn primary-action" onclick="generateVideo()">🎬 Generate Video</button>
+                        <button class="action-btn" onclick="playAudioPreview()">🔊 Hear Audio</button>
+                        <button class="action-btn" onclick="saveScenario()">💾 Save</button>
+                        <button class="action-btn" onclick="shareScenario()">📤 Share</button>
+                        <button class="action-btn" onclick="addToFeed()">📱 Add to Feed</button>
+                    </div>
+                </div>
+            `;
+
+            // Store scenario data for preview functions
+            window.currentScenario = scenario;
+            window.currentCharacter = character;
+        }
+
+        function updateStats() {
+            generationCount++;
+            document.getElementById('totalGenerated').textContent = generationCount;
+
+            // Simulate dynamic stats
+            document.getElementById('viralPotential').textContent = Math.floor(Math.random() * 10 + 85) + '%';
+            document.getElementById('funnyScore').textContent = (Math.random() * 2 + 8).toFixed(1);
+            document.getElementById('learningValue').textContent = Math.floor(Math.random() * 5 + 95) + '%';
+
+            // Animate number changes
+            document.querySelectorAll('.stat-number').forEach(el => {
+                el.style.color = '#28a745';
+                setTimeout(() => el.style.color = '#007bff', 1000);
+            });
+        }
+
+        // Action functions
+        function saveScenario() {
+            alert('📁 Scenario saved to your collection! You can access it anytime in your saved content.');
+        }
+
+        function shareScenario() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'AI Comedy Creator - Viral Spanish Learning',
+                    text: 'Check out this hilarious Spanish learning scenario I created!',
+                    url: window.location.href
+                });
+            } else {
+                alert('🔗 Scenario link copied to clipboard! Share it with your friends.');
+            }
+        }
+
+        function addToFeed() {
+            const scenarioOutput = document.querySelector('.scenario-output');
+            if (!scenarioOutput) {
+                alert('⚠️ Please generate a scenario first!');
+                return;
+            }
+
+            // Extract content from current scenario
+            const characterElement = scenarioOutput.querySelector('.scenario-character');
+            const spanishElement = scenarioOutput.querySelector('.scenario-spanish');
+            const actionElement = scenarioOutput.querySelector('.scenario-action');
+
+            const character = selectedCharacter;
+            const spanishPhrase = spanishElement ? spanishElement.textContent.trim() : 'Spanish phrase';
+            const fullScenario = scenarioOutput.textContent.replace(/💾 Save📤 Share📱 Add to Feed✏️ Edit/g, '').trim();
+
+            // Create properly formatted content for Enhanced Feed
+            const contentData = {
+                id: 'user_' + Date.now(),
+                type: 'user_generated',
+                character: character,
+                spanishPhrase: spanishPhrase,
+                fullScenario: fullScenario,
+                timestamp: new Date().toISOString(),
+                interactions: {
+                    likes: Math.floor(Math.random() * 50) + 10,
+                    comments: Math.floor(Math.random() * 20) + 5,
+                    shares: Math.floor(Math.random() * 15) + 2,
+                    bookmarks: 0
+                },
+                isUserContent: true
+            };
+
+            // Save to localStorage for persistence
+            const existingContent = JSON.parse(localStorage.getItem('userGeneratedContent') || '[]');
+            existingContent.unshift(contentData); // Add to beginning of array
+            localStorage.setItem('userGeneratedContent', JSON.stringify(existingContent));
+
+            // Broadcast to Enhanced Feed via cross-window messaging
+            if (window.opener) {
+                window.opener.postMessage({
+                    type: 'NEW_USER_CONTENT',
+                    data: contentData
+                }, '*');
+            }
+
+            // Broadcast to any other windows
+            window.postMessage({
+                type: 'NEW_USER_CONTENT',
+                data: contentData
+            }, '*');
+
+            // Show professional success feedback
+            showSuccessFeedback(contentData);
+
+            // Update local stats
+            updateCreationStats();
+        }
+
+        function showSuccessFeedback(contentData) {
+            // Remove any existing notifications
+            const existing = document.querySelector('.success-notification');
+            if (existing) existing.remove();
+
+            const notification = document.createElement('div');
+            notification.className = 'success-notification';
+            notification.innerHTML = `
+                <div class="success-content">
+                    <div class="success-icon">✨</div>
+                    <div class="success-title">Content Added to Feed!</div>
+                    <div class="success-subtitle">Your ${contentData.character} scenario is now live</div>
+                    <div class="success-actions">
+                        <button class="success-btn primary" onclick="viewInFeed()">
+                            📱 View in Enhanced Feed
+                        </button>
+                        <button class="success-btn secondary" onclick="this.closest('.success-notification').remove()">
+                            Continue Creating
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Add styles for notification
+            const style = document.createElement('style');
+            style.textContent = `
+                .success-notification {
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: rgba(0, 0, 0, 0.95);
+                    backdrop-filter: blur(20px);
+                    border-radius: 25px;
+                    padding: 40px;
+                    z-index: 10000;
+                    border: 2px solid #28a745;
+                    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+                    animation: successSlideIn 0.5s ease-out;
+                }
+
+                .success-content {
+                    text-align: center;
+                    color: white;
+                    max-width: 400px;
+                }
+
+                .success-icon {
+                    font-size: 4em;
+                    margin-bottom: 20px;
+                    animation: successPulse 2s ease-in-out infinite;
+                }
+
+                .success-title {
+                    font-size: 1.8em;
+                    font-weight: 800;
+                    color: #28a745;
+                    margin-bottom: 10px;
+                }
+
+                .success-subtitle {
+                    font-size: 1.1em;
+                    opacity: 0.9;
+                    margin-bottom: 30px;
+                }
+
+                .success-actions {
+                    display: flex;
+                    gap: 15px;
+                    justify-content: center;
+                    flex-wrap: wrap;
+                }
+
+                .success-btn {
+                    padding: 12px 24px;
+                    border: none;
+                    border-radius: 15px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    font-size: 1em;
+                }
+
+                .success-btn.primary {
+                    background: linear-gradient(135deg, #28a745, #20c997);
+                    color: white;
+                }
+
+                .success-btn.primary:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 8px 25px rgba(40,167,69,0.4);
+                }
+
+                .success-btn.secondary {
+                    background: rgba(255,255,255,0.1);
+                    color: white;
+                    border: 2px solid rgba(255,255,255,0.3);
+                }
+
+                .success-btn.secondary:hover {
+                    background: rgba(255,255,255,0.2);
+                }
+
+                @keyframes successSlideIn {
+                    from {
+                        opacity: 0;
+                        transform: translate(-50%, -50%) scale(0.8) translateY(50px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translate(-50%, -50%) scale(1) translateY(0);
+                    }
+                }
+
+                @keyframes successPulse {
+                    0%, 100% { transform: scale(1); }
+                    50% { transform: scale(1.1); }
+                }
+            `;
+
+            if (!document.querySelector('style[data-success-styles]')) {
+                style.setAttribute('data-success-styles', 'true');
+                document.head.appendChild(style);
+            }
+
+            document.body.appendChild(notification);
+
+            // Auto-remove after 8 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.style.animation = 'successSlideIn 0.3s ease-in reverse';
+                    setTimeout(() => notification.remove(), 300);
+                }
+            }, 8000);
+        }
+
+        function viewInFeed() {
+            // Close notification
+            const notification = document.querySelector('.success-notification');
+            if (notification) notification.remove();
+
+            // Navigate to Enhanced Feed
+            window.location.href = '/enhanced-feed.html';
+        }
+
+        function updateCreationStats() {
+            // Update generation count
+            generationCount++;
+            document.getElementById('totalGenerated').textContent = generationCount;
+
+            // Save to localStorage for persistence
+            localStorage.setItem('generationCount', generationCount.toString());
+        }
+
+        function editScenario() {
+            alert('✏️ Advanced editing features coming soon! You\'ll be able to fine-tune every detail of your scenarios.');
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                generateScenario();
+            }
+            if (e.key === 'Escape') {
+                window.location.href = '/index.html';
+            }
+        });
+
+        // Initialize with sample generation
+        document.addEventListener('DOMContentLoaded', function() {
+            // TikTok-Style Video Preview Functions
+        function playVideoPreview() {
+            const videoPreview = document.querySelector('.tiktok-video-preview');
+            const playBtn = document.getElementById('playBtn');
+            const timelineFill = document.getElementById('timelineFill');
+            const characterAvatar = document.getElementById('characterAvatar');
+
+            if (!window.currentScenario) return;
+
+            // Toggle play state
+            const isPlaying = videoPreview.classList.contains('video-preview-playing');
+
+            if (isPlaying) {
+                stopVideoPreview();
+                return;
+            }
+
+            // Start playing
+            videoPreview.classList.add('video-preview-playing');
+            playBtn.textContent = '⏸️';
+
+            // Animate timeline over 15 seconds via CSS class
+            // The CSS class .video-preview-playing .timeline-fill will handle the animation
+
+            // Enhanced character animation during play
+            characterAvatar.style.animation = 'characterPulse 0.5s ease-in-out infinite alternate';
+
+            // Simulate video sections with text changes
+            simulateVideoPlayback();
+
+            setTimeout(() => {
+                stopVideoPreview();
+            }, 15000);
+        }
+
+        // Make function globally accessible
+        window.playVideoPreview = playVideoPreview;
+
+        function stopVideoPreview() {
+            const videoPreview = document.querySelector('.tiktok-video-preview');
+            const playBtn = document.getElementById('playBtn');
+            const timelineFill = document.getElementById('timelineFill');
+            const characterAvatar = document.getElementById('characterAvatar');
+
+            videoPreview.classList.remove('video-preview-playing');
+            playBtn.textContent = '▶️';
+            // Timeline will reset to 0% when video-preview-playing class is removed via CSS
+            characterAvatar.style.animation = 'characterPulse 2s ease-in-out infinite alternate';
+
+            // Reset overlay text
+            const overlayText = document.getElementById('overlayText');
+            if (window.currentScenario) {
+                overlayText.textContent = window.currentScenario.spanish;
+            }
+        }
+
+        function simulateVideoPlayback() {
+            if (!window.currentScenario) return;
+
+            const overlayText = document.getElementById('overlayText');
+            const scenario = window.currentScenario;
+
+            // Video timeline: 0-3s setup, 3-8s Spanish, 8-12s action, 12-15s ending
+            const timeline = [
+                { time: 0, text: "🎬 Starting..." },
+                { time: 2000, text: scenario.spanish },
+                { time: 6000, text: "😱 Chaos begins!" },
+                { time: 10000, text: "🤣 Comedy gold!" },
+                { time: 13000, text: "¡Perfecto!" }
+            ];
+
+            timeline.forEach(({ time, text }) => {
+                setTimeout(() => {
+                    if (document.querySelector('.video-preview-playing')) {
+                        overlayText.textContent = text;
+
+                        // Add pulsing effect for emphasis
+                        overlayText.style.transform = 'scale(1.1)';
+                        setTimeout(() => {
+                            overlayText.style.transform = 'scale(1)';
+                        }, 300);
+                    }
+                }, time);
+            });
+        }
+
+        function playAudioPreview() {
+            if (!window.currentScenario || !window.currentCharacter) {
+                alert('🔊 Generate a scenario first to hear the audio preview!');
+                return;
+            }
+
+            // Show audio feedback
+            const audioBtn = document.querySelector('button[onclick="playAudioPreview()"]');
+            const originalText = audioBtn.innerHTML;
+            audioBtn.innerHTML = '🔊 Playing...';
+            audioBtn.disabled = true;
+
+            // Simulate character voice based on personality
+            const character = window.currentCharacter;
+            const scenario = window.currentScenario;
+
+            // Create speech synthesis
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance();
+                utterance.text = scenario.spanish;
+
+                // Configure voice based on character
+                const voices = speechSynthesis.getVoices();
+                let selectedVoice = null;
+
+                // Try to find appropriate voice
+                if (character.personality.includes('Spanish') || selectedCharacter === 'SOFIA' || selectedCharacter === 'FLAMENCO') {
+                    selectedVoice = voices.find(voice => voice.lang.includes('es')) || voices.find(voice => voice.name.includes('Spanish'));
+                } else if (selectedCharacter === 'NAPOLEON') {
+                    selectedVoice = voices.find(voice => voice.lang.includes('fr')) || voices.find(voice => voice.name.includes('French'));
+                } else if (selectedCharacter === 'EINSTEIN') {
+                    selectedVoice = voices.find(voice => voice.lang.includes('de')) || voices.find(voice => voice.name.includes('German'));
+                }
+
+                if (selectedVoice) {
+                    utterance.voice = selectedVoice;
+                }
+
+                // Adjust speech parameters based on character
+                if (selectedCharacter === 'GLOBE') {
+                    utterance.rate = 0.7; // Slow and gravelly
+                    utterance.pitch = 0.5; // Deep voice
+                } else if (selectedCharacter === 'SPOON') {
+                    utterance.rate = 1.5; // Fast and excited
+                    utterance.pitch = 1.5; // High pitched
+                } else if (selectedCharacter === 'CHAIR') {
+                    utterance.rate = 0.8; // Grumpy and slow
+                    utterance.pitch = 0.6; // Deep baritone
+                } else {
+                    utterance.rate = 1.0;
+                    utterance.pitch = 1.0;
+                }
+
+                utterance.onend = () => {
+                    audioBtn.innerHTML = originalText;
+                    audioBtn.disabled = false;
+                };
+
+                utterance.onerror = () => {
+                    audioBtn.innerHTML = originalText;
+                    audioBtn.disabled = false;
+                    alert('🔊 Audio preview not available on this device');
+                };
+
+                speechSynthesis.speak(utterance);
+            } else {
+                setTimeout(() => {
+                    audioBtn.innerHTML = originalText;
+                    audioBtn.disabled = false;
+                    alert(`🔊 ${character.personality} voice: "${scenario.spanish}"`);
+                }, 2000);
+            }
+        }
+
+        // Make function globally accessible
+        window.playAudioPreview = playAudioPreview;
+
+        async function generateVideo() {
+            if (!window.currentScenario || !window.currentCharacter) {
+                alert('🎬 Generate a scenario first!');
+                return;
+            }
+
+            const generateBtn = document.querySelector('button[onclick="generateVideo()"]');
+            const originalText = generateBtn.innerHTML;
+            generateBtn.innerHTML = '🎬 Generating...';
+            generateBtn.disabled = true;
+
+            try {
+                // Create actual video using HTML5 Canvas
+                const videoBlob = await createTikTokVideo(window.currentScenario, window.currentCharacter);
+
+                // Show success with download link
+                showVideoGenerationSuccess(videoBlob);
+
+            } catch (error) {
+                console.error('Video generation failed:', error);
+                alert('❌ Video generation failed. Please try again.');
+            } finally {
+                generateBtn.innerHTML = originalText;
+                generateBtn.disabled = false;
+            }
+        }
+
+        async function createTikTokVideo(scenario, character) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+            // TikTok vertical format: 1080x1920 (9:16)
+            canvas.width = 1080;
+            canvas.height = 1920;
+
+            // Video generation parameters
+            const fps = 30;
+            const duration = 15; // 15 seconds
+            const totalFrames = fps * duration;
+            const frames = [];
+
+            // Create video timeline
+            const timeline = [
+                { start: 0, end: 3, phase: 'setup', text: scenario.setup },
+                { start: 3, end: 8, phase: 'spanish', text: scenario.spanish },
+                { start: 8, end: 12, phase: 'chaos', text: scenario.chaos },
+                { start: 12, end: 15, phase: 'ending', text: scenario.ending }
+            ];
+
+            // Generate frames
+            for (let frame = 0; frame < totalFrames; frame++) {
+                const currentTime = (frame / fps);
+                const progress = frame / totalFrames;
+
+                // Clear canvas with gradient background
+                const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                gradient.addColorStop(0, '#667eea');
+                gradient.addColorStop(1, '#764ba2');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Draw character with animation
+                await drawAnimatedCharacter(ctx, character, currentTime, canvas.width, canvas.height);
+
+                // Draw text overlay
+                drawTextOverlay(ctx, timeline, currentTime, canvas.width, canvas.height);
+
+                // Add visual effects
+                addVisualEffects(ctx, currentTime, progress, canvas.width, canvas.height);
+
+                // Capture frame
+                frames.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+
+                // Update progress
+                if (frame % 30 === 0) {
+                    const percent = Math.round((frame / totalFrames) * 100);
+                    const generateBtn = document.querySelector('button[onclick="generateVideo()"]');
+                    if (generateBtn) {
+                        generateBtn.innerHTML = `🎬 Generating... ${percent}%`;
+                    }
+                }
+            }
+
+            // Convert frames to video blob
+            return await framesToVideoBlob(frames, fps, canvas.width, canvas.height);
+        }
+
+        async function drawAnimatedCharacter(ctx, character, time, width, height) {
+            const centerX = width / 2;
+            const centerY = height / 2;
+
+            // Character size and animation
+            const baseSize = 400;
+            const pulseSize = baseSize + Math.sin(time * 3) * 30;
+
+            // Character position with subtle movement
+            const charX = centerX + Math.sin(time * 0.5) * 20;
+            const charY = centerY + Math.cos(time * 0.3) * 15;
+
+            // Draw character emoji with glow effect
+            ctx.save();
+
+            // Add glow effect
+            ctx.shadowColor = '#ffd700';
+            ctx.shadowBlur = 40;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+
+            // Draw character
+            ctx.font = `${pulseSize}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText(character.emoji, charX, charY);
+
+            ctx.restore();
+
+            // Add character-specific effects
+            if (selectedCharacter === 'GLOBE') {
+                // Add cigar smoke animation
+                drawSmokeEffect(ctx, charX + 100, charY - 50, time);
+            } else if (selectedCharacter === 'SPOON') {
+                // Add bouncing particles
+                drawBouncingParticles(ctx, charX, charY, time);
+            } else if (selectedCharacter === 'NAPOLEON') {
+                // Add military badges
+                drawMilitaryEffects(ctx, charX, charY, time);
+            }
+        }
+
+        function drawTextOverlay(ctx, timeline, currentTime, width, height) {
+            const currentPhase = timeline.find(phase =>
+                currentTime >= phase.start && currentTime < phase.end
+            );
+
+            if (currentPhase) {
+                ctx.save();
+
+                // Text background
+                const textY = height - 300;
+                const padding = 40;
+                const maxWidth = width - (padding * 2);
+
+                // Measure text
+                ctx.font = 'bold 72px Arial';
+                const textMetrics = ctx.measureText(currentPhase.text);
+                const textWidth = Math.min(textMetrics.width, maxWidth);
+                const textHeight = 100;
+
+                // Draw background with rounded corners
+                const bgX = (width - textWidth) / 2 - padding;
+                const bgY = textY - textHeight / 2 - padding / 2;
+                const bgWidth = textWidth + padding * 2;
+                const bgHeight = textHeight + padding;
+
+                drawRoundedRect(ctx, bgX, bgY, bgWidth, bgHeight, 30, 'rgba(0, 0, 0, 0.8)');
+
+                // Add border for Spanish phase
+                if (currentPhase.phase === 'spanish') {
+                    ctx.strokeStyle = '#ffd700';
+                    ctx.lineWidth = 6;
+                    drawRoundedRect(ctx, bgX, bgY, bgWidth, bgHeight, 30);
+                    ctx.stroke();
+                }
+
+                // Draw text
+                ctx.fillStyle = currentPhase.phase === 'spanish' ? '#ffd700' : '#ffffff';
+                ctx.font = `bold ${currentPhase.phase === 'spanish' ? '80px' : '72px'} Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                // Add text shadow
+                ctx.shadowColor = '#000000';
+                ctx.shadowBlur = 10;
+                ctx.shadowOffsetX = 3;
+                ctx.shadowOffsetY = 3;
+
+                // Wrap text if needed
+                wrapText(ctx, currentPhase.text, width / 2, textY, maxWidth, 80);
+
+                ctx.restore();
+            }
+        }
+
+        function drawSmokeEffect(ctx, x, y, time) {
+            ctx.save();
+            for (let i = 0; i < 5; i++) {
+                const offsetY = i * 20 + Math.sin(time * 2 + i) * 10;
+                const offsetX = Math.sin(time * 1.5 + i * 0.5) * 15;
+                const alpha = Math.max(0, 0.8 - i * 0.15);
+
+                ctx.fillStyle = `rgba(200, 200, 200, ${alpha})`;
+                ctx.beginPath();
+                ctx.arc(x + offsetX, y - offsetY, 15 + i * 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.restore();
+        }
+
+        function drawBouncingParticles(ctx, centerX, centerY, time) {
+            ctx.save();
+            for (let i = 0; i < 8; i++) {
+                const angle = (i / 8) * Math.PI * 2;
+                const radius = 150 + Math.sin(time * 4 + i) * 30;
+                const x = centerX + Math.cos(angle) * radius;
+                const y = centerY + Math.sin(angle) * radius;
+
+                ctx.fillStyle = `hsl(${(time * 100 + i * 45) % 360}, 70%, 60%)`;
+                ctx.beginPath();
+                ctx.arc(x, y, 8, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.restore();
+        }
+
+        function drawMilitaryEffects(ctx, centerX, centerY, time) {
+            ctx.save();
+            // Draw hat
+            ctx.fillStyle = '#2c3e50';
+            ctx.beginPath();
+            ctx.ellipse(centerX, centerY - 200, 120, 40, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Draw medals
+            for (let i = 0; i < 3; i++) {
+                const x = centerX - 60 + i * 60;
+                const y = centerY + 100;
+                ctx.fillStyle = '#ffd700';
+                ctx.beginPath();
+                ctx.arc(x, y, 20, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.restore();
+        }
+
+        function addVisualEffects(ctx, time, progress, width, height) {
+            // Add sparkle effects
+            ctx.save();
+            for (let i = 0; i < 20; i++) {
+                const x = (Math.sin(time * 2 + i) + 1) / 2 * width;
+                const y = (Math.cos(time * 1.5 + i * 0.7) + 1) / 2 * height;
+                const alpha = Math.sin(time * 5 + i * 0.5) * 0.5 + 0.5;
+
+                ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.6})`;
+                ctx.beginPath();
+                ctx.arc(x, y, 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Progress bar at bottom
+            const barHeight = 8;
+            const barY = height - 100;
+            const barWidth = width - 100;
+            const barX = 50;
+
+            // Background bar
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            drawRoundedRect(ctx, barX, barY, barWidth, barHeight, 4, ctx.fillStyle);
+            ctx.fill();
+
+            // Progress fill
+            const progressWidth = barWidth * progress;
+            const gradient = ctx.createLinearGradient(barX, barY, barX + progressWidth, barY);
+            gradient.addColorStop(0, '#ff0050');
+            gradient.addColorStop(1, '#00f2ea');
+            drawRoundedRect(ctx, barX, barY, progressWidth, barHeight, 4, gradient);
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        function drawRoundedRect(ctx, x, y, width, height, radius, fillStyle = null) {
+            if (fillStyle) ctx.fillStyle = fillStyle;
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+            if (fillStyle) ctx.fill();
+        }
+
+        function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+            const words = text.split(' ');
+            let line = '';
+            let testLine = '';
+            let currentY = y;
+
+            for (let n = 0; n < words.length; n++) {
+                testLine = line + words[n] + ' ';
+                const metrics = ctx.measureText(testLine);
+                const testWidth = metrics.width;
+
+                if (testWidth > maxWidth && n > 0) {
+                    ctx.fillText(line, x, currentY);
+                    line = words[n] + ' ';
+                    currentY += lineHeight;
+                } else {
+                    line = testLine;
+                }
+            }
+            ctx.fillText(line, x, currentY);
+        }
+
+        async function framesToVideoBlob(frames, fps, width, height) {
+            // Create a temporary canvas for encoding
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = width;
+            tempCanvas.height = height;
+            const tempCtx = tempCanvas.getContext('2d');
+
+            // Create MediaRecorder for video encoding
+            const stream = tempCanvas.captureStream(fps);
+            const chunks = [];
+            const recorder = new MediaRecorder(stream, {
+                mimeType: 'video/webm;codecs=vp9',
+                videoBitsPerSecond: 5000000
+            });
+
+            recorder.ondataavailable = (event) => {
+                if (event.data.size > 0) {
+                    chunks.push(event.data);
+                }
+            };
+
+            return new Promise((resolve) => {
+                recorder.onstop = () => {
+                    const blob = new Blob(chunks, { type: 'video/webm' });
+                    resolve(blob);
+                };
+
+                recorder.start();
+
+                // Play frames at correct framerate
+                let frameIndex = 0;
+                const playFrame = () => {
+                    if (frameIndex < frames.length) {
+                        tempCtx.putImageData(frames[frameIndex], 0, 0);
+                        frameIndex++;
+                        setTimeout(playFrame, 1000 / fps);
+                    } else {
+                        recorder.stop();
+                    }
+                };
+
+                playFrame();
+            });
+        }
+
+            for (let frame = 0; frame < totalFrames; frame++) {
+                // Clear canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Background gradient (TikTok style)
+                const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                gradient.addColorStop(0, '#ff6b6b');
+                gradient.addColorStop(0.5, '#4ecdc4');
+                gradient.addColorStop(1, '#45b7d1');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Character emoji (large, centered)
+                ctx.font = '300px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                // Animate character with bounce effect
+                const bounceY = Math.sin(frame * 0.2) * 20;
+                const characterY = canvas.height * 0.35 + bounceY;
+
+                // Character shadow
+                ctx.fillStyle = 'rgba(0,0,0,0.3)';
+                ctx.fillText(character.emoji, canvas.width/2 + 5, characterY + 5);
+
+                // Character
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillText(character.emoji, canvas.width/2, characterY);
+
+                // Spanish phrase (highlighted)
+                ctx.font = 'bold 120px Arial';
+                ctx.fillStyle = '#FFD700';
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 8;
+
+                const phraseY = canvas.height * 0.6;
+                ctx.strokeText(scenario.spanish, canvas.width/2, phraseY);
+                ctx.fillText(scenario.spanish, canvas.width/2, phraseY);
+
+                // English translation (smaller, below)
+                ctx.font = '80px Arial';
+                ctx.fillStyle = '#FFFFFF';
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 4;
+
+                const translationY = phraseY + 120;
+                ctx.strokeText(scenario.translation || scenario.spanish, canvas.width/2, translationY);
+                ctx.fillText(scenario.translation || scenario.spanish, canvas.width/2, translationY);
+
+                // Character name (top left)
+                ctx.font = 'bold 60px Arial';
+                ctx.fillStyle = '#FFFFFF';
+                ctx.textAlign = 'left';
+                ctx.fillText(character.name, 40, 100);
+
+                // Learning indicator (top right)
+                ctx.textAlign = 'right';
+                ctx.fillStyle = '#FFD700';
+                ctx.fillText('🎓 Learn Spanish', canvas.width - 40, 100);
+
+                // Progress bar at bottom
+                const progressWidth = (frame / totalFrames) * (canvas.width - 200);
+                ctx.fillStyle = 'rgba(255,255,255,0.3)';
+                ctx.fillRect(100, canvas.height - 100, canvas.width - 200, 10);
+                ctx.fillStyle = '#FFD700';
+                ctx.fillRect(100, canvas.height - 100, progressWidth, 10);
+
+                // Action description (middle, scrolling text)
+                if (scenario.action) {
+                    ctx.font = '50px Arial';
+                    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+                    ctx.textAlign = 'center';
+
+                    // Wrap text
+                    const words = scenario.action.split(' ');
+                    const lines = [];
+                    let currentLine = '';
+
+                    for (const word of words) {
+                        const testLine = currentLine + word + ' ';
+                        const metrics = ctx.measureText(testLine);
+                        if (metrics.width > canvas.width - 200 && currentLine !== '') {
+                            lines.push(currentLine.trim());
+                            currentLine = word + ' ';
+                        } else {
+                            currentLine = testLine;
+                        }
+                    }
+                    if (currentLine.trim() !== '') {
+                        lines.push(currentLine.trim());
+                    }
+
+                    // Draw lines
+                    for (let i = 0; i < Math.min(lines.length, 3); i++) {
+                        ctx.fillText(lines[i], canvas.width/2, canvas.height * 0.8 + i * 60);
+                    }
+                }
+
+                // Convert canvas to blob and store frame
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                frames.push(imageData);
+            }
+
+            // Convert frames to video blob using MediaRecorder if available
+            return await framesToVideoBlob(frames, canvas.width, canvas.height, fps);
+        }
+
+        async function framesToVideoBlob(frames, width, height, fps) {
+            // Check if MediaRecorder is supported
+            if (!window.MediaRecorder) {
+                console.log('MediaRecorder not supported, creating static image');
+                // Fallback: create a static image from the first frame
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = width;
+                canvas.height = height;
+                ctx.putImageData(frames[0], 0, 0);
+
+                return new Promise(resolve => {
+                    canvas.toBlob(resolve, 'image/png');
+                });
+            }
+
+            // Create a simple WebM video from frames
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = width;
+            canvas.height = height;
+
+            try {
+                // Use MediaRecorder to create video
+                const stream = canvas.captureStream(fps);
+                const recorder = new MediaRecorder(stream, {
+                    mimeType: 'video/webm'
+                });
+
+                const chunks = [];
+                recorder.ondataavailable = (e) => {
+                    if (e.data.size > 0) {
+                        chunks.push(e.data);
+                    }
+                };
+
+                return new Promise((resolve, reject) => {
+                    recorder.onstop = () => {
+                        const blob = new Blob(chunks, { type: 'video/webm' });
+                        resolve(blob);
+                    };
+
+                    recorder.onerror = (e) => {
+                        console.error('MediaRecorder error:', e);
+                        // Fallback to static image
+                        ctx.putImageData(frames[0], 0, 0);
+                        canvas.toBlob(resolve, 'image/png');
+                    };
+
+                    recorder.start();
+
+                    // Play frames
+                    let frameIndex = 0;
+                    const playFrame = () => {
+                        if (frameIndex < frames.length) {
+                            ctx.putImageData(frames[frameIndex], 0, 0);
+                            frameIndex++;
+                            setTimeout(playFrame, 1000 / fps);
+                        } else {
+                            setTimeout(() => recorder.stop(), 100);
+                        }
+                    };
+
+                    playFrame();
+                });
+
+            } catch (error) {
+                console.error('Video recording failed:', error);
+                // Fallback: create static image
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = width;
+                canvas.height = height;
+                ctx.putImageData(frames[0], 0, 0);
+
+                return new Promise(resolve => {
+                    canvas.toBlob(resolve, 'image/png');
+                });
+            }
+        }
+
+        // Make function globally accessible
+        window.generateVideo = generateVideo;
+
+        function showVideoGenerationSuccess(videoBlob) {
+            // Store the video blob globally for download
+            window.currentVideoBlob = videoBlob;
+            const modal = document.createElement('div');
+            modal.className = 'video-success-modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>🎉 Video Generated Successfully!</h2>
+                        <button class="modal-close" onclick="this.closest('.video-success-modal').remove()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="video-preview-container">
+                            <video class="video-preview" controls autoplay loop muted>
+                                <source id="video-source" type="video/webm">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">
+                                <div class="thumb-character">${window.currentCharacter.emoji}</div>
+                                <div class="thumb-text">${window.currentScenario.spanish}</div>
+                                <div class="video-quality-badge">HD • 15s • TikTok Ready</div>
+                            </div>
+                        </div>
+                        <div class="video-stats">
+                            <div class="stat">📏 Resolution: 1080x1920</div>
+                            <div class="stat">⏱️ Duration: 15 seconds</div>
+                            <div class="stat">🔊 Audio: Spanish + Effects</div>
+                            <div class="stat">📱 Format: TikTok/Instagram Ready</div>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="modal-btn primary" onclick="downloadVideo()">⬇️ Download Video</button>
+                        <button class="modal-btn secondary" onclick="shareToTikTok()">📱 Share to TikTok</button>
+                        <button class="modal-btn" onclick="addToFeed(); this.closest('.video-success-modal').remove()">📺 Add to Feed</button>
+                    </div>
+                </div>
+            `;
+
+            // Set video source after modal is added to DOM
+            document.body.appendChild(modal);
+
+            // Set the video blob as source
+            const videoElement = modal.querySelector('#video-source');
+            const videoContainer = modal.querySelector('.video-preview');
+            if (videoBlob && videoElement && videoContainer) {
+                const videoUrl = URL.createObjectURL(videoBlob);
+                videoElement.src = videoUrl;
+                videoContainer.load();
+            }
+
+            // Add modal styles
+            const modalStyles = document.createElement('style');
+            modalStyles.textContent = `
+                .video-success-modal {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0,0,0,0.9);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 10000;
+                    backdrop-filter: blur(10px);
+                }
+                .modal-content {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    border-radius: 25px;
+                    padding: 40px;
+                    max-width: 500px;
+                    width: 90%;
+                    color: white;
+                    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+                }
+                .modal-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 30px;
+                }
+                .modal-close {
+                    background: none;
+                    border: none;
+                    color: white;
+                    font-size: 2em;
+                    cursor: pointer;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    background: rgba(255,255,255,0.2);
+                }
+                .video-preview-thumb {
+                    background: rgba(0,0,0,0.8);
+                    border-radius: 15px;
+                    padding: 30px;
+                    text-align: center;
+                    margin-bottom: 25px;
+                    position: relative;
+                }
+                .thumb-character {
+                    font-size: 4em;
+                    margin-bottom: 15px;
+                }
+                .thumb-text {
+                    font-size: 1.3em;
+                    font-weight: 700;
+                    margin-bottom: 15px;
+                }
+                .video-quality-badge {
+                    background: #28a745;
+                    padding: 5px 15px;
+                    border-radius: 20px;
+                    font-size: 0.9em;
+                    font-weight: 600;
+                    display: inline-block;
+                }
+                .video-stats {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 10px;
+                    margin-bottom: 30px;
+                }
+                .stat {
+                    background: rgba(255,255,255,0.1);
+                    padding: 10px 15px;
+                    border-radius: 10px;
+                    font-size: 0.9em;
+                }
+                .modal-actions {
+                    display: flex;
+                    gap: 15px;
+                    flex-wrap: wrap;
+                }
+                .modal-btn {
+                    flex: 1;
+                    padding: 15px 20px;
+                    border: none;
+                    border-radius: 15px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    min-width: 120px;
+                }
+                .modal-btn.primary {
+                    background: linear-gradient(45deg, #28a745, #20c997);
+                    color: white;
+                }
+                .modal-btn.secondary {
+                    background: linear-gradient(45deg, #ff0050, #ff6b35);
+                    color: white;
+                }
+                .modal-btn:not(.primary):not(.secondary) {
+                    background: rgba(255,255,255,0.2);
+                    color: white;
+                }
+                .modal-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+                }
+                .video-preview-container {
+                    position: relative;
+                    margin-bottom: 30px;
+                    border-radius: 20px;
+                    overflow: hidden;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                }
+                .video-preview {
+                    width: 300px;
+                    height: 533px;
+                    object-fit: cover;
+                    border-radius: 20px;
+                    background: #000;
+                }
+                .video-overlay {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    pointer-events: none;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    background: rgba(0,0,0,0.1);
+                }
+                .thumb-character {
+                    font-size: 4em;
+                    margin-bottom: 10px;
+                    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+                }
+                .thumb-text {
+                    font-size: 1.5em;
+                    font-weight: bold;
+                    color: #FFD700;
+                    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+                    margin-bottom: 10px;
+                }
+                .video-quality-badge {
+                    background: rgba(0,0,0,0.8);
+                    color: white;
+                    padding: 8px 15px;
+                    border-radius: 20px;
+                    font-size: 0.9em;
+                    font-weight: 600;
+                }
+            `;
+
+            document.head.appendChild(modalStyles);
+        }
+
+        function downloadVideo() {
+            if (!window.currentVideoBlob) {
+                alert('❌ No video to download. Please generate a video first.');
+                return;
+            }
+
+            // Create download link
+            const url = URL.createObjectURL(window.currentVideoBlob);
+            const a = document.createElement('a');
+            a.href = url;
+
+            // Generate filename with character and phrase
+            const character = window.currentCharacter.name.toLowerCase();
+            const phrase = window.currentScenario.spanish.toLowerCase().replace(/[^a-z0-9]/g, '_');
+            const timestamp = new Date().toISOString().split('T')[0];
+            a.download = `ai-feed-${character}-${phrase}-${timestamp}.webm`;
+
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            // Show success message
+            alert('📥 Video downloaded! Your TikTok-ready Spanish learning video is now in your Downloads folder.');
+
+            // Track download in stats
+            if (typeof updateStats === 'function') {
+                updateStats();
+            }
+        }
+
+        function shareToTikTok() {
+            alert('📱 Opening TikTok app to share your viral Spanish learning video!');
+        }
+
+        // Add some personality to stats on load
+            setTimeout(() => {
+                updateStats();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

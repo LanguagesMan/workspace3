@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spanish Feed</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Minimalist scrolling feed */
+        .feed {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .article {
+            background: #111;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .spanish {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            flex: 1;
+        }
+
+        .english {
+            font-size: 0.95rem;
+            color: #888;
+            margin-bottom: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+        }
+
+        /* Word highlighting */
+        .word {
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 3px;
+            transition: background 0.2s;
+        }
+
+        .word:hover {
+            background: #333;
+        }
+
+        .word.saved {
+            background: #1a73e8;
+            color: #fff;
+        }
+
+        /* Simple action buttons */
+        .actions {
+            display: flex;
+            gap: 12px;
+            padding-top: 16px;
+        }
+
+        button {
+            flex: 1;
+            padding: 14px;
+            background: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #1557b0;
+        }
+
+        button.secondary {
+            background: #333;
+        }
+
+        button.secondary:hover {
+            background: #444;
+        }
+
+        /* Loading state */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a73e8;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="feed" id="feed">
+        <div class="loading">Loading personalized Spanish content...</div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const userId = 'user-' + Math.random().toString(36).substr(2, 9);
+        const savedWords = new Set();
+        let articles = [];
+        let currentIndex = 0;
+
+        // Load articles
+        async function loadArticles() {
+            try {
+                const response = await fetch('/api/user/stats/' + userId);
+                const data = await response.json();
+
+                // Generate sample articles based on user level
+                articles = generateArticles(data.stats?.user?.level || 'A1');
+                renderFeed();
+            } catch (error) {
+                console.error('Error loading:', error);
+                articles = generateArticles('A1');
+                renderFeed();
+            }
+        }
+
+        // Generate sample Spanish articles
+        function generateArticles(level) {
+            const samples = [
+                {
+                    spanish: "Hoy es un día perfecto para aprender español. El sol brilla y los pájaros cantan. Me gusta estudiar en el parque porque es tranquilo y bonito.",
+                    english: "Today is a perfect day to learn Spanish. The sun is shining and the birds are singing. I like to study in the park because it's quiet and beautiful.",
+                    words: ["día", "aprender", "español", "sol", "pájaros", "cantan", "parque", "tranquilo", "bonito"]
+                },
+                {
+                    spanish: "Mi familia vive en Madrid. Tengo dos hermanos y una hermana. Nos gusta ir al cine los fines de semana y comer paella juntos.",
+                    english: "My family lives in Madrid. I have two brothers and one sister. We like to go to the movies on weekends and eat paella together.",
+                    words: ["familia", "Madrid", "hermanos", "hermana", "cine", "fines", "semana", "paella", "juntos"]
+                },
+                {
+                    spanish: "El café es muy importante en la cultura española. La gente toma café por la mañana y después de comer. Es un momento social especial.",
+                    english: "Coffee is very important in Spanish culture. People drink coffee in the morning and after eating. It's a special social moment.",
+                    words: ["café", "importante", "cultura", "española", "gente", "mañana", "después", "comer", "momento", "social"]
+                },
+                {
+                    spanish: "Me encanta viajar por España. Cada ciudad tiene su propia historia y comida típica. Barcelona, Sevilla y Valencia son mis favoritas.",
+                    english: "I love traveling through Spain. Each city has its own history and typical food. Barcelona, Seville and Valencia are my favorites.",
+                    words: ["encanta", "viajar", "España", "ciudad", "propia", "historia", "comida", "típica", "favoritas"]
+                },
+                {
+                    spanish: "La música latina es muy popular en todo el mundo. El reggaeton y la salsa hacen que la gente baile y se sienta feliz.",
+                    english: "Latin music is very popular around the world. Reggaeton and salsa make people dance and feel happy.",
+                    words: ["música", "latina", "popular", "mundo", "reggaeton", "salsa", "gente", "baile", "feliz"]
+                }
+            ];
+
+            return samples;
+        }
+
+        // Render the feed
+        function renderFeed() {
+            const feed = document.getElementById('feed');
+            feed.innerHTML = articles.map((article, index) => `
+                <div class="article" id="article-${index}">
+                    <div class="spanish">
+                        ${highlightWords(article.spanish, article.words)}
+                    </div>
+                    <div class="english">${article.english}</div>
+                    <div class="actions">
+                        <button onclick="nextArticle()">Next Article →</button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Scroll to first article
+            if (articles.length > 0) {
+                document.getElementById('article-0').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Highlight clickable words
+        function highlightWords(text, words) {
+            let result = text;
+            words.forEach(word => {
+                const regex = new RegExp(`\\b(${word})\\b`, 'gi');
+                const savedClass = savedWords.has(word.toLowerCase()) ? 'saved' : '';
+                result = result.replace(regex,
+                    `<span class="word ${savedClass}" onclick="saveWord('$1')">$1</span>`
+                );
+            });
+            return result;
+        }
+
+        // Save word
+        async function saveWord(word) {
+            const cleanWord = word.toLowerCase().trim();
+
+            if (savedWords.has(cleanWord)) {
+                showToast('Already saved: ' + word);
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/words/learned', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: userId,
+                        word: cleanWord,
+                        translation: 'translation', // Would be from API
+                        level: 'A2',
+                        context: 'From feed'
+                    })
+                });
+
+                if (response.ok) {
+                    savedWords.add(cleanWord);
+                    showToast('✓ Saved: ' + word);
+                    renderFeed(); // Re-render to show saved state
+                }
+            } catch (error) {
+                console.error('Error saving word:', error);
+                showToast('Error saving word');
+            }
+        }
+
+        // Next article
+        function nextArticle() {
+            currentIndex = (currentIndex + 1) % articles.length;
+            document.getElementById('article-' + currentIndex).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' || e.key === ' ') {
+                e.preventDefault();
+                nextArticle();
+            }
+        });
+
+        // Load on start
+        loadArticles();
+    </script>
+</body>
+</html>

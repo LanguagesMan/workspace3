@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Virtual Scroll Performance Demo - TikTok/Instagram 2025</title>
+    <script src="/js/virtual-scroll-optimizer.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #000000;
+            --bg-card: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --primary: #ff0050;
+            --secondary: #667eea;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 16px;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .feed-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 80px auto 0;
+            position: relative;
+        }
+
+        /* TikTok/Instagram 2025 Card Style */
+        .content-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            margin: 16px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15),
+                        0 1px 3px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.3s ease;
+            transition: all 0.3s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2),
+                        0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .card-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .card-info {
+            flex: 1;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .card-meta {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 8px;
+            margin: 12px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .card-text {
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .performance-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            background: rgba(102, 126, 234, 0.2);
+            color: var(--secondary);
+            margin-top: 8px;
+        }
+
+        .performance-badge.excellent {
+            background: rgba(0, 255, 100, 0.2);
+            color: #00ff64;
+        }
+
+        .loading-indicator {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Performance Stats Header -->
+    <div class="header">
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-label">Total Items</div>
+                <div class="stat-value" id="totalItems">0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Rendered</div>
+                <div class="stat-value" id="renderedItems">0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Efficiency</div>
+                <div class="stat-value" id="efficiency">0%</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">FPS</div>
+                <div class="stat-value" id="fps">60</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feed Container -->
+    <div id="feedContainer" class="feed-container"></div>
+
+    <div id="loadingIndicator" class="loading-indicator">
+        🚀 Loading more content...
+    </div>
+
+    <script>
+        // Demo content generator
+        const emojis = ['🌍', '🎯', '🔥', '⚡', '🚀', '💡', '🎨', '🎮', '📚', '🌟'];
+        const topics = ['Spanish', 'Grammar', 'Culture', 'Travel', 'Food', 'Music', 'History', 'Art', 'Science', 'Technology'];
+
+        function generateDemoContent(count = 20) {
+            return Array.from({ length: count }, (_, i) => {
+                const index = Math.floor(Math.random() * emojis.length);
+                return {
+                    id: `item-${Date.now()}-${i}`,
+                    emoji: emojis[index],
+                    topic: topics[index],
+                    title: `Learn ${topics[index]} in Spanish`,
+                    text: 'This is a demo card showcasing virtual scroll performance. With TikTok/Instagram 2025 optimization, you can scroll through thousands of items without any lag or memory issues.',
+                    index: i
+                };
+            });
+        }
+
+        // Initialize virtual scroll
+        const virtualScroll = new VirtualScrollOptimizer({
+            containerSelector: '#feedContainer',
+            itemHeight: 350, // Average card height
+            bufferSize: 3, // Render 3 items above/below viewport
+            preloadThreshold: 3, // Load more when 3 items from bottom
+
+            // Callback when more content needed
+            onLoadMore: () => {
+                if (loadingMore) return;
+                loadingMore = true;
+
+                // Simulate API delay (TikTok/Instagram pattern)
+                setTimeout(() => {
+                    const newItems = generateDemoContent(20);
+                    virtualScroll.addItems(newItems);
+                    loadingMore = false;
+                    updateStats();
+                }, 300);
+            },
+
+            // Create card element
+            createItemElement: (item) => {
+                const card = document.createElement('div');
+                card.className = 'content-card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="card-avatar">${item.emoji}</div>
+                        <div class="card-info">
+                            <div class="card-title">${item.title}</div>
+                            <div class="card-meta">Item #${virtualScroll.allItems.indexOf(item) + 1}</div>
+                        </div>
+                    </div>
+                    <div class="card-image">${item.emoji}</div>
+                    <div class="card-text">${item.text}</div>
+                    <div class="performance-badge ${virtualScroll.allItems.length > 100 ? 'excellent' : ''}">
+                        ${virtualScroll.allItems.length > 100 ? '✅ Optimized' : '🚀 Loading'}
+                    </div>
+                `;
+                return card;
+            }
+        });
+
+        let loadingMore = false;
+
+        // Initial load
+        virtualScroll.addItems(generateDemoContent(50));
+
+        // FPS Counter (TikTok/Instagram quality metric)
+        let fps = 60;
+        let lastTime = performance.now();
+        let frameCount = 0;
+
+        function measureFPS() {
+            const now = performance.now();
+            frameCount++;
+
+            if (now - lastTime >= 1000) {
+                fps = frameCount;
+                frameCount = 0;
+                lastTime = now;
+                updateStats();
+            }
+
+            requestAnimationFrame(measureFPS);
+        }
+        measureFPS();
+
+        // Update performance stats
+        function updateStats() {
+            const stats = virtualScroll.getStats();
+
+            document.getElementById('totalItems').textContent = stats.totalItems;
+            document.getElementById('renderedItems').textContent = stats.renderedItems;
+            document.getElementById('efficiency').textContent = stats.memoryEfficiency.replace('% rendered', '%');
+            document.getElementById('fps').textContent = fps;
+
+            // Performance color coding
+            const fpsElement = document.getElementById('fps');
+            if (fps >= 58) {
+                fpsElement.style.color = '#00ff64'; // Excellent
+            } else if (fps >= 30) {
+                fpsElement.style.color = '#ffaa00'; // Good
+            } else {
+                fpsElement.style.color = '#ff0050'; // Poor
+            }
+        }
+
+        // Update stats every second
+        setInterval(updateStats, 1000);
+
+        console.log('🚀 Virtual Scroll Demo loaded!');
+        console.log('📊 Scroll down to see performance optimization in action');
+        console.log('💡 Notice: Only ~10-15 items rendered at a time, even with 1000+ total items');
+    </script>
+</body>
+</html>

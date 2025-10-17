@@ -1,0 +1,9 @@
+
+❌ Error: OPENAI_API_KEY environment variable not set
+
+Please set your OpenAI API key:
+  export OPENAI_API_KEY="your-api-key-here"
+
+Or create a .env file with:
+  OPENAI_API_KEY=your-api-key-here
+

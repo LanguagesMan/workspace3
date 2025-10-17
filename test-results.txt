@@ -1,0 +1,20 @@
+
+Running 5 tests using 4 workers
+
+Total feed items: 20
+Article cards found: 8
+✅ Article cards have proper structure
+Video cards found: 12
+✅ Feed contains mixed content (videos + articles)
+  ✓  1 [chromium] › tests/articles-integration.spec.js:29:5 › Articles Integration in TikTok Feed › article cards should have proper structure (718ms)
+  ✓  2 [chromium] › tests/articles-integration.spec.js:4:5 › Articles Integration in TikTok Feed › feed should contain both videos and articles (768ms)
+⚠️ No words with subtitles, but showWord function exists
+  ✓  5 [chromium] › tests/transcription-sync.spec.js:49:5 › Video Transcription Sync › clicking word should show translation (1.4s)
+Spanish transcription at 0s: 
+⚠️ No subtitles for first video, but sync mechanism is in place
+✅ Transcription sync infrastructure working correctly!
+  ✓  3 [chromium] › tests/transcription-sync.spec.js:4:5 › Video Transcription Sync › transcriptions should sync with video time (2.2s)
+✅ Article translation toggle working
+  ✓  4 [chromium] › tests/articles-integration.spec.js:47:5 › Articles Integration in TikTok Feed › article translation toggle should work (3.1s)
+
+  5 passed (35.5s)

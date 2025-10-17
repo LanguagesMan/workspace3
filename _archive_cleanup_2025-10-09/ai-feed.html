@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Learning Feed - Community Edition</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            overflow-x: hidden;
+            color: white;
+        }
+
+        /* Language Switcher */
+        .language-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(20px);
+            padding: 15px;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .lang-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .lang-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Feed Container */
+        .feed-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scrollbar-width: none;
+            padding-top: 70px;
+        }
+
+        .feed-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .card {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .image-container {
+            width: 100%;
+            max-width: 500px;
+            aspect-ratio: 1;
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .ai-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .text-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            padding: 40px 20px 20px;
+            text-align: center;
+        }
+
+        .main-text {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .translation-text {
+            font-size: 18px;
+            opacity: 0.8;
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            border: 3px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .play-button:hover {
+            background: rgba(255,255,255,0.5);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .play-button::before {
+            content: '▶';
+            font-size: 32px;
+            color: white;
+            margin-left: 5px;
+        }
+
+        .play-button.playing::before {
+            content: '🔊';
+            margin-left: 0;
+        }
+
+        /* Community Actions */
+        .card-actions {
+            position: absolute;
+            bottom: 100px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .action-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 24px;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Create Post Button */
+        .create-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 30px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            z-index: 999;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Create Post Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+        }
+
+        .modal-content input,
+        .modal-content textarea {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 16px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .modal-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .modal-btn.secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">🚀 Loading AI feed...</div>
+
+    <!-- Language Switcher -->
+    <div class="language-bar" id="langBar"></div>
+
+    <!-- Feed Container -->
+    <div class="feed-container" id="feed"></div>
+
+    <!-- Create Post Button -->
+    <button class="create-btn" onclick="openCreateModal()">✨ Create Post</button>
+
+    <!-- Create Post Modal -->
+    <div class="modal" id="createModal">
+        <div class="modal-content">
+            <h2>🎨 Create Learning Post</h2>
+            <input type="text" id="postText" placeholder="Enter text in your language...">
+            <input type="text" id="postTranslation" placeholder="Translation...">
+            <textarea id="imagePrompt" rows="3" placeholder="Describe the image you want to generate..."></textarea>
+            <div class="modal-buttons">
+                <button class="modal-btn secondary" onclick="closeCreateModal()">Cancel</button>
+                <button class="modal-btn primary" onclick="createPost()">Generate & Post</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLanguage = 'es';
+        let languages = {};
+        let currentPosts = [];
+        let audioCache = new Map();
+
+        // Load supported languages
+        async function loadLanguages() {
+            const res = await fetch('/api/languages');
+            const data = await res.json();
+            languages = data.languages;
+
+            const langBar = document.getElementById('langBar');
+            Object.entries(languages).forEach(([code, lang]) => {
+                const btn = document.createElement('button');
+                btn.className = 'lang-btn' + (code === currentLanguage ? ' active' : '');
+                btn.textContent = `${lang.flag} ${lang.name}`;
+                btn.onclick = () => switchLanguage(code);
+                langBar.appendChild(btn);
+            });
+        }
+
+        // Switch language
+        function switchLanguage(code) {
+            currentLanguage = code;
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            loadFeed();
+        }
+
+        // Load feed posts
+        async function loadFeed() {
+            const feed = document.getElementById('feed');
+            feed.innerHTML = '';
+
+            // Load community posts for language
+            const res = await fetch(`/api/community/posts?language=${currentLanguage}`);
+            const data = await res.json();
+            currentPosts = data.posts;
+
+            // If no posts, generate some default ones
+            if (currentPosts.length === 0) {
+                for (let i = 0; i < 5; i++) {
+                    const scenario = await fetch(`/api/scenario/${currentLanguage}`).then(r => r.json());
+                    currentPosts.push({
+                        text: scenario.text,
+                        translation: scenario.translation,
+                        emoji: scenario.emoji,
+                        language: currentLanguage
+                    });
+                }
+            }
+
+            // Create cards
+            currentPosts.forEach((post, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="image-container">
+                        <div class="ai-image" style="background: linear-gradient(135deg, ${getRandomGradient()}); display: flex; align-items: center; justify-content: center; font-size: 80px;">
+                            ${post.emoji || '🎨'}
+                        </div>
+                        <div class="text-overlay">
+                            <div class="main-text">${post.text}</div>
+                            <div class="translation-text">${post.translation}</div>
+                        </div>
+                        <div class="play-button" onclick="playAudio('${post.text}', ${index})"></div>
+                    </div>
+                    <div class="card-actions">
+                        <div class="action-btn" onclick="likePost(${index})">❤️</div>
+                        <div class="action-btn" onclick="sharePost(${index})">📤</div>
+                    </div>
+                `;
+                feed.appendChild(card);
+            });
+
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        // Play audio with OpenAI TTS
+        async function playAudio(text, index) {
+            const button = document.querySelectorAll('.play-button')[index];
+            button.classList.add('playing');
+
+            // Check cache
+            if (audioCache.has(text)) {
+                const audio = audioCache.get(text);
+                audio.play();
+                audio.onended = () => button.classList.remove('playing');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/generate/audio', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        text: text,
+                        language: currentLanguage,
+                        voice: languages[currentLanguage]?.voice || 'alloy'
+                    })
+                });
+
+                const audioBlob = await res.blob();
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const audio = new Audio(audioUrl);
+
+                audioCache.set(text, audio);
+
+                audio.play();
+                audio.onended = () => button.classList.remove('playing');
+            } catch (error) {
+                console.error('TTS error:', error);
+                button.classList.remove('playing');
+            }
+        }
+
+        // Like post
+        async function likePost(index) {
+            if (currentPosts[index].id) {
+                await fetch(`/api/community/like/${currentPosts[index].id}`, { method: 'POST' });
+            }
+        }
+
+        // Share post
+        function sharePost(index) {
+            const post = currentPosts[index];
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Learning Moment',
+                    text: `${post.text} - ${post.translation}`
+                });
+            }
+        }
+
+        // Modal functions
+        function openCreateModal() {
+            document.getElementById('createModal').classList.add('active');
+        }
+
+        function closeCreateModal() {
+            document.getElementById('createModal').classList.remove('active');
+        }
+
+        // Create post
+        async function createPost() {
+            const text = document.getElementById('postText').value;
+            const translation = document.getElementById('postTranslation').value;
+            const imagePrompt = document.getElementById('imagePrompt').value;
+
+            if (!text || !translation) {
+                alert('Please fill in text and translation');
+                return;
+            }
+
+            // Generate image
+            let imageUrl = null;
+            if (imagePrompt) {
+                const imgRes = await fetch('/api/generate/image', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: imagePrompt, style: 'meme' })
+                });
+                const imgData = await imgRes.json();
+                imageUrl = imgData.imageUrl;
+            }
+
+            // Create post
+            await fetch('/api/community/post', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: 'user_' + Date.now(),
+                    text,
+                    translation,
+                    imageUrl,
+                    language: currentLanguage
+                })
+            });
+
+            closeCreateModal();
+            loadFeed();
+        }
+
+        // Utility functions
+        function getRandomGradient() {
+            const gradients = [
+                '#667eea 0%, #764ba2 100%',
+                '#f093fb 0%, #f5576c 100%',
+                '#4facfe 0%, #00f2fe 100%',
+                '#43e97b 0%, #38f9d7 100%',
+                '#fa709a 0%, #fee140 100%'
+            ];
+            return gradients[Math.floor(Math.random() * gradients.length)];
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const feedContainer = document.getElementById('feed');
+            const currentScroll = feedContainer.scrollTop;
+            const cardHeight = window.innerHeight;
+
+            if (e.key === 'ArrowDown' || e.key === ' ') {
+                e.preventDefault();
+                feedContainer.scrollTo({
+                    top: currentScroll + cardHeight,
+                    behavior: 'smooth'
+                });
+            }
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                feedContainer.scrollTo({
+                    top: currentScroll - cardHeight,
+                    behavior: 'smooth'
+                });
+            }
+        });
+
+        // Initialize
+        loadLanguages().then(() => loadFeed());
+    </script>
+</body>
+</html>

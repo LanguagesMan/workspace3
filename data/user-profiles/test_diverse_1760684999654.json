@@ -1,0 +1,137 @@
+{
+  "userId": "test_diverse_1760684999654",
+  "level": "B1",
+  "watchedVideos": [
+    "langfeed_create_a_tiktokstyle_202509191805_hmshs_mp4",
+    "langfeed_claymation_style_8second_202510142129_nd7ek_mp4",
+    "langfeed_anime_style_8second_202510121945_dnh6t_mp4",
+    "langfeed_episode_13_golden_202509150933_phyfx_mp4",
+    "langfeed_8second_slow_spanish_202509181157_272z2_mp4",
+    "langfeed_claymation_style_8second_202510132259_mr4jk_mp4",
+    "langfeed_character_middleaged_professional_20250914_mp4",
+    "langfeed_delfn_giving_life_202510091647_eb2yx_mp4",
+    "langfeed_vintage_film_grain_202510142147_cbjt7_mp4",
+    "langfeed_oil_painting_style_202510142141_eej07_mp4",
+    "langfeed_barista_creating_insanely_202510091538_5u3rg_mp4",
+    "langfeed_character_young_energetic_202509141716_o0uqa_mp4",
+    "langfeed_dreamcore_aesthetic_style_202510140010_k77gr_mp4",
+    "langfeed_chalk_animation_style_202510142207_j31ta_mp4",
+    "langfeed_epic_dramatic_tension_202509140303_110vm_mp4",
+    "langfeed_retro_8bit_pixel_202510090101_lybrd_mp4",
+    "langfeed_create_an_8second_202510121816_5vvay_mp4",
+    "reels_serious_dramatic_buildup_202509122342_ltiam_mp4",
+    "reels_sofia_beautiful_spanish_202509122009_tlcio_mp4",
+    "langfeed_contortionist_bending_impossibly_20251009163_mp4"
+  ],
+  "interactions": [
+    {
+      "videoId": "langfeed_create_a_tiktokstyle_202509191805_hmshs_mp4",
+      "type": "view",
+      "timestamp": "2025-10-17T07:09:59.662Z"
+    },
+    {
+      "videoId": "langfeed_claymation_style_8second_202510142129_nd7ek_mp4",
+      "type": "view",
+      "timestamp": "2025-10-17T07:09:59.664Z"
+    },
+    {
+      "videoId": "langfeed_anime_style_8second_202510121945_dnh6t_mp4",
+      "type": "view",
+      "timestamp": "2025-10-17T07:09:59.668Z"
+    },
+    {
+      "videoId": "langfeed_episode_13_golden_202509150933_phyfx_mp4",
+      "type": "view",
+      "timestamp": "2025-10-17T07:09:59.671Z"
+    },
+    {
+      "videoId": "langfeed_8second_slow_spanish_202509181157_272z2_mp4",
+      "type": "view",
+      "timestamp": "2025-10-17T07:09:59.677Z"
+    },
+    {
+      "videoId": "langfeed_claymation_style_8second_202510132259_mr4jk_mp4",
+      "type": "view",
+      "timestamp": "2025-10-17T07:09:59.679Z"
+    },
+    {
+      "videoId": "langfeed_character_middleaged_professional_20250914_mp4",
+      "type": "view",
+      "timestamp": "2025-10-17T07:09:59.682Z"
+    },
+    {
+      "videoId": "langfeed_delfn_giving_life_202510091647_eb2yx_mp4",
+      "type": "view",
+      "timestamp": "2025-10-17T07:09:59.688Z"
+    },
+    {
+      "videoId": "langfeed_vintage_film_grain_202510142147_cbjt7_mp4",
+      "type": "view",
+      "timestamp": "2025-10-17T07:09:59.692Z"
+    },
+    {
+      "videoId": "langfeed_oil_painting_style_202510142141_eej07_mp4",
+      "type": "view",
+      "timestamp": "2025-10-17T07:09:59.695Z"
+    },
+    {
+      "videoId": "langfeed_barista_creating_insanely_202510091538_5u3rg_mp4",
+      "type": "view",
+      "timestamp": "2025-10-17T07:09:59.699Z"
+    },
+    {
+      "videoId": "langfeed_character_young_energetic_202509141716_o0uqa_mp4",
+      "type": "view",
+      "timestamp": "2025-10-17T07:09:59.702Z"
+    },
+    {
+      "videoId": "langfeed_dreamcore_aesthetic_style_202510140010_k77gr_mp4",
+      "type": "view",
+      "timestamp": "2025-10-17T07:09:59.704Z"
+    },
+    {
+      "videoId": "langfeed_chalk_animation_style_202510142207_j31ta_mp4",
+      "type": "view",
+      "timestamp": "2025-10-17T07:09:59.707Z"
+    },
+    {
+      "videoId": "langfeed_epic_dramatic_tension_202509140303_110vm_mp4",
+      "type": "view",
+      "timestamp": "2025-10-17T07:09:59.711Z"
+    },
+    {
+      "videoId": "langfeed_retro_8bit_pixel_202510090101_lybrd_mp4",
+      "type": "view",
+      "timestamp": "2025-10-17T07:09:59.714Z"
+    },
+    {
+      "videoId": "langfeed_create_an_8second_202510121816_5vvay_mp4",
+      "type": "view",
+      "timestamp": "2025-10-17T07:09:59.718Z"
+    },
+    {
+      "videoId": "reels_serious_dramatic_buildup_202509122342_ltiam_mp4",
+      "type": "view",
+      "timestamp": "2025-10-17T07:09:59.721Z"
+    },
+    {
+      "videoId": "reels_sofia_beautiful_spanish_202509122009_tlcio_mp4",
+      "type": "view",
+      "timestamp": "2025-10-17T07:09:59.727Z"
+    },
+    {
+      "videoId": "langfeed_contortionist_bending_impossibly_20251009163_mp4",
+      "type": "view",
+      "timestamp": "2025-10-17T07:09:59.730Z"
+    }
+  ],
+  "interests": {},
+  "seenThemes": {},
+  "knownWords": [],
+  "behaviorPatterns": {
+    "avgCompletionRate": 0.9965412354861796,
+    "avgWatchTime": 20,
+    "skipRate": 0.2,
+    "rewatchRate": 0.05
+  }
+}

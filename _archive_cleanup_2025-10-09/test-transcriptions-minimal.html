@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Transcriptions - Minimal</title>
+    <script src="../word-level-subtitles.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #000; color: #fff; font-family: Arial; }
+        .container { width: 100vw; height: 100vh; position: relative; }
+        video { width: 100%; height: 100%; object-fit: cover; }
+        .subtitle-container { position: absolute; bottom: 100px; left: 50%; transform: translateX(-50%); width: 90%; z-index: 10; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <video id="testVideo" src="/api/videos/sample.mp4" autoplay loop muted playsinline></video>
+        <div class="subtitle-container" id="subtitleContainer"></div>
+    </div>
+
+    <script>
+        // Initialize subtitle system
+        const subtitleSystem = new WordLevelSubtitles();
+
+        // Test subtitles data
+        const testSubtitles = [
+            {
+                start: 0,
+                end: 3,
+                spanish: '¡Hola! Mira lo que está pasando.',
+                english: 'Hello! Look at what\'s happening.'
+            },
+            {
+                start: 3,
+                end: 6,
+                spanish: 'El semáforo está mostrando rojo y verde al mismo tiempo.',
+                english: 'The traffic light is showing red and green at the same time.'
+            },
+            {
+                start: 6,
+                end: 9,
+                spanish: 'Esto es muy interesante.',
+                english: 'This is very interesting.'
+            }
+        ];
+
+        // Get video and container
+        const video = document.getElementById('testVideo');
+        const container = document.getElementById('subtitleContainer');
+
+        // Wait for video to be ready
+        video.addEventListener('loadedmetadata', () => {
+            console.log('✅ Video loaded, attaching subtitles...');
+
+            // Attach subtitles
+            subtitleSystem.attachToVideo(video, testSubtitles, container);
+
+            console.log('🎯 Subtitles attached! Should appear as video plays.');
+        });
+
+        // Force subtitle display for testing
+        setTimeout(() => {
+            console.log('🔍 Checking subtitle display...');
+            const captionBlocks = document.querySelectorAll('.dual-caption-block');
+            const spanishCaptions = document.querySelectorAll('.caption-spanish');
+            console.log('Caption blocks:', captionBlocks.length);
+            console.log('Spanish captions:', spanishCaptions.length);
+
+            if (captionBlocks.length === 0) {
+                console.warn('⚠️ NO CAPTIONS DISPLAYING!');
+            } else {
+                console.log('✅ Captions are displaying!');
+            }
+        }, 2000);
+    </script>
+</body>
+</html>

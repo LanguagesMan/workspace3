@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>📰 Your Spanish Feed</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg-primary: #000000;
+            --bg-card: #111111;
+            --bg-hover: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+            --accent: #00ff88;
+            --accent-secondary: #00d4ff;
+            --gradient: linear-gradient(135deg, #00ff88, #00d4ff);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* Fixed Header - ChatGPT Pulse Style */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: env(safe-area-inset-top) 20px 12px;
+        }
+
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 900;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        /* Feed Container - Infinite Scroll */
+        .feed-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: calc(env(safe-area-inset-top) + 70px) 20px calc(env(safe-area-inset-bottom) + 80px);
+        }
+
+        /* Article Card - Perplexity/Google Discover Style */
+        .article-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+        }
+
+        .article-card:hover {
+            border-color: rgba(0, 255, 136, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Article Header */
+        .article-header {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .source-badge {
+            padding: 6px 12px;
+            background: var(--bg-hover);
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-secondary);
+        }
+
+        .level-badge {
+            padding: 6px 12px;
+            background: var(--gradient);
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .match-badge {
+            padding: 6px 12px;
+            background: rgba(0, 255, 136, 0.15);
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        /* Article Content */
+        .article-content {
+            padding: 0 16px 16px;
+        }
+
+        .article-title {
+            font-size: 22px;
+            font-weight: 800;
+            line-height: 1.3;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .article-body {
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text-primary);
+        }
+
+        .article-paragraph {
+            margin-bottom: 16px;
+        }
+
+        /* Translatable Text - Line by Line */
+        .translatable {
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+            border-bottom: 1px dotted transparent;
+        }
+
+        .translatable:hover {
+            border-bottom-color: var(--accent);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .translatable.active {
+            background: rgba(0, 255, 136, 0.1);
+            border-bottom-color: var(--accent);
+        }
+
+        /* Inline Translation Tooltip */
+        .translation-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-8px);
+            background: var(--bg-card);
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            padding: 12px;
+            min-width: 200px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            z-index: 50;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+
+        .translation-tooltip.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .tooltip-translation {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .tooltip-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tooltip-btn {
+            flex: 1;
+            padding: 8px;
+            background: var(--bg-hover);
+            border: none;
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .tooltip-btn:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
+        /* Audio Player - Inline */
+        .audio-player {
+            padding: 16px;
+            background: var(--bg-hover);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .play-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient);
+            border: none;
+            color: #000;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .audio-progress {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .audio-progress-bar {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .audio-time {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        /* Action Buttons */
+        .article-actions {
+            padding: 0 16px 16px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            background: var(--bg-hover);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .action-btn:hover {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        /* Loading Indicator */
+        .loading-indicator {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Scroll to Top */
+        .scroll-top {
+            position: fixed;
+            bottom: calc(env(safe-area-inset-bottom) + 90px);
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #000;
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            z-index: 90;
+        }
+
+        .scroll-top.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 8px 0 calc(env(safe-area-inset-bottom) + 8px);
+            display: flex;
+            justify-content: space-around;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .nav-item.active {
+            color: var(--accent);
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 640px) {
+            .feed-container {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            .article-title {
+                font-size: 20px;
+            }
+
+            .article-body {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">📰 Your Feed</div>
+            <div class="user-info">
+                <span id="userLevel">A2</span>
+                <span>•</span>
+                <span id="articleCount">0</span> articles
+            </div>
+        </div>
+    </div>
+
+    <!-- Feed -->
+    <div class="feed-container" id="feedContainer"></div>
+
+    <!-- Loading Indicator -->
+    <div class="loading-indicator" id="loadingIndicator">
+        <div class="spinner"></div>
+        <div>Loading more articles...</div>
+    </div>
+
+    <!-- Scroll to Top -->
+    <div class="scroll-top" id="scrollTop">↑</div>
+
+    <!-- Bottom Nav -->
+    <div class="bottom-nav">
+        <a href="/tiktok-video-feed.html" class="nav-item">
+            <div class="nav-icon">🎥</div>
+            <div class="nav-label">Videos</div>
+        </a>
+        <a href="/articles-perfect.html" class="nav-item active">
+            <div class="nav-icon">📰</div>
+            <div class="nav-label">Articles</div>
+        </a>
+        <a href="/vocabulary-review.html" class="nav-item">
+            <div class="nav-icon">📚</div>
+            <div class="nav-label">Review</div>
+        </a>
+        <a href="/dashboard.html" class="nav-item">
+            <div class="nav-icon">👤</div>
+            <div class="nav-label">Profile</div>
+        </a>
+    </div>
+
+    <script>
+        // State
+        let state = {
+            level: 'A2',
+            userId: 'demo-user',
+            articles: [],
+            loadedCount: 0,
+            loading: false,
+            hasMore: true,
+            currentAudio: null,
+            playingArticleId: null
+        };
+
+        // Article Templates by Level
+        const articleTemplates = {
+            A1: [
+                {
+                    title: "Mi Familia y Yo",
+                    paragraphs: [
+                        "Hola. Me llamo María. Tengo una familia grande.",
+                        "Mi padre se llama Juan. Mi madre se llama Ana.",
+                        "Tengo dos hermanos. Se llaman Pedro y Luis.",
+                        "Vivimos en una casa pequeña. Es muy bonita.",
+                        "Me gusta mi familia. Somos muy felices."
+                    ],
+                    source: "Easy Spanish", category: "culture"
+                },
+                {
+                    title: "Un Día en la Escuela",
+                    paragraphs: [
+                        "Voy a la escuela todos los días.",
+                        "Mi escuela es grande y moderna.",
+                        "Tengo muchos amigos. Son muy simpáticos.",
+                        "Mi profesora se llama Carmen. Es muy buena.",
+                        "Me gusta estudiar español y matemáticas."
+                    ],
+                    source: "Spanish Learning", category: "education"
+                },
+                {
+                    title: "La Comida Mexicana",
+                    paragraphs: [
+                        "Me encanta la comida mexicana.",
+                        "Los tacos son muy deliciosos.",
+                        "También me gustan las enchiladas.",
+                        "Mi restaurante favorito se llama El Sol.",
+                        "Voy allí con mi familia los domingos."
+                    ],
+                    source: "Food & Culture", category: "food"
+                }
+            ],
+            A2: [
+                {
+                    title: "Tecnología en Nuestra Vida",
+                    paragraphs: [
+                        "La tecnología ha cambiado mucho nuestra vida diaria.",
+                        "Ahora usamos teléfonos inteligentes para todo.",
+                        "Podemos comunicarnos con personas de todo el mundo.",
+                        "Las redes sociales son muy populares entre los jóvenes.",
+                        "Aunque la tecnología es útil, también necesitamos tiempo sin pantallas."
+                    ],
+                    source: "Tech Today", category: "technology"
+                },
+                {
+                    title: "Viajando por España",
+                    paragraphs: [
+                        "España es un país increíble para visitar.",
+                        "Barcelona tiene arquitectura hermosa y playas fantásticas.",
+                        "Madrid es la capital y tiene museos famosos.",
+                        "La comida española es deliciosa. Me encanta la paella.",
+                        "El clima es perfecto en primavera y otoño."
+                    ],
+                    source: "Travel Guide", category: "travel"
+                },
+                {
+                    title: "El Fútbol y la Cultura",
+                    paragraphs: [
+                        "El fútbol es muy importante en la cultura hispana.",
+                        "Los mejores equipos son el Real Madrid y el Barcelona.",
+                        "Millones de personas ven los partidos cada semana.",
+                        "Los jugadores famosos son como héroes nacionales.",
+                        "El fútbol une a las familias y comunidades."
+                    ],
+                    source: "Sports Weekly", category: "sports"
+                }
+            ],
+            B1: [
+                {
+                    title: "El Impacto del Cambio Climático",
+                    paragraphs: [
+                        "El cambio climático representa uno de los mayores desafíos de nuestro tiempo.",
+                        "Las temperaturas globales están aumentando debido a las emisiones de gases de efecto invernadero.",
+                        "Los científicos advierten que debemos actuar inmediatamente para reducir nuestro impacto ambiental.",
+                        "Las energías renovables como la solar y eólica ofrecen soluciones prometedoras.",
+                        "Cada persona puede contribuir mediante pequeñas acciones diarias como reciclar y reducir el consumo."
+                    ],
+                    source: "Science Today", category: "science"
+                },
+                {
+                    title: "La Revolución Digital en América Latina",
+                    paragraphs: [
+                        "América Latina está experimentando una transformación digital acelerada.",
+                        "El acceso a internet ha aumentado significativamente en los últimos años.",
+                        "Las startups tecnológicas están surgiendo en ciudades como Buenos Aires, Ciudad de México y Bogotá.",
+                        "Sin embargo, aún existen desafíos en términos de infraestructura y educación digital.",
+                        "El futuro promete más oportunidades si se invierte en tecnología e innovación."
+                    ],
+                    source: "Latin Tech", category: "technology"
+                }
+            ],
+            B2: [
+                {
+                    title: "El Arte Contemporáneo en España",
+                    paragraphs: [
+                        "El panorama artístico español contemporáneo se caracteriza por su diversidad y vitalidad.",
+                        "Artistas emergentes están explorando nuevas formas de expresión que desafían las convenciones tradicionales.",
+                        "Las galerías de Madrid y Barcelona exhiben obras que reflejan las preocupaciones sociales actuales.",
+                        "El arte digital y las instalaciones interactivas están ganando prominencia en festivales y exposiciones.",
+                        "Esta evolución artística refleja los cambios culturales y tecnológicos de la sociedad moderna."
+                    ],
+                    source: "Art Review", category: "culture"
+                }
+            ],
+            C1: [
+                {
+                    title: "Geopolítica y Economía Global",
+                    paragraphs: [
+                        "Las tensiones geopolíticas actuales están reconfigurando el orden económico internacional establecido tras la Segunda Guerra Mundial.",
+                        "Los expertos debaten si estamos presenciando el surgimiento de un sistema multipolar o simplemente una reorganización temporal de alianzas.",
+                        "Las interdependencias económicas se ven desafiadas por consideraciones de seguridad nacional y soberanía tecnológica.",
+                        "Los países emergentes buscan mayor representación en instituciones financieras internacionales que históricamente han sido dominadas por potencias occidentales.",
+                        "El futuro del comercio globalizado dependerá de cómo se resuelvan estos conflictos entre integración económica y autonomía estratégica."
+                    ],
+                    source: "Global Analysis", category: "politics"
+                }
+            ]
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUserProfile();
+            loadInitialArticles();
+            setupInfiniteScroll();
+            setupScrollToTop();
+        });
+
+        // Load user profile
+        function loadUserProfile() {
+            state.level = localStorage.getItem('userLevel') || 'A2';
+            state.userId = localStorage.getItem('userId') || `user-${Date.now()}`;
+            document.getElementById('userLevel').textContent = state.level + ' Level';
+        }
+
+        // Load initial articles
+        async function loadInitialArticles() {
+            for (let i = 0; i < 3; i++) {
+                await loadMoreArticles();
+            }
+        }
+
+        // Load more articles (infinite scroll)
+        async function loadMoreArticles() {
+            if (state.loading || !state.hasMore) return;
+            
+            state.loading = true;
+            document.getElementById('loadingIndicator').style.display = 'block';
+
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            // Get templates for user's level and adjacent levels
+            const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+            const userLevelIndex = levels.indexOf(state.level);
+            const availableLevels = [
+                levels[userLevelIndex - 1],
+                levels[userLevelIndex],
+                levels[userLevelIndex + 1]
+            ].filter(Boolean);
+
+            // Get random articles from appropriate levels
+            const newArticles = [];
+            for (let i = 0; i < 2; i++) {
+                const randomLevel = availableLevels[Math.floor(Math.random() * availableLevels.length)];
+                const templates = articleTemplates[randomLevel] || articleTemplates.A2;
+                const template = templates[Math.floor(Math.random() * templates.length)];
+                
+                newArticles.push({
+                    id: `article-${state.loadedCount + i}`,
+                    ...template,
+                    level: randomLevel,
+                    match: calculateMatch(randomLevel),
+                    readTime: `${Math.floor(Math.random() * 3 + 2)} min`,
+                    timestamp: Date.now() - Math.random() * 86400000
+                });
+            }
+
+            // Add articles
+            newArticles.forEach(article => {
+                state.articles.push(article);
+                renderArticle(article);
+                state.loadedCount++;
+            });
+
+            document.getElementById('articleCount').textContent = state.loadedCount;
+
+            state.loading = false;
+            document.getElementById('loadingIndicator').style.display = 'none';
+
+            // Simulate end of feed after 20 articles
+            if (state.loadedCount >= 20) {
+                state.hasMore = false;
+            }
+        }
+
+        // Calculate match percentage
+        function calculateMatch(articleLevel) {
+            const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+            const userIndex = levels.indexOf(state.level);
+            const articleIndex = levels.indexOf(articleLevel);
+            const diff = Math.abs(userIndex - articleIndex);
+            
+            if (diff === 0) return Math.floor(Math.random() * 10 + 85); // 85-95%
+            if (diff === 1) return Math.floor(Math.random() * 15 + 70); // 70-85%
+            return Math.floor(Math.random() * 20 + 50); // 50-70%
+        }
+
+        // Render article card
+        function renderArticle(article) {
+            const container = document.getElementById('feedContainer');
+            const card = document.createElement('div');
+            card.className = 'article-card';
+            card.dataset.id = article.id;
+
+            const content = article.paragraphs.map(p => 
+                `<div class="article-paragraph">${makeTranslatable(p)}</div>`
+            ).join('');
+
+            card.innerHTML = `
+                <div class="article-header">
+                    <div class="article-meta">
+                        <span class="source-badge">${article.source}</span>
+                        <span class="level-badge">${article.level}</span>
+                    </div>
+                    <span class="match-badge">${article.match}% match</span>
+                </div>
+                <div class="article-content">
+                    <h2 class="article-title">${article.title}</h2>
+                    <div class="article-body">
+                        ${content}
+                    </div>
+                </div>
+                <div class="audio-player">
+                    <button class="play-btn" onclick="playAudio('${article.id}')">▶</button>
+                    <div class="audio-progress" onclick="seekAudio(event, '${article.id}')">
+                        <div class="audio-progress-bar" id="progress-${article.id}"></div>
+                    </div>
+                    <span class="audio-time">0:00 / ${article.readTime}</span>
+                </div>
+                <div class="article-actions">
+                    <button class="action-btn" onclick="saveArticle('${article.id}')">💾 Save</button>
+                    <button class="action-btn" onclick="shareArticle('${article.id}')">🔗 Share</button>
+                </div>
+            `;
+
+            container.appendChild(card);
+
+            // Add translation listeners
+            setTimeout(() => setupTranslations(card), 100);
+        }
+
+        // Make text translatable (line by line)
+        function makeTranslatable(text) {
+            const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+            return sentences.map(sentence => {
+                const trimmed = sentence.trim();
+                return `<span class="translatable" onclick="translate(event, '${escapeHtml(trimmed)}')">${trimmed}</span>`;
+            }).join(' ');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML.replace(/'/g, "\\'");
+        }
+
+        // Setup translations
+        function setupTranslations(card) {
+            card.querySelectorAll('.translatable').forEach(el => {
+                el.addEventListener('click', (e) => translate(e, el.textContent.trim()));
+            });
+        }
+
+        // Translate text
+        async function translate(event, text) {
+            event.stopPropagation();
+            
+            const element = event.target;
+            
+            // Remove any existing tooltips
+            document.querySelectorAll('.translation-tooltip').forEach(t => t.remove());
+            document.querySelectorAll('.translatable.active').forEach(t => t.classList.remove('active'));
+            
+            // Add active class
+            element.classList.add('active');
+            
+            // Create tooltip
+            const tooltip = document.createElement('div');
+            tooltip.className = 'translation-tooltip';
+            
+            // Simulate translation (instant for demo)
+            const translation = await getTranslation(text);
+            
+            tooltip.innerHTML = `
+                <div class="tooltip-translation">${translation}</div>
+                <div class="tooltip-actions">
+                    <button class="tooltip-btn" onclick="saveWord('${escapeHtml(text)}', '${escapeHtml(translation)}')">💾 Save</button>
+                    <button class="tooltip-btn" onclick="speakWord('${escapeHtml(text)}')">🔊 Hear</button>
+                </div>
+            `;
+            
+            element.style.position = 'relative';
+            element.appendChild(tooltip);
+            
+            setTimeout(() => tooltip.classList.add('show'), 10);
+            
+            // Close on click outside
+            setTimeout(() => {
+                document.addEventListener('click', function closeTooltip(e) {
+                    if (!element.contains(e.target)) {
+                        tooltip.remove();
+                        element.classList.remove('active');
+                        document.removeEventListener('click', closeTooltip);
+                    }
+                });
+            }, 100);
+        }
+
+        // Get translation (simplified)
+        async function getTranslation(text) {
+            const translations = {
+                'Hola': 'Hello',
+                'Me llamo': 'My name is',
+                'Tengo': 'I have',
+                'familia': 'family',
+                'grande': 'big/large',
+                'padre': 'father',
+                'madre': 'mother',
+                'hermanos': 'siblings',
+                'casa': 'house',
+                'pequeña': 'small',
+                'bonita': 'pretty/beautiful',
+                'gusta': 'like',
+                'felices': 'happy',
+                'tecnología': 'technology',
+                'vida': 'life',
+                'teléfonos': 'phones',
+                'mundo': 'world',
+                'viajando': 'traveling',
+                'España': 'Spain',
+                'hermosa': 'beautiful',
+                'deliciosa': 'delicious',
+                'importante': 'important',
+                'cultura': 'culture'
+            };
+            
+            // Find translation for any word in the text
+            for (const [es, en] of Object.entries(translations)) {
+                if (text.toLowerCase().includes(es.toLowerCase())) {
+                    return en;
+                }
+            }
+            
+            return 'Translation';
+        }
+
+        // Play audio (Web Speech API)
+        function playAudio(articleId) {
+            const article = state.articles.find(a => a.id === articleId);
+            if (!article) return;
+
+            const playBtn = document.querySelector(`[onclick="playAudio('${articleId}')"]`);
+            
+            if (state.playingArticleId === articleId && state.currentAudio) {
+                // Pause
+                speechSynthesis.cancel();
+                state.currentAudio = null;
+                state.playingArticleId = null;
+                playBtn.textContent = '▶';
+                return;
+            }
+
+            // Stop any playing audio
+            if (state.currentAudio) {
+                speechSynthesis.cancel();
+                document.querySelectorAll('.play-btn').forEach(btn => btn.textContent = '▶');
+            }
+
+            // Play new audio
+            const text = article.paragraphs.join('. ');
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'es-ES';
+            utterance.rate = 0.9;
+
+            utterance.onend = () => {
+                state.currentAudio = null;
+                state.playingArticleId = null;
+                playBtn.textContent = '▶';
+                document.getElementById(`progress-${articleId}`).style.width = '0%';
+            };
+
+            utterance.onboundary = (event) => {
+                const progress = (event.charIndex / text.length) * 100;
+                document.getElementById(`progress-${articleId}`).style.width = progress + '%';
+            };
+
+            speechSynthesis.speak(utterance);
+            state.currentAudio = utterance;
+            state.playingArticleId = articleId;
+            playBtn.textContent = '⏸';
+        }
+
+        // Save word
+        function saveWord(word, translation) {
+            console.log('Saving word:', word, translation);
+            alert(`✅ Saved: ${word} = ${translation}`);
+        }
+
+        // Speak word
+        function speakWord(word) {
+            const utterance = new SpeechSynthesisUtterance(word);
+            utterance.lang = 'es-ES';
+            speechSynthesis.speak(utterance);
+        }
+
+        // Save article
+        function saveArticle(id) {
+            console.log('Saving article:', id);
+            alert('✅ Article saved!');
+        }
+
+        // Share article
+        function shareArticle(id) {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Check out this Spanish article!',
+                    url: window.location.href
+                });
+            } else {
+                alert('🔗 Link copied!');
+            }
+        }
+
+        // Setup infinite scroll
+        function setupInfiniteScroll() {
+            const observer = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting && !state.loading && state.hasMore) {
+                    loadMoreArticles();
+                }
+            }, { threshold: 0.5 });
+
+            observer.observe(document.getElementById('loadingIndicator'));
+        }
+
+        // Scroll to top
+        function setupScrollToTop() {
+            const scrollTop = document.getElementById('scrollTop');
+            
+            scrollTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 500) {
+                    scrollTop.classList.add('show');
+                } else {
+                    scrollTop.classList.remove('show');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+
+

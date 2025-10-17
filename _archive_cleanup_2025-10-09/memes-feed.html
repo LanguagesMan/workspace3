@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>😂 Memes Feed - VIDA Spanish Learning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #1a1a1a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin: 24px;
+            text-align: center;
+            background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* REDDIT/9GAG STYLE - Meme cards with upvotes */
+        .memes-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .meme-card {
+            background: #2a2a2a;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+        }
+
+        .meme-card:hover {
+            transform: scale(1.02);
+        }
+
+        .meme-header {
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .meme-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .meme-user {
+            flex: 1;
+        }
+
+        .meme-username {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .meme-time {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .meme-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .meme-emoji {
+            font-size: 120px;
+            margin-bottom: 20px;
+        }
+
+        .meme-text-spanish {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #ffd93d;
+        }
+
+        .meme-text-english {
+            font-size: 18px;
+            color: #aaa;
+            font-style: italic;
+        }
+
+        .meme-tags {
+            padding: 0 20px 16px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 6px 12px;
+            background: rgba(102, 126, 234, 0.3);
+            border-radius: 20px;
+            font-size: 12px;
+            color: #fff;
+        }
+
+        .meme-actions {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 12px;
+            transition: background 0.2s;
+        }
+
+        .action-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .action-btn.liked {
+            color: #ff6b6b;
+        }
+
+        .action-icon {
+            font-size: 24px;
+        }
+
+        /* INTERACTIVE LEARNING */
+        .learn-section {
+            padding: 20px;
+            background: rgba(102, 126, 234, 0.1);
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .learn-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .word-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .word-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .word-item:hover {
+            background: rgba(102, 126, 234, 0.3);
+        }
+
+        .word-spanish {
+            font-weight: 600;
+            color: #ffd93d;
+        }
+
+        .word-english {
+            color: #aaa;
+        }
+
+        /* ADD NEW MEME BUTTON */
+        .fab-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+            border: none;
+            color: #fff;
+            font-size: 32px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            transition: transform 0.2s;
+        }
+
+        .fab-btn:active {
+            transform: scale(0.9);
+        }
+    </style>
+</head>
+<body>
+    <h1>😂 Memes Feed</h1>
+    <div class="memes-container" id="memesContainer">
+        <!-- Memes will be loaded here -->
+    </div>
+
+    <button class="fab-btn" onclick="memesFeed.createMeme()">+</button>
+
+    <script>
+        class MemesFeed {
+            constructor() {
+                this.container = document.getElementById('memesContainer');
+                this.likedMemes = JSON.parse(localStorage.getItem('likedMemes') || '{}');
+                this.loadMemes();
+            }
+
+            async loadMemes() {
+                // Load from API
+                try {
+                    const response = await fetch('http://localhost:3001/api/unified-feed?limit=20');
+                    const data = await response.json();
+                    const memes = data.videos.filter(item => item.type === 'meme');
+
+                    memes.forEach(meme => this.createMemeCard(meme));
+
+                } catch (error) {
+                    console.error('Error loading memes:', error);
+                }
+
+                // Add some hardcoded Spanish learning memes
+                this.addHardcodedMemes();
+            }
+
+            addHardcodedMemes() {
+                const hardcodedMemes = [
+                    {
+                        id: 'meme_1',
+                        emoji: '😅',
+                        spanish: 'Cuando finalmente usas "estar" correctamente',
+                        english: 'When you finally use "estar" correctly',
+                        words: [
+                            { spanish: 'cuando', english: 'when' },
+                            { spanish: 'finalmente', english: 'finally' },
+                            { spanish: 'correctamente', english: 'correctly' }
+                        ],
+                        tags: ['Grammar', 'Estar', 'Beginner'],
+                        user: 'SpanishGuru',
+                        time: '2h ago'
+                    },
+                    {
+                        id: 'meme_2',
+                        emoji: '🤔',
+                        spanish: 'Tratar de pronunciar "rr" como nativo',
+                        english: 'Trying to pronounce "rr" like a native',
+                        words: [
+                            { spanish: 'tratar', english: 'to try' },
+                            { spanish: 'pronunciar', english: 'to pronounce' },
+                            { spanish: 'nativo', english: 'native' }
+                        ],
+                        tags: ['Pronunciation', 'Funny', 'A2'],
+                        user: 'MemeLearner',
+                        time: '5h ago'
+                    },
+                    {
+                        id: 'meme_3',
+                        emoji: '🎉',
+                        spanish: '¡Entendí toda la canción sin subtítulos!',
+                        english: 'I understood the whole song without subtitles!',
+                        words: [
+                            { spanish: 'entendí', english: 'I understood' },
+                            { spanish: 'toda', english: 'whole/all' },
+                            { spanish: 'canción', english: 'song' },
+                            { spanish: 'subtítulos', english: 'subtitles' }
+                        ],
+                        tags: ['Achievement', 'Music', 'Intermediate'],
+                        user: 'PolyglotPro',
+                        time: '1d ago'
+                    }
+                ];
+
+                hardcodedMemes.forEach(meme => this.createMemeCard(meme));
+            }
+
+            createMemeCard(meme) {
+                const isLiked = this.likedMemes[meme.id] || false;
+                const likeCount = Math.floor(Math.random() * 500) + 100;
+
+                const card = document.createElement('div');
+                card.className = 'meme-card';
+                card.innerHTML = `
+                    <div class="meme-header">
+                        <div class="meme-avatar">${meme.emoji || '😂'}</div>
+                        <div class="meme-user">
+                            <div class="meme-username">${meme.user || 'SpanishLearner'}</div>
+                            <div class="meme-time">${meme.time || '3h ago'}</div>
+                        </div>
+                    </div>
+
+                    <div class="meme-content">
+                        <div class="meme-emoji">${meme.emoji || meme.thumbnail || '😂'}</div>
+                        <div class="meme-text-spanish">${meme.spanish || meme.title}</div>
+                        <div class="meme-text-english">${meme.english || ''}</div>
+                    </div>
+
+                    ${meme.tags ? `
+                    <div class="meme-tags">
+                        ${meme.tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
+                    </div>
+                    ` : ''}
+
+                    <div class="meme-actions">
+                        <button class="action-btn ${isLiked ? 'liked' : ''}" onclick="memesFeed.toggleLike('${meme.id}', this)">
+                            <span class="action-icon">❤️</span>
+                            <span id="like-count-${meme.id}">${likeCount}</span>
+                        </button>
+                        <button class="action-btn" onclick="memesFeed.shareMeme('${meme.id}')">
+                            <span class="action-icon">📤</span>
+                            <span>Share</span>
+                        </button>
+                        <button class="action-btn" onclick="memesFeed.saveMeme('${meme.id}')">
+                            <span class="action-icon">📚</span>
+                            <span>Save</span>
+                        </button>
+                    </div>
+
+                    ${meme.words ? `
+                    <div class="learn-section">
+                        <div class="learn-title">📖 Learn these words:</div>
+                        <div class="word-breakdown">
+                            ${meme.words.map(word => `
+                                <div class="word-item" onclick="memesFeed.saveWord('${word.spanish}', '${word.english}')">
+                                    <span class="word-spanish">${word.spanish}</span>
+                                    <span class="word-english">${word.english}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+                `;
+
+                this.container.appendChild(card);
+            }
+
+            toggleLike(memeId, button) {
+                const isLiked = this.likedMemes[memeId] || false;
+                this.likedMemes[memeId] = !isLiked;
+                localStorage.setItem('likedMemes', JSON.stringify(this.likedMemes));
+
+                button.classList.toggle('liked');
+
+                const countElement = document.getElementById(`like-count-${memeId}`);
+                const currentCount = parseInt(countElement.textContent);
+                countElement.textContent = isLiked ? currentCount - 1 : currentCount + 1;
+            }
+
+            shareMeme(memeId) {
+                alert('📤 Share meme with friends!');
+            }
+
+            saveMeme(memeId) {
+                alert('📚 Meme saved to your collection!');
+            }
+
+            saveWord(spanish, english) {
+                const savedWords = JSON.parse(localStorage.getItem('savedWords') || '[]');
+                savedWords.push({ word: spanish, translation: english });
+                localStorage.setItem('savedWords', JSON.stringify(savedWords));
+                alert(`✅ "${spanish}" = "${english}" saved to flashcards!`);
+            }
+
+            createMeme() {
+                alert('✨ Create your own Spanish learning meme! (Coming soon)');
+            }
+        }
+
+        const memesFeed = new MemesFeed();
+    </script>
+</body>
+</html>

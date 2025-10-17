@@ -1,0 +1,37 @@
+{
+  "userId": "test_skip_1760685073730",
+  "level": "A2",
+  "watchedVideos": [
+    "langfeed_anime_style_8second_202510121912_5zfix_mp4",
+    "langfeed_episode_43_brand_202509151058_ou5nf_mp4",
+    "langfeed_baby_animal_attempting_202510091639_w7cyb_mp4"
+  ],
+  "interactions": [
+    {
+      "videoId": "langfeed_anime_style_8second_202510121912_5zfix_mp4",
+      "type": "skip",
+      "timestamp": "2025-10-17T07:11:13.733Z"
+    },
+    {
+      "videoId": "langfeed_episode_43_brand_202509151058_ou5nf_mp4",
+      "type": "skip",
+      "timestamp": "2025-10-17T07:11:13.734Z"
+    },
+    {
+      "videoId": "langfeed_baby_animal_attempting_202510091639_w7cyb_mp4",
+      "type": "skip",
+      "timestamp": "2025-10-17T07:11:13.735Z"
+    }
+  ],
+  "interests": {},
+  "seenThemes": {
+    "general": 3
+  },
+  "knownWords": [],
+  "behaviorPatterns": {
+    "avgCompletionRate": 0.38280000000000003,
+    "avgWatchTime": 20,
+    "skipRate": 0.2,
+    "rewatchRate": 0.05
+  }
+}

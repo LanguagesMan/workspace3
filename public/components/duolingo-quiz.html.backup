@@ -1,0 +1,2056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spanish Learning Quiz - Duolingo Style</title>
+    <style>
+        /* Duolingo Quiz Styles - 2025 Modern Design */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .duolingo-quiz-container {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Header with Stats */
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background: #fff;
+            padding: 16px 20px;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #f5f7fa;
+            border: 2px solid #e5e5e5;
+            border-radius: 12px;
+            color: #3c3c3c;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .back-button:hover {
+            background: #e5e7ea;
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        .back-button:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .back-button svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .quiz-xp {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            color: #ffc800;
+            font-size: 18px;
+        }
+
+        .quiz-streak {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            color: #ff9600;
+            font-size: 18px;
+        }
+
+        /* Progress Bar */
+        .quiz-progress-bar {
+            height: 20px;
+            background: #e5e5e5;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #58cc02, #7fdb00);
+            transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(88, 204, 2, 0.5);
+        }
+
+        .quiz-progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+            font-weight: 700;
+            color: #3c3c3c;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        /* Hearts/Lives System */
+        .quiz-hearts {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            justify-content: center;
+            padding: 12px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-heart {
+            font-size: 28px;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .quiz-heart.lost {
+            opacity: 0.2;
+            filter: grayscale(100%);
+            transform: scale(0.8);
+        }
+
+        @keyframes heartLoss {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3) rotate(-10deg); }
+            100% { transform: scale(0.8); opacity: 0.2; }
+        }
+
+        .quiz-heart.losing {
+            animation: heartLoss 0.5s ease-out forwards;
+        }
+
+        /* Question Card */
+        .quiz-question-card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 40px 32px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            margin-bottom: 20px;
+            animation: slideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            min-height: 400px;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .quiz-question-type {
+            display: inline-block;
+            padding: 6px 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .quiz-question-prompt {
+            font-size: 20px;
+            font-weight: 700;
+            color: #3c3c3c;
+            margin-bottom: 16px;
+        }
+
+        .quiz-question-text {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1cb0f6;
+            margin-bottom: 32px;
+            line-height: 1.4;
+        }
+
+        .quiz-audio-btn {
+            background: linear-gradient(135deg, #1cb0f6, #0c8fd6);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 64px;
+            height: 64px;
+            font-size: 28px;
+            cursor: pointer;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(28, 176, 246, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .quiz-audio-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(28, 176, 246, 0.5);
+        }
+
+        .quiz-audio-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Multiple Choice Options */
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .quiz-option {
+            background: #fff;
+            border: 3px solid #e5e5e5;
+            border-radius: 16px;
+            padding: 20px 24px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #3c3c3c;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quiz-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(28, 176, 246, 0.1), rgba(28, 176, 246, 0.05));
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .quiz-option:hover::before {
+            opacity: 1;
+        }
+
+        .quiz-option:hover {
+            border-color: #1cb0f6;
+            transform: translateX(4px);
+        }
+
+        .quiz-option:active {
+            transform: scale(0.98);
+        }
+
+        .quiz-option.selected {
+            border-color: #1cb0f6;
+            background: #e3f7ff;
+        }
+
+        .quiz-option.correct {
+            border-color: #58cc02;
+            background: #d7ffb8;
+            animation: correctPulse 0.6s ease;
+        }
+
+        .quiz-option.incorrect {
+            border-color: #ff4b4b;
+            background: #ffc1c1;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-12px); }
+            40% { transform: translateX(12px); }
+            60% { transform: translateX(-8px); }
+            80% { transform: translateX(8px); }
+        }
+
+        /* Fill in the Blank */
+        .quiz-input {
+            width: 100%;
+            padding: 18px 20px;
+            font-size: 20px;
+            font-weight: 600;
+            border: 3px solid #e5e5e5;
+            border-radius: 16px;
+            outline: none;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .quiz-input:focus {
+            border-color: #1cb0f6;
+            box-shadow: 0 0 0 4px rgba(28, 176, 246, 0.1);
+        }
+
+        .quiz-input.correct {
+            border-color: #58cc02;
+            background: #d7ffb8;
+        }
+
+        .quiz-input.incorrect {
+            border-color: #ff4b4b;
+            background: #ffc1c1;
+            animation: shake 0.5s ease;
+        }
+
+        /* Matching Exercise */
+        .quiz-matching-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .quiz-matching-item {
+            background: #fff;
+            border: 3px solid #e5e5e5;
+            border-radius: 16px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            min-height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quiz-matching-item:hover {
+            border-color: #1cb0f6;
+            transform: scale(1.05);
+        }
+
+        .quiz-matching-item.selected {
+            border-color: #1cb0f6;
+            background: #e3f7ff;
+        }
+
+        .quiz-matching-item.matched {
+            border-color: #58cc02;
+            background: #d7ffb8;
+            pointer-events: none;
+        }
+
+        /* Sentence Construction */
+        .quiz-word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 24px;
+            padding: 20px;
+            background: #f7f7f7;
+            border-radius: 16px;
+            min-height: 100px;
+        }
+
+        .quiz-word-chip {
+            background: #fff;
+            border: 2px solid #e5e5e5;
+            border-radius: 12px;
+            padding: 12px 18px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .quiz-word-chip:hover {
+            border-color: #1cb0f6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-word-chip.used {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .quiz-sentence-builder {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 20px;
+            background: #fff;
+            border: 3px dashed #e5e5e5;
+            border-radius: 16px;
+            min-height: 120px;
+            align-items: flex-start;
+            align-content: flex-start;
+        }
+
+        .quiz-sentence-builder.correct {
+            border-color: #58cc02;
+            background: #d7ffb8;
+        }
+
+        .quiz-sentence-builder.incorrect {
+            border-color: #ff4b4b;
+            background: #ffc1c1;
+        }
+
+        .quiz-placed-word {
+            background: linear-gradient(135deg, #1cb0f6, #0c8fd6);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 18px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quiz-placed-word:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(28, 176, 246, 0.3);
+        }
+
+        /* Check Answer Button */
+        .quiz-check-btn {
+            width: 100%;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(180deg, #58cc02, #47a302);
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 0 #47a302;
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .quiz-check-btn:hover:not(:disabled) {
+            background: linear-gradient(180deg, #61d909, #4db503);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #47a302;
+        }
+
+        .quiz-check-btn:active:not(:disabled) {
+            transform: translateY(2px);
+            box-shadow: 0 4px 0 #47a302;
+        }
+
+        .quiz-check-btn:disabled {
+            background: #e5e5e5;
+            color: #afafaf;
+            cursor: not-allowed;
+            box-shadow: 0 6px 0 #d0d0d0;
+        }
+
+        /* Feedback Panel */
+        .quiz-feedback {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 32px 20px;
+            background: #fff;
+            border-top: 4px solid #e5e5e5;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+        }
+
+        .quiz-feedback.show {
+            transform: translateY(0);
+        }
+
+        .quiz-feedback.correct {
+            background: linear-gradient(135deg, #d7ffb8 0%, #b8f0b8 100%);
+            border-top-color: #58cc02;
+        }
+
+        .quiz-feedback.incorrect {
+            background: linear-gradient(135deg, #ffc1c1 0%, #ffb0b0 100%);
+            border-top-color: #ff4b4b;
+        }
+
+        .quiz-feedback-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .quiz-feedback-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .quiz-feedback-title.correct {
+            color: #58cc02;
+        }
+
+        .quiz-feedback-title.incorrect {
+            color: #ff4b4b;
+        }
+
+        .quiz-feedback-message {
+            font-size: 16px;
+            color: #3c3c3c;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .quiz-feedback-explanation {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .quiz-feedback-xp {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #ffc800;
+            color: #fff;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .quiz-continue-btn {
+            width: 100%;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(180deg, #58cc02, #47a302);
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #47a302;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .quiz-continue-btn.incorrect {
+            background: linear-gradient(180deg, #ff4b4b, #ea2b2b);
+            box-shadow: 0 6px 0 #ea2b2b;
+        }
+
+        .quiz-continue-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 4px 0 #47a302;
+        }
+
+        .quiz-continue-btn.incorrect:active {
+            box-shadow: 0 4px 0 #ea2b2b;
+        }
+
+        /* Results Screen */
+        .quiz-results {
+            text-align: center;
+            padding: 40px 20px;
+            animation: slideIn 0.5s ease;
+        }
+
+        .quiz-results-icon {
+            font-size: 100px;
+            margin-bottom: 24px;
+            animation: bounce 1s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .quiz-results-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #58cc02;
+            margin-bottom: 12px;
+        }
+
+        .quiz-results-score {
+            font-size: 24px;
+            color: #3c3c3c;
+            margin-bottom: 32px;
+        }
+
+        .quiz-results-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .quiz-result-stat {
+            background: #fff;
+            padding: 24px 16px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-result-stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1cb0f6, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .quiz-result-stat-label {
+            font-size: 14px;
+            color: #777;
+            margin-top: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .quiz-results-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .quiz-restart-btn, .quiz-home-btn {
+            width: 100%;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            box-shadow: 0 6px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
+        }
+
+        .quiz-restart-btn {
+            color: #fff;
+            background: linear-gradient(180deg, #1cb0f6, #1899d6);
+            box-shadow: 0 6px 0 #1899d6;
+        }
+
+        .quiz-home-btn {
+            color: #3c3c3c;
+            background: #fff;
+            border: 3px solid #e5e5e5;
+            box-shadow: none;
+        }
+
+        .quiz-restart-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 4px 0 #1899d6;
+        }
+
+        /* Confetti Animation */
+        @keyframes confetti {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            background: #58cc02;
+            top: -10px;
+            animation: confetti 3s ease-in forwards;
+            z-index: 9999;
+            border-radius: 2px;
+        }
+
+        /* Loading State */
+        .quiz-loading {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .quiz-loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid #e5e5e5;
+            border-top-color: #1cb0f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .quiz-loading-text {
+            font-size: 18px;
+            color: #777;
+            font-weight: 600;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .quiz-question-card {
+                padding: 32px 20px;
+            }
+
+            .quiz-question-text {
+                font-size: 24px;
+            }
+
+            .quiz-option {
+                padding: 16px 20px;
+                font-size: 16px;
+            }
+
+            .quiz-matching-container {
+                grid-template-columns: 1fr;
+            }
+
+            .quiz-results-title {
+                font-size: 28px;
+            }
+
+            .quiz-result-stat-value {
+                font-size: 28px;
+            }
+        }
+
+        /* Accessibility */
+        .quiz-skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #1cb0f6;
+            color: #fff;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .quiz-skip-link:focus {
+            top: 0;
+        }
+
+        /* Screen Reader Only */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+    </style>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <a href="#main-content" class="quiz-skip-link">Skip to main content</a>
+
+    <div class="duolingo-quiz-container" id="quizContainer">
+        <!-- Header with XP and Streak -->
+        <div class="quiz-header">
+            <button class="back-button" onclick="window.location.href='/tiktok-video-feed.html'" aria-label="Back to Videos">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Back</span>
+            </button>
+            <div class="quiz-xp">
+                <span>⭐</span>
+                <span id="xpDisplay">0 XP</span>
+            </div>
+            <div class="quiz-streak">
+                <span>🔥</span>
+                <span id="streakDisplay">0 day streak</span>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="quiz-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="quiz-progress-fill" id="progressFill" style="width: 0%"></div>
+            <div class="quiz-progress-text" id="progressText">0 / 10</div>
+        </div>
+
+        <!-- Hearts -->
+        <div class="quiz-hearts" id="heartsContainer" role="status" aria-label="Lives remaining">
+            <span class="quiz-heart" aria-label="Life 1">❤️</span>
+            <span class="quiz-heart" aria-label="Life 2">❤️</span>
+            <span class="quiz-heart" aria-label="Life 3">❤️</span>
+            <span class="quiz-heart" aria-label="Life 4">❤️</span>
+            <span class="quiz-heart" aria-label="Life 5">❤️</span>
+        </div>
+
+        <!-- Loading State -->
+        <div class="quiz-loading" id="loadingState">
+            <div class="quiz-loading-spinner"></div>
+            <div class="quiz-loading-text">Loading quiz questions...</div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="quiz-question-card" id="questionCard" style="display: none;">
+            <div class="quiz-question-type" id="questionType">Multiple Choice</div>
+            <div class="quiz-question-prompt" id="questionPrompt">Translate this sentence:</div>
+            <div class="quiz-question-text" id="questionText">¿Cómo estás?</div>
+
+            <!-- Audio Button (for listening exercises) -->
+            <button class="quiz-audio-btn" id="audioBtn" style="display: none;" aria-label="Play audio">
+                🔊
+            </button>
+
+            <!-- Question Content Area -->
+            <div id="questionContent">
+                <!-- Content varies by question type -->
+            </div>
+        </div>
+
+        <!-- Check Button -->
+        <button class="quiz-check-btn" id="checkBtn" disabled style="display: none;">Check Answer</button>
+
+        <!-- Feedback Panel -->
+        <div class="quiz-feedback" id="feedbackPanel" role="alert" aria-live="polite">
+            <div class="quiz-feedback-content">
+                <div class="quiz-feedback-title correct" id="feedbackTitle">
+                    <span id="feedbackIcon">✓</span>
+                    <span id="feedbackTitleText">Awesome!</span>
+                </div>
+                <div class="quiz-feedback-message" id="feedbackMessage">You got it right!</div>
+                <div class="quiz-feedback-explanation" id="feedbackExplanation"></div>
+                <div class="quiz-feedback-xp" id="feedbackXP" style="display: none;">+10 XP</div>
+                <button class="quiz-continue-btn" id="continueBtn">Continue</button>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="quiz-results" id="resultsScreen" style="display: none;">
+            <div class="quiz-results-icon">🎉</div>
+            <div class="quiz-results-title">Quiz Complete!</div>
+            <div class="quiz-results-score" id="finalScore">Score: 8/10</div>
+
+            <div class="quiz-results-stats">
+                <div class="quiz-result-stat">
+                    <div class="quiz-result-stat-value" id="correctAnswers">8</div>
+                    <div class="quiz-result-stat-label">Correct</div>
+                </div>
+                <div class="quiz-result-stat">
+                    <div class="quiz-result-stat-value" id="accuracy">80%</div>
+                    <div class="quiz-result-stat-label">Accuracy</div>
+                </div>
+                <div class="quiz-result-stat">
+                    <div class="quiz-result-stat-value" id="totalXP">80</div>
+                    <div class="quiz-result-stat-label">XP Earned</div>
+                </div>
+                <div class="quiz-result-stat">
+                    <div class="quiz-result-stat-value" id="avgTime">12s</div>
+                    <div class="quiz-result-stat-label">Avg Time</div>
+                </div>
+            </div>
+
+            <div class="quiz-results-buttons">
+                <button class="quiz-restart-btn" onclick="restartQuiz()">Practice Again</button>
+                <button class="quiz-home-btn" onclick="window.location.href='/'">Back to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import Supabase client (adjust path as needed)
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+        // Initialize Supabase (these should be environment variables in production)
+        const SUPABASE_URL = 'YOUR_SUPABASE_URL'; // Replace with your Supabase URL
+        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY'; // Replace with your Supabase anon key
+
+        let supabase;
+        try {
+            supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        } catch (e) {
+            console.warn('Supabase not configured. Running in demo mode.');
+        }
+
+        // Quiz State
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let hearts = 5;
+        let selectedOption = null;
+        let questions = [];
+        let quizStartTime = Date.now();
+        let questionStartTime = Date.now();
+        let totalXP = 0;
+        let userStreak = 0;
+        let answerTimes = [];
+        let difficultyLevel = 'medium'; // easy, medium, hard
+        let consecutiveCorrect = 0;
+        let consecutiveIncorrect = 0;
+
+        // Question bank with all quiz types
+        const questionBank = {
+            easy: [
+                {
+                    type: 'multiple_choice',
+                    prompt: 'Translate this word:',
+                    question: 'Hola',
+                    options: ['Hello', 'Goodbye', 'Thank you', 'Please'],
+                    correct: 0,
+                    explanation: '"Hola" is the most common Spanish greeting meaning "Hello".'
+                },
+                {
+                    type: 'multiple_choice',
+                    prompt: 'What does this mean?',
+                    question: 'Gracias',
+                    options: ['Hello', 'Goodbye', 'Thank you', 'Please'],
+                    correct: 2,
+                    explanation: '"Gracias" means "Thank you" in Spanish.'
+                },
+                {
+                    type: 'fill_blank',
+                    prompt: 'Fill in the missing word:',
+                    question: 'Me _____ Juan',
+                    answer: 'llamo',
+                    hint: 'This word means "call" or "name"',
+                    explanation: '"Me llamo" means "My name is" (literally "I call myself").'
+                },
+                {
+                    type: 'listening',
+                    prompt: 'Listen and choose the correct transcription:',
+                    question: 'Buenos días',
+                    audio: 'buenos-dias.mp3',
+                    options: ['Buenos días', 'Buenas noches', 'Buenas tardes', 'Buen día'],
+                    correct: 0,
+                    explanation: '"Buenos días" means "Good morning" in Spanish.'
+                },
+                {
+                    type: 'matching',
+                    prompt: 'Match the Spanish words with their English translations:',
+                    pairs: [
+                        { spanish: 'Gato', english: 'Cat' },
+                        { spanish: 'Perro', english: 'Dog' },
+                        { spanish: 'Casa', english: 'House' },
+                        { spanish: 'Agua', english: 'Water' }
+                    ],
+                    explanation: 'Common Spanish nouns and their translations.'
+                }
+            ],
+            medium: [
+                {
+                    type: 'multiple_choice',
+                    prompt: 'Translate this sentence:',
+                    question: '¿Cómo estás?',
+                    options: ['How are you?', 'What is your name?', 'Where are you?', 'Who are you?'],
+                    correct: 0,
+                    explanation: '"¿Cómo estás?" is used to ask "How are you?" in an informal context.'
+                },
+                {
+                    type: 'multiple_choice',
+                    prompt: 'Choose the correct translation:',
+                    question: 'Me gusta la música',
+                    options: ['I need music', 'I like music', 'I play music', 'I hear music'],
+                    correct: 1,
+                    explanation: '"Me gusta" means "I like" (literally "it pleases me").'
+                },
+                {
+                    type: 'fill_blank',
+                    prompt: 'Complete the sentence:',
+                    question: 'Yo _____ español',
+                    answer: 'hablo',
+                    hint: 'verb: to speak',
+                    explanation: '"Yo hablo español" means "I speak Spanish".'
+                },
+                {
+                    type: 'sentence_construction',
+                    prompt: 'Arrange the words to form a correct sentence:',
+                    words: ['estoy', 'Yo', 'bien', 'muy'],
+                    correctOrder: ['Yo', 'estoy', 'muy', 'bien'],
+                    translation: 'I am very well',
+                    explanation: 'In Spanish, the subject typically comes first, followed by the verb and adjectives.'
+                },
+                {
+                    type: 'listening',
+                    prompt: 'Listen and select the correct phrase:',
+                    question: '¿Dónde está el baño?',
+                    audio: 'donde-esta-bano.mp3',
+                    options: ['¿Dónde está el baño?', '¿Cuánto cuesta?', '¿Qué hora es?', '¿Cómo te llamas?'],
+                    correct: 0,
+                    explanation: 'This phrase means "Where is the bathroom?" - very useful when traveling!'
+                }
+            ],
+            hard: [
+                {
+                    type: 'multiple_choice',
+                    prompt: 'Choose the best translation:',
+                    question: 'Si hubiera sabido, habría venido antes',
+                    options: [
+                        'If I knew, I would come earlier',
+                        'If I had known, I would have come earlier',
+                        'When I know, I will come earlier',
+                        'Because I knew, I came earlier'
+                    ],
+                    correct: 1,
+                    explanation: 'This uses the past perfect subjunctive (hubiera sabido) and conditional perfect (habría venido).'
+                },
+                {
+                    type: 'fill_blank',
+                    prompt: 'Fill in with the correct subjunctive form:',
+                    question: 'Espero que tú _____ feliz',
+                    answer: 'seas',
+                    hint: 'present subjunctive of "ser"',
+                    explanation: '"Espero que" triggers the subjunctive mood. "Seas" is the present subjunctive of "ser".'
+                },
+                {
+                    type: 'sentence_construction',
+                    prompt: 'Construct a grammatically correct sentence:',
+                    words: ['No', 'creo', 'que', 'venga', 'él', 'mañana'],
+                    correctOrder: ['No', 'creo', 'que', 'él', 'venga', 'mañana'],
+                    translation: 'I don\'t think he will come tomorrow',
+                    explanation: 'Negative belief expressions require the subjunctive mood in the dependent clause.'
+                },
+                {
+                    type: 'multiple_choice',
+                    prompt: 'Select the sentence with correct use of por/para:',
+                    question: 'Which sentence is correct?',
+                    options: [
+                        'Estudio por ser médico',
+                        'Estudio para ser médico',
+                        'Estudio por médico',
+                        'Estudio para médico'
+                    ],
+                    correct: 1,
+                    explanation: '"Para" is used to express purpose or goal. "Estudio para ser médico" = "I study to be a doctor".'
+                },
+                {
+                    type: 'listening',
+                    prompt: 'Listen and identify the verb tense used:',
+                    question: 'Habría llegado más temprano si no hubiera llovido',
+                    audio: 'conditional-perfect.mp3',
+                    options: [
+                        'Future perfect',
+                        'Conditional perfect',
+                        'Present perfect',
+                        'Past perfect'
+                    ],
+                    correct: 1,
+                    explanation: 'This sentence uses the conditional perfect (habría llegado) with the past perfect subjunctive.'
+                }
+            ]
+        };
+
+        // Initialize quiz
+        async function initQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            hearts = 5;
+            totalXP = 0;
+            answerTimes = [];
+            quizStartTime = Date.now();
+
+            // Load user data from Supabase
+            await loadUserData();
+
+            // Generate questions based on difficulty
+            await generateQuestions();
+
+            updateHearts();
+            updateXPDisplay();
+            updateStreakDisplay();
+
+            // Hide loading, show quiz
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('questionCard').style.display = 'block';
+            document.getElementById('checkBtn').style.display = 'block';
+
+            loadQuestion();
+        }
+
+        // Load user data (XP, streak, vocabulary)
+        async function loadUserData() {
+            if (!supabase) {
+                userStreak = 0;
+                totalXP = 0;
+                return;
+            }
+
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (!user) {
+                    console.log('No user logged in, using demo mode');
+                    return;
+                }
+
+                // Get user profile
+                const { data: profile, error } = await supabase
+                    .from('users')
+                    .select('*')
+                    .eq('id', user.id)
+                    .single();
+
+                if (error) throw error;
+
+                if (profile) {
+                    userStreak = profile.streak_days || 0;
+                    totalXP = profile.total_xp || 0;
+
+                    // Check if last active was today
+                    const lastActive = new Date(profile.last_active);
+                    const today = new Date();
+                    const daysDiff = Math.floor((today - lastActive) / (1000 * 60 * 60 * 24));
+
+                    if (daysDiff === 1) {
+                        // Increment streak
+                        userStreak++;
+                        await updateUserStreak(userStreak);
+                    } else if (daysDiff > 1) {
+                        // Reset streak
+                        userStreak = 1;
+                        await updateUserStreak(userStreak);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+            }
+        }
+
+        // Generate questions from user's vocabulary
+        async function generateQuestions() {
+            questions = [];
+
+            if (supabase) {
+                try {
+                    const { data: { user } } = await supabase.auth.getUser();
+                    if (user) {
+                        // Fetch user's vocabulary
+                        const { data: vocabulary, error } = await supabase
+                            .from('vocabulary')
+                            .select('*')
+                            .eq('user_id', user.id)
+                            .order('last_reviewed_at', { ascending: true })
+                            .limit(20);
+
+                        if (!error && vocabulary && vocabulary.length > 0) {
+                            // Generate questions from user vocabulary
+                            questions = generateQuestionsFromVocabulary(vocabulary);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error fetching vocabulary:', error);
+                }
+            }
+
+            // If no vocabulary or not logged in, use question bank
+            if (questions.length === 0) {
+                questions = selectQuestionsFromBank(difficultyLevel, 10);
+            }
+
+            // Shuffle questions
+            questions = shuffleArray(questions);
+        }
+
+        // Generate questions from user's vocabulary
+        function generateQuestionsFromVocabulary(vocabulary) {
+            const generated = [];
+            const types = ['multiple_choice', 'fill_blank', 'sentence_construction', 'listening', 'matching'];
+
+            vocabulary.forEach((word, index) => {
+                const type = types[index % types.length];
+
+                if (type === 'multiple_choice') {
+                    // Create multiple choice question
+                    const distractors = getRandomDistractors(vocabulary, word, 3);
+                    const options = shuffleArray([word.translation, ...distractors]);
+
+                    generated.push({
+                        type: 'multiple_choice',
+                        prompt: 'Translate this word:',
+                        question: word.word,
+                        options: options,
+                        correct: options.indexOf(word.translation),
+                        explanation: `"${word.word}" means "${word.translation}" in English.`,
+                        wordId: word.id
+                    });
+                } else if (type === 'fill_blank' && word.context_sentence) {
+                    // Create fill-in-blank from context sentence
+                    const sentence = word.context_sentence.replace(word.word, '_____');
+                    generated.push({
+                        type: 'fill_blank',
+                        prompt: 'Fill in the missing word:',
+                        question: sentence,
+                        answer: word.word,
+                        hint: `Translation: ${word.translation}`,
+                        explanation: `The word "${word.word}" means "${word.translation}".`,
+                        wordId: word.id
+                    });
+                }
+            });
+
+            return generated;
+        }
+
+        // Get random distractors for multiple choice
+        function getRandomDistractors(vocabulary, currentWord, count) {
+            const others = vocabulary.filter(w => w.id !== currentWord.id);
+            const shuffled = shuffleArray(others);
+            return shuffled.slice(0, count).map(w => w.translation);
+        }
+
+        // Select questions from question bank
+        function selectQuestionsFromBank(difficulty, count) {
+            const pool = questionBank[difficulty] || questionBank.medium;
+            const selected = [];
+
+            // Ensure variety of question types
+            const types = ['multiple_choice', 'fill_blank', 'listening', 'matching', 'sentence_construction'];
+            let typeIndex = 0;
+
+            for (let i = 0; i < count && pool.length > 0; i++) {
+                const targetType = types[typeIndex % types.length];
+                const question = pool.find(q => q.type === targetType) || pool[i % pool.length];
+                selected.push({ ...question }); // Clone to avoid mutation
+                typeIndex++;
+            }
+
+            return selected;
+        }
+
+        // Shuffle array utility
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Load current question
+        function loadQuestion() {
+            if (currentQuestionIndex >= questions.length) {
+                showResults();
+                return;
+            }
+
+            questionStartTime = Date.now();
+            const question = questions[currentQuestionIndex];
+
+            // Update progress
+            const progress = (currentQuestionIndex / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `${currentQuestionIndex} / ${questions.length}`;
+
+            // Update progress bar ARIA
+            const progressBar = document.querySelector('.quiz-progress-bar');
+            progressBar.setAttribute('aria-valuenow', Math.round(progress));
+
+            // Update question type badge
+            const typeLabels = {
+                multiple_choice: 'Multiple Choice',
+                fill_blank: 'Fill in the Blank',
+                listening: 'Listening',
+                matching: 'Matching',
+                sentence_construction: 'Sentence Construction'
+            };
+            document.getElementById('questionType').textContent = typeLabels[question.type] || 'Question';
+
+            // Update question text
+            document.getElementById('questionPrompt').textContent = question.prompt;
+            document.getElementById('questionText').textContent = question.question;
+
+            // Hide audio button by default
+            document.getElementById('audioBtn').style.display = 'none';
+
+            // Render question based on type
+            const contentArea = document.getElementById('questionContent');
+            contentArea.innerHTML = '';
+
+            switch (question.type) {
+                case 'multiple_choice':
+                    renderMultipleChoice(question, contentArea);
+                    break;
+                case 'fill_blank':
+                    renderFillBlank(question, contentArea);
+                    break;
+                case 'listening':
+                    renderListening(question, contentArea);
+                    break;
+                case 'matching':
+                    renderMatching(question, contentArea);
+                    break;
+                case 'sentence_construction':
+                    renderSentenceConstruction(question, contentArea);
+                    break;
+            }
+
+            // Reset state
+            selectedOption = null;
+            document.getElementById('checkBtn').disabled = true;
+            document.getElementById('feedbackPanel').classList.remove('show');
+        }
+
+        // Render Multiple Choice
+        function renderMultipleChoice(question, container) {
+            const optionsContainer = document.createElement('div');
+            optionsContainer.className = 'quiz-options';
+            optionsContainer.setAttribute('role', 'radiogroup');
+            optionsContainer.setAttribute('aria-label', 'Answer options');
+
+            question.options.forEach((option, index) => {
+                const optionEl = document.createElement('div');
+                optionEl.className = 'quiz-option';
+                optionEl.textContent = option;
+                optionEl.setAttribute('role', 'radio');
+                optionEl.setAttribute('aria-checked', 'false');
+                optionEl.setAttribute('tabindex', index === 0 ? '0' : '-1');
+                optionEl.onclick = () => selectOption(index);
+
+                // Keyboard navigation
+                optionEl.onkeydown = (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        selectOption(index);
+                    } else if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        const next = optionsContainer.children[Math.min(index + 1, question.options.length - 1)];
+                        next.focus();
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        const prev = optionsContainer.children[Math.max(index - 1, 0)];
+                        prev.focus();
+                    }
+                };
+
+                optionsContainer.appendChild(optionEl);
+            });
+
+            container.appendChild(optionsContainer);
+        }
+
+        // Render Fill in the Blank
+        function renderFillBlank(question, container) {
+            const inputEl = document.createElement('input');
+            inputEl.type = 'text';
+            inputEl.className = 'quiz-input';
+            inputEl.placeholder = 'Type your answer...';
+            inputEl.setAttribute('aria-label', 'Your answer');
+
+            if (question.hint) {
+                const hintEl = document.createElement('div');
+                hintEl.style.cssText = 'margin-bottom: 12px; color: #777; font-size: 14px;';
+                hintEl.textContent = `💡 Hint: ${question.hint}`;
+                container.appendChild(hintEl);
+            }
+
+            container.appendChild(inputEl);
+
+            inputEl.oninput = () => {
+                selectedOption = inputEl.value.trim();
+                document.getElementById('checkBtn').disabled = selectedOption === '';
+            };
+
+            inputEl.focus();
+        }
+
+        // Render Listening Exercise
+        function renderListening(question, container) {
+            // Show audio button
+            const audioBtn = document.getElementById('audioBtn');
+            audioBtn.style.display = 'block';
+            audioBtn.onclick = () => playAudio(question.question);
+
+            // Auto-play audio once
+            setTimeout(() => playAudio(question.question), 500);
+
+            // Render options
+            const optionsContainer = document.createElement('div');
+            optionsContainer.className = 'quiz-options';
+
+            question.options.forEach((option, index) => {
+                const optionEl = document.createElement('div');
+                optionEl.className = 'quiz-option';
+                optionEl.textContent = option;
+                optionEl.onclick = () => selectOption(index);
+                optionsContainer.appendChild(optionEl);
+            });
+
+            container.appendChild(optionsContainer);
+        }
+
+        // Render Matching Exercise
+        function renderMatching(question, container) {
+            const matchingContainer = document.createElement('div');
+            matchingContainer.className = 'quiz-matching-container';
+
+            const shuffledEnglish = shuffleArray(question.pairs.map(p => p.english));
+            let selectedSpanish = null;
+            let selectedEnglish = null;
+            let matches = [];
+
+            // Spanish column
+            question.pairs.forEach((pair, index) => {
+                const item = document.createElement('div');
+                item.className = 'quiz-matching-item';
+                item.textContent = pair.spanish;
+                item.dataset.spanish = pair.spanish;
+                item.dataset.english = pair.english;
+                item.onclick = () => {
+                    if (item.classList.contains('matched')) return;
+
+                    // Deselect other Spanish items
+                    matchingContainer.querySelectorAll('[data-spanish]').forEach(el => {
+                        el.classList.remove('selected');
+                    });
+
+                    item.classList.add('selected');
+                    selectedSpanish = item;
+
+                    checkMatch();
+                };
+                matchingContainer.appendChild(item);
+            });
+
+            // English column
+            shuffledEnglish.forEach((english, index) => {
+                const item = document.createElement('div');
+                item.className = 'quiz-matching-item';
+                item.textContent = english;
+                item.dataset.english = english;
+                item.onclick = () => {
+                    if (item.classList.contains('matched')) return;
+
+                    // Deselect other English items
+                    matchingContainer.querySelectorAll('[data-english]:not([data-spanish])').forEach(el => {
+                        el.classList.remove('selected');
+                    });
+
+                    item.classList.add('selected');
+                    selectedEnglish = item;
+
+                    checkMatch();
+                };
+                matchingContainer.appendChild(item);
+            });
+
+            function checkMatch() {
+                if (selectedSpanish && selectedEnglish) {
+                    const spanishText = selectedSpanish.dataset.spanish;
+                    const correctEnglish = selectedSpanish.dataset.english;
+                    const selectedEnglishText = selectedEnglish.dataset.english;
+
+                    if (correctEnglish === selectedEnglishText) {
+                        // Correct match
+                        selectedSpanish.classList.add('matched');
+                        selectedSpanish.classList.remove('selected');
+                        selectedEnglish.classList.add('matched');
+                        selectedEnglish.classList.remove('selected');
+
+                        matches.push({ spanish: spanishText, english: selectedEnglishText });
+
+                        // Check if all matched
+                        if (matches.length === question.pairs.length) {
+                            selectedOption = 'complete';
+                            document.getElementById('checkBtn').disabled = false;
+                        }
+                    } else {
+                        // Incorrect match - shake and deselect
+                        selectedSpanish.style.animation = 'shake 0.5s ease';
+                        selectedEnglish.style.animation = 'shake 0.5s ease';
+
+                        setTimeout(() => {
+                            selectedSpanish.style.animation = '';
+                            selectedEnglish.style.animation = '';
+                            selectedSpanish.classList.remove('selected');
+                            selectedEnglish.classList.remove('selected');
+                        }, 500);
+                    }
+
+                    selectedSpanish = null;
+                    selectedEnglish = null;
+                }
+            }
+
+            container.appendChild(matchingContainer);
+        }
+
+        // Render Sentence Construction
+        function renderSentenceConstruction(question, container) {
+            const wordBank = document.createElement('div');
+            wordBank.className = 'quiz-word-bank';
+            wordBank.setAttribute('role', 'list');
+            wordBank.setAttribute('aria-label', 'Available words');
+
+            const sentenceBuilder = document.createElement('div');
+            sentenceBuilder.className = 'quiz-sentence-builder';
+            sentenceBuilder.setAttribute('role', 'list');
+            sentenceBuilder.setAttribute('aria-label', 'Your sentence');
+
+            let builtSentence = [];
+
+            // Shuffle words
+            const shuffledWords = shuffleArray([...question.words]);
+
+            shuffledWords.forEach((word, index) => {
+                const chip = document.createElement('div');
+                chip.className = 'quiz-word-chip';
+                chip.textContent = word;
+                chip.dataset.word = word;
+                chip.setAttribute('role', 'button');
+                chip.setAttribute('tabindex', '0');
+                chip.onclick = () => {
+                    if (!chip.classList.contains('used')) {
+                        chip.classList.add('used');
+                        builtSentence.push(word);
+
+                        const placedWord = document.createElement('div');
+                        placedWord.className = 'quiz-placed-word';
+                        placedWord.textContent = word;
+                        placedWord.dataset.word = word;
+                        placedWord.onclick = () => {
+                            // Remove from sentence
+                            builtSentence = builtSentence.filter(w => w !== word);
+                            placedWord.remove();
+                            chip.classList.remove('used');
+
+                            document.getElementById('checkBtn').disabled = builtSentence.length !== question.words.length;
+                        };
+
+                        sentenceBuilder.appendChild(placedWord);
+
+                        document.getElementById('checkBtn').disabled = builtSentence.length !== question.words.length;
+                    }
+                };
+
+                wordBank.appendChild(chip);
+            });
+
+            // Store built sentence for checking
+            sentenceBuilder.dataset.getAnswer = () => builtSentence.join(' ');
+
+            const translationHint = document.createElement('div');
+            translationHint.style.cssText = 'margin-bottom: 12px; color: #777; font-size: 14px;';
+            translationHint.textContent = `💡 Translation: "${question.translation}"`;
+
+            container.appendChild(translationHint);
+            container.appendChild(wordBank);
+            container.appendChild(sentenceBuilder);
+
+            // Store reference for answer checking
+            window.currentSentenceBuilder = sentenceBuilder;
+            window.currentBuiltSentence = () => builtSentence;
+        }
+
+        // Play audio for listening exercises
+        function playAudio(text) {
+            // Use Web Speech API for text-to-speech
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // Cancel any ongoing speech
+
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'es-ES';
+                utterance.rate = 0.85; // Slightly slower for learning
+                utterance.pitch = 1;
+
+                // Try to use a Spanish voice
+                const voices = window.speechSynthesis.getVoices();
+                const spanishVoice = voices.find(voice => voice.lang.startsWith('es'));
+                if (spanishVoice) {
+                    utterance.voice = spanishVoice;
+                }
+
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Select an option (for multiple choice and listening)
+        function selectOption(index) {
+            const options = document.querySelectorAll('.quiz-option');
+
+            // Remove previous selection
+            options.forEach((opt, i) => {
+                opt.classList.remove('selected');
+                opt.setAttribute('aria-checked', 'false');
+                opt.setAttribute('tabindex', '-1');
+            });
+
+            // Mark selected
+            options[index].classList.add('selected');
+            options[index].setAttribute('aria-checked', 'true');
+            options[index].setAttribute('tabindex', '0');
+            selectedOption = index;
+
+            // Enable check button
+            document.getElementById('checkBtn').disabled = false;
+        }
+
+        // Check answer
+        document.getElementById('checkBtn').onclick = function() {
+            const question = questions[currentQuestionIndex];
+            let isCorrect = false;
+            let userAnswer = '';
+
+            // Check answer based on question type
+            switch (question.type) {
+                case 'multiple_choice':
+                case 'listening':
+                    isCorrect = selectedOption === question.correct;
+                    userAnswer = question.options[selectedOption];
+                    break;
+
+                case 'fill_blank':
+                    const input = document.querySelector('.quiz-input');
+                    userAnswer = input.value.trim().toLowerCase();
+                    const correctAnswer = question.answer.toLowerCase();
+
+                    // Allow some flexibility in answers
+                    isCorrect = userAnswer === correctAnswer ||
+                               userAnswer === correctAnswer.replace(/[áéíóú]/g, (m) => ({ 'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u' })[m]);
+
+                    input.classList.add(isCorrect ? 'correct' : 'incorrect');
+                    break;
+
+                case 'matching':
+                    isCorrect = true; // Matching is always correct when complete
+                    userAnswer = 'All pairs matched';
+                    break;
+
+                case 'sentence_construction':
+                    const builtSentence = window.currentBuiltSentence();
+                    userAnswer = builtSentence.join(' ');
+                    const correctSentence = question.correctOrder.join(' ');
+                    isCorrect = userAnswer === correctSentence;
+
+                    const builder = window.currentSentenceBuilder;
+                    builder.classList.add(isCorrect ? 'correct' : 'incorrect');
+                    break;
+            }
+
+            // Record answer time
+            const answerTime = Math.floor((Date.now() - questionStartTime) / 1000);
+            answerTimes.push(answerTime);
+
+            // Update UI based on correctness
+            if (question.type === 'multiple_choice' || question.type === 'listening') {
+                const options = document.querySelectorAll('.quiz-option');
+                options[selectedOption].classList.add(isCorrect ? 'correct' : 'incorrect');
+                if (!isCorrect) {
+                    options[question.correct].classList.add('correct');
+                }
+            }
+
+            // Update score and hearts
+            if (isCorrect) {
+                score++;
+                const xpGained = calculateXP(answerTime, question.type);
+                totalXP += xpGained;
+                consecutiveCorrect++;
+                consecutiveIncorrect = 0;
+                showConfetti();
+
+                // Update difficulty if doing well
+                if (consecutiveCorrect >= 3) {
+                    adjustDifficulty('up');
+                }
+            } else {
+                hearts--;
+                consecutiveIncorrect++;
+                consecutiveCorrect = 0;
+                updateHearts();
+
+                // Update difficulty if struggling
+                if (consecutiveIncorrect >= 2) {
+                    adjustDifficulty('down');
+                }
+
+                // Animate heart loss
+                const heartElements = document.querySelectorAll('.quiz-heart');
+                if (heartElements[hearts]) {
+                    heartElements[hearts].classList.add('losing');
+                }
+            }
+
+            // Update user vocabulary if applicable
+            if (question.wordId && supabase) {
+                updateVocabularyStats(question.wordId, isCorrect);
+            }
+
+            // Show feedback
+            showFeedback(isCorrect, question, answerTime);
+
+            // Disable check button
+            this.disabled = true;
+        };
+
+        // Calculate XP based on performance
+        function calculateXP(answerTime, questionType) {
+            let baseXP = 10;
+
+            // Bonus for question type difficulty
+            const typeBonus = {
+                'multiple_choice': 0,
+                'fill_blank': 2,
+                'listening': 3,
+                'matching': 5,
+                'sentence_construction': 5
+            };
+
+            baseXP += typeBonus[questionType] || 0;
+
+            // Time bonus (faster = more XP)
+            if (answerTime < 5) baseXP += 5;
+            else if (answerTime < 10) baseXP += 3;
+            else if (answerTime < 15) baseXP += 1;
+
+            // Streak bonus
+            if (consecutiveCorrect >= 3) baseXP += 5;
+
+            return baseXP;
+        }
+
+        // Adjust difficulty based on performance
+        function adjustDifficulty(direction) {
+            const levels = ['easy', 'medium', 'hard'];
+            const currentIndex = levels.indexOf(difficultyLevel);
+
+            if (direction === 'up' && currentIndex < levels.length - 1) {
+                difficultyLevel = levels[currentIndex + 1];
+                console.log(`Difficulty increased to ${difficultyLevel}`);
+            } else if (direction === 'down' && currentIndex > 0) {
+                difficultyLevel = levels[currentIndex - 1];
+                console.log(`Difficulty decreased to ${difficultyLevel}`);
+            }
+        }
+
+        // Update vocabulary statistics in Supabase
+        async function updateVocabularyStats(wordId, correct) {
+            if (!supabase) return;
+
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (!user) return;
+
+                await supabase.rpc('review_vocabulary', {
+                    p_word_id: wordId,
+                    p_correct: correct
+                });
+            } catch (error) {
+                console.error('Error updating vocabulary stats:', error);
+            }
+        }
+
+        // Show feedback panel
+        function showFeedback(isCorrect, question, answerTime) {
+            const feedbackPanel = document.getElementById('feedbackPanel');
+            const feedbackTitle = document.getElementById('feedbackTitleText');
+            const feedbackMessage = document.getElementById('feedbackMessage');
+            const feedbackExplanation = document.getElementById('feedbackExplanation');
+            const feedbackXP = document.getElementById('feedbackXP');
+            const feedbackIcon = document.getElementById('feedbackIcon');
+            const continueBtn = document.getElementById('continueBtn');
+
+            feedbackPanel.className = 'quiz-feedback show ' + (isCorrect ? 'correct' : 'incorrect');
+            document.getElementById('feedbackTitle').className = 'quiz-feedback-title ' + (isCorrect ? 'correct' : 'incorrect');
+            continueBtn.className = 'quiz-continue-btn ' + (isCorrect ? '' : 'incorrect');
+
+            if (isCorrect) {
+                const praises = ['Awesome!', 'Great job!', 'Perfect!', 'Excellent!', 'Amazing!', 'Fantastic!'];
+                feedbackTitle.textContent = praises[Math.floor(Math.random() * praises.length)];
+                feedbackIcon.textContent = '✓';
+                feedbackMessage.textContent = 'You got it right!';
+
+                const xpGained = calculateXP(answerTime, question.type);
+                feedbackXP.textContent = `+${xpGained} XP`;
+                feedbackXP.style.display = 'inline-block';
+
+                updateXPDisplay();
+            } else {
+                feedbackTitle.textContent = 'Not quite';
+                feedbackIcon.textContent = '✗';
+
+                let correctAnswer = '';
+                switch (question.type) {
+                    case 'multiple_choice':
+                    case 'listening':
+                        correctAnswer = question.options[question.correct];
+                        break;
+                    case 'fill_blank':
+                        correctAnswer = question.answer;
+                        break;
+                    case 'sentence_construction':
+                        correctAnswer = question.correctOrder.join(' ');
+                        break;
+                }
+
+                if (correctAnswer) {
+                    feedbackMessage.textContent = `Correct answer: "${correctAnswer}"`;
+                } else {
+                    feedbackMessage.textContent = 'Try again next time!';
+                }
+
+                feedbackXP.style.display = 'none';
+            }
+
+            feedbackExplanation.textContent = question.explanation || '';
+
+            if (hearts === 0) {
+                continueBtn.textContent = 'See Results';
+            } else {
+                continueBtn.textContent = 'Continue';
+            }
+        }
+
+        // Continue to next question
+        document.getElementById('continueBtn').onclick = function() {
+            if (hearts === 0) {
+                showResults();
+            } else {
+                currentQuestionIndex++;
+                loadQuestion();
+            }
+        };
+
+        // Update hearts display
+        function updateHearts() {
+            const heartElements = document.querySelectorAll('.quiz-heart');
+            heartElements.forEach((heart, index) => {
+                if (index >= hearts) {
+                    heart.classList.add('lost');
+                } else {
+                    heart.classList.remove('lost');
+                }
+            });
+        }
+
+        // Update XP display
+        function updateXPDisplay() {
+            document.getElementById('xpDisplay').textContent = `${totalXP} XP`;
+        }
+
+        // Update streak display
+        function updateStreakDisplay() {
+            const streakText = userStreak === 1 ? '1 day streak' : `${userStreak} day streak`;
+            document.getElementById('streakDisplay').textContent = streakText;
+        }
+
+        // Update user streak in Supabase
+        async function updateUserStreak(streak) {
+            if (!supabase) return;
+
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (!user) return;
+
+                await supabase
+                    .from('users')
+                    .update({
+                        streak_days: streak,
+                        last_active: new Date().toISOString()
+                    })
+                    .eq('id', user.id);
+            } catch (error) {
+                console.error('Error updating streak:', error);
+            }
+        }
+
+        // Show confetti animation
+        function showConfetti() {
+            const colors = ['#58cc02', '#1cb0f6', '#ffc800', '#ff4b4b', '#764ba2', '#667eea'];
+
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 0.3 + 's';
+                    confetti.style.animationDuration = (2 + Math.random()) + 's';
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => confetti.remove(), 3500);
+                }, i * 30);
+            }
+        }
+
+        // Show results screen
+        async function showResults() {
+            document.getElementById('questionCard').style.display = 'none';
+            document.getElementById('checkBtn').style.display = 'none';
+            document.getElementById('feedbackPanel').classList.remove('show');
+            document.getElementById('resultsScreen').style.display = 'block';
+
+            const accuracy = Math.round((score / questions.length) * 100);
+            const avgTime = Math.round(answerTimes.reduce((a, b) => a + b, 0) / answerTimes.length);
+
+            document.getElementById('finalScore').textContent = `Score: ${score}/${questions.length}`;
+            document.getElementById('correctAnswers').textContent = score;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+            document.getElementById('totalXP').textContent = totalXP;
+            document.getElementById('avgTime').textContent = avgTime + 's';
+
+            // Save results to Supabase
+            await saveQuizResults({
+                score: score,
+                total_questions: questions.length,
+                accuracy: accuracy,
+                xp_earned: totalXP,
+                avg_answer_time: avgTime,
+                difficulty_level: difficultyLevel
+            });
+
+            showConfetti();
+
+            // Update XP in user profile
+            if (supabase) {
+                try {
+                    const { data: { user } } = await supabase.auth.getUser();
+                    if (user) {
+                        await supabase
+                            .from('users')
+                            .update({
+                                total_xp: totalXP,
+                                words_learned: supabase.raw(`words_learned + ${score}`)
+                            })
+                            .eq('id', user.id);
+                    }
+                } catch (error) {
+                    console.error('Error updating user XP:', error);
+                }
+            }
+        }
+
+        // Save quiz results to Supabase
+        async function saveQuizResults(results) {
+            if (!supabase) return;
+
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (!user) return;
+
+                await supabase
+                    .from('quiz_results')
+                    .insert({
+                        user_id: user.id,
+                        quiz_type: 'comprehensive',
+                        score: results.score,
+                        total_questions: results.total_questions,
+                        accuracy: results.accuracy,
+                        xp_earned: results.xp_earned,
+                        avg_answer_time: results.avg_answer_time,
+                        difficulty_level: results.difficulty_level,
+                        completed_at: new Date().toISOString()
+                    });
+            } catch (error) {
+                console.error('Error saving quiz results:', error);
+            }
+        }
+
+        // Restart quiz
+        window.restartQuiz = function() {
+            document.getElementById('questionCard').style.display = 'block';
+            document.getElementById('checkBtn').style.display = 'block';
+            document.getElementById('resultsScreen').style.display = 'none';
+            document.getElementById('loadingState').style.display = 'block';
+
+            initQuiz();
+        };
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Number keys 1-4 for multiple choice
+            if (e.key >= '1' && e.key <= '4') {
+                const options = document.querySelectorAll('.quiz-option');
+                const index = parseInt(e.key) - 1;
+                if (options[index]) {
+                    selectOption(index);
+                }
+            }
+
+            // Enter to check answer
+            if (e.key === 'Enter' && !document.getElementById('checkBtn').disabled) {
+                document.getElementById('checkBtn').click();
+            }
+
+            // Space to continue after feedback
+            if (e.key === ' ' && document.getElementById('feedbackPanel').classList.contains('show')) {
+                e.preventDefault();
+                document.getElementById('continueBtn').click();
+            }
+        });
+
+        // Load voices for speech synthesis
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = () => {
+                window.speechSynthesis.getVoices();
+            };
+        }
+
+        // Initialize quiz on load
+        initQuiz();
+    </script>
+</body>
+</html>

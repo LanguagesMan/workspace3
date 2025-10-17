@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <title>Single Video Test</title>
+    <style>
+        body { margin: 0; padding: 20px; background: #000; color: #fff; font-family: Arial; }
+        video { width: 100%; max-width: 600px; margin: 20px auto; display: block; }
+        .status { padding: 20px; margin: 20px auto; max-width: 600px; border-radius: 8px; }
+        .success { background: #4CAF50; }
+        .error { background: #f44336; }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Browser-Compatible Video Test</h1>
+
+    <video id="video" controls muted autoplay playsinline>
+        <source src="/videos/reels/test-browser-compat.mp4" type="video/mp4">
+    </video>
+
+    <div id="status" class="status">Loading...</div>
+
+    <script>
+        const video = document.getElementById('video');
+        const status = document.getElementById('status');
+
+        video.addEventListener('loadstart', () => {
+            status.textContent = '▶️ Loading video...';
+            status.className = 'status';
+        });
+
+        video.addEventListener('loadeddata', () => {
+            status.textContent = `✅ Video loaded successfully!\nDuration: ${video.duration.toFixed(2)}s\nReady State: ${video.readyState}`;
+            status.className = 'status success';
+        });
+
+        video.addEventListener('canplay', () => {
+            status.textContent = `✅ Video playing!\nDuration: ${video.duration.toFixed(2)}s\nCodecs working correctly.`;
+            status.className = 'status success';
+        });
+
+        video.addEventListener('error', (e) => {
+            const error = video.error;
+            status.textContent = `❌ Video Error\nCode: ${error.code}\nMessage: ${error.message}`;
+            status.className = 'status error';
+            console.error('Video error:', error);
+        });
+
+        setTimeout(() => {
+            if (video.error) {
+                console.log('❌ Video failed to load');
+            } else if (video.readyState >= 3) {
+                console.log('✅ Video loaded successfully!');
+            } else {
+                console.log('⚠️  Still loading...');
+            }
+        }, 3000);
+    </script>
+</body>
+</html>

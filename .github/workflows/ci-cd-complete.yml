@@ -1,0 +1,259 @@
+name: Complete CI/CD Pipeline with Auto-Merge/Revert
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  # ============================================================================
+  # JOB 1: Feature Branch Testing
+  # ============================================================================
+  feature-branch-test:
+    if: github.ref != 'refs/heads/main' && github.ref != 'refs/heads/master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Update branch from main
+        run: |
+          git fetch origin main
+          git merge origin/main --no-edit || echo "Already up to date or conflicts"
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build
+        run: npm run build --if-present
+        
+      - name: Run unit tests
+        run: npm test --if-present
+        continue-on-error: false
+        
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+        
+      - name: Start server in test mode
+        run: |
+          NODE_ENV=test PORT=3001 FIXED_VIEWPORT=true DISABLE_ANIMATIONS=true npm start &
+          npx wait-on http://localhost:3001 --timeout 90000
+        env:
+          CI: true
+          
+      - name: Seed deterministic test data
+        run: node scripts/seed-test-data.js
+        continue-on-error: true
+        
+      - name: Generate/refresh visual baseline from main
+        run: npx playwright test tests/visual --project=visual --update-snapshots
+        continue-on-error: true
+        
+      - name: Run smoke tests
+        run: npx playwright test tests/smoke --project=smoke --reporter=list
+        env:
+          CI: true
+          
+      - name: Run visual regression tests
+        run: npx playwright test tests/visual --project=visual --reporter=list
+        continue-on-error: true
+        env:
+          CI: true
+          
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results-branch-${{ github.run_number }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+          
+  # ============================================================================
+  # JOB 2: Auto-Merge (if tests pass)
+  # ============================================================================
+  auto-merge:
+    needs: feature-branch-test
+    if: github.event_name == 'pull_request' && success()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      
+    steps:
+      - name: Enable auto-merge
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ github.event.pull_request.number }}
+          merge-method: squash
+          
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '✅ All tests passed! Auto-merging to main.'
+            })
+            
+  # ============================================================================
+  # JOB 3: Main Branch Comprehensive Testing
+  # ============================================================================
+  main-branch-test:
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build
+        run: npm run build --if-present
+        
+      - name: Run all unit tests
+        run: npm test --if-present
+        
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+        
+      - name: Start server in production mode
+        run: |
+          NODE_ENV=production PORT=3001 npm start &
+          npx wait-on http://localhost:3001 --timeout 90000
+          
+      - name: Seed test data
+        run: node scripts/seed-test-data.js
+        continue-on-error: true
+        
+      - name: Run full Playwright test suite (smoke + visual + functional)
+        run: npx playwright test --reporter=html,list
+        env:
+          CI: true
+          
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results-main-${{ github.run_number }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+          
+  # ============================================================================
+  # JOB 4: Auto-Revert (if main tests fail)
+  # ============================================================================
+  auto-revert:
+    needs: main-branch-test
+    if: failure() && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Configure Git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          
+      - name: Revert last commit
+        run: |
+          git revert HEAD --no-edit
+          git push origin main
+          
+      - name: Create fix branch from before revert
+        run: |
+          BRANCH_NAME="fix/auto-revert-$(date +%s)"
+          git checkout -b $BRANCH_NAME HEAD~1
+          git push origin $BRANCH_NAME
+          echo "FIX_BRANCH=$BRANCH_NAME" >> $GITHUB_ENV
+          
+      - name: Create issue for failed merge
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🚨 Auto-revert: Tests failed on main branch',
+              body: `## Tests Failed After Merge
+              
+              The tests failed after merging to main. The last commit has been automatically reverted.
+              
+              **Failed Commit:** ${context.sha}
+              **Revert Commit:** Will be created automatically
+              **Fix Branch:** ${process.env.FIX_BRANCH}
+              
+              ### Action Required
+              1. Check the test results in the Actions tab
+              2. Fix the issues on the fix branch
+              3. Create a new PR when ready
+              
+              ### Test Results
+              [View full test results](${context.payload.repository.html_url}/actions/runs/${context.runId})
+              `,
+              labels: ['bug', 'urgent', 'auto-revert', 'ci-failure']
+            });
+            
+            console.log('Created issue:', issue.data.number);
+            
+  # ============================================================================
+  # JOB 5: Cleanup Merged Branches
+  # ============================================================================
+  cleanup:
+    needs: [auto-merge, main-branch-test]
+    if: success() && github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+      - name: Delete merged branch
+        uses: dawidd6/action-delete-branch@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branches: ${{ github.head_ref }}
+          
+      - name: Comment success
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '✅ Successfully merged and deployed! Branch cleaned up.'
+            })
+

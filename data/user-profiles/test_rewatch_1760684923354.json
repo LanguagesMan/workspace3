@@ -1,0 +1,17 @@
+{
+  "userId": "test_rewatch_1760684923354",
+  "level": "B1",
+  "watchedVideos": [
+    "langfeed_character_middleaged_professional_20250914_mp4"
+  ],
+  "interactions": [],
+  "interests": {},
+  "seenThemes": {},
+  "knownWords": [],
+  "behaviorPatterns": {
+    "avgCompletionRate": 0.76,
+    "avgWatchTime": 20,
+    "skipRate": 0.2,
+    "rewatchRate": 0.05
+  }
+}

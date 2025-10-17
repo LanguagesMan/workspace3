@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.langflix.transcription-watcher</string>
+    
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/local/bin/node</string>
+        <string>/Users/mindful/_projects/workspace3/scripts/start-auto-watcher.js</string>
+    </array>
+    
+    <key>WorkingDirectory</key>
+    <string>/Users/mindful/_projects/workspace3</string>
+    
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>OPENAI_API_KEY</key>
+        <string>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</string>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+    
+    <key>RunAtLoad</key>
+    <true/>
+    
+    <key>KeepAlive</key>
+    <true/>
+    
+    <key>StandardOutPath</key>
+    <string>/Users/mindful/_projects/workspace3/auto-watcher.log</string>
+    
+    <key>StandardErrorPath</key>
+    <string>/Users/mindful/_projects/workspace3/auto-watcher-error.log</string>
+</dict>
+</plist>
+

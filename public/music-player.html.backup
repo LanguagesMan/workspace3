@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🎵 Music - Learn Spanish Through Songs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1DB954 0%, #191414 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        /* Header */
+        .header {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Now Playing Card */
+        .now-playing {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .album-art {
+            width: 100%;
+            max-width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100px;
+        }
+
+        .song-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .song-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .song-artist {
+            font-size: 18px;
+            opacity: 0.8;
+        }
+
+        /* Player Controls */
+        .player-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #1DB954;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            opacity: 0.7;
+            margin-top: -15px;
+        }
+
+        .control-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .play-btn {
+            width: 60px;
+            height: 60px;
+            background: #1DB954;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        /* Lyrics Section */
+        .lyrics-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .lyrics-header {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toggle-translation {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .lyrics-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .lyric-line {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .lyric-line:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .lyric-line.active {
+            background: rgba(29, 185, 84, 0.3);
+            transform: scale(1.02);
+        }
+
+        .lyric-spanish {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            word-spacing: 0.1em;
+        }
+
+        .lyric-word {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .lyric-word:hover {
+            color: #1DB954;
+            text-decoration: underline;
+        }
+
+        .lyric-english {
+            font-size: 14px;
+            opacity: 0.7;
+            display: none;
+        }
+
+        .lyric-english.visible {
+            display: block;
+        }
+
+        /* Playlist */
+        .playlist-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+        }
+
+        .playlist-header {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .playlist-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 10px;
+        }
+
+        .playlist-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .playlist-item.playing {
+            background: rgba(29, 185, 84, 0.2);
+        }
+
+        .playlist-number {
+            font-size: 18px;
+            opacity: 0.7;
+            min-width: 30px;
+        }
+
+        .playlist-info {
+            flex: 1;
+        }
+
+        .playlist-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .playlist-artist {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        .playlist-level {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 15px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-item {
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+
+        .nav-item.active {
+            opacity: 1;
+            color: #1DB954;
+        }
+
+        /* Translation Popup */
+        .translation-popup {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.95);
+            padding: 20px 30px;
+            border-radius: 15px;
+            max-width: 90%;
+            display: none;
+            z-index: 1000;
+        }
+
+        .translation-popup.visible {
+            display: block;
+        }
+
+        .popup-word {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1DB954;
+            margin-bottom: 10px;
+        }
+
+        .popup-translation {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .album-art {
+                max-width: 250px;
+                height: 250px;
+            }
+
+            .song-title {
+                font-size: 24px;
+            }
+
+            .control-buttons {
+                gap: 20px;
+            }
+        }
+    </style>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script src="/lib/sentry-client.js" defer></script>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <button class="back-button" onclick="window.location.href='/tiktok-video-feed.html'">
+            ← Back
+        </button>
+        <div class="header-title">🎵 Music</div>
+        <div></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Now Playing -->
+        <div class="now-playing">
+            <div class="album-art" id="albumArt">🎵</div>
+            <div class="song-info">
+                <div class="song-title" id="songTitle">Despacito</div>
+                <div class="song-artist" id="songArtist">Luis Fonsi ft. Daddy Yankee</div>
+            </div>
+            <div class="player-controls">
+                <div class="progress-bar" onclick="seekTo(event)">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="time-display">
+                    <span id="currentTime">0:00</span>
+                    <span id="totalTime">3:45</span>
+                </div>
+                <div class="control-buttons">
+                    <button class="control-btn" onclick="previousSong()">⏮️</button>
+                    <button class="control-btn play-btn" onclick="togglePlay()" id="playBtn">▶️</button>
+                    <button class="control-btn" onclick="nextSong()">⏭️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lyrics -->
+        <div class="lyrics-section">
+            <div class="lyrics-header">
+                <span>Lyrics</span>
+                <button class="toggle-translation" onclick="toggleTranslations()">
+                    Show Translation
+                </button>
+            </div>
+            <div class="lyrics-container" id="lyricsContainer">
+                <!-- Lyrics will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Playlist -->
+        <div class="playlist-section">
+            <div class="playlist-header">Spanish Hits Playlist</div>
+            <div id="playlistContainer">
+                <!-- Playlist items will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="bottom-nav">
+        <a href="/tiktok-video-feed.html" class="nav-item">🎬</a>
+        <a href="/discover-ai.html" class="nav-item">📰</a>
+        <a href="/music-player.html" class="nav-item active">🎵</a>
+        <a href="/games-hub.html" class="nav-item">🎮</a>
+        <a href="/profile.html" class="nav-item">👤</a>
+    </div>
+
+    <!-- Translation Popup -->
+    <div class="translation-popup" id="translationPopup">
+        <div class="popup-word" id="popupWord"></div>
+        <div class="popup-translation" id="popupTranslation"></div>
+    </div>
+
+    <script>
+        // Sample music library (in production, load from /public/content/songs.json)
+        const musicLibrary = [
+            {
+                id: 1,
+                title: "Despacito",
+                artist: "Luis Fonsi ft. Daddy Yankee",
+                level: "B1",
+                lyrics: [
+                    { time: 0, spanish: "Sí, sabes que ya llevo un rato mirándote", english: "Yes, you know I've been looking at you for a while" },
+                    { time: 5, spanish: "Tengo que bailar contigo hoy", english: "I have to dance with you today" },
+                    { time: 10, spanish: "Vi que tu mirada ya estaba llamándome", english: "I saw that your gaze was already calling me" },
+                    { time: 15, spanish: "Muéstrame el camino que yo voy", english: "Show me the way and I'll go" },
+                    { time: 20, spanish: "Despacito, quiero respirar tu cuello despacito", english: "Slowly, I want to breathe your neck slowly" },
+                    { time: 27, spanish: "Deja que te diga cosas al oído", english: "Let me tell you things in your ear" },
+                    { time: 32, spanish: "Para que te acuerdes si no estás conmigo", english: "So you remember when you're not with me" }
+                ]
+            },
+            {
+                id: 2,
+                title: "Vivir Mi Vida",
+                artist: "Marc Anthony",
+                level: "A2",
+                lyrics: [
+                    { time: 0, spanish: "Voy a reír, voy a bailar", english: "I'm going to laugh, I'm going to dance" },
+                    { time: 5, spanish: "Vivir mi vida, la la la la", english: "Live my life, la la la la" },
+                    { time: 10, spanish: "Voy a vivir el momento", english: "I'm going to live the moment" }
+                ]
+            },
+            {
+                id: 3,
+                title: "Bailando",
+                artist: "Enrique Iglesias",
+                level: "B1",
+                lyrics: [
+                    { time: 0, spanish: "Yo te miro, se me corta la respiración", english: "I look at you, I lose my breath" },
+                    { time: 6, spanish: "Cuando tú me miras, se me sube el corazón", english: "When you look at me, my heart races" }
+                ]
+            }
+        ];
+
+        let currentSongIndex = 0;
+        let isPlaying = false;
+        let showingTranslation = false;
+        let currentTime = 0;
+        let duration = 225; // 3:45 in seconds
+        let interval = null;
+
+        // Initialize
+        function init() {
+            loadSong(0);
+            loadPlaylist();
+        }
+
+        // Load song
+        function loadSong(index) {
+            currentSongIndex = index;
+            const song = musicLibrary[index];
+            
+            document.getElementById('songTitle').textContent = song.title;
+            document.getElementById('songArtist').textContent = song.artist;
+            
+            loadLyrics(song.lyrics);
+            updatePlaylist();
+        }
+
+        // Load lyrics
+        function loadLyrics(lyrics) {
+            const container = document.getElementById('lyricsContainer');
+            container.innerHTML = lyrics.map((line, index) => `
+                <div class="lyric-line" data-time="${line.time}">
+                    <div class="lyric-spanish">
+                        ${line.spanish.split(' ').map(word => 
+                            `<span class="lyric-word" onclick="showTranslation('${word}')">${word}</span>`
+                        ).join(' ')}
+                    </div>
+                    <div class="lyric-english ${showingTranslation ? 'visible' : ''}">
+                        ${line.english}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Toggle play/pause
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const btn = document.getElementById('playBtn');
+            
+            if (isPlaying) {
+                btn.textContent = '⏸️';
+                startProgress();
+            } else {
+                btn.textContent = '▶️';
+                stopProgress();
+            }
+        }
+
+        // Start progress simulation
+        function startProgress() {
+            interval = setInterval(() => {
+                currentTime += 1;
+                if (currentTime >= duration) {
+                    currentTime = 0;
+                    nextSong();
+                }
+                updateProgress();
+                highlightCurrentLyric();
+            }, 1000);
+        }
+
+        // Stop progress
+        function stopProgress() {
+            if (interval) {
+                clearInterval(interval);
+                interval = null;
+            }
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const progress = (currentTime / duration) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('currentTime').textContent = formatTime(currentTime);
+        }
+
+        // Format time
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Seek to position
+        function seekTo(event) {
+            const bar = event.currentTarget;
+            const rect = bar.getBoundingClientRect();
+            const percent = (event.clientX - rect.left) / rect.width;
+            currentTime = percent * duration;
+            updateProgress();
+        }
+
+        // Highlight current lyric
+        function highlightCurrentLyric() {
+            const lines = document.querySelectorAll('.lyric-line');
+            lines.forEach(line => {
+                const lineTime = parseInt(line.dataset.time);
+                if (currentTime >= lineTime && currentTime < lineTime + 5) {
+                    line.classList.add('active');
+                } else {
+                    line.classList.remove('active');
+                }
+            });
+        }
+
+        // Next song
+        function nextSong() {
+            currentTime = 0;
+            currentSongIndex = (currentSongIndex + 1) % musicLibrary.length;
+            loadSong(currentSongIndex);
+            if (isPlaying) {
+                stopProgress();
+                setTimeout(() => startProgress(), 100);
+            }
+        }
+
+        // Previous song
+        function previousSong() {
+            currentTime = 0;
+            currentSongIndex = currentSongIndex === 0 ? musicLibrary.length - 1 : currentSongIndex - 1;
+            loadSong(currentSongIndex);
+            if (isPlaying) {
+                stopProgress();
+                setTimeout(() => startProgress(), 100);
+            }
+        }
+
+        // Toggle translations
+        function toggleTranslations() {
+            showingTranslation = !showingTranslation;
+            const btn = event.target;
+            btn.textContent = showingTranslation ? 'Hide Translation' : 'Show Translation';
+            
+            document.querySelectorAll('.lyric-english').forEach(el => {
+                el.classList.toggle('visible');
+            });
+        }
+
+        // Show word translation
+        async function showTranslation(word) {
+            const popup = document.getElementById('translationPopup');
+            document.getElementById('popupWord').textContent = word;
+            document.getElementById('popupTranslation').textContent = 'Loading...';
+            popup.classList.add('visible');
+
+            // Simulate translation API call
+            setTimeout(() => {
+                const translations = {
+                    'Sí': 'Yes',
+                    'sabes': 'you know',
+                    'que': 'that',
+                    'ya': 'already',
+                    'llevo': 'I carry / I\'ve been',
+                    'un': 'a',
+                    'rato': 'while',
+                    'mirándote': 'looking at you'
+                };
+                
+                document.getElementById('popupTranslation').textContent = 
+                    translations[word] || 'Translation not found';
+                
+                // Hide popup after 3 seconds
+                setTimeout(() => {
+                    popup.classList.remove('visible');
+                }, 3000);
+            }, 300);
+
+            // Track word click
+            saveWordToVocabulary(word);
+        }
+
+        // Save word to vocabulary
+        async function saveWordToVocabulary(word) {
+            // Implementation will connect to vocabulary API
+            console.log('Saving word:', word);
+        }
+
+        // Load playlist
+        function loadPlaylist() {
+            const container = document.getElementById('playlistContainer');
+            container.innerHTML = musicLibrary.map((song, index) => `
+                <div class="playlist-item ${index === currentSongIndex ? 'playing' : ''}" 
+                     onclick="loadSong(${index})">
+                    <div class="playlist-number">${index + 1}</div>
+                    <div class="playlist-info">
+                        <div class="playlist-title">${song.title}</div>
+                        <div class="playlist-artist">${song.artist}</div>
+                    </div>
+                    <div class="playlist-level">${song.level}</div>
+                </div>
+            `).join('');
+        }
+
+        // Update playlist highlighting
+        function updatePlaylist() {
+            document.querySelectorAll('.playlist-item').forEach((item, index) => {
+                if (index === currentSongIndex) {
+                    item.classList.add('playing');
+                } else {
+                    item.classList.remove('playing');
+                }
+            });
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
+

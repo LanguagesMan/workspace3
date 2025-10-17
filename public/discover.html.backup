@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Discover - Langflix</title>
+
+    <!-- Mobile-First CSS Framework -->
+    <link rel="stylesheet" href="/css/mobile-first-framework.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #121212;
+            --bg-card: #1a1a1a;
+            --bg-hover: #252525;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --text-tertiary: #666666;
+            --accent: #1ed760;
+            --accent-hover: #1fdf64;
+            --border: rgba(255, 255, 255, 0.1);
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header.scrolled {
+            background: rgba(10, 10, 10, 1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .level-badge {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #1ed760, #1fdf64);
+            border-radius: 20px;
+            font-size: 14px; /* Minimum 14px for readability */
+            font-weight: 700;
+            color: #000;
+            cursor: pointer;
+            transition: transform 0.2s;
+            min-height: 44px; /* Mobile tap target */
+        }
+
+        .level-badge:hover {
+            transform: scale(1.05);
+        }
+
+        /* Filters */
+        .filters {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            z-index: 999;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: none;
+        }
+
+        .filters::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-chips {
+            display: inline-flex;
+            gap: 12px;
+        }
+
+        .chip {
+            padding: 8px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            min-height: 44px; /* Mobile tap target */
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .chip:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .chip.active {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 148px 24px 100px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        /* Article Card */
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-badges {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(10px);
+        }
+
+        .badge-level {
+            background: rgba(30, 215, 96, 0.9);
+            color: #000;
+        }
+
+        .badge-category {
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-summary {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: var(--text-tertiary);
+            margin-bottom: 16px;
+        }
+
+        .card-actions {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn:hover {
+            background: var(--bg-hover);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        /* Reader Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-header {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .modal-content {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 48px 24px 100px;
+        }
+
+        .modal-title {
+            font-size: 36px;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 24px;
+        }
+
+        .modal-meta {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-text {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        .modal-text p {
+            margin-bottom: 24px;
+        }
+
+        /* Clickable Words */
+        .word {
+            cursor: pointer;
+            padding: 2px 4px;
+            margin: 0 2px;
+            border-radius: 4px;
+            transition: all 0.15s ease;
+            position: relative;
+        }
+
+        .word:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
+        /* Translation Tooltip */
+        .tooltip {
+            position: fixed;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            min-width: 280px;
+            max-width: 320px;
+        }
+
+        .tooltip.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .tooltip-word {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .tooltip-translation {
+            font-size: 17px;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        .tooltip-actions {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 8px;
+        }
+
+        .tooltip-btn {
+            padding: 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tooltip-btn:hover {
+            background: var(--bg-hover);
+        }
+
+        .tooltip-btn.primary {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        /* Stats Bar */
+        .stats {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            z-index: 1000;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .stat-icon {
+            font-size: 20px;
+        }
+
+        .stat-value {
+            font-weight: 800;
+            color: var(--accent);
+            font-size: 18px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-tertiary);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 148px 16px 100px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .modal-title {
+                font-size: 28px;
+            }
+
+            .modal-text {
+                font-size: 16px;
+            }
+
+            .stats {
+                gap: 24px;
+            }
+
+            .stat-label {
+                display: none;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.05s; }
+        .card:nth-child(2) { animation-delay: 0.1s; }
+        .card:nth-child(3) { animation-delay: 0.15s; }
+        .card:nth-child(4) { animation-delay: 0.2s; }
+        .card:nth-child(5) { animation-delay: 0.25s; }
+        .card:nth-child(6) { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header" id="header">
+        <div class="logo">
+            <span>📰</span>
+            <span>Discover</span>
+        </div>
+        <div class="level-badge" onclick="changeLevel()">
+            <span id="levelText">B1</span>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+        <div class="filter-chips">
+            <button class="chip active" data-filter="all">All</button>
+            <button class="chip" data-filter="technology">💻 Tech</button>
+            <button class="chip" data-filter="culture">🎭 Culture</button>
+            <button class="chip" data-filter="sports">⚽ Sports</button>
+            <button class="chip" data-filter="food">🍽️ Food</button>
+            <button class="chip" data-filter="travel">✈️ Travel</button>
+            <button class="chip" data-filter="science">🔬 Science</button>
+        </div>
+    </div>
+
+    <!-- Container -->
+    <div class="container">
+        <div class="grid" id="grid">
+            <div class="loading">
+                <div class="spinner"></div>
+                <div>Loading articles...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reader Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-header">
+            <button class="btn" onclick="closeModal()">← Back</button>
+            <div style="display: flex; gap: 12px;">
+                <button class="btn" onclick="speakArticle()">🔊 Listen</button>
+                <button class="btn" onclick="saveArticle()">💾 Save</button>
+            </div>
+        </div>
+        <div class="modal-content" id="modalContent"></div>
+    </div>
+
+    <!-- Tooltip -->
+    <div class="tooltip" id="tooltip">
+        <div class="tooltip-word" id="tooltipWord"></div>
+        <div class="tooltip-translation" id="tooltipTranslation"></div>
+        <div class="tooltip-actions">
+            <button class="tooltip-btn primary" onclick="saveWord()">💾 Save</button>
+            <button class="tooltip-btn" onclick="speakWord()">🔊</button>
+            <button class="tooltip-btn" onclick="closeTooltip()">✕</button>
+        </div>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="stats">
+        <div class="stat">
+            <span class="stat-icon">📚</span>
+            <span class="stat-value" id="articlesRead">0</span>
+            <span class="stat-label">read</span>
+        </div>
+        <div class="stat">
+            <span class="stat-icon">📝</span>
+            <span class="stat-value" id="wordsLearned">0</span>
+            <span class="stat-label">words</span>
+        </div>
+        <div class="stat">
+            <span class="stat-icon">🔥</span>
+            <span class="stat-value" id="streak">0</span>
+            <span class="stat-label">streak</span>
+        </div>
+    </div>
+
+    <script>
+        // State
+        const state = {
+            articles: [],
+            currentArticle: null,
+            currentWord: null,
+            filter: 'all',
+            stats: {
+                articlesRead: parseInt(localStorage.getItem('articlesRead') || '0'),
+                wordsLearned: parseInt(localStorage.getItem('wordsLearned') || '0'),
+                streak: parseInt(localStorage.getItem('streak') || '0')
+            }
+        };
+
+        // Initialize
+        async function init() {
+            updateStats();
+            await loadArticles();
+            setupFilters();
+            setupScroll();
+            setupKeyboard();
+        }
+
+        // Setup Filters
+        function setupFilters() {
+            document.querySelectorAll('.chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    state.filter = chip.dataset.filter;
+                    renderArticles();
+                });
+            });
+        }
+
+        // Setup Scroll
+        function setupScroll() {
+            let lastScroll = 0;
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                const header = document.getElementById('header');
+                
+                if (currentScroll > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+                
+                lastScroll = currentScroll;
+            });
+        }
+
+        // Setup Keyboard
+        function setupKeyboard() {
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeModal();
+                    closeTooltip();
+                }
+            });
+        }
+
+        // Load Articles
+        async function loadArticles() {
+            try {
+                const response = await fetch('/api/articles/personalized?userId=user123&level=B1&limit=20');
+                const data = await response.json();
+                
+                if (data.articles && data.articles.length > 0) {
+                    state.articles = data.articles;
+                } else {
+                    state.articles = getMockArticles();
+                }
+            } catch (error) {
+                state.articles = getMockArticles();
+            }
+            
+            renderArticles();
+        }
+
+        // Render Articles
+        function renderArticles() {
+            const grid = document.getElementById('grid');
+            const filtered = state.filter === 'all' 
+                ? state.articles 
+                : state.articles.filter(a => a.category.toLowerCase() === state.filter);
+            
+            grid.innerHTML = filtered.map((article, index) => `
+                <div class="card" onclick="openModal(${state.articles.indexOf(article)})">
+                    <div class="card-image">
+                        ${article.imageUrl ? `<img src="${article.imageUrl}" alt="${article.title}">` : ''}
+                        <div class="card-badges">
+                            <span class="badge badge-level">${article.difficulty || 'B1'}</span>
+                            <span class="badge badge-category">${article.category}</span>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">${article.title}</h3>
+                        <p class="card-summary">${article.summary || article.content.substring(0, 120) + '...'}</p>
+                        <div class="card-meta">
+                            <span>⏱️ ${article.readingTime || 3} min read</span>
+                            <span>📅 ${getTimeAgo(article.date || new Date())}</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-primary" onclick="event.stopPropagation(); openModal(${state.articles.indexOf(article)})">
+                                📖 Read
+                            </button>
+                            <button class="btn" onclick="event.stopPropagation(); playAudio(${state.articles.indexOf(article)})">
+                                🔊
+                            </button>
+                            <button class="btn" onclick="event.stopPropagation(); saveArticle(${state.articles.indexOf(article)})">
+                                💾
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Open Modal
+        function openModal(index) {
+            const article = state.articles[index];
+            state.currentArticle = article;
+            
+            const content = document.getElementById('modalContent');
+            content.innerHTML = `
+                <h1 class="modal-title">${article.title}</h1>
+                <div class="modal-meta">
+                    <span class="badge badge-level">${article.difficulty || 'B1'}</span>
+                    <span class="badge badge-category">${article.category}</span>
+                    <span class="badge badge-category">⏱️ ${article.readingTime || 3} min</span>
+                </div>
+                <div class="modal-text">
+                    ${makeWordsClickable(article.content)}
+                </div>
+            `;
+            
+            document.getElementById('modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            state.stats.articlesRead++;
+            localStorage.setItem('articlesRead', state.stats.articlesRead);
+            updateStats();
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Make Words Clickable
+        function makeWordsClickable(text) {
+            const sentences = text.split(/([.!?]\s+)/);
+            return sentences.map(sentence => {
+                if (sentence.match(/^[.!?]\s+$/)) return sentence;
+                
+                const words = sentence.split(/(\s+|[.,!?;:—\-"«»])/);
+                return '<p>' + words.map(word => {
+                    if (word.match(/^[a-záéíóúñüA-ZÁÉÍÓÚÑÜ]+$/i)) {
+                        return `<span class="word" onclick="showTranslation(event, '${word.toLowerCase()}')">${word}</span>`;
+                    }
+                    return word;
+                }).join('') + '</p>';
+            }).join('');
+        }
+
+        // Show Translation
+        async function showTranslation(event, word) {
+            const tooltip = document.getElementById('tooltip');
+            state.currentWord = word;
+            
+            const translation = await translateWord(word);
+            
+            document.getElementById('tooltipWord').textContent = word;
+            document.getElementById('tooltipTranslation').textContent = translation;
+            
+            const rect = event.target.getBoundingClientRect();
+            const tooltipWidth = 300;
+            const left = Math.min(rect.left, window.innerWidth - tooltipWidth - 20);
+            const top = rect.bottom + window.scrollY + 10;
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+            tooltip.classList.add('active');
+        }
+
+        function closeTooltip() {
+            document.getElementById('tooltip').classList.remove('active');
+        }
+
+        // Translate Word
+        async function translateWord(word) {
+            try {
+                const response = await fetch(`/api/translate/word?word=${encodeURIComponent(word)}&targetLang=en`);
+                const data = await response.json();
+                return data.translation || getOfflineTranslation(word);
+            } catch (error) {
+                return getOfflineTranslation(word);
+            }
+        }
+
+        function getOfflineTranslation(word) {
+            const dict = {
+                'hola':'hello','mundo':'world','español':'Spanish','artículo':'article','tecnología':'technology',
+                'cultura':'culture','deporte':'sport','comida':'food','viaje':'travel','ciencia':'science',
+                'importante':'important','nuevo':'new','grande':'big','pequeño':'small','bueno':'good',
+                'malo':'bad','casa':'house','tiempo':'time','persona':'person','día':'day','año':'year',
+                'vida':'life','trabajo':'work','familia':'family','amigo':'friend','escuela':'school',
+                'ciudad':'city','país':'country','el':'the','la':'the','un':'a','una':'a','de':'of',
+                'en':'in','que':'that','y':'and','es':'is','por':'for','con':'with','no':'no',
+                'se':'itself','los':'the','las':'the','del':'of the','al':'to the','muy':'very',
+                'más':'more','bien':'well','hacer':'to do','poder':'to be able','tener':'to have',
+                'estar':'to be','ver':'to see','dar':'to give','saber':'to know','querer':'to want',
+                'ir':'to go','venir':'to come','decir':'to say','hay':'there is','también':'also'
+            };
+            return dict[word] || '(translation)';
+        }
+
+        // Save Word
+        function saveWord() {
+            if (!state.currentWord) return;
+            
+            const translation = document.getElementById('tooltipTranslation').textContent;
+            const saved = JSON.parse(localStorage.getItem('savedWords') || '[]');
+            
+            if (!saved.find(w => w.word === state.currentWord)) {
+                saved.push({ word: state.currentWord, translation, date: new Date() });
+                localStorage.setItem('savedWords', JSON.stringify(saved));
+                
+                state.stats.wordsLearned++;
+                localStorage.setItem('wordsLearned', state.stats.wordsLearned);
+                updateStats();
+            }
+            
+            closeTooltip();
+            showNotification(`✅ Saved "${state.currentWord}"`);
+        }
+
+        // Speak Word
+        function speakWord() {
+            if (!state.currentWord) return;
+            const utterance = new SpeechSynthesisUtterance(state.currentWord);
+            utterance.lang = 'es-ES';
+            utterance.rate = 0.8;
+            speechSynthesis.speak(utterance);
+        }
+
+        // Play Audio
+        function playAudio(index) {
+            const article = state.articles[index];
+            const utterance = new SpeechSynthesisUtterance(article.content);
+            utterance.lang = 'es-ES';
+            utterance.rate = 0.9;
+            speechSynthesis.speak(utterance);
+        }
+
+        // Speak Article
+        function speakArticle() {
+            if (!state.currentArticle) return;
+            const utterance = new SpeechSynthesisUtterance(state.currentArticle.content);
+            utterance.lang = 'es-ES';
+            utterance.rate = 0.9;
+            speechSynthesis.speak(utterance);
+        }
+
+        // Save Article
+        function saveArticle(index) {
+            const article = typeof index === 'number' ? state.articles[index] : state.currentArticle;
+            showNotification('✅ Article saved!');
+        }
+
+        // Update Stats
+        function updateStats() {
+            document.getElementById('articlesRead').textContent = state.stats.articlesRead;
+            document.getElementById('wordsLearned').textContent = state.stats.wordsLearned;
+            document.getElementById('streak').textContent = state.stats.streak;
+        }
+
+        // Change Level
+        function changeLevel() {
+            const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+            const current = document.getElementById('levelText').textContent;
+            const currentIndex = levels.indexOf(current);
+            const next = levels[(currentIndex + 1) % levels.length];
+            document.getElementById('levelText').textContent = next;
+            localStorage.setItem('userLevel', next);
+            loadArticles();
+        }
+
+        // Get Time Ago
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+            if (seconds < 60) return 'just now';
+            if (seconds < 3600) return Math.floor(seconds / 60) + 'm ago';
+            if (seconds < 86400) return Math.floor(seconds / 3600) + 'h ago';
+            return Math.floor(seconds / 86400) + 'd ago';
+        }
+
+        // Show Notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 24px;
+                background: var(--accent);
+                color: #000;
+                padding: 16px 24px;
+                border-radius: 12px;
+                font-weight: 700;
+                z-index: 9999;
+                animation: slideIn 0.3s ease;
+            `;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        // Get Mock Articles
+        function getMockArticles() {
+            return [
+                {
+                    id:'1',title:'La inteligencia artificial revoluciona la educación',
+                    summary:'Los sistemas de IA están transformando cómo aprendemos y enseñamos. Personalización y eficiencia son las claves del futuro educativo.',
+                    content:'La inteligencia artificial está cambiando la educación. Los estudiantes pueden aprender a su propio ritmo. Los profesores tienen más tiempo para ayudar. La tecnología hace el aprendizaje más personal. Cada estudiante recibe contenido adaptado a su nivel. Los resultados mejoran significativamente con estas herramientas.',
+                    category:'Technology',difficulty:'B1',readingTime:4,date:new Date(Date.now() - 3600000)
+                },
+                {
+                    id:'2',title:'Descubren nueva especie de mamífero en la Amazonía',
+                    summary:'Científicos brasileños encuentran un pequeño primate que vive en las copas de los árboles más altos de la selva amazónica.',
+                    content:'Un nuevo primate fue descubierto en Brasil. El animal vive en árboles muy altos. Es muy pequeño y difícil de ver. Los científicos están muy emocionados. Este descubrimiento es muy importante. Muestra que hay mucho por conocer en la naturaleza.',
+                    category:'Science',difficulty:'A2',readingTime:3,date:new Date(Date.now() - 7200000)
+                },
+                {
+                    id:'3',title:'El flamenco español conquista escenarios internacionales',
+                    summary:'Bailaores y cantaores llevan el arte flamenco a los teatros más prestigiosos del mundo, manteniendo viva la tradición andaluza.',
+                    content:'El flamenco es un arte tradicional español. Los bailaores practican muchos años. La música es muy emotiva y poderosa. El flamenco se presenta en todo el mundo. La gente aprecia esta forma de expresión. Es parte importante de la cultura española.',
+                    category:'Culture',difficulty:'B1',readingTime:5,date:new Date(Date.now() - 10800000)
+                },
+                {
+                    id:'4',title:'Lionel Messi marca tres goles en victoria histórica',
+                    summary:'El astro argentino brilla en la final del campeonato con una actuación memorable que deja sin palabras a los aficionados.',
+                    content:'Messi jugó un partido increíble ayer. Marcó tres goles espectaculares. Su equipo ganó el campeonato. Los fanáticos celebraron toda la noche. Messi es considerado el mejor jugador. Su talento es reconocido en todo el mundo.',
+                    category:'Sports',difficulty:'A2',readingTime:3,date:new Date(Date.now() - 14400000)
+                },
+                {
+                    id:'5',title:'La dieta mediterránea reduce el riesgo de enfermedades',
+                    summary:'Estudios demuestran que aceite de oliva, pescado y vegetales frescos mejoran significativamente la salud cardiovascular.',
+                    content:'La dieta mediterránea es muy saludable. Incluye muchas frutas y verduras frescas. El aceite de oliva es fundamental. El pescado proporciona proteínas importantes. Esta dieta reduce muchas enfermedades. Los médicos la recomiendan ampliamente.',
+                    category:'Food',difficulty:'B1',readingTime:4,date:new Date(Date.now() - 18000000)
+                },
+                {
+                    id:'6',title:'Barcelona se convierte en el destino más visitado de Europa',
+                    summary:'La ciudad catalana recibe millones de turistas atraídos por su arquitectura única, playas y vibrante vida cultural.',
+                    content:'Barcelona es una ciudad hermosa. Tiene arquitectura muy especial. Las playas atraen muchos visitantes. La comida catalana es deliciosa. Hay museos y parques increíbles. Es perfecta para unas vacaciones memorables.',
+                    category:'Travel',difficulty:'A2',readingTime:3,date:new Date(Date.now() - 21600000)
+                }
+            ];
+        }
+
+        // Click outside to close
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.word') && !e.target.closest('.tooltip')) {
+                closeTooltip();
+            }
+        });
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>
+

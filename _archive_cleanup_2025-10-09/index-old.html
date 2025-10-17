@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🌍 VIDA - Learn Spanish Naturally</title>
+    <script>
+        // TikTok-style: Show vertical reels IMMEDIATELY - no menus first
+        window.location.href = '/tiktok-videos.html';
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-icon {
+            font-size: 80px;
+            margin-bottom: 16px;
+        }
+
+        .logo-text {
+            font-size: 48px;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .tagline {
+            font-size: 16px;
+            color: rgba(255,255,255,0.9);
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .nav-cards {
+            display: grid;
+            gap: 16px;
+        }
+
+        .nav-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            text-decoration: none;
+            color: #000;
+        }
+
+        .nav-card:active {
+            transform: scale(0.98);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .card-icon {
+            font-size: 40px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1a1a1a;
+        }
+
+        .card-description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .card-badge {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 12px;
+            text-transform: uppercase;
+        }
+
+        .card-badge.new {
+            background: #ff0050;
+        }
+
+        .stats {
+            text-align: center;
+            margin-top: 40px;
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+        }
+
+        .streak-widget {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 12px 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .streak-emoji {
+            font-size: 24px;
+        }
+        /* Screen reader only h1 for accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="sr-only">VIDA - Learn Spanish Naturally Through Immersive Content</h1>
+
+    <!-- Streak Widget -->
+    <div class="streak-widget" role="complementary" aria-label="Learning streak tracker">
+        <span class="streak-emoji" aria-hidden="true">🔥</span>
+        <span id="streakText">0 day streak</span>
+    </div>
+
+    <main class="container" role="main">
+        <div class="logo">
+            <div class="logo-icon">🌍</div>
+            <div class="logo-text">VIDA</div>
+        </div>
+
+        <div class="tagline">
+            Learn Spanish naturally through immersive content
+        </div>
+
+        <div class="nav-cards">
+            <a href="/tiktok-videos.html" class="nav-card">
+                <div class="card-header">
+                    <div class="card-icon">🎬</div>
+                    <div>
+                        <div class="card-title">Videos</div>
+                        <span class="card-badge new">TikTok</span>
+                    </div>
+                </div>
+                <div class="card-description">
+                    Full-screen vertical videos with word-by-word captions. Tap words to learn, swipe to next!
+                </div>
+            </a>
+
+            <a href="/stories.html" class="nav-card">
+                <div class="card-header">
+                    <div class="card-icon">📖</div>
+                    <div>
+                        <div class="card-title">Stories</div>
+                        <span class="card-badge new">NEW</span>
+                    </div>
+                </div>
+                <div class="card-description">
+                    Instagram-style stories about Spanish culture - tap to navigate, click words to learn!
+                </div>
+            </a>
+
+            <a href="/unified-infinite-feed.html" class="nav-card">
+                <div class="card-header">
+                    <div class="card-icon">📰</div>
+                    <div class="card-title">Articles</div>
+                </div>
+                <div class="card-description">
+                    Instagram-style infinite scroll of Spanish articles with smart difficulty targeting
+                </div>
+            </a>
+
+            <a href="/apple-feed.html" class="nav-card">
+                <div class="card-header">
+                    <div class="card-icon">🌟</div>
+                    <div class="card-title">All Content</div>
+                </div>
+                <div class="card-description">
+                    Mixed feed - videos, articles, and interactive content all in one place
+                </div>
+            </a>
+        </div>
+
+        <div class="stats">
+            <div id="stats">Loading your progress...</div>
+        </div>
+    </main>
+
+    <script>
+        // Load streak data and initialize if needed
+        function loadStreakData() {
+            const today = new Date().toDateString();
+            const streakData = JSON.parse(localStorage.getItem('learningStreak') || '{}');
+
+            // Initialize if first time
+            if (!streakData.lastActiveDate) {
+                streakData.streak = 0;
+                streakData.lastActiveDate = today;
+                streakData.dailyGoal = 5;
+                streakData.todayVideos = 0;
+                localStorage.setItem('learningStreak', JSON.stringify(streakData));
+            }
+
+            // Check if streak broke or new day
+            const lastDate = new Date(streakData.lastActiveDate);
+            const todayDate = new Date(today);
+            const daysDiff = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+
+            if (daysDiff > 1) {
+                // Streak broken!
+                streakData.streak = 0;
+                streakData.todayVideos = 0;
+            } else if (daysDiff === 1) {
+                // New day, reset daily counter but keep streak
+                streakData.todayVideos = 0;
+            }
+
+            streakData.lastActiveDate = today;
+            localStorage.setItem('learningStreak', JSON.stringify(streakData));
+
+            const streak = streakData.streak || 0;
+            const todayVideos = streakData.todayVideos || 0;
+
+            document.getElementById('streakText').textContent = `${streak} day streak`;
+            document.getElementById('stats').textContent = `${todayVideos} videos watched today · Keep going!`;
+
+            console.log('🌍 VIDA Home loaded - Streak:', streak, 'Videos today:', todayVideos);
+        }
+
+        loadStreakData();
+    </script>
+</body>
+</html>

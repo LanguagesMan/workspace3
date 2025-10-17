@@ -1,0 +1,18 @@
+{
+  "generated": "2025-10-01T03:08:29.510Z",
+  "totalItems": 6,
+  "difficulties": {
+    "beginner": 4,
+    "intermediate": 2
+  },
+  "types": {
+    "comedy": 6
+  },
+  "characters": [
+    "GLOBO",
+    "Marco",
+    "Sofia"
+  ],
+  "theme": "Spanish learning through absurd comedy",
+  "contentDir": "/Users/mindful/Workspace3/public/content"
+}

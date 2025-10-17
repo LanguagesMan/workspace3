@@ -1,0 +1,62 @@
+import { chromium } from 'playwright';
+
+async function captureScreenshot() {
+  const browser = await chromium.launch({
+    headless: true,
+    timeout: 30000
+  });
+  const context = await browser.newContext();
+  const page = await context.newPage();
+
+  try {
+    // Navigate to the server
+    await page.goto('http://localhost:3001', {
+      waitUntil: 'networkidle',
+      timeout: 30000
+    });
+
+    // Wait for content to load
+    await page.waitForSelector('[data-testid="app-root"]', { timeout: 10000 });
+
+    // Take screenshot
+    await page.screenshot({
+      path: 'tests/screenshots/ai-feed-homepage.png',
+      fullPage: true
+    });
+
+    // Take specific screenshot of Spanish feed section
+    const spanishSection = await page.locator('.spanish-feed-section');
+    if (await spanishSection.count() > 0) {
+      await spanishSection.screenshot({
+        path: 'tests/screenshots/spanish-feed-section.png'
+      });
+    }
+
+    // Check for key elements
+    const title = await page.textContent('h1');
+    const concepts = await page.locator('.concept').count();
+    const spanishConcepts = await page.locator('.spanish-concept').count();
+
+    console.log('✅ Screenshot captured successfully');
+    console.log(`📊 Page title: ${title}`);
+    console.log(`🎬 Concepts generated: ${concepts}`);
+    console.log(`🇪🇸 Spanish recommendations: ${spanishConcepts}`);
+
+    // Verify no error messages
+    const errorMessages = await page.locator('.error').count();
+    if (errorMessages > 0) {
+      throw new Error('Error messages found on page');
+    }
+
+  } catch (error) {
+    console.error(`❌ Screenshot test FAILED: ${error.message}`);
+    await context.close();
+    await browser.close();
+    process.exit(1);
+  } finally {
+    await context.close();
+    await browser.close();
+  }
+}
+
+captureScreenshot();

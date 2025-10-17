@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onboarding Tour Component</title>
+    <style>
+        /* Onboarding Overlay */
+        .onboarding-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .onboarding-overlay.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Onboarding Card */
+        .onboarding-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 24px;
+            padding: 40px 32px;
+            max-width: 90%;
+            width: 400px;
+            text-align: center;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .onboarding-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 1s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .onboarding-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .onboarding-description {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        .onboarding-progress {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .progress-dot.active {
+            background: white;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        .onboarding-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .onboarding-btn {
+            padding: 16px 32px;
+            border-radius: 12px;
+            border: none;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex: 1;
+            max-width: 150px;
+        }
+
+        .onboarding-btn-primary {
+            background: white;
+            color: #667eea;
+        }
+
+        .onboarding-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.3);
+        }
+
+        .onboarding-btn-skip {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .onboarding-btn-skip:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Goal Selection */
+        .goal-selection {
+            display: none;
+        }
+
+        .goal-selection.show {
+            display: block;
+        }
+
+        .goal-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .goal-option {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .goal-option:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .goal-option.selected {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: white;
+        }
+
+        .goal-option-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .goal-option-desc {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .goal-emoji {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+    </style>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <!-- Onboarding Overlay -->
+    <div class="onboarding-overlay" id="onboardingOverlay">
+        <!-- Step 1: Welcome -->
+        <div class="onboarding-card" id="onboardingStep1" style="display: block;">
+            <div class="onboarding-icon">👋</div>
+            <h2 class="onboarding-title">Welcome to Langflix!</h2>
+            <p class="onboarding-description">
+                Learn Spanish through viral videos, AI-powered news, and fun games.
+                Let's get you started!
+            </p>
+            <div class="onboarding-progress">
+                <div class="progress-dot active"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+            </div>
+            <div class="onboarding-actions">
+                <button class="onboarding-btn onboarding-btn-skip" onclick="skipOnboarding()">Skip</button>
+                <button class="onboarding-btn onboarding-btn-primary" onclick="nextStep(1)">Let's Go!</button>
+            </div>
+        </div>
+
+        <!-- Step 2: Swipe Videos -->
+        <div class="onboarding-card" id="onboardingStep2" style="display: none;">
+            <div class="onboarding-icon">📱</div>
+            <h2 class="onboarding-title">Swipe to Learn</h2>
+            <p class="onboarding-description">
+                Watch viral Spanish videos like TikTok.
+                Swipe up for next video, tap to pause.
+            </p>
+            <div class="onboarding-progress">
+                <div class="progress-dot"></div>
+                <div class="progress-dot active"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+            </div>
+            <div class="onboarding-actions">
+                <button class="onboarding-btn onboarding-btn-skip" onclick="skipOnboarding()">Skip</button>
+                <button class="onboarding-btn onboarding-btn-primary" onclick="nextStep(2)">Got it!</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Click Words -->
+        <div class="onboarding-card" id="onboardingStep3" style="display: none;">
+            <div class="onboarding-icon">👆</div>
+            <h2 class="onboarding-title">Tap Any Word</h2>
+            <p class="onboarding-description">
+                See a word you don't know? Just tap it!
+                Get instant translations and save to your vocabulary.
+            </p>
+            <div class="onboarding-progress">
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot active"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+            </div>
+            <div class="onboarding-actions">
+                <button class="onboarding-btn onboarding-btn-skip" onclick="skipOnboarding()">Skip</button>
+                <button class="onboarding-btn onboarding-btn-primary" onclick="nextStep(3)">Nice!</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Track Progress -->
+        <div class="onboarding-card" id="onboardingStep4" style="display: none;">
+            <div class="onboarding-icon">🔥</div>
+            <h2 class="onboarding-title">Build Your Streak</h2>
+            <p class="onboarding-description">
+                Practice daily to build your streak!
+                Track words learned, videos watched, and level up.
+            </p>
+            <div class="onboarding-progress">
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot active"></div>
+                <div class="progress-dot"></div>
+            </div>
+            <div class="onboarding-actions">
+                <button class="onboarding-btn onboarding-btn-skip" onclick="skipOnboarding()">Skip</button>
+                <button class="onboarding-btn onboarding-btn-primary" onclick="nextStep(4)">Awesome!</button>
+            </div>
+        </div>
+
+        <!-- Step 5: Set Daily Goal -->
+        <div class="onboarding-card goal-selection" id="onboardingStep5" style="display: none;">
+            <div class="onboarding-icon">🎯</div>
+            <h2 class="onboarding-title">Set Your Daily Goal</h2>
+            <p class="onboarding-description">
+                How much time do you have each day?
+            </p>
+            <div class="goal-options">
+                <div class="goal-option" onclick="selectGoal(5)">
+                    <div class="goal-emoji">☕</div>
+                    <div class="goal-option-title">5 minutes</div>
+                    <div class="goal-option-desc">Casual - Perfect for coffee breaks</div>
+                </div>
+                <div class="goal-option selected" onclick="selectGoal(10)">
+                    <div class="goal-emoji">⚡</div>
+                    <div class="goal-option-title">10 minutes</div>
+                    <div class="goal-option-desc">Regular - Great for daily practice</div>
+                </div>
+                <div class="goal-option" onclick="selectGoal(15)">
+                    <div class="goal-emoji">🚀</div>
+                    <div class="goal-option-title">15 minutes</div>
+                    <div class="goal-option-desc">Serious - Fast progress</div>
+                </div>
+                <div class="goal-option" onclick="selectGoal(20)">
+                    <div class="goal-emoji">🔥</div>
+                    <div class="goal-option-title">20+ minutes</div>
+                    <div class="goal-option-desc">Intense - Fluency focused</div>
+                </div>
+            </div>
+            <div class="onboarding-progress">
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot active"></div>
+            </div>
+            <div class="onboarding-actions">
+                <button class="onboarding-btn onboarding-btn-primary" style="max-width: 100%;" onclick="finishOnboarding()">
+                    Start Learning! 🎉
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedDailyGoal = 10; // Default
+
+        function nextStep(currentStep) {
+            // Hide current step
+            document.getElementById(`onboardingStep${currentStep}`).style.display = 'none';
+            
+            // Show next step
+            const nextStepNum = currentStep + 1;
+            const nextElement = document.getElementById(`onboardingStep${nextStepNum}`);
+            if (nextElement) {
+                nextElement.style.display = 'block';
+            }
+        }
+
+        function selectGoal(minutes) {
+            selectedDailyGoal = minutes;
+            
+            // Update UI
+            document.querySelectorAll('.goal-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.target.closest('.goal-option').classList.add('selected');
+        }
+
+        function finishOnboarding() {
+            // Save onboarding completion
+            localStorage.setItem('onboardingComplete', 'true');
+            localStorage.setItem('dailyGoalMinutes', selectedDailyGoal);
+            localStorage.setItem('onboardingDate', new Date().toISOString());
+            
+            // Hide overlay
+            document.getElementById('onboardingOverlay').classList.remove('show');
+            
+            // Show celebration
+            showCelebration();
+        }
+
+        function skipOnboarding() {
+            if (confirm('Are you sure you want to skip the tour?')) {
+                localStorage.setItem('onboardingComplete', 'true');
+                localStorage.setItem('dailyGoalMinutes', 10); // Default
+                document.getElementById('onboardingOverlay').classList.remove('show');
+            }
+        }
+
+        function showCelebration() {
+            // Create confetti effect or celebration message
+            console.log('🎉 Onboarding complete! Daily goal:', selectedDailyGoal, 'minutes');
+            
+            // Reload page to show main app
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
+        }
+
+        // Show onboarding on first visit
+        function initOnboarding() {
+            const onboardingComplete = localStorage.getItem('onboardingComplete');
+            
+            if (!onboardingComplete) {
+                setTimeout(() => {
+                    document.getElementById('onboardingOverlay').classList.add('show');
+                }, 500); // Small delay for better UX
+            }
+        }
+
+        // Initialize when included
+        if (typeof window !== 'undefined') {
+            initOnboarding();
+        }
+    </script>
+</body>
+</html>

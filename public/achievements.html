@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🏆 Achievements - VIDA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        :root {
+            --silver: #e8e8ed;
+            --silver-light: #f5f5f7;
+            --blue: #007AFF;
+            --purple: #AF52DE;
+            --green: #34C759;
+            --orange: #FF9500;
+            --pink: #FF2D55;
+            --gold: #FFD700;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-gold: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            --gradient-silver: linear-gradient(135deg, #C0C0C0 0%, #808080 100%);
+            --gradient-bronze: linear-gradient(135deg, #CD7F32 0%, #8B4513 100%);
+            --text-primary: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --radius-lg: 24px;
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: var(--silver-light);
+            color: var(--text-primary);
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            padding: 16px 20px;
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-button {
+            background: var(--silver);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            transform: scale(1.05);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+
+        /* USER STATS CARD */
+        .user-stats {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-stats::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--gradient-gold);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 48px;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        .xp-bar {
+            background: var(--silver);
+            border-radius: 12px;
+            height: 12px;
+            margin-top: 16px;
+            overflow: hidden;
+        }
+
+        .xp-fill {
+            background: var(--gradient-gold);
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 12px;
+        }
+
+        .xp-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        /* STREAK CARD */
+        .streak-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .streak-icon {
+            font-size: 64px;
+            animation: flame 2s ease-in-out infinite;
+        }
+
+        @keyframes flame {
+            0%, 100% { transform: scale(1) rotate(-5deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .streak-info h2 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .streak-info p {
+            color: var(--text-secondary);
+        }
+
+        /* ACHIEVEMENTS GRID */
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .achievement-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+        }
+
+        .achievement-card.unlocked::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .achievement-card.unlocked.bronze::before {
+            background: var(--gradient-bronze);
+        }
+
+        .achievement-card.unlocked.silver::before {
+            background: var(--gradient-silver);
+        }
+
+        .achievement-card.unlocked.gold::before {
+            background: var(--gradient-gold);
+        }
+
+        .achievement-card.locked {
+            opacity: 0.4;
+        }
+
+        .achievement-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .achievement-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .achievement-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .achievement-xp {
+            display: inline-block;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .achievement-date {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        /* DAILY GOAL */
+        .daily-goal-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .goal-progress {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .goal-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .goal-bar {
+            flex: 1;
+            background: var(--silver);
+            border-radius: 8px;
+            height: 8px;
+            margin: 0 16px;
+            overflow: hidden;
+        }
+
+        .goal-bar-fill {
+            background: var(--gradient-primary);
+            height: 100%;
+            border-radius: 8px;
+            transition: width 0.5s ease;
+        }
+
+        .goal-item.completed .goal-bar-fill {
+            background: var(--green);
+        }
+
+        /* LOADING */
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--silver);
+            border-top-color: var(--purple);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .achievements-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .streak-card {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">🏆 ACHIEVEMENTS</div>
+            <button class="back-button" onclick="window.location.href='/apple-feed.html'">← Back to Feed</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- USER STATS -->
+        <div class="user-stats">
+            <h2 style="text-align: center; font-size: 24px; margin-bottom: 8px;">Your Progress</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value" id="level">1</div>
+                    <div class="stat-label">Level</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="xp">0</div>
+                    <div class="stat-label">Total XP</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="achievementCount">0</div>
+                    <div class="stat-label">Achievements</div>
+                </div>
+            </div>
+            <div class="xp-bar">
+                <div class="xp-fill" id="xpFill"></div>
+            </div>
+            <div class="xp-text" id="xpText">0 / 100 XP to Level 2</div>
+        </div>
+
+        <!-- STREAK -->
+        <div class="streak-card">
+            <div class="streak-icon">🔥</div>
+            <div class="streak-info">
+                <h2><span id="currentStreak">0</span> Day Streak</h2>
+                <p>Longest streak: <span id="longestStreak">0</span> days</p>
+            </div>
+        </div>
+
+        <!-- DAILY GOAL -->
+        <div class="daily-goal-card">
+            <h3 style="font-size: 20px; margin-bottom: 16px;">📊 Daily Goal Progress</h3>
+            <div class="goal-progress" id="dailyGoalProgress"></div>
+        </div>
+
+        <!-- ACHIEVEMENTS -->
+        <h2 class="section-title">🎖️ Achievements</h2>
+        <div class="achievements-grid" id="achievementsGrid">
+            <div class="loading">
+                <div class="spinner"></div>
+                <div style="color: var(--text-secondary);">Loading achievements...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load user stats and achievements
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/gamification/stats');
+                const data = await response.json();
+
+                if (data.success) {
+                    const { user } = data;
+
+                    // Update stats
+                    document.getElementById('level').textContent = user.level;
+                    document.getElementById('xp').textContent = user.xp;
+                    document.getElementById('achievementCount').textContent =
+                        `${user.achievementCount}/${user.totalAchievements}`;
+
+                    // Update XP bar
+                    const xpProgress = (user.xp / user.nextLevelXP) * 100;
+                    document.getElementById('xpFill').style.width = xpProgress + '%';
+                    document.getElementById('xpText').textContent =
+                        `${user.xp} / ${user.nextLevelXP} XP to Level ${user.level + 1}`;
+
+                    // Update streak
+                    document.getElementById('currentStreak').textContent = user.streak.current;
+                    document.getElementById('longestStreak').textContent = user.streak.longest;
+
+                    // Update daily goal
+                    renderDailyGoal(user.dailyGoal);
+
+                    // Render achievements
+                    renderAchievements(user.achievements);
+                }
+            } catch (error) {
+                console.error('Failed to load stats:', error);
+            }
+        }
+
+        function renderDailyGoal(dailyGoal) {
+            const container = document.getElementById('dailyGoalProgress');
+            const { progress, goal, completed } = dailyGoal;
+
+            const goals = [
+                { name: 'Words Saved', current: progress.wordsSaved, target: goal.wordsSaved },
+                { name: 'Reviews Completed', current: progress.reviewsCompleted, target: goal.reviewsCompleted },
+                { name: 'Minutes Spent', current: progress.minutesSpent, target: goal.minutesSpent }
+            ];
+
+            container.innerHTML = goals.map(g => {
+                const percent = Math.min((g.current / g.target) * 100, 100);
+                const done = g.current >= g.target;
+                return `
+                    <div class="goal-item ${done ? 'completed' : ''}">
+                        <div style="min-width: 140px; font-weight: 600;">${g.name}</div>
+                        <div class="goal-bar">
+                            <div class="goal-bar-fill" style="width: ${percent}%"></div>
+                        </div>
+                        <div style="min-width: 60px; text-align: right;">${g.current}/${g.target}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function renderAchievements(userAchievements) {
+            const container = document.getElementById('achievementsGrid');
+
+            // Get all achievements from server
+            const response = await fetch('/api/gamification/stats');
+            const data = await response.json();
+
+            // For now, create sample achievements
+            const allAchievements = [
+                { id: 'first-word', name: 'First Steps', description: 'Save your first Spanish word', icon: '🌱', xp: 10, tier: 'bronze' },
+                { id: 'word-collector', name: 'Word Collector', description: 'Save 50 Spanish words', icon: '📚', xp: 100, tier: 'silver' },
+                { id: 'vocabulary-master', name: 'Vocabulary Master', description: 'Save 200 Spanish words', icon: '🎓', xp: 500, tier: 'gold' },
+                { id: 'streak-starter', name: 'Streak Starter', description: 'Maintain a 3-day learning streak', icon: '🔥', xp: 50, tier: 'bronze' },
+                { id: 'week-warrior', name: 'Week Warrior', description: 'Maintain a 7-day learning streak', icon: '⚡', xp: 150, tier: 'silver' },
+                { id: 'consistency-king', name: 'Consistency King', description: 'Maintain a 30-day learning streak', icon: '👑', xp: 1000, tier: 'gold' },
+                { id: 'review-rookie', name: 'Review Rookie', description: 'Complete 10 SRS reviews', icon: '🧠', xp: 50, tier: 'bronze' },
+                { id: 'review-champion', name: 'Review Champion', description: 'Complete 100 SRS reviews', icon: '💪', xp: 300, tier: 'silver' },
+                { id: 'perfect-reviewer', name: 'Perfect Reviewer', description: 'Achieve 90% accuracy in reviews', icon: '⭐', xp: 200, tier: 'gold' },
+                { id: 'article-reader', name: 'Article Reader', description: 'Generate and read 5 personalized articles', icon: '📰', xp: 100, tier: 'silver' },
+                { id: 'listening-master', name: 'Listening Master', description: 'Listen to 50 TTS audio clips', icon: '🎧', xp: 150, tier: 'silver' },
+                { id: 'early-bird', name: 'Early Bird', description: 'Learn before 9 AM', icon: '🌅', xp: 25, tier: 'bronze' },
+                { id: 'night-owl', name: 'Night Owl', description: 'Learn after 10 PM', icon: '🦉', xp: 25, tier: 'bronze' }
+            ];
+
+            container.innerHTML = allAchievements.map(achievement => {
+                const unlocked = userAchievements.some(a => a.id === achievement.id);
+                const userAch = userAchievements.find(a => a.id === achievement.id);
+
+                return `
+                    <div class="achievement-card ${unlocked ? 'unlocked' : 'locked'} ${achievement.tier}">
+                        <div class="achievement-icon">${achievement.icon}</div>
+                        <div class="achievement-name">${achievement.name}</div>
+                        <div class="achievement-description">${achievement.description}</div>
+                        <div class="achievement-xp">+${achievement.xp} XP</div>
+                        ${unlocked ? `<div class="achievement-date">Unlocked ${new Date(userAch.unlockedAt).toLocaleDateString()}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Initialize
+        loadStats();
+
+        // Update streak on page load
+        fetch('/api/gamification/update-streak', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: 'default' })
+        });
+    </script>
+</body>
+</html>

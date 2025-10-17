@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Quests & Challenges - Langflix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 8px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Quest Card */
+        .quest-card {
+            background: white;
+            color: #333;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .quest-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .quest-card.completed {
+            opacity: 0.7;
+        }
+
+        .quest-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .quest-icon {
+            font-size: 48px;
+        }
+
+        .quest-info {
+            flex: 1;
+        }
+
+        .quest-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .quest-description {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .quest-difficulty {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .quest-difficulty.easy {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .quest-difficulty.medium {
+            background: #FF9800;
+            color: white;
+        }
+
+        .quest-difficulty.hard {
+            background: #F44336;
+            color: white;
+        }
+
+        .quest-progress {
+            margin-bottom: 15px;
+        }
+
+        .progress-bar-container {
+            background: #E0E0E0;
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            font-size: 14px;
+            color: #666;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .quest-rewards {
+            display: flex;
+            gap: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #E0E0E0;
+        }
+
+        .reward {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .reward-icon {
+            font-size: 20px;
+        }
+
+        /* Challenge Card */
+        .challenge-card {
+            background: white;
+            color: #333;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .challenge-vs {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #667eea;
+        }
+
+        .challenge-players {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .player {
+            flex: 1;
+            text-align: center;
+        }
+
+        .player-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+        }
+
+        .player-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .player-score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .time-remaining {
+            text-align: center;
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 15px;
+        }
+
+        .challenge-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #E0E0E0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #D0D0D0;
+        }
+
+        /* Leaderboard */
+        .leaderboard {
+            background: white;
+            color: #333;
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .leaderboard-entry {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #F5F5F5;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .leaderboard-entry:hover {
+            background: #E8E8E8;
+            transform: translateX(5px);
+        }
+
+        .leaderboard-rank {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            min-width: 40px;
+        }
+
+        .leaderboard-rank.top1 {
+            color: #FFD700;
+        }
+
+        .leaderboard-rank.top2 {
+            color: #C0C0C0;
+        }
+
+        .leaderboard-rank.top3 {
+            color: #CD7F32;
+        }
+
+        .leaderboard-user {
+            flex: 1;
+        }
+
+        .leaderboard-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .leaderboard-stats {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .leaderboard-score {
+            font-size: 20px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        /* Stats Summary */
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .empty-state-text {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+    </style>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <div class="header">
+        <h1>🎯 Quests & Challenges</h1>
+        <p>Complete quests, compete with friends, climb the leaderboard!</p>
+    </div>
+
+    <div class="stats-summary" id="statsSummary">
+        <div class="stat-card">
+            <div class="stat-value" id="dailyQuestsCompleted">0/6</div>
+            <div class="stat-label">Daily Quests</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="weeklyQuestsCompleted">0/7</div>
+            <div class="stat-label">Weekly Challenges</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="totalXP">0</div>
+            <div class="stat-label">Total XP from Quests</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="leaderboardRank">-</div>
+            <div class="stat-label">Leaderboard Rank</div>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <button class="tab active" onclick="switchTab('daily-quests')">Daily Quests</button>
+        <button class="tab" onclick="switchTab('weekly-challenges')">Weekly Challenges</button>
+        <button class="tab" onclick="switchTab('challenges')">Challenges</button>
+        <button class="tab" onclick="switchTab('leaderboard')">Leaderboard</button>
+    </div>
+
+    <div class="tab-content active" id="daily-quests">
+        <div id="dailyQuestsList">
+            <div class="loading">Loading daily quests...</div>
+        </div>
+    </div>
+
+    <div class="tab-content" id="weekly-challenges">
+        <div id="weeklyQuestsList">
+            <div class="loading">Loading weekly challenges...</div>
+        </div>
+    </div>
+
+    <div class="tab-content" id="challenges">
+        <div id="challengesList">
+            <div class="loading">Loading challenges...</div>
+        </div>
+        <button class="btn btn-primary" onclick="createChallenge()" style="width: 100%; margin-top: 20px;">
+            ➕ Create New Challenge
+        </button>
+    </div>
+
+    <div class="tab-content" id="leaderboard">
+        <div class="leaderboard" id="leaderboardList">
+            <div class="loading">Loading leaderboard...</div>
+        </div>
+    </div>
+
+    <script>
+        const userId = localStorage.getItem('userId') || 'user_demo';
+        
+        // Tab switching
+        function switchTab(tabName) {
+            // Update tabs
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            
+            // Load data if needed
+            if (tabName === 'leaderboard') {
+                loadLeaderboard();
+            }
+        }
+
+        // Load quests
+        async function loadQuests() {
+            try {
+                const response = await fetch(`/api/agent6/quests/${userId}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayQuests(result.data);
+                    updateStatsSummary(result.data);
+                }
+            } catch (error) {
+                console.error('Error loading quests:', error);
+            }
+        }
+
+        // Display quests
+        function displayQuests(data) {
+            const dailyContainer = document.getElementById('dailyQuestsList');
+            const weeklyContainer = document.getElementById('weeklyQuestsList');
+
+            // Display daily quests
+            if (data.daily.length === 0) {
+                dailyContainer.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🎯</div><div class="empty-state-text">No daily quests available</div></div>';
+            } else {
+                dailyContainer.innerHTML = data.daily.map(quest => createQuestCard(quest, 'daily')).join('');
+            }
+
+            // Display weekly challenges
+            if (data.weekly.length === 0) {
+                weeklyContainer.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🏆</div><div class="empty-state-text">No weekly challenges available</div></div>';
+            } else {
+                weeklyContainer.innerHTML = data.weekly.map(quest => createQuestCard(quest, 'weekly')).join('');
+            }
+        }
+
+        // Create quest card HTML
+        function createQuestCard(quest, type) {
+            const completedClass = quest.completed ? 'completed' : '';
+            const checkmark = quest.completed ? '✅' : '';
+            
+            return `
+                <div class="quest-card ${completedClass}">
+                    <div class="quest-difficulty ${quest.difficulty}">${quest.difficulty}</div>
+                    <div class="quest-header">
+                        <div class="quest-icon">${quest.icon}</div>
+                        <div class="quest-info">
+                            <div class="quest-name">${quest.name} ${checkmark}</div>
+                            <div class="quest-description">${quest.description}</div>
+                        </div>
+                    </div>
+                    <div class="quest-progress">
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="width: ${quest.progressPercent}%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span>Progress: ${quest.progress}/${quest.target}</span>
+                            <span>${Math.round(quest.progressPercent)}%</span>
+                        </div>
+                    </div>
+                    <div class="quest-rewards">
+                        <div class="reward">
+                            <span class="reward-icon">⚡</span>
+                            <span>${quest.xpReward} XP</span>
+                        </div>
+                        ${quest.streakBonus ? `
+                        <div class="reward">
+                            <span class="reward-icon">🔥</span>
+                            <span>+${quest.streakBonus} Streak Bonus</span>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Update stats summary
+        function updateStatsSummary(data) {
+            document.getElementById('dailyQuestsCompleted').textContent = 
+                `${data.summary.dailyCompleted}/${data.summary.dailyTotal}`;
+            document.getElementById('weeklyQuestsCompleted').textContent = 
+                `${data.summary.weeklyCompleted}/${data.summary.weeklyTotal}`;
+            
+            // Load quest stats
+            loadQuestStats();
+        }
+
+        // Load quest stats
+        async function loadQuestStats() {
+            try {
+                const response = await fetch(`/api/agent6/quests/${userId}/stats`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('totalXP').textContent = result.data.totalXpEarned;
+                }
+            } catch (error) {
+                console.error('Error loading quest stats:', error);
+            }
+        }
+
+        // Load leaderboard
+        async function loadLeaderboard() {
+            try {
+                const response = await fetch('/api/agent6/leaderboard/weekly?limit=50');
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayLeaderboard(result.data);
+                }
+            } catch (error) {
+                console.error('Error loading leaderboard:', error);
+            }
+        }
+
+        // Display leaderboard
+        function displayLeaderboard(data) {
+            const container = document.getElementById('leaderboardList');
+            
+            if (data.rankings.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🏆</div><div class="empty-state-text">No rankings yet</div></div>';
+                return;
+            }
+
+            container.innerHTML = data.rankings.map(entry => {
+                const rankClass = entry.rank === 1 ? 'top1' : entry.rank === 2 ? 'top2' : entry.rank === 3 ? 'top3' : '';
+                
+                return `
+                    <div class="leaderboard-entry">
+                        <div class="leaderboard-rank ${rankClass}">${entry.badge || entry.rank}</div>
+                        <div class="leaderboard-user">
+                            <div class="leaderboard-name">${entry.userName || entry.userId}</div>
+                            <div class="leaderboard-stats">Active learner</div>
+                        </div>
+                        <div class="leaderboard-score">${entry.xp} XP</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Create new challenge
+        function createChallenge() {
+            alert('Challenge creation UI coming soon! Challenge your friends to learn Spanish together!');
+        }
+
+        // Initialize
+        loadQuests();
+    </script>
+</body>
+</html>
+
+

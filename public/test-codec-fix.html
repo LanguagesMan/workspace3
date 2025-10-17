@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <title>Codec Fix Test</title>
+    <style>
+        body { margin: 0; padding: 20px; background: #000; color: #fff; font-family: Arial; }
+        video { width: 100%; max-width: 400px; margin: 10px; background: #222; }
+        .test { margin: 30px 0; padding: 20px; background: #111; border-radius: 8px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 4px; }
+        .success { background: #4CAF50; }
+        .error { background: #f44336; }
+    </style>
+</head>
+<body>
+    <h1>Video Codec Fix Test</h1>
+
+    <div class="test">
+        <h2>❌ Original Video (No Faststart)</h2>
+        <video id="original" controls muted autoplay playsinline>
+            <source src="/videos/reels/Andheld_camera_footage_202509112217_yzrzq.mp4" type="video/mp4">
+        </video>
+        <div id="status-original" class="status">Loading...</div>
+    </div>
+
+    <div class="test">
+        <h2>✅ Fixed Video (With Faststart)</h2>
+        <video id="fixed" controls muted autoplay playsinline>
+            <source src="/videos/reels/test-fixed.mp4" type="video/mp4">
+        </video>
+        <div id="status-fixed" class="status">Loading...</div>
+    </div>
+
+    <script>
+        function setupVideo(id, statusId) {
+            const video = document.getElementById(id);
+            const status = document.getElementById(statusId);
+
+            video.addEventListener('loadstart', () => {
+                status.textContent = '▶️ Loading...';
+                status.className = 'status';
+            });
+
+            video.addEventListener('loadeddata', () => {
+                status.textContent = '✅ Data loaded successfully!';
+                status.className = 'status success';
+            });
+
+            video.addEventListener('canplay', () => {
+                status.textContent = `✅ Playing! Duration: ${video.duration.toFixed(1)}s`;
+                status.className = 'status success';
+            });
+
+            video.addEventListener('error', (e) => {
+                const errorCode = video.error?.code || 'unknown';
+                const errorMessage = video.error?.message || 'Unknown error';
+                status.textContent = `❌ Error ${errorCode}: ${errorMessage}`;
+                status.className = 'status error';
+                console.error(`Video ${id} error:`, video.error);
+            });
+
+            video.addEventListener('stalled', () => {
+                console.warn(`Video ${id} stalled`);
+            });
+        }
+
+        setupVideo('original', 'status-original');
+        setupVideo('fixed', 'status-fixed');
+
+        // Summary after 5 seconds
+        setTimeout(() => {
+            const original = document.getElementById('original');
+            const fixed = document.getElementById('fixed');
+
+            console.log('\n=== TEST RESULTS ===');
+            console.log('Original video playing:', !original.paused && !original.error);
+            console.log('Fixed video playing:', !fixed.paused && !fixed.error);
+
+            if (!original.error && !fixed.error) {
+                alert('✅ Both videos working! Issue is fixed.');
+            } else if (original.error && !fixed.error) {
+                alert('✅ Fixed video works! Need to re-encode all videos with faststart.');
+            } else if (original.error && fixed.error) {
+                alert('❌ Still having issues. Need deeper investigation.');
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

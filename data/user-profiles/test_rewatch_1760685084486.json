@@ -1,0 +1,23 @@
+{
+  "userId": "test_rewatch_1760685084486",
+  "level": "B1",
+  "watchedVideos": [
+    "reels__originals_mime_acts_out_202509122353_whfwr_mp4"
+  ],
+  "interactions": [
+    {
+      "videoId": "reels__originals_mime_acts_out_202509122353_whfwr_mp4",
+      "type": "rewatch",
+      "timestamp": "2025-10-17T07:11:24.489Z"
+    }
+  ],
+  "interests": {},
+  "seenThemes": {},
+  "knownWords": [],
+  "behaviorPatterns": {
+    "avgCompletionRate": 0.76,
+    "avgWatchTime": 20,
+    "skipRate": 0.2,
+    "rewatchRate": 0.05
+  }
+}

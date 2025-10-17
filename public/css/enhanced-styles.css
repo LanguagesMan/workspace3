@@ -1,0 +1,710 @@
+/**
+ * 🎨 ENHANCED LANGFLIX STYLES
+ * Complete mobile optimization, loading states, accessibility, and performance
+ * Agent 2: Frontend Engineer - Full Implementation
+ */
+
+/* ===========================================
+   MOBILE OPTIMIZATIONS & SAFE AREAS
+   =========================================== */
+
+/* iOS Safe Area Support */
+body.has-notch {
+    padding-top: var(--safe-area-top, 0);
+    padding-bottom: var(--safe-area-bottom, 0);
+}
+
+.bottom-nav {
+    padding-bottom: max(10px, var(--safe-area-bottom, 0));
+    height: calc(70px + var(--safe-area-bottom, 0));
+}
+
+/* Touch Target Optimization (Apple/Google Guidelines: 44x44px minimum) */
+.nav-item,
+.feed-tab,
+.article-btn,
+.word-clickable,
+button {
+    min-height: 44px;
+    min-width: 44px;
+    position: relative;
+}
+
+/* Touch Feedback */
+.nav-item.touch-active,
+.feed-tab.touch-active,
+.article-btn.touch-active,
+button.touch-active {
+    transform: scale(0.95);
+    opacity: 0.8;
+}
+
+.word-clickable.touch-active {
+    background: var(--primary);
+    color: #fff;
+    transform: scale(1.05);
+}
+
+/* Prevent Text Selection on Tap (Mobile) */
+.nav-item,
+.feed-tab,
+.article-btn,
+button {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Smooth Scrolling */
+* {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+}
+
+/* Pull to Refresh Indicator */
+.pull-to-refresh-indicator {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 24px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+/* ===========================================
+   SKELETON LOADERS
+   =========================================== */
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.skeleton {
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.05) 25%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0.05) 75%
+    );
+    background-size: 2000px 100%;
+    animation: shimmer 2s infinite linear;
+    border-radius: 16px;
+    margin-bottom: 16px;
+    padding: 20px;
+}
+
+.skeleton-video {
+    width: 100%;
+    height: calc(100vh - 200px);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    margin-bottom: 16px;
+}
+
+.skeleton-title,
+.skeleton-text {
+    height: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.skeleton-title {
+    height: 24px;
+    width: 80%;
+}
+
+.skeleton-text.short {
+    width: 60%;
+}
+
+/* ===========================================
+   ERROR STATES
+   =========================================== */
+
+.error-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    min-height: 400px;
+}
+
+.error-icon {
+    font-size: 64px;
+    margin-bottom: 24px;
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.error-state h3 {
+    font-size: 24px;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+}
+
+.error-state p {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+
+.retry-btn {
+    padding: 14px 32px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(255, 0, 80, 0.3);
+}
+
+.retry-btn:hover {
+    background: #ff1a5e;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 0, 80, 0.4);
+}
+
+.retry-btn:active {
+    transform: translateY(0);
+}
+
+/* ===========================================
+   TOAST NOTIFICATIONS
+   =========================================== */
+
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    padding: 16px 24px;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(20px);
+    color: white;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 10000;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.toast-success {
+    background: linear-gradient(135deg, #00b894, #00cec9);
+}
+
+.toast-error {
+    background: linear-gradient(135deg, #d63031, #e17055);
+}
+
+.toast-info {
+    background: linear-gradient(135deg, #0984e3, #74b9ff);
+}
+
+/* Safe area for notched devices */
+@supports (padding-top: env(safe-area-inset-top)) {
+    .toast {
+        top: calc(20px + env(safe-area-inset-top));
+    }
+}
+
+/* ===========================================
+   ENHANCED VIDEO CONTROLS
+   =========================================== */
+
+.video-control-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 20;
+}
+
+.video-control-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+    transform: scale(1.1);
+}
+
+.video-control-btn:active {
+    transform: scale(0.95);
+}
+
+.video-control-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+.video-control-btn.muted .muted-indicator {
+    display: block;
+}
+
+.muted-indicator {
+    display: none;
+    stroke: #ff0050;
+    stroke-width: 2;
+}
+
+/* Word Saved State */
+.word-clickable.word-saved {
+    background: #00b894;
+    color: white;
+    box-shadow: 0 2px 8px rgba(0, 184, 148, 0.4);
+}
+
+.word-clickable.word-saved::after {
+    content: '✓';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 20px;
+    height: 20px;
+    background: #00b894;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    animation: checkmark 0.5s ease;
+}
+
+@keyframes checkmark {
+    0% {
+        transform: scale(0) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.2) rotate(180deg);
+    }
+    100% {
+        transform: scale(1) rotate(360deg);
+    }
+}
+
+/* ===========================================
+   NETWORK STATUS INDICATORS
+   =========================================== */
+
+body.offline::before {
+    content: 'Offline Mode';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 12px;
+    background: linear-gradient(135deg, #d63031, #e17055);
+    color: white;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 9999;
+    animation: slideDown 0.3s ease;
+}
+
+@supports (padding-top: env(safe-area-inset-top)) {
+    body.offline::before {
+        padding-top: calc(12px + env(safe-area-inset-top));
+    }
+}
+
+body.online::after {
+    content: 'Back Online';
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #00b894, #00cec9);
+    color: white;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 9999;
+    animation: fadeInOut 3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInOut {
+    0%, 100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+    10%, 90% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* ===========================================
+   ACCESSIBILITY ENHANCEMENTS
+   =========================================== */
+
+/* Focus Indicators (WCAG 2.1 AA) */
+button:focus-visible,
+.nav-item:focus-visible,
+.feed-tab:focus-visible,
+.article-btn:focus-visible,
+.word-clickable:focus-visible,
+a:focus-visible,
+input:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    :root {
+        --primary: #ff1a5e;
+        --secondary: #7c95ff;
+        --text-secondary: rgba(255, 255, 255, 0.9);
+        --border: rgba(255, 255, 255, 0.3);
+    }
+    
+    .nav-item,
+    .feed-tab,
+    .article-btn {
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+}
+
+/* Reduced Motion Support (WCAG 2.1) */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .skeleton {
+        animation: none;
+        background: rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* Screen Reader Only Content */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Skip to Main Content Link */
+.skip-to-main {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    background: var(--primary);
+    color: white;
+    padding: 12px 24px;
+    text-decoration: none;
+    font-weight: 600;
+    z-index: 10000;
+    transition: top 0.3s;
+}
+
+.skip-to-main:focus {
+    top: 0;
+}
+
+/* ===========================================
+   RESPONSIVE DESIGN
+   =========================================== */
+
+/* Mobile (320px - 480px) */
+@media (max-width: 480px) {
+    .nav-label {
+        font-size: 10px;
+    }
+    
+    .nav-item svg {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .article-card {
+        padding: 16px;
+    }
+    
+    .article-title {
+        font-size: 18px;
+    }
+    
+    .article-content {
+        font-size: 14px;
+    }
+    
+    .article-footer {
+        flex-wrap: wrap;
+    }
+    
+    .article-btn {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+}
+
+/* Tablet Portrait (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .app-container {
+        max-width: 768px;
+        margin: 0 auto;
+    }
+    
+    .video-container {
+        scroll-snap-type: none;
+    }
+    
+    .video-item {
+        height: auto;
+        min-height: 600px;
+        margin-bottom: 20px;
+    }
+    
+    .stories-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+/* Desktop (1280px+) */
+@media (min-width: 1280px) {
+    .app-container {
+        max-width: 1280px;
+        margin: 0 auto;
+    }
+    
+    .bottom-nav {
+        max-width: 1280px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .video-item {
+        height: auto;
+        max-height: 800px;
+    }
+    
+    .articles-feed {
+        columns: 2;
+        column-gap: 20px;
+    }
+    
+    .article-card {
+        break-inside: avoid;
+    }
+    
+    .stories-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 16px;
+    }
+}
+
+/* Landscape Orientation */
+@media (orientation: landscape) and (max-height: 600px) {
+    .bottom-nav {
+        height: 60px;
+    }
+    
+    .app-container {
+        bottom: 60px;
+    }
+    
+    .nav-label {
+        display: none;
+    }
+    
+    .nav-item svg {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .video-overlay {
+        bottom: 70px;
+    }
+}
+
+/* ===========================================
+   PERFORMANCE OPTIMIZATIONS
+   =========================================== */
+
+/* GPU Acceleration for Animations */
+.nav-item,
+.feed-tab,
+.article-btn,
+.word-clickable,
+.toast,
+.video-control-btn {
+    will-change: transform;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+}
+
+/* Contain Layout Shifts */
+.video-item,
+.article-card,
+.skeleton {
+    contain: layout style paint;
+}
+
+/* Optimize Repaints */
+.video-player {
+    will-change: transform;
+}
+
+/* Lazy Loading Hint */
+img[loading="lazy"],
+video[loading="lazy"] {
+    content-visibility: auto;
+}
+
+/* ===========================================
+   DARK MODE (System Preference)
+   =========================================== */
+
+@media (prefers-color-scheme: dark) {
+    /* Already dark by default */
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg-dark: #ffffff;
+        --bg-card: #f5f5f5;
+        --text-primary: #000000;
+        --text-secondary: rgba(0, 0, 0, 0.7);
+        --border: rgba(0, 0, 0, 0.1);
+    }
+    
+    body {
+        background: var(--bg-dark);
+        color: var(--text-primary);
+    }
+}
+
+/* ===========================================
+   PRINT STYLES
+   =========================================== */
+
+@media print {
+    .bottom-nav,
+    .video-control-btn,
+    .article-btn,
+    .nav-item,
+    .feed-tabs {
+        display: none;
+    }
+    
+    .app-container {
+        position: static;
+        bottom: auto;
+    }
+    
+    .section {
+        opacity: 1;
+        pointer-events: all;
+        position: static;
+    }
+    
+    .article-card {
+        page-break-inside: avoid;
+    }
+}
+
+/* ===========================================
+   LOADING SPINNER
+   =========================================== */
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* ===========================================
+   SMOOTH TRANSITIONS
+   =========================================== */
+
+.section,
+.feed-panel,
+.nav-item,
+.feed-tab {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reduced motion override */
+@media (prefers-reduced-motion: reduce) {
+    .section,
+    .feed-panel,
+    .nav-item,
+    .feed-tab {
+        transition-duration: 0.01ms;
+    }
+}
+
+
+

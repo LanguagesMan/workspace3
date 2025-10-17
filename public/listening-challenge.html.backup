@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🎧 Listening Challenge - Langflix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .score-bar {
+            display: flex;
+            justify-content: space-around;
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .score-value {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .audio-section {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .audio-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .audio-controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .audio-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .audio-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .audio-text {
+            color: white;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .input-section {
+            margin-bottom: 24px;
+        }
+
+        .input-label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #495057;
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-check {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-check:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-check:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-skip {
+            background: #f1f3f5;
+            color: #495057;
+        }
+
+        .btn-skip:hover {
+            background: #e9ecef;
+        }
+
+        .feedback {
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            display: none;
+            text-align: center;
+        }
+
+        .feedback.correct {
+            background: #d1fae5;
+            color: #065f46;
+            display: block;
+        }
+
+        .feedback.wrong {
+            background: #fee2e2;
+            color: #991b1b;
+            display: block;
+        }
+
+        .correct-answer {
+            margin-top: 8px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .hint {
+            background: #fff3cd;
+            color: #856404;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .results {
+            display: none;
+            text-align: center;
+            padding: 32px 0;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .results h2 {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .waveform {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .waveform-progress {
+            height: 100%;
+            background: white;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+    </style>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <h1>🎧 Listening Challenge</h1>
+            <p class="subtitle">Listen carefully and type what you hear</p>
+        </div>
+
+        <div class="score-bar">
+            <div class="score-item">
+                <div class="score-label">Correct</div>
+                <div class="score-value" id="correctDisplay">0</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label">Round</div>
+                <div class="score-value" id="roundDisplay">1/10</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label">Accuracy</div>
+                <div class="score-value" id="accuracyDisplay">0%</div>
+            </div>
+        </div>
+
+        <div id="gameSection">
+            <div class="audio-section">
+                <div class="audio-icon">🎧</div>
+                <div class="waveform">
+                    <div class="waveform-progress" id="waveformProgress"></div>
+                </div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playAudio()">
+                        ▶️ Play
+                    </button>
+                    <button class="audio-btn" onclick="playAudio('slow')">
+                        🐌 Slow
+                    </button>
+                </div>
+                <div class="audio-text" id="audioHint">Click play to hear Spanish audio</div>
+            </div>
+
+            <div class="hint" id="hint" style="display: none;">
+                💡 Hint: This sentence is about...
+            </div>
+
+            <div class="feedback" id="feedback"></div>
+
+            <div class="input-section">
+                <div class="input-label">Type what you heard:</div>
+                <input 
+                    type="text" 
+                    class="text-input" 
+                    id="userInput" 
+                    placeholder="Escribe lo que escuchaste..."
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    spellcheck="false"
+                >
+            </div>
+
+            <div class="buttons">
+                <button class="btn-check" id="checkBtn" onclick="checkAnswer()">
+                    ✓ Check
+                </button>
+                <button class="btn-skip" onclick="skipQuestion()">
+                    ⏭️ Skip
+                </button>
+            </div>
+        </div>
+
+        <div class="results" id="resultsSection">
+            <div style="font-size: 80px; margin-bottom: 20px;">🎉</div>
+            <h2 id="finalScore">8 / 10</h2>
+            <p style="font-size: 18px; color: #666; margin-bottom: 24px;" id="resultsMessage">
+                Great listening skills!
+            </p>
+            <button class="btn-check" onclick="playAgain()">
+                🔄 Play Again
+            </button>
+            <button class="btn-skip" onclick="goHome()" style="margin-top: 12px;">
+                🏠 Back to Home
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // API configuration
+        const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
+        let userId = localStorage.getItem('langflix-user-id') || 'user-' + Date.now();
+        if (!localStorage.getItem('langflix-user-id')) {
+            localStorage.setItem('langflix-user-id', userId);
+        }
+
+        // Fallback exercises
+        const fallbackExercises = [
+            {
+                spanish: 'Hola, ¿cómo estás?',
+                english: 'Hello, how are you?',
+                hint: 'greeting',
+                level: 'A1'
+            },
+            {
+                spanish: 'Me llamo María',
+                english: 'My name is María',
+                hint: 'introduction',
+                level: 'A1'
+            },
+            {
+                spanish: 'Buenos días',
+                english: 'Good morning',
+                hint: 'greeting',
+                level: 'A1'
+            },
+            {
+                spanish: '¿Dónde está el baño?',
+                english: 'Where is the bathroom?',
+                hint: 'question',
+                level: 'A1'
+            },
+            {
+                spanish: 'Me gusta el café',
+                english: 'I like coffee',
+                hint: 'preference',
+                level: 'A2'
+            },
+            {
+                spanish: 'Necesito agua, por favor',
+                english: 'I need water, please',
+                hint: 'request',
+                level: 'A2'
+            },
+            {
+                spanish: 'Estoy aprendiendo español',
+                english: 'I am learning Spanish',
+                hint: 'activity',
+                level: 'A2'
+            },
+            {
+                spanish: '¿Cuánto cuesta esto?',
+                english: 'How much does this cost?',
+                hint: 'shopping',
+                level: 'A2'
+            },
+            {
+                spanish: 'Voy a la biblioteca',
+                english: 'I am going to the library',
+                hint: 'destination',
+                level: 'B1'
+            },
+            {
+                spanish: 'El tiempo está muy bonito hoy',
+                english: 'The weather is very nice today',
+                hint: 'weather',
+                level: 'B1'
+            }
+        ];
+
+        let exercises = [];
+        let currentQuestion = 0;
+        let correctAnswers = 0;
+        let totalAnswered = 0;
+        let isPlaying = false;
+        let wordPerformance = {};
+        let startTime = Date.now();
+
+        // Web Speech API for text-to-speech
+        const synth = window.speechSynthesis;
+
+        async function initGame() {
+            await fetchUserVocabulary();
+            loadQuestion();
+        }
+
+        async function fetchUserVocabulary() {
+            try {
+                console.log('📚 Fetching personalized vocabulary for listening challenge...');
+                const response = await fetch(`${API_BASE}/api/vocabulary/get?userId=${userId}&saved=true&limit=50`);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch vocabulary');
+                }
+
+                const data = await response.json();
+                let words = data.words || [];
+
+                // Transform to exercise format
+                words = words.map(w => ({
+                    id: w.id,
+                    spanish: w.word || w.spanish,
+                    english: w.translation || w.english,
+                    context: w.context,
+                    level: w.level || 'A2',
+                    masteryLevel: w.masteryLevel || w.mastery_level || 0
+                }));
+
+                if (words.length >= 5) {
+                    // Sort by mastery (weakest first)
+                    words.sort((a, b) => a.masteryLevel - b.masteryLevel);
+
+                    // Convert words to listening exercises
+                    exercises = words.slice(0, 10).map(w => ({
+                        wordId: w.id,
+                        spanish: w.spanish,
+                        english: w.english,
+                        context: w.context,
+                        hint: w.english.split(' ')[0],
+                        level: w.level,
+                        masteryLevel: w.masteryLevel
+                    }));
+
+                    console.log(`✅ Loaded ${exercises.length} personalized listening exercises`);
+                    
+                    // Update UI
+                    const subtitle = document.querySelector('.subtitle');
+                    if (subtitle) {
+                        subtitle.textContent = `🎧 Practice pronunciation with your saved vocabulary`;
+                        subtitle.style.color = '#10b981';
+                        subtitle.style.fontWeight = '600';
+                    }
+                } else {
+                    console.log('⚠️ Not enough vocabulary, using fallback exercises');
+                    exercises = fallbackExercises;
+                    
+                    const subtitle = document.querySelector('.subtitle');
+                    if (subtitle) {
+                        subtitle.textContent = '💡 Save words from videos to get personalized practice!';
+                        subtitle.style.color = '#f59e0b';
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching vocabulary:', error);
+                exercises = fallbackExercises;
+            }
+        }
+
+        function loadQuestion() {
+            if (currentQuestion >= exercises.length) {
+                endGame();
+                return;
+            }
+
+            const exercise = exercises[currentQuestion];
+            
+            // Reset UI
+            document.getElementById('userInput').value = '';
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('hint').style.display = 'none';
+            document.getElementById('audioHint').textContent = 'Click play to hear Spanish audio';
+            document.getElementById('checkBtn').disabled = false;
+            
+            // Update round display
+            document.getElementById('roundDisplay').textContent = `${currentQuestion + 1}/${exercises.length}`;
+        }
+
+        function playAudio(speed = 'normal') {
+            const exercise = exercises[currentQuestion];
+            const utterance = new SpeechSynthesisUtterance(exercise.spanish);
+            
+            // Set Spanish voice
+            const voices = synth.getVoices();
+            const spanishVoice = voices.find(voice => voice.lang.startsWith('es')) || voices[0];
+            utterance.voice = spanishVoice;
+            utterance.lang = 'es-ES';
+            
+            // Set speed
+            utterance.rate = speed === 'slow' ? 0.7 : 1.0;
+            
+            // Play audio
+            synth.cancel(); // Stop any current speech
+            synth.speak(utterance);
+            
+            // Animate waveform
+            animateWaveform();
+            
+            document.getElementById('audioHint').textContent = speed === 'slow' ? 'Playing slowly...' : 'Playing...';
+            
+            utterance.onend = () => {
+                document.getElementById('audioHint').textContent = 'Play again or type your answer';
+            };
+        }
+
+        function animateWaveform() {
+            const waveform = document.getElementById('waveformProgress');
+            waveform.style.width = '0%';
+            
+            let width = 0;
+            const interval = setInterval(() => {
+                width += 2;
+                waveform.style.width = width + '%';
+                
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        waveform.style.width = '0%';
+                    }, 500);
+                }
+            }, 50);
+        }
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById('userInput').value.trim().toLowerCase();
+            const correctAnswer = exercises[currentQuestion].spanish.toLowerCase();
+            
+            if (!userAnswer) {
+                alert('Please type your answer first!');
+                return;
+            }
+            
+            totalAnswered++;
+            
+            // Calculate similarity (simple version - exact match or close match)
+            const isExact = userAnswer === correctAnswer;
+            const isClose = calculateSimilarity(userAnswer, correctAnswer) > 0.8;
+            const isCorrect = isExact || isClose;
+            
+            // Track word performance
+            const wordId = exercises[currentQuestion].wordId;
+            if (wordId) {
+                if (!wordPerformance[wordId]) {
+                    wordPerformance[wordId] = { correct: 0, total: 0 };
+                }
+                wordPerformance[wordId].total++;
+                if (isCorrect) {
+                    wordPerformance[wordId].correct++;
+                }
+            }
+            
+            const feedback = document.getElementById('feedback');
+            
+            if (isCorrect) {
+                correctAnswers++;
+                feedback.className = 'feedback correct';
+                feedback.innerHTML = `✓ Correct!<div class="correct-answer">"${exercises[currentQuestion].spanish}"</div>`;
+                
+                setTimeout(() => {
+                    currentQuestion++;
+                    loadQuestion();
+                }, 2000);
+            } else {
+                feedback.className = 'feedback wrong';
+                feedback.innerHTML = `✗ Not quite.<div class="correct-answer">Correct answer: "${exercises[currentQuestion].spanish}"</div>`;
+                
+                setTimeout(() => {
+                    currentQuestion++;
+                    loadQuestion();
+                }, 3000);
+            }
+            
+            updateStats();
+            document.getElementById('checkBtn').disabled = true;
+        }
+
+        function calculateSimilarity(str1, str2) {
+            // Simple Levenshtein distance implementation
+            const len1 = str1.length;
+            const len2 = str2.length;
+            const matrix = [];
+            
+            for (let i = 0; i <= len1; i++) {
+                matrix[i] = [i];
+            }
+            
+            for (let j = 0; j <= len2; j++) {
+                matrix[0][j] = j;
+            }
+            
+            for (let i = 1; i <= len1; i++) {
+                for (let j = 1; j <= len2; j++) {
+                    const cost = str1[i - 1] === str2[j - 1] ? 0 : 1;
+                    matrix[i][j] = Math.min(
+                        matrix[i - 1][j] + 1,
+                        matrix[i][j - 1] + 1,
+                        matrix[i - 1][j - 1] + cost
+                    );
+                }
+            }
+            
+            const distance = matrix[len1][len2];
+            const maxLen = Math.max(len1, len2);
+            return 1 - (distance / maxLen);
+        }
+
+        function skipQuestion() {
+            totalAnswered++;
+            currentQuestion++;
+            loadQuestion();
+            updateStats();
+        }
+
+        function updateStats() {
+            document.getElementById('correctDisplay').textContent = correctAnswers;
+            const accuracy = totalAnswered > 0 ? Math.round((correctAnswers / totalAnswered) * 100) : 0;
+            document.getElementById('accuracyDisplay').textContent = accuracy + '%';
+        }
+
+        async function endGame() {
+            document.getElementById('gameSection').style.display = 'none';
+            document.getElementById('resultsSection').classList.add('active');
+            
+            document.getElementById('finalScore').textContent = `${correctAnswers} / ${exercises.length}`;
+            
+            const percentage = (correctAnswers / exercises.length) * 100;
+            const timeSpent = Math.round((Date.now() - startTime) / 1000);
+            
+            let message = '';
+            if (percentage === 100) {
+                message = `🏆 Perfect! Amazing listening skills! (${timeSpent}s)`;
+            } else if (percentage >= 80) {
+                message = `🌟 Excellent! ${percentage}% accuracy. Great comprehension!`;
+            } else if (percentage >= 60) {
+                message = `👍 Good! ${percentage}% correct. Keep practicing!`;
+            } else {
+                message = `💪 ${percentage}% correct. Listening takes time to develop!`;
+            }
+            
+            document.getElementById('resultsMessage').textContent = message;
+            
+            // Submit game results
+            try {
+                const response = await fetch(`${API_BASE}/api/games/score`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: userId,
+                        gameType: 'listening-challenge',
+                        score: correctAnswers,
+                        totalQuestions: exercises.length,
+                        timeSpent: timeSpent,
+                        wordPerformance: wordPerformance,
+                        timestamp: new Date().toISOString()
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('✅ Game results submitted:', data);
+                    
+                    if (data.newWordsMastered > 0) {
+                        const masteredMsg = document.createElement('p');
+                        masteredMsg.style.cssText = 'color: #10b981; font-weight: 600; margin-top: 10px;';
+                        masteredMsg.textContent = `🎉 You've mastered ${data.newWordsMastered} new word${data.newWordsMastered > 1 ? 's' : ''}!`;
+                        document.getElementById('resultsSection').appendChild(masteredMsg);
+                    }
+                }
+            } catch (error) {
+                console.error('Error submitting game results:', error);
+            }
+            
+            // Save score
+            const gamesCompleted = parseInt(localStorage.getItem('listeningGames') || '0') + 1;
+            localStorage.setItem('listeningGames', gamesCompleted);
+        }
+
+        function playAgain() {
+            currentQuestion = 0;
+            correctAnswers = 0;
+            totalAnswered = 0;
+            wordPerformance = {};
+            startTime = Date.now();
+            document.getElementById('gameSection').style.display = 'block';
+            document.getElementById('resultsSection').classList.remove('active');
+            updateStats();
+            initGame();
+        }
+
+        function goHome() {
+            window.location.href = '/tiktok-video-feed.html';
+        }
+
+        // Load voices when ready
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = () => {
+                const voices = speechSynthesis.getVoices();
+                console.log('✅ Voices loaded:', voices.length);
+            };
+        }
+
+        // Handle Enter key to submit
+        document.getElementById('userInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+
+        // Initialize
+        initGame();
+        console.log('🎧 Listening Challenge - Personalized Mode Active');
+    </script>
+</body>
+</html>

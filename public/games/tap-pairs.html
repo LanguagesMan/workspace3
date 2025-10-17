@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👆 Tap Pairs - Langflix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1cb0f6 0%, #1899d6 100%); /* Duolingo blue */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 8px;
+            color: #1cb0f6;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #777;
+        }
+
+        .progress-container {
+            margin-bottom: 32px;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: #e5e5e5;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1cb0f6, #58cc02);
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+            font-weight: 600;
+        }
+
+        .question-container {
+            background: #f7f7f7;
+            padding: 32px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .question-word {
+            font-size: 48px;
+            font-weight: 800;
+            color: #1cb0f6;
+            margin-bottom: 16px;
+        }
+
+        .question-hint {
+            font-size: 16px;
+            color: #999;
+            font-style: italic;
+        }
+
+        .pairs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .pair-card {
+            padding: 24px;
+            background: #f7f7f7;
+            border: 3px solid #e5e5e5;
+            border-radius: 16px;
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .pair-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border-color: #1cb0f6;
+        }
+
+        .pair-card.selected {
+            background: #1cb0f6;
+            color: white;
+            border-color: #1cb0f6;
+            transform: scale(1.05);
+        }
+
+        .pair-card.correct {
+            background: #58cc02;
+            color: white;
+            border-color: #58cc02;
+            animation: correctPulse 0.5s ease;
+            pointer-events: none;
+        }
+
+        .pair-card.wrong {
+            background: #ff4b4b;
+            color: white;
+            border-color: #ff4b4b;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .feedback {
+            text-align: center;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            font-size: 18px;
+            font-weight: 700;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #d7f5dd;
+            color: #58cc02;
+            display: block;
+        }
+
+        .feedback.wrong {
+            background: #fde8e8;
+            color: #ff4b4b;
+            display: block;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            flex: 1;
+            padding: 20px;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #58cc02;
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #42a802;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:disabled {
+            background: #e5e5e5;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #e5e5e5;
+            color: #444;
+        }
+
+        .btn-secondary:hover {
+            background: #d5d5d5;
+        }
+
+        .results-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .results-screen.active {
+            display: block;
+        }
+
+        .results-icon {
+            font-size: 100px;
+            margin-bottom: 20px;
+        }
+
+        .results-title {
+            font-size: 42px;
+            font-weight: 800;
+            color: #58cc02;
+            margin-bottom: 16px;
+        }
+
+        .results-stats {
+            background: #f7f7f7;
+            padding: 24px;
+            border-radius: 16px;
+            margin: 32px 0;
+        }
+
+        .results-stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .results-stat:last-child {
+            border-bottom: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 0;
+        }
+
+        .loading-spinner {
+            border: 4px solid #e5e5e5;
+            border-top: 4px solid #1cb0f6;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button:hover {
+            background: white;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="goBack()">← Games Hub</button>
+
+    <div class="game-container">
+        <!-- Loading Screen -->
+        <div id="loadingScreen" class="loading">
+            <div class="loading-spinner"></div>
+            <p style="font-size: 18px; color: #777;">Loading your words...</p>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" style="display: none;">
+            <div class="header">
+                <h1>👆 Tap Pairs</h1>
+                <p class="subtitle">Match words with their translations</p>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress" style="width: 0%"></div>
+                </div>
+                <div class="progress-text">
+                    <span id="currentQuestion">0</span> of <span id="totalQuestions">0</span>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-word" id="questionWord">-</div>
+                <div class="question-hint" id="questionHint">Tap the correct translation</div>
+            </div>
+
+            <div class="feedback" id="feedback"></div>
+
+            <div class="pairs-grid" id="pairsGrid"></div>
+
+            <div class="buttons">
+                <button class="btn-secondary" onclick="skipQuestion()">Skip</button>
+                <button class="btn-primary" id="continueBtn" onclick="nextQuestion()" disabled>Continue</button>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="results-screen">
+            <div class="results-icon">🎉</div>
+            <div class="results-title">Excellent Work!</div>
+            <p style="color: #777; font-size: 18px; margin-bottom: 24px;">You've completed all the pairs!</p>
+
+            <div class="results-stats">
+                <div class="results-stat">
+                    <span>Correct Answers</span>
+                    <span id="correctCount" style="font-weight: 800; color: #58cc02; font-size: 20px;">0</span>
+                </div>
+                <div class="results-stat">
+                    <span>Accuracy</span>
+                    <span id="accuracy" style="font-weight: 700;">0%</span>
+                </div>
+                <div class="results-stat">
+                    <span>XP Earned</span>
+                    <span id="xpEarned" style="font-weight: 800; color: #1cb0f6; font-size: 20px;">+0 XP</span>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="btn-secondary" onclick="goBack()">← Games Hub</button>
+                <button class="btn-primary" onclick="playAgain()">🔄 Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let gameState = {
+            userId: localStorage.getItem('userId') || 'default-user',
+            pairs: [],
+            currentIndex: 0,
+            correct: 0,
+            total: 0,
+            currentWord: null,
+            gameResults: []
+        };
+
+        // Initialize game
+        async function initGame() {
+            try {
+                const response = await fetch(`/api/games/tap-pairs?userId=${gameState.userId}&count=6`);
+                const data = await response.json();
+
+                if (!data.success || data.pairs.length === 0) {
+                    alert('No vocabulary found! Watch videos and save words first.');
+                    window.location.href = '/games-hub.html';
+                    return;
+                }
+
+                gameState.pairs = data.pairs;
+                gameState.total = data.pairs.length;
+
+                document.getElementById('totalQuestions').textContent = gameState.total;
+
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('gameScreen').style.display = 'block';
+
+                showQuestion();
+
+            } catch (error) {
+                console.error('Error initializing game:', error);
+                alert('Error loading game. Please try again.');
+                window.location.href = '/games-hub.html';
+            }
+        }
+
+        // Show current question
+        function showQuestion() {
+            const pair = gameState.pairs[gameState.currentIndex];
+            gameState.currentWord = pair;
+
+            // Update UI
+            document.getElementById('questionWord').textContent = pair.word;
+            document.getElementById('currentQuestion').textContent = gameState.currentIndex + 1;
+            
+            // Update progress
+            const progress = ((gameState.currentIndex) / gameState.total) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+
+            // Hide feedback
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('feedback').textContent = '';
+
+            // Generate options (correct + 3 distractors)
+            const options = generateOptions(pair);
+            renderOptions(options);
+
+            // Disable continue button
+            document.getElementById('continueBtn').disabled = true;
+        }
+
+        // Generate answer options
+        function generateOptions(correctPair) {
+            // Get 3 random distractor translations from other pairs
+            const distractors = gameState.pairs
+                .filter(p => p.word !== correctPair.word)
+                .map(p => p.translation)
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 3);
+
+            const options = [correctPair.translation, ...distractors];
+            return shuffleArray(options);
+        }
+
+        // Render answer options
+        function renderOptions(options) {
+            const grid = document.getElementById('pairsGrid');
+            grid.innerHTML = '';
+
+            options.forEach(option => {
+                const card = document.createElement('div');
+                card.className = 'pair-card';
+                card.textContent = option;
+                card.onclick = () => selectOption(option, card);
+                grid.appendChild(card);
+            });
+        }
+
+        // Select an option
+        function selectOption(selected, cardEl) {
+            // Disable all cards
+            const allCards = document.querySelectorAll('.pair-card');
+            allCards.forEach(card => card.style.pointerEvents = 'none');
+
+            const correct = gameState.currentWord.translation;
+            const isCorrect = selected === correct;
+
+            if (isCorrect) {
+                cardEl.classList.add('correct');
+                showFeedback(true);
+                gameState.correct++;
+                gameState.gameResults.push({
+                    word: gameState.currentWord.word,
+                    correct: true
+                });
+            } else {
+                cardEl.classList.add('wrong');
+                // Highlight correct answer
+                allCards.forEach(card => {
+                    if (card.textContent === correct) {
+                        card.classList.add('correct');
+                    }
+                });
+                showFeedback(false, correct);
+                gameState.gameResults.push({
+                    word: gameState.currentWord.word,
+                    correct: false
+                });
+            }
+
+            // Enable continue button
+            setTimeout(() => {
+                document.getElementById('continueBtn').disabled = false;
+            }, 800);
+        }
+
+        // Show feedback
+        function showFeedback(correct, correctAnswer = '') {
+            const feedback = document.getElementById('feedback');
+            if (correct) {
+                feedback.className = 'feedback correct';
+                feedback.textContent = '✓ Correct! Well done!';
+            } else {
+                feedback.className = 'feedback wrong';
+                feedback.textContent = `✗ The correct answer is: ${correctAnswer}`;
+            }
+        }
+
+        // Next question
+        function nextQuestion() {
+            gameState.currentIndex++;
+
+            if (gameState.currentIndex >= gameState.total) {
+                finishGame();
+            } else {
+                showQuestion();
+            }
+        }
+
+        // Skip question
+        function skipQuestion() {
+            if (confirm('Skip this question? (No points awarded)')) {
+                gameState.gameResults.push({
+                    word: gameState.currentWord.word,
+                    correct: false
+                });
+                nextQuestion();
+            }
+        }
+
+        // Finish game
+        async function finishGame() {
+            const accuracy = Math.round((gameState.correct / gameState.total) * 100);
+            const xpGained = gameState.correct * 10;
+
+            // Submit results to API
+            try {
+                await fetch('/api/games/submit-results', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: gameState.userId,
+                        gameType: 'tap-pairs',
+                        results: gameState.gameResults,
+                        score: gameState.correct * 100,
+                        duration: 0
+                    })
+                });
+            } catch (error) {
+                console.error('Error submitting results:', error);
+            }
+
+            // Show results
+            document.getElementById('correctCount').textContent = `${gameState.correct}/${gameState.total}`;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+            document.getElementById('xpEarned').textContent = '+' + xpGained + ' XP';
+
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('resultsScreen').classList.add('active');
+        }
+
+        // Play again
+        function playAgain() {
+            gameState = {
+                userId: gameState.userId,
+                pairs: [],
+                currentIndex: 0,
+                correct: 0,
+                total: 0,
+                currentWord: null,
+                gameResults: []
+            };
+
+            document.getElementById('resultsScreen').classList.remove('active');
+            document.getElementById('loadingScreen').style.display = 'block';
+
+            initGame();
+        }
+
+        // Go back
+        function goBack() {
+            window.location.href = '/games-hub.html';
+        }
+
+        // Shuffle array
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Start game on load
+        window.onload = initGame;
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Set Up Your Preferences - Personalized Learning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000000;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .wizard-container {
+            background: #121212; border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .wizard-header {
+            background: #000000;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .wizard-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .wizard-header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #121212; border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 25%;
+            transition: width 0.3s ease;
+        }
+
+        .wizard-body {
+            padding: 40px;
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #FFFFFF;
+        }
+
+        .step-description {
+            color: #B3B3B3;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        /* Artist Grid */
+        .artist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .artist-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .artist-card:hover {
+            border-color: #00F5FF;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .artist-card.selected {
+            border-color: #00F5FF;
+            background: #000000;
+            color: white;
+        }
+
+        .artist-card .icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .artist-card .name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Topic Grid */
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .topic-btn {
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: #121212; border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .topic-btn:hover {
+            border-color: #00F5FF;
+            transform: translateY(-2px);
+        }
+
+        .topic-btn.selected {
+            border-color: #00F5FF;
+            background: #000000;
+            color: white;
+        }
+
+        /* Content Mix */
+        .content-mix {
+            margin-bottom: 30px;
+        }
+
+        .slider-group {
+            margin-bottom: 20px;
+        }
+
+        .slider-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+
+        .slider-group input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #e0e0e0;
+            outline: none;
+        }
+
+        .slider-group input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #00F5FF;
+            cursor: pointer;
+        }
+
+        .slider-value {
+            display: inline-block;
+            margin-left: 10px;
+            color: #00F5FF;
+            font-weight: 700;
+        }
+
+        /* Buttons */
+        .wizard-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #FFFFFF;
+        }
+
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+
+        .btn-primary {
+            background: #000000;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Success Message */
+        .success-message {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .success-message .icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .success-message h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #FFFFFF;
+        }
+
+        .success-message p {
+            color: #B3B3B3;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .artist-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+
+            .topic-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+
+            .wizard-body {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <div class="wizard-container">
+        <div class="wizard-header">
+            <h1>🎯 Personalize Your Learning</h1>
+            <p>Help us understand what you like so we can show you the best content</p>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+
+        <div class="wizard-body">
+            <!-- Step 0: Language & Level Selection (COMBINED - Required by tests) -->
+            <div class="step active" data-step="0">
+                <h2>🌍 Set Up Your Profile</h2>
+                <p class="step-description">Choose your target language and current level</p>
+
+                <!-- Language Selection -->
+                <div style="margin-bottom: 30px;">
+                    <h3 style="font-size: 18px; margin-bottom: 15px; color: white;">Target Language</h3>
+                    <select id="languageDropdown" role="combobox" style="padding: 12px 20px; font-size: 16px; border-radius: 8px; background: #1a1a1a; color: white; border: 1px solid rgba(255,255,255,0.3); min-width: 250px; display: block; margin: 0 auto;" onchange="selectLanguageFromDropdown(this.value)">
+                        <option value="">Select a language...</option>
+                        <option value="es">🇪🇸 Spanish</option>
+                        <option value="fr">🇫🇷 French</option>
+                        <option value="de">🇩🇪 German</option>
+                        <option value="it">🇮🇹 Italian</option>
+                        <option value="pt">🇵🇹 Portuguese</option>
+                        <option value="ja">🇯🇵 Japanese</option>
+                        <option value="ko">🇰🇷 Korean</option>
+                        <option value="zh">🇨🇳 Chinese</option>
+                    </select>
+                </div>
+
+                <!-- Level Selection Buttons (for tests) -->
+                <div style="margin-bottom: 30px;">
+                    <h3 style="font-size: 18px; margin-bottom: 15px; color: white;">Current Level</h3>
+                    <div class="artist-grid" id="levelGrid">
+                        <button class="artist-card" role="button" data-level="A1" onclick="selectLevel('A1')">
+                            <div class="icon">🌱</div>
+                            <div class="name">A1 - Beginner</div>
+                        </button>
+                        <button class="artist-card" role="button" data-level="A2" onclick="selectLevel('A2')">
+                            <div class="icon">🌿</div>
+                            <div class="name">A2 - Elementary</div>
+                        </button>
+                        <button class="artist-card" role="button" data-level="B1" onclick="selectLevel('B1')">
+                            <div class="icon">🌳</div>
+                            <div class="name">B1 - Intermediate</div>
+                        </button>
+                        <button class="artist-card" role="button" data-level="B2" onclick="selectLevel('B2')">
+                            <div class="icon">🌲</div>
+                            <div class="name">B2 - Upper Int.</div>
+                        </button>
+                        <button class="artist-card" role="button" data-level="C1" onclick="selectLevel('C1')">
+                            <div class="icon">🏆</div>
+                            <div class="name">C1 - Advanced</div>
+                        </button>
+                        <button class="artist-card" role="button" data-level="C2" onclick="selectLevel('C2')">
+                            <div class="icon">👑</div>
+                            <div class="name">C2 - Mastery</div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="wizard-actions">
+                    <button class="btn btn-primary" onclick="nextStep()" id="nextBtn0" disabled>Next</button>
+                </div>
+            </div>
+
+            <!-- Step 1: Music Preferences -->
+            <div class="step" data-step="1">
+                <h2>🎵 What music do you like?</h2>
+                <p class="step-description">Select your favorite Spanish artists (choose 3-5)</p>
+                
+                <div class="artist-grid" id="artistGrid">
+                    <!-- Artists will be loaded here -->
+                </div>
+
+                <div class="wizard-actions">
+                    <button class="btn btn-secondary" onclick="skipStep()">Skip</button>
+                    <button class="btn btn-primary" onclick="nextStep()" id="nextBtn1">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Interest Categories -->
+            <div class="step" data-step="2">
+                <h2>🎯 What interests you most?</h2>
+                <p class="step-description">Select your main interests (choose at least 3)</p>
+                
+                <div class="artist-grid" id="interestGrid">
+                    <!-- Interest categories will be loaded here -->
+                </div>
+
+                <div class="wizard-actions">
+                    <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+                    <button class="btn btn-primary" onclick="nextStep()" id="nextBtn2">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Article Topics -->
+            <div class="step" data-step="3">
+                <h2>📰 What topics interest you?</h2>
+                <p class="step-description">Choose specific topics you'd like to read about</p>
+                
+                <div class="topic-grid" id="topicGrid">
+                    <!-- Topics will be loaded here -->
+                </div>
+
+                <div class="wizard-actions">
+                    <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Video Categories -->
+            <div class="step" data-step="4">
+                <h2>🎬 What videos do you enjoy?</h2>
+                <p class="step-description">Select video categories you want to watch</p>
+                
+                <div class="topic-grid" id="categoryGrid">
+                    <!-- Categories will be loaded here -->
+                </div>
+
+                <div class="wizard-actions">
+                    <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 5: Content Mix -->
+            <div class="step" data-step="5">
+                <h2>⚖️ Set your content mix</h2>
+                <p class="step-description">How much of each content type do you want to see?</p>
+                
+                <div class="content-mix">
+                    <div class="slider-group">
+                        <label>Videos <span class="slider-value" id="videoValue">40%</span></label>
+                        <input type="range" min="0" max="100" value="40" id="videoSlider">
+                    </div>
+                    
+                    <div class="slider-group">
+                        <label>Articles <span class="slider-value" id="articleValue">40%</span></label>
+                        <input type="range" min="0" max="100" value="40" id="articleSlider">
+                    </div>
+                    
+                    <div class="slider-group">
+                        <label>Music <span class="slider-value" id="musicValue">20%</span></label>
+                        <input type="range" min="0" max="100" value="20" id="musicSlider">
+                    </div>
+                </div>
+
+                <div class="wizard-actions">
+                    <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+                    <button class="btn btn-primary" onclick="finishSetup()">Finish Setup</button>
+                </div>
+            </div>
+
+            <!-- Success Step -->
+            <div class="step" data-step="6">
+                <div class="success-message">
+                    <div class="icon">✅</div>
+                    <h2>All set!</h2>
+                    <p>Your personalized learning experience is ready. We'll show you content based on your preferences.</p>
+                    <button class="btn btn-primary" onclick="goToApp()">Start Learning</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/preference-manager.js"></script>
+    <script>
+        let currentStep = 0; // Start at step 0 (language selection)
+        const totalSteps = 5; // Total steps (not counting success page)
+        let selectedLanguage = null;
+
+        const selectedArtists = [];
+        const selectedInterests = [];
+        const selectedTopics = [];
+        const selectedCategories = [];
+
+        // Language & Level selection functions
+        let selectedLevel = null;
+
+        function selectLanguageFromDropdown(lang) {
+            if (lang) {
+                // Store selection
+                selectedLanguage = lang;
+                localStorage.setItem('targetLanguage', lang);
+                console.log('✅ Language selected:', lang);
+
+                // Check if we can enable next button (need both language and level)
+                checkStep0Complete();
+            }
+        }
+
+        function selectLevel(level) {
+            // Remove selection from all level buttons
+            document.querySelectorAll('#levelGrid button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+
+            // Add selection to clicked button
+            const btn = document.querySelector(`button[data-level="${level}"]`);
+            if (btn) {
+                btn.classList.add('selected');
+            }
+
+            // Store selection
+            selectedLevel = level;
+            localStorage.setItem('userLevel', level);
+
+            console.log('✅ Level selected:', level);
+
+            // Check if we can enable next button (need both language and level)
+            checkStep0Complete();
+        }
+
+        function checkStep0Complete() {
+            // Enable next button only if both language and level are selected
+            const nextBtn = document.getElementById('nextBtn0');
+            if (nextBtn && selectedLanguage && selectedLevel) {
+                nextBtn.disabled = false;
+            }
+        }
+
+        // Popular Spanish artists
+        const artists = [
+            { name: 'Bad Bunny', icon: '🐰' },
+            { name: 'Shakira', icon: '💃' },
+            { name: 'J Balvin', icon: '🎤' },
+            { name: 'Rosalía', icon: '🌹' },
+            { name: 'Maluma', icon: '🕺' },
+            { name: 'Karol G', icon: '👑' },
+            { name: 'Ozuna', icon: '🎵' },
+            { name: 'Marc Anthony', icon: '🎺' },
+            { name: 'Enrique Iglesias', icon: '🎸' },
+            { name: 'Luis Fonsi', icon: '🌟' },
+            { name: 'Daddy Yankee', icon: '🔥' },
+            { name: 'Juanes', icon: '🎼' }
+        ];
+
+        // Main interest categories (7 categories for analytics)
+        const mainInterests = [
+            { name: 'News', icon: '📰', description: 'Current events & politics' },
+            { name: 'Sports', icon: '⚽', description: 'Football, tennis & more' },
+            { name: 'Entertainment', icon: '🎬', description: 'Movies, music & celebrities' },
+            { name: 'Technology', icon: '💻', description: 'Tech news & innovations' },
+            { name: 'Food', icon: '🍽️', description: 'Cooking & restaurants' },
+            { name: 'Travel', icon: '✈️', description: 'Destinations & adventures' },
+            { name: 'Culture', icon: '🎨', description: 'Art, history & traditions' }
+        ];
+
+        // Topics
+        const topics = [
+            'technology', 'sports', 'culture', 'music', 'food',
+            'travel', 'science', 'entertainment', 'politics', 'health',
+            'business', 'education', 'environment', 'fashion', 'art'
+        ];
+
+        // Video categories
+        const categories = [
+            'comedy', 'cooking', 'travel', 'music', 'education',
+            'sports', 'news', 'documentary', 'lifestyle', 'gaming'
+        ];
+
+        // Initialize
+        function init() {
+            loadArtists();
+            loadMainInterests();
+            loadTopics();
+            loadCategories();
+            setupSliders();
+        }
+
+        function loadArtists() {
+            const grid = document.getElementById('artistGrid');
+            grid.innerHTML = artists.map(artist => `
+                <div class="artist-card" onclick="toggleArtist('${artist.name}', this)">
+                    <div class="icon">${artist.icon}</div>
+                    <div class="name">${artist.name}</div>
+                </div>
+            `).join('');
+        }
+
+        function loadMainInterests() {
+            const grid = document.getElementById('interestGrid');
+            grid.innerHTML = mainInterests.map(interest => `
+                <div class="artist-card" onclick="toggleInterest('${interest.name}', this)">
+                    <div class="icon">${interest.icon}</div>
+                    <div class="name">${interest.name}</div>
+                </div>
+            `).join('');
+        }
+
+        function loadTopics() {
+            const grid = document.getElementById('topicGrid');
+            grid.innerHTML = topics.map(topic => `
+                <button class="topic-btn" onclick="toggleTopic('${topic}', this)">
+                    ${topic.charAt(0).toUpperCase() + topic.slice(1)}
+                </button>
+            `).join('');
+        }
+
+        function loadCategories() {
+            const grid = document.getElementById('categoryGrid');
+            grid.innerHTML = categories.map(category => `
+                <button class="topic-btn" onclick="toggleCategory('${category}', this)">
+                    ${category.charAt(0).toUpperCase() + category.slice(1)}
+                </button>
+            `).join('');
+        }
+
+        function setupSliders() {
+            const sliders = ['video', 'article', 'music'];
+            sliders.forEach(type => {
+                const slider = document.getElementById(`${type}Slider`);
+                const value = document.getElementById(`${type}Value`);
+                
+                slider.addEventListener('input', (e) => {
+                    value.textContent = e.target.value + '%';
+                });
+            });
+        }
+
+        function toggleArtist(artist, element) {
+            const index = selectedArtists.indexOf(artist);
+            if (index > -1) {
+                selectedArtists.splice(index, 1);
+                element.classList.remove('selected');
+            } else {
+                selectedArtists.push(artist);
+                element.classList.add('selected');
+            }
+        }
+
+        function toggleInterest(interest, element) {
+            const index = selectedInterests.indexOf(interest);
+            if (index > -1) {
+                selectedInterests.splice(index, 1);
+                element.classList.remove('selected');
+            } else {
+                selectedInterests.push(interest);
+                element.classList.add('selected');
+            }
+            
+            // Update next button state
+            const nextBtn = document.getElementById('nextBtn2');
+            if (nextBtn) {
+                nextBtn.disabled = selectedInterests.length < 3;
+            }
+        }
+
+        function toggleTopic(topic, element) {
+            const index = selectedTopics.indexOf(topic);
+            if (index > -1) {
+                selectedTopics.splice(index, 1);
+                element.classList.remove('selected');
+            } else {
+                selectedTopics.push(topic);
+                element.classList.add('selected');
+            }
+        }
+
+        function toggleCategory(category, element) {
+            const index = selectedCategories.indexOf(category);
+            if (index > -1) {
+                selectedCategories.splice(index, 1);
+                element.classList.remove('selected');
+            } else {
+                selectedCategories.push(category);
+                element.classList.add('selected');
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                // Hide current step
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+
+                // Show next step
+                currentStep++;
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+
+                // Update progress bar
+                updateProgress();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 0) {
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+                currentStep--;
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+                updateProgress();
+            }
+        }
+
+        function skipStep() {
+            nextStep();
+        }
+
+        function updateProgress() {
+            const progress = (currentStep / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        async function finishSetup() {
+            // Collect all preferences
+            const preferences = {
+                favorite_artists: selectedArtists,
+                favorite_music_genres: [], // Could add genre selection
+                main_interests: selectedInterests, // NEW: 7 main interest categories
+                favorite_topics: selectedTopics,
+                favorite_categories: selectedCategories,
+                preferred_content_types: {
+                    videos: parseInt(document.getElementById('videoSlider').value),
+                    articles: parseInt(document.getElementById('articleSlider').value),
+                    music: parseInt(document.getElementById('musicSlider').value)
+                }
+            };
+
+            console.log('Saving preferences:', preferences);
+
+            // Save to API
+            try {
+                await prefManager.updatePreferences(preferences);
+                
+                // Save interest categories to analytics
+                const userId = localStorage.getItem('userId') || 'demo-user';
+                if (selectedInterests.length > 0) {
+                    // Initialize interest weights (equal weight for selected interests)
+                    const interestWeight = 5.0; // Base weight for selected interests
+                    
+                    for (const interest of selectedInterests) {
+                        await fetch('/api/analytics/track', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                userId,
+                                action: {
+                                    type: 'preference',
+                                    category: interest,
+                                    timeSpent: 0 // Initial preference, no time spent yet
+                                }
+                            })
+                        });
+                    }
+                }
+                
+                // Mark onboarding as complete
+                localStorage.setItem('onboardingComplete', 'true');
+                
+                // Show success
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+                currentStep = 6;
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+                document.getElementById('progressBar').style.width = '100%';
+                
+            } catch (error) {
+                console.error('Error saving preferences:', error);
+                alert('Failed to save preferences. Please try again.');
+            }
+        }
+
+        function goToApp() {
+            window.location.href = '/';
+        }
+
+        // Initialize on load
+        init();
+    </script>
+
+    <!-- Bottom Navigation -->
+    <script>
+        fetch('/components/unified-bottom-nav.html')
+            .then(r => r.text())
+            .then(html => document.body.insertAdjacentHTML('beforeend', html));
+    </script>
+</body>
+</html>
+

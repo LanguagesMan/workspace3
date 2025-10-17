@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🔤 Sentence Builder - Langflix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f093fb, #f5576c);
+            transition: width 0.3s ease;
+        }
+
+        .score-display {
+            text-align: center;
+            margin-bottom: 24px;
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .prompt-box {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .prompt-text {
+            font-size: 20px;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+
+        .translation {
+            font-size: 16px;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .answer-area {
+            background: #fff;
+            border: 3px dashed #dee2e6;
+            border-radius: 16px;
+            min-height: 80px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: flex-start;
+            align-content: flex-start;
+        }
+
+        .answer-area.correct {
+            border-color: #10b981;
+            background: #d1fae5;
+        }
+
+        .answer-area.wrong {
+            border-color: #ef4444;
+            background: #fee2e2;
+        }
+
+        .answer-area.empty {
+            justify-content: center;
+            align-items: center;
+            color: #adb5bd;
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .word-chip {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .word-chip:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(240, 147, 251, 0.4);
+        }
+
+        .word-chip.in-answer {
+            background: #495057;
+        }
+
+        .word-chip.disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-check {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+        }
+
+        .btn-check:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(240, 147, 251, 0.4);
+        }
+
+        .btn-check:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-clear {
+            background: #f1f3f5;
+            color: #495057;
+        }
+
+        .btn-clear:hover {
+            background: #e9ecef;
+        }
+
+        .feedback {
+            text-align: center;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #d1fae5;
+            color: #065f46;
+            display: block;
+        }
+
+        .feedback.wrong {
+            background: #fee2e2;
+            color: #991b1b;
+            display: block;
+        }
+
+        .results {
+            display: none;
+            text-align: center;
+            padding: 32px 0;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .results h2 {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+    </style>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <h1>🔤 Sentence Builder</h1>
+            <p style="color: #666;">Arrange words to form correct Spanish sentences</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+
+        <div class="score-display" id="scoreDisplay">
+            Score: 0 / 10
+        </div>
+
+        <div id="gameSection">
+            <div class="prompt-box">
+                <div class="prompt-text" id="promptText">Loading...</div>
+                <div class="translation" id="translationText"></div>
+            </div>
+
+            <div class="feedback" id="feedback"></div>
+
+            <div class="answer-area empty" id="answerArea">
+                <span style="opacity: 0.5;">Tap words below to build sentence</span>
+            </div>
+
+            <div class="word-bank" id="wordBank"></div>
+
+            <div class="buttons">
+                <button class="btn-check" id="checkBtn" onclick="checkAnswer()" disabled>
+                    ✓ Check Answer
+                </button>
+                <button class="btn-clear" onclick="clearAnswer()">
+                    ↺ Clear
+                </button>
+            </div>
+        </div>
+
+        <div class="results" id="resultsSection">
+            <div style="font-size: 80px; margin-bottom: 20px;">🎉</div>
+            <h2 id="finalScore">8 / 10</h2>
+            <p style="font-size: 18px; color: #666; margin-bottom: 24px;" id="resultsMessage">
+                Excellent work!
+            </p>
+            <button class="btn-check" onclick="playAgain()">
+                🔄 Play Again
+            </button>
+            <button class="btn-clear" onclick="goHome()" style="margin-top: 12px;">
+                🏠 Back to Home
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // API configuration
+        const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
+        let userId = localStorage.getItem('langflix-user-id') || 'user-' + Date.now();
+        if (!localStorage.getItem('langflix-user-id')) {
+            localStorage.setItem('langflix-user-id', userId);
+        }
+
+        // Fallback exercises
+        const fallbackExercises = [
+            {
+                english: 'I am a student',
+                spanish: ['Yo', 'soy', 'un', 'estudiante'],
+                distractors: ['es', 'una', 'profesor'],
+                level: 'A1'
+            },
+            {
+                english: 'The house is big',
+                spanish: ['La', 'casa', 'es', 'grande'],
+                distractors: ['el', 'pequeña', 'muy'],
+                level: 'A1'
+            },
+            {
+                english: 'I like coffee',
+                spanish: ['Me', 'gusta', 'el', 'café'],
+                distractors: ['gustan', 'la', 'té'],
+                level: 'A2'
+            },
+            {
+                english: 'Where is the bathroom?',
+                spanish: ['¿Dónde', 'está', 'el', 'baño?'],
+                distractors: ['es', 'la', '¿Cuándo'],
+                level: 'A1'
+            },
+            {
+                english: 'I need water',
+                spanish: ['Necesito', 'agua'],
+                distractors: ['Necesitas', 'comida', 'el'],
+                level: 'A1'
+            },
+            {
+                english: 'Good morning',
+                spanish: ['Buenos', 'días'],
+                distractors: ['Buenas', 'noches', 'tardes'],
+                level: 'A1'
+            },
+            {
+                english: 'How are you?',
+                spanish: ['¿Cómo', 'estás?'],
+                distractors: ['¿Dónde', 'eres?', 'está?'],
+                level: 'A1'
+            },
+            {
+                english: 'I speak Spanish',
+                spanish: ['Yo', 'hablo', 'español'],
+                distractors: ['hablas', 'inglés', 'habla'],
+                level: 'A2'
+            },
+            {
+                english: 'The book is interesting',
+                spanish: ['El', 'libro', 'es', 'interesante'],
+                distractors: ['la', 'aburrido', 'muy'],
+                level: 'B1'
+            },
+            {
+                english: 'I want to learn',
+                spanish: ['Quiero', 'aprender'],
+                distractors: ['Quieres', 'enseñar', 'estudiar'],
+                level: 'A2'
+            }
+        ];
+
+        let exercises = [];
+        let currentQuestion = 0;
+        let score = 0;
+        let userAnswer = [];
+        let currentExercise = null;
+        let wordPerformance = {};
+        let startTime = Date.now();
+
+        async function initGame() {
+            await fetchUserVocabulary();
+            loadQuestion();
+        }
+
+        async function fetchUserVocabulary() {
+            try {
+                console.log('📚 Fetching personalized vocabulary for sentence builder...');
+                const response = await fetch(`${API_BASE}/api/vocabulary/get?userId=${userId}&saved=true&limit=50`);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch vocabulary');
+                }
+
+                const data = await response.json();
+                let words = data.words || [];
+
+                // Transform to exercise format
+                words = words.map(w => ({
+                    id: w.id,
+                    spanish: w.word || w.spanish,
+                    english: w.translation || w.english,
+                    context: w.context,
+                    level: w.level || 'A2',
+                    masteryLevel: w.masteryLevel || w.mastery_level || 0
+                }));
+
+                if (words.length >= 5) {
+                    // Sort by mastery (weakest first)
+                    words.sort((a, b) => a.masteryLevel - b.masteryLevel);
+
+                    // Generate exercises from user's vocabulary
+                    exercises = generateExercisesFromWords(words);
+                    console.log(`✅ Generated ${exercises.length} personalized sentence exercises`);
+                    
+                    // Update UI
+                    const subtitle = document.querySelector('.header p');
+                    if (subtitle) {
+                        subtitle.textContent = `🎯 Practice sentences using your saved vocabulary (${words.length} words)`;
+                        subtitle.style.color = '#10b981';
+                        subtitle.style.fontWeight = '600';
+                    }
+                } else {
+                    console.log('⚠️ Not enough vocabulary, using fallback exercises');
+                    exercises = fallbackExercises;
+                    
+                    const subtitle = document.querySelector('.header p');
+                    if (subtitle) {
+                        subtitle.textContent = '💡 Save words from videos to get personalized practice!';
+                        subtitle.style.color = '#f59e0b';
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching vocabulary:', error);
+                exercises = fallbackExercises;
+            }
+        }
+
+        function generateExercisesFromWords(words) {
+            const generated = [];
+            const templates = [
+                { pattern: (w) => [`Yo`, 'tengo', w.spanish], english: (w) => `I have ${w.english}`, distractors: ['tienes', 'tiene', 'un'] },
+                { pattern: (w) => [`Me`, 'gusta', w.spanish], english: (w) => `I like ${w.english}`, distractors: ['gustan', 'el', 'la'] },
+                { pattern: (w) => [`¿Dónde`, 'está', w.spanish + '?'], english: (w) => `Where is ${w.english}?`, distractors: ['es', 'son', '¿Cuándo'] },
+                { pattern: (w) => [`Necesito`, w.spanish], english: (w) => `I need ${w.english}`, distractors: ['Necesitas', 'Necesita', 'el'] },
+                { pattern: (w) => [`Quiero`, w.spanish], english: (w) => `I want ${w.english}`, distractors: ['Quieres', 'Quiere', 'un'] }
+            ];
+
+            for (let i = 0; i < Math.min(words.length, 10); i++) {
+                const word = words[i];
+                const template = templates[i % templates.length];
+                
+                generated.push({
+                    wordId: word.id,
+                    english: template.english(word),
+                    spanish: template.pattern(word),
+                    distractors: template.distractors,
+                    level: word.level,
+                    masteryLevel: word.masteryLevel
+                });
+            }
+
+            return generated;
+        }
+
+        function loadQuestion() {
+            if (currentQuestion >= exercises.length) {
+                endGame();
+                return;
+            }
+
+            currentExercise = exercises[currentQuestion];
+            
+            // Display prompt
+            document.getElementById('promptText').textContent = currentExercise.english;
+            document.getElementById('translationText').textContent = 'Build the Spanish translation';
+            
+            // Clear answer area
+            clearAnswer();
+            
+            // Create word bank with shuffled words
+            const allWords = [...currentExercise.spanish, ...currentExercise.distractors];
+            allWords.sort(() => Math.random() - 0.5);
+            
+            const wordBank = document.getElementById('wordBank');
+            wordBank.innerHTML = '';
+            
+            allWords.forEach((word, index) => {
+                const chip = document.createElement('div');
+                chip.className = 'word-chip';
+                chip.textContent = word;
+                chip.dataset.word = word;
+                chip.dataset.index = index;
+                chip.onclick = () => addWord(word, chip);
+                wordBank.appendChild(chip);
+            });
+            
+            // Hide feedback
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('answerArea').className = 'answer-area empty';
+            
+            // Update progress
+            const progress = (currentQuestion / exercises.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            
+            document.getElementById('scoreDisplay').textContent = `Score: ${score} / ${exercises.length}`;
+        }
+
+        function addWord(word, chipEl) {
+            if (chipEl.classList.contains('disabled')) return;
+            
+            userAnswer.push(word);
+            chipEl.classList.add('disabled');
+            
+            // Update answer area
+            const answerArea = document.getElementById('answerArea');
+            answerArea.classList.remove('empty');
+            
+            const answerChip = document.createElement('div');
+            answerChip.className = 'word-chip in-answer';
+            answerChip.textContent = word;
+            answerChip.onclick = () => removeWord(word, answerChip, chipEl);
+            answerArea.appendChild(answerChip);
+            
+            // Enable check button if answer has words
+            document.getElementById('checkBtn').disabled = userAnswer.length === 0;
+        }
+
+        function removeWord(word, answerChip, bankChip) {
+            const index = userAnswer.indexOf(word);
+            if (index > -1) {
+                userAnswer.splice(index, 1);
+            }
+            
+            answerChip.remove();
+            bankChip.classList.remove('disabled');
+            
+            // Update empty state
+            const answerArea = document.getElementById('answerArea');
+            if (userAnswer.length === 0) {
+                answerArea.classList.add('empty');
+                answerArea.innerHTML = '<span style="opacity: 0.5;">Tap words below to build sentence</span>';
+            }
+            
+            document.getElementById('checkBtn').disabled = userAnswer.length === 0;
+        }
+
+        function clearAnswer() {
+            userAnswer = [];
+            
+            const answerArea = document.getElementById('answerArea');
+            answerArea.innerHTML = '<span style="opacity: 0.5;">Tap words below to build sentence</span>';
+            answerArea.className = 'answer-area empty';
+            
+            // Re-enable all word chips
+            document.querySelectorAll('.word-chip').forEach(chip => {
+                chip.classList.remove('disabled');
+            });
+            
+            document.getElementById('checkBtn').disabled = true;
+        }
+
+        function checkAnswer() {
+            const correctAnswer = currentExercise.spanish.join(' ');
+            const userAnswerStr = userAnswer.join(' ');
+            
+            const feedback = document.getElementById('feedback');
+            const answerArea = document.getElementById('answerArea');
+            
+            const isCorrect = userAnswerStr === correctAnswer;
+            
+            // Track word performance
+            const wordId = currentExercise.wordId;
+            if (wordId) {
+                if (!wordPerformance[wordId]) {
+                    wordPerformance[wordId] = { correct: 0, total: 0 };
+                }
+                wordPerformance[wordId].total++;
+                if (isCorrect) {
+                    wordPerformance[wordId].correct++;
+                }
+            }
+            
+            if (isCorrect) {
+                // Correct!
+                score++;
+                feedback.className = 'feedback correct';
+                feedback.textContent = '✓ Correct! Well done!';
+                answerArea.className = 'answer-area correct';
+                
+                setTimeout(() => {
+                    currentQuestion++;
+                    loadQuestion();
+                }, 1500);
+            } else {
+                // Wrong
+                feedback.className = 'feedback wrong';
+                feedback.textContent = `✗ Not quite. Try again! (Correct: ${correctAnswer})`;
+                answerArea.className = 'answer-area wrong';
+                
+                setTimeout(() => {
+                    clearAnswer();
+                    feedback.className = 'feedback';
+                }, 2000);
+            }
+        }
+
+        async function endGame() {
+            document.getElementById('gameSection').style.display = 'none';
+            document.getElementById('resultsSection').classList.add('active');
+            document.getElementById('progressFill').style.width = '100%';
+            
+            document.getElementById('finalScore').textContent = `${score} / ${exercises.length}`;
+            
+            const percentage = (score / exercises.length) * 100;
+            const timeSpent = Math.round((Date.now() - startTime) / 1000);
+            
+            let message = '';
+            if (percentage === 100) {
+                message = `🏆 Perfect! You\'re a Spanish master! (${timeSpent}s)`;
+            } else if (percentage >= 80) {
+                message = `🌟 Excellent! ${percentage}% accuracy in ${timeSpent}s!`;
+            } else if (percentage >= 60) {
+                message = `👍 Good job! ${percentage}% correct. Keep practicing!`;
+            } else {
+                message = `💪 Keep going! ${percentage}% correct. You're improving!`;
+            }
+            
+            document.getElementById('resultsMessage').textContent = message;
+            
+            // Submit game results
+            try {
+                const response = await fetch(`${API_BASE}/api/games/score`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: userId,
+                        gameType: 'sentence-builder',
+                        score: score,
+                        totalQuestions: exercises.length,
+                        timeSpent: timeSpent,
+                        wordPerformance: wordPerformance,
+                        timestamp: new Date().toISOString()
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('✅ Game results submitted:', data);
+                    
+                    if (data.newWordsMastered > 0) {
+                        const masteredMsg = document.createElement('p');
+                        masteredMsg.style.cssText = 'color: #10b981; font-weight: 600; margin-top: 10px;';
+                        masteredMsg.textContent = `🎉 You've mastered ${data.newWordsMastered} new word${data.newWordsMastered > 1 ? 's' : ''}!`;
+                        document.getElementById('resultsSection').appendChild(masteredMsg);
+                    }
+                }
+            } catch (error) {
+                console.error('Error submitting game results:', error);
+            }
+            
+            // Save score
+            const gamesCompleted = parseInt(localStorage.getItem('sentenceBuilderGames') || '0') + 1;
+            localStorage.setItem('sentenceBuilderGames', gamesCompleted);
+        }
+
+        function playAgain() {
+            currentQuestion = 0;
+            score = 0;
+            wordPerformance = {};
+            startTime = Date.now();
+            document.getElementById('gameSection').style.display = 'block';
+            document.getElementById('resultsSection').classList.remove('active');
+            initGame();
+        }
+
+        function goHome() {
+            window.location.href = '/tiktok-video-feed.html';
+        }
+
+        // Start game
+        initGame();
+        console.log('🔤 Sentence Builder - Personalized Mode Active');
+    </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+
+> unified-feed-server@1.0.0 start
+> node server.js
+
+📹 Loading video catalog from MULTIPLE sources...
+✅ Loaded 687 videos from Langfeed
+✅ Loaded 138 videos from public/videos/reels/
+🎬 TOTAL: 825 videos loaded
+🎯 Spanish Frequency Database loaded - 10K+ words organized by CEFR bands
+🎯 Spanish Frequency System loaded - TOP 20 words with viral contexts!
+🔥 Spanish Gossip Feed loaded - 8 celebrity drama items ready!
+🎯 Spanish Frequency Database loaded - 10K+ words organized by CEFR bands
+🔥 Smart Feed System initialized with frequency targeting
+🧠 Personalized SRS Feed System initialized
+✅ VideoDifficultyScorer initialized with 10k Spanish words
+🌐 Fast Translation Service initialized
+   Providers: Google Translate → DeepL → OpenAI
+🤖 AI Content Adapter initialized with 90/10 theory
+🎯 Level Detection System initialized
+📁 Serving videos from public/videos folder
+🎥 Video Feed API endpoints loaded
+🧠 Adaptive Learning API endpoints loaded
+⚠️  Error tracking not initialized: Cannot find module '@sentry/profiling-node'
+Require stack:
+- /Users/mindful/_projects/workspace3/lib/error-tracking.js
+- /Users/mindful/_projects/workspace3/server.js
+📊 Monitoring & Analytics endpoints loaded
+🤖 AI Systems loaded: Content Adapter + Level Detector
+🧠 SRS System loaded with SM-2 algorithm
+🏆 Gamification System loaded: Streaks, XP, Achievements
+📊 Engagement Tracker loaded: Watch time, Saves, Completions
+🎯 Spanish Frequency Database loaded - 10K+ words organized by CEFR bands
+📰 Adaptive News Curator loaded: ChatGPT Pulse + Perplexity style
+🤖 AI Discover Feed API loaded - ChatGPT Pulse style
+✅ Server running on http://localhost:3000
+📊 Stats Dashboard: http://localhost:3000
+🔌 API Endpoints:
+    GET  /api/health/status       - System health check
+    POST /api/analytics           - Track user events
+    GET  /api/user/level/:userId
+    GET  /api/user/words/:userId
+    POST /api/words/learned
+    GET  /api/user/stats/:userId
+    GET  /api/user/progress/:userId
+    
+✅ TTS cache directory initialized: /Users/mindful/_projects/workspace3/cache/tts
+(node:57730) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/mindful/_projects/workspace3/lib/viralContentEngine.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/mindful/_projects/workspace3/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[Queue] Supabase not configured - running in test mode
+✅ Firecrawl integration loaded

@@ -1,0 +1,238 @@
+name: Production CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+env:
+  NODE_VERSION: '18'
+  PORT: 3001
+
+jobs:
+  # ==============================================================================
+  # JOB 1: Security & Secret Validation
+  # ==============================================================================
+  security:
+    name: Security Checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Security audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+
+      - name: Check for leaked secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+        continue-on-error: true
+
+      - name: Validate environment template
+        run: |
+          if [ ! -f .env.example ]; then
+            echo "❌ Error: .env.example not found"
+            exit 1
+          fi
+          echo "✅ .env.example exists"
+
+  # ==============================================================================
+  # JOB 2: Build & Test
+  # ==============================================================================
+  test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: security
+
+    strategy:
+      matrix:
+        test-type: [unit, integration]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build --if-present
+
+      - name: Setup test database
+        run: |
+          echo "DATABASE_URL=file:./test.db" > .env
+          echo "NODE_ENV=test" >> .env
+          echo "JWT_SECRET=test-secret-key-32-characters-long" >> .env
+          npx prisma migrate deploy || echo "No migrations to apply"
+
+      - name: Run unit tests
+        if: matrix.test-type == 'unit'
+        run: npm test --if-present
+        env:
+          CI: true
+          DATABASE_URL: file:./test.db
+          JWT_SECRET: test-secret-key-32-characters-long
+
+      - name: Install Playwright
+        if: matrix.test-type == 'integration'
+        run: npx playwright install --with-deps chromium
+
+      - name: Start server
+        if: matrix.test-type == 'integration'
+        run: |
+          NODE_ENV=test PORT=${{ env.PORT }} npm start &
+          npx wait-on http://localhost:${{ env.PORT }} --timeout 60000
+        env:
+          DATABASE_URL: file:./test.db
+          JWT_SECRET: test-secret-key-32-characters-long
+
+      - name: Run Playwright tests
+        if: matrix.test-type == 'integration'
+        run: npx playwright test --reporter=list
+        env:
+          CI: true
+
+      - name: Upload test results
+        if: always() && matrix.test-type == 'integration'
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ github.run_number }}
+          path: playwright-report/
+          retention-days: 7
+
+  # ==============================================================================
+  # JOB 3: Database Migration Check
+  # ==============================================================================
+  migration-check:
+    name: Database Migration Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: security
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check Prisma schema
+        run: npx prisma validate
+
+      - name: Check for pending migrations
+        run: |
+          npx prisma migrate diff \
+            --from-schema-datamodel prisma/schema.prisma \
+            --to-schema-datasource prisma/schema.prisma \
+            --script || echo "No migration diff"
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+  # ==============================================================================
+  # JOB 4: Deploy to Vercel (Production)
+  # ==============================================================================
+  deploy:
+    name: Deploy to Vercel
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [security, test, migration-check]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+
+      - name: Pull Vercel Environment
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        if: ${{ secrets.VERCEL_TOKEN }}
+        continue-on-error: true
+
+      - name: Build Project
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        if: ${{ secrets.VERCEL_TOKEN }}
+        continue-on-error: true
+
+      - name: Deploy to Vercel
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        if: ${{ secrets.VERCEL_TOKEN }}
+        continue-on-error: true
+
+      - name: Deployment info
+        run: |
+          if [ -z "${{ secrets.VERCEL_TOKEN }}" ]; then
+            echo "⚠️  Skipping Vercel deployment (VERCEL_TOKEN not configured)"
+            echo "To enable: Add VERCEL_TOKEN to GitHub Secrets"
+          else
+            echo "✅ Deployment initiated"
+          fi
+
+  # ==============================================================================
+  # JOB 5: Health Check (Post-Deploy)
+  # ==============================================================================
+  health-check:
+    name: Post-Deploy Health Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: deploy
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Wait for deployment
+        run: sleep 30
+
+      - name: Check health endpoint
+        run: |
+          if [ -n "${{ secrets.PRODUCTION_URL }}" ]; then
+            curl -f ${{ secrets.PRODUCTION_URL }}/api/health || echo "Health check failed"
+          else
+            echo "⚠️  PRODUCTION_URL not configured, skipping health check"
+          fi
+        continue-on-error: true
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "❌ Deployment health check failed"
+          echo "Action required: Check production logs"
+

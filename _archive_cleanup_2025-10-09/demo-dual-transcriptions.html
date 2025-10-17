@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>✅ Dual Transcriptions Demo</title>
+    <script src="dual-language-transcriptions.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .demo-container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #ff0050;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        /* Dual Language Transcription Styles (Lingopie Pattern) */
+        .dual-language-transcription {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 24px;
+            margin: 20px 0;
+        }
+
+        .transcription-line {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin: 16px 0;
+            line-height: 1.6;
+        }
+
+        .language-flag {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .transcription-text {
+            flex: 1;
+            font-size: 18px;
+        }
+
+        .spanish-line .transcription-text {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .english-line .transcription-text {
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 16px;
+        }
+
+        /* Clickable Words (Lingopie Pattern) */
+        .clickable-word {
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+
+        .clickable-word:hover {
+            background: rgba(255, 0, 80, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .current-word {
+            background: linear-gradient(135deg, #ff0050, #ff4081);
+            font-weight: 700;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Word Translation Tooltip */
+        .word-translation-tooltip {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            animation: fadeIn 0.2s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tooltip-word {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .tooltip-translation {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .demo-note {
+            background: rgba(102, 126, 234, 0.2);
+            border-left: 4px solid #667eea;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1>✅ Dual-Language Transcriptions</h1>
+        <p style="text-align: center; opacity: 0.7; margin-bottom: 30px;">
+            Lingopie + YouTube Shorts 2025 pattern
+        </p>
+
+        <div id="transcription-demo"></div>
+
+        <div class="demo-note">
+            <strong>✨ Features:</strong><br>
+            • 🇪🇸 AI-punctuated Spanish (¡! ¿?)<br>
+            • 🇺🇸 English translation<br>
+            • 👆 Click any Spanish word for instant translation<br>
+            • 🎯 Real-time sync with video (simulated)
+        </div>
+    </div>
+
+    <script>
+        // Initialize dual transcriptions
+        const transcriptions = new DualLanguageTranscriptions();
+
+        // Demo data
+        const demoSpanish = "Hola mira lo que está pasando el semáforo está mostrando rojo y verde al mismo tiempo";
+        const demoEnglish = "Hello look at what's happening the traffic light is showing red and green at the same time";
+
+        // Create and display
+        const demo = transcriptions.createTranscriptionDisplay(demoSpanish, demoEnglish, 'demo-1');
+        document.getElementById('transcription-demo').appendChild(demo);
+
+        console.log('✅ Dual transcriptions loaded! Click any Spanish word to see translation.');
+    </script>
+</body>
+</html>

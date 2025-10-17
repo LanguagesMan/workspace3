@@ -1,0 +1,527 @@
+/**
+ * VOCABULARY REVIEW STYLES
+ * Design patterns: Anki + Quizlet + Duolingo
+ */
+
+.vocab-review-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--bg-dark);
+    z-index: 2000;
+    overflow-y: auto;
+    padding-bottom: 100px;
+}
+
+/* === HEADER (TikTok style) === */
+.vocab-header {
+    position: sticky;
+    top: 0;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(20px);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 100;
+}
+
+.vocab-back-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.vocab-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+    flex: 1;
+    text-align: center;
+}
+
+.vocab-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* === MODE SELECTOR (Duolingo tabs) === */
+.review-mode-selector {
+    display: flex;
+    gap: 12px;
+    padding: 20px;
+    justify-content: center;
+}
+
+.mode-btn {
+    flex: 1;
+    max-width: 150px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.mode-btn.active {
+    background: linear-gradient(135deg, var(--primary), #ff3366);
+    border-color: var(--primary);
+    color: white;
+}
+
+.mode-btn svg {
+    opacity: 0.8;
+}
+
+/* === SEARCH & FILTER (Duolingo style) === */
+.vocab-search {
+    display: flex;
+    gap: 12px;
+    padding: 0 20px 20px;
+}
+
+#vocabSearchInput {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    padding: 12px 16px;
+    font-size: 14px;
+}
+
+#vocabSearchInput::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+#vocabFilterSelect {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    padding: 12px 16px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* === FLASHCARD (Quizlet flip animation) === */
+.flashcard-container {
+    padding: 20px;
+}
+
+.flashcard {
+    width: 100%;
+    max-width: 400px;
+    height: 400px;
+    margin: 0 auto 30px;
+    perspective: 1000px;
+    cursor: pointer;
+}
+
+.flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.flashcard.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+}
+
+.flashcard-front,
+.flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.flashcard-back {
+    transform: rotateY(180deg);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(102, 126, 234, 0.1));
+}
+
+.card-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 20px;
+}
+
+.card-word {
+    font-size: 48px;
+    font-weight: 700;
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.card-context {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+    font-style: italic;
+}
+
+.tap-hint {
+    position: absolute;
+    bottom: 20px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+}
+
+.card-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* === REVIEW BUTTONS (Anki 4-button pattern) === */
+.review-buttons {
+    display: flex;
+    gap: 12px;
+    padding: 0 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.review-btn {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    padding: 16px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s;
+}
+
+.review-btn:hover {
+    transform: translateY(-2px);
+}
+
+.review-btn small {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 400;
+}
+
+.review-btn.again {
+    border-color: #ff4b4b;
+}
+
+.review-btn.again:hover {
+    background: rgba(255, 75, 75, 0.2);
+    border-color: #ff4b4b;
+}
+
+.review-btn.hard {
+    border-color: #ffa500;
+}
+
+.review-btn.hard:hover {
+    background: rgba(255, 165, 0, 0.2);
+    border-color: #ffa500;
+}
+
+.review-btn.good {
+    border-color: #58cc02;
+}
+
+.review-btn.good:hover {
+    background: rgba(88, 204, 2, 0.2);
+    border-color: #58cc02;
+}
+
+.review-btn.easy {
+    border-color: #00bfff;
+}
+
+.review-btn.easy:hover {
+    background: rgba(0, 191, 255, 0.2);
+    border-color: #00bfff;
+}
+
+/* === PROGRESS BAR === */
+.review-progress {
+    margin: 30px 20px 0;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), #ff3366);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    text-align: center;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 8px;
+}
+
+/* === QUIZ MODE (Duolingo style) === */
+.quiz-container {
+    padding: 40px 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.quiz-question {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.question-label {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 20px;
+}
+
+.question-word {
+    font-size: 48px;
+    font-weight: 700;
+    color: white;
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.quiz-option {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    padding: 16px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.2s;
+    text-align: left;
+}
+
+.quiz-option:hover:not(.disabled) {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateX(4px);
+}
+
+.option-letter {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.quiz-option.correct {
+    background: rgba(88, 204, 2, 0.2);
+    border-color: #58cc02;
+}
+
+.quiz-option.correct .option-letter {
+    background: #58cc02;
+}
+
+.quiz-option.incorrect {
+    background: rgba(255, 75, 75, 0.2);
+    border-color: #ff4b4b;
+}
+
+.quiz-option.incorrect .option-letter {
+    background: #ff4b4b;
+}
+
+.quiz-feedback {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.quiz-next-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--primary), #ff3366);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.2s;
+}
+
+.quiz-next-btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(255, 0, 80, 0.3);
+}
+
+/* === WORD LIST (Quizlet grid) === */
+.vocab-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    padding: 20px;
+}
+
+.vocab-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.vocab-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary);
+    box-shadow: 0 8px 20px rgba(255, 0, 80, 0.2);
+}
+
+.vocab-spanish {
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 8px;
+}
+
+.vocab-english {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 12px;
+}
+
+.vocab-card-stats {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* === EMPTY STATE === */
+.vocab-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 40px;
+    text-align: center;
+}
+
+.empty-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.vocab-empty h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.vocab-empty p {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 30px;
+    max-width: 300px;
+}
+
+.vocab-empty button {
+    background: linear-gradient(135deg, var(--primary), #ff3366);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    padding: 14px 28px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* === MOBILE RESPONSIVE === */
+@media (max-width: 768px) {
+    .card-word {
+        font-size: 36px;
+    }
+
+    .question-word {
+        font-size: 36px;
+    }
+
+    .review-buttons {
+        gap: 8px;
+    }
+
+    .review-btn {
+        padding: 12px 8px;
+        font-size: 12px;
+    }
+
+    .vocab-list {
+        grid-template-columns: 1fr;
+    }
+}

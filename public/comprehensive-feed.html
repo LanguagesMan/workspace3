@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 Discover - VIDA Language Learning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Modern color palette inspired by Feedly/Inoreader 2025 */
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #242424;
+            --bg-card: #1e1e1e;
+            --bg-card-hover: #252525;
+            
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --text-tertiary: #808080;
+            
+            --accent-primary: #10a37f;
+            --accent-secondary: #1a7ff5;
+            --accent-purple: #8b5cf6;
+            --accent-pink: #ec4899;
+            --accent-orange: #f97316;
+            
+            --border: #2a2a2a;
+            --border-light: #3a3a3a;
+            
+            /* Level colors */
+            --level-a1: #58cc02;
+            --level-a2: #00cd9c;
+            --level-b1: #1a7ff5;
+            --level-b2: #8b5cf6;
+            --level-c1: #ec4899;
+            --level-c2: #ef4444;
+
+            --sidebar-width: 240px;
+            --header-height: 64px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* HEADER */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            gap: 24px;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            min-width: var(--sidebar-width);
+        }
+
+        .logo-icon {
+            font-size: 28px;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 600px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 40px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 0 20px 0 44px;
+            font-size: 14px;
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            background: var(--bg-tertiary);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+            font-size: 16px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-left: auto;
+        }
+
+        .header-btn {
+            height: 36px;
+            padding: 0 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-btn:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--border-light);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: var(--header-height);
+            bottom: 0;
+            width: var(--sidebar-width);
+            background: var(--bg-primary);
+            border-right: 1px solid var(--border);
+            padding: 24px 16px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .sidebar-section {
+            margin-bottom: 32px;
+        }
+
+        .sidebar-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-tertiary);
+            margin-bottom: 12px;
+            padding: 0 12px;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 2px;
+        }
+
+        .filter-option:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .filter-option.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .filter-icon {
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .filter-count {
+            margin-left: auto;
+            font-size: 12px;
+            color: var(--text-tertiary);
+            background: var(--bg-secondary);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .level-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .level-badge.A1 { background: var(--level-a1); color: #000; }
+        .level-badge.A2 { background: var(--level-a2); color: #000; }
+        .level-badge.B1 { background: var(--level-b1); color: #fff; }
+        .level-badge.B2 { background: var(--level-b2); color: #fff; }
+        .level-badge.C1 { background: var(--level-c1); color: #fff; }
+        .level-badge.C2 { background: var(--level-c2); color: #fff; }
+
+        /* MAIN CONTENT */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding-top: var(--header-height);
+            min-height: 100vh;
+        }
+
+        .content-header {
+            padding: 24px 32px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-primary);
+            position: sticky;
+            top: var(--header-height);
+            z-index: 50;
+        }
+
+        .content-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .content-title {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .view-switcher {
+            display: flex;
+            gap: 8px;
+            background: var(--bg-secondary);
+            padding: 4px;
+            border-radius: 8px;
+        }
+
+        .view-btn {
+            padding: 6px 12px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .view-btn.active {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .filter-chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-chip {
+            padding: 6px 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-chip:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-light);
+        }
+
+        .filter-chip.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: #fff;
+        }
+
+        .chip-remove {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        /* FEED CONTAINER */
+        .feed-container {
+            padding: 24px 32px;
+        }
+
+        .feed-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 24px;
+        }
+
+        /* FEED CARD */
+        .feed-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .feed-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+            border-color: var(--border-light);
+        }
+
+        .feed-card-image {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+        }
+
+        .feed-card-content {
+            padding: 20px;
+        }
+
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .card-type {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .card-type.video { color: var(--accent-secondary); }
+        .card-type.article { color: var(--accent-orange); }
+        .card-type.music { color: var(--accent-pink); }
+
+        .card-source {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .card-time {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-left: auto;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .card-action-btn {
+            padding: 6px 12px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-action-btn:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .card-action-btn.primary {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: #fff;
+        }
+
+        .card-action-btn.primary:hover {
+            background: #0d8a6a;
+        }
+
+        .comprehension-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--bg-secondary);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .comprehension-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            transition: width 0.5s ease;
+        }
+
+        .comprehension-text {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-bottom: 8px;
+        }
+
+        /* LOADING STATE */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            color: var(--text-tertiary);
+            font-size: 14px;
+        }
+
+        .loading-spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid var(--bg-tertiary);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 12px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--text-tertiary);
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .logo {
+                min-width: auto;
+            }
+
+            :root {
+                --sidebar-width: 280px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .feed-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .content-header {
+                padding: 16px 20px;
+            }
+
+            .feed-container {
+                padding: 16px 20px;
+            }
+
+            .header {
+                padding: 0 16px;
+                gap: 12px;
+            }
+
+            .search-bar {
+                max-width: none;
+            }
+
+            .header-btn span {
+                display: none;
+            }
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feed-card {
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .feed-card:nth-child(n) {
+            animation-delay: calc(0.05s * var(--index, 0));
+        }
+    </style>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <a href="/dashboard.html" class="logo">
+            <span class="logo-icon">🌟</span>
+            <span>VIDA</span>
+        </a>
+        
+        <div class="search-bar">
+            <span class="search-icon">🔍</span>
+            <input 
+                type="text" 
+                class="search-input" 
+                placeholder="Search videos, articles, music..."
+                id="searchInput"
+            />
+        </div>
+
+        <div class="header-actions">
+            <button class="header-btn" id="refreshBtn">
+                <span>🔄</span>
+                <span>Refresh</span>
+            </button>
+            <button class="header-btn" id="settingsBtn">
+                <span>⚙️</span>
+            </button>
+            <div class="user-avatar" id="userAvatar">A2</div>
+        </div>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <!-- Content Types -->
+        <div class="sidebar-section">
+            <div class="sidebar-title">Content Types</div>
+            <div class="filter-option active" data-filter-type="types" data-value="all">
+                <span class="filter-icon">📚</span>
+                <span>All Content</span>
+            </div>
+            <div class="filter-option" data-filter-type="types" data-value="video">
+                <span class="filter-icon">🎥</span>
+                <span>Videos</span>
+            </div>
+            <div class="filter-option" data-filter-type="types" data-value="article">
+                <span class="filter-icon">📰</span>
+                <span>Articles</span>
+            </div>
+            <div class="filter-option" data-filter-type="types" data-value="music">
+                <span class="filter-icon">🎵</span>
+                <span>Music</span>
+            </div>
+        </div>
+
+        <!-- Difficulty Levels -->
+        <div class="sidebar-section">
+            <div class="sidebar-title">Difficulty Level</div>
+            <div class="filter-option active" data-filter-type="level" data-value="all">
+                <span class="filter-icon">🎯</span>
+                <span>All Levels</span>
+            </div>
+            <div class="filter-option" data-filter-type="level" data-value="A1">
+                <span class="level-badge A1">A1</span>
+                <span>Beginner</span>
+            </div>
+            <div class="filter-option" data-filter-type="level" data-value="A2">
+                <span class="level-badge A2">A2</span>
+                <span>Elementary</span>
+            </div>
+            <div class="filter-option" data-filter-type="level" data-value="B1">
+                <span class="level-badge B1">B1</span>
+                <span>Intermediate</span>
+            </div>
+            <div class="filter-option" data-filter-type="level" data-value="B2">
+                <span class="level-badge B2">B2</span>
+                <span>Upper Intermediate</span>
+            </div>
+            <div class="filter-option" data-filter-type="level" data-value="C1">
+                <span class="level-badge C1">C1</span>
+                <span>Advanced</span>
+            </div>
+            <div class="filter-option" data-filter-type="level" data-value="C2">
+                <span class="level-badge C2">C2</span>
+                <span>Proficient</span>
+            </div>
+        </div>
+
+        <!-- Topics -->
+        <div class="sidebar-section">
+            <div class="sidebar-title">Topics</div>
+            <div class="filter-option active" data-filter-type="topic" data-value="all">
+                <span class="filter-icon">🌍</span>
+                <span>All Topics</span>
+            </div>
+            <div class="filter-option" data-filter-type="topic" data-value="travel">
+                <span class="filter-icon">✈️</span>
+                <span>Travel</span>
+            </div>
+            <div class="filter-option" data-filter-type="topic" data-value="food">
+                <span class="filter-icon">🍽️</span>
+                <span>Food & Cuisine</span>
+            </div>
+            <div class="filter-option" data-filter-type="topic" data-value="culture">
+                <span class="filter-icon">🎭</span>
+                <span>Culture</span>
+            </div>
+            <div class="filter-option" data-filter-type="topic" data-value="sports">
+                <span class="filter-icon">⚽</span>
+                <span>Sports</span>
+            </div>
+            <div class="filter-option" data-filter-type="topic" data-value="technology">
+                <span class="filter-icon">💻</span>
+                <span>Technology</span>
+            </div>
+            <div class="filter-option" data-filter-type="topic" data-value="music">
+                <span class="filter-icon">🎸</span>
+                <span>Music & Arts</span>
+            </div>
+        </div>
+
+        <!-- Sort -->
+        <div class="sidebar-section">
+            <div class="sidebar-title">Sort By</div>
+            <div class="filter-option active" data-filter-type="sort" data-value="recommended">
+                <span class="filter-icon">⭐</span>
+                <span>Recommended</span>
+            </div>
+            <div class="filter-option" data-filter-type="sort" data-value="recent">
+                <span class="filter-icon">🕐</span>
+                <span>Most Recent</span>
+            </div>
+            <div class="filter-option" data-filter-type="sort" data-value="popular">
+                <span class="filter-icon">🔥</span>
+                <span>Most Popular</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <div class="content-header">
+            <div class="content-title-row">
+                <h1 class="content-title" id="feedTitle">Discover Content</h1>
+                <div class="view-switcher">
+                    <button class="view-btn active" data-view="grid">Grid</button>
+                    <button class="view-btn" data-view="list">List</button>
+                    <button class="view-btn" data-view="compact">Compact</button>
+                </div>
+            </div>
+            <div class="filter-chips" id="activeFilters">
+                <!-- Active filters will appear here -->
+            </div>
+        </div>
+
+        <div class="feed-container">
+            <div class="feed-grid" id="feedGrid">
+                <!-- Loading state -->
+                <div class="loading" id="loadingState">
+                    <div class="loading-spinner"></div>
+                    <span>Loading your personalized feed...</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // ============================================
+        // 🚀 COMPREHENSIVE FEED APP
+        // ============================================
+
+        class ComprehensiveFeedApp {
+            constructor() {
+                this.userId = this.getUserId();
+                this.filters = {
+                    types: 'video,article,music',
+                    level: null,
+                    topic: null,
+                    sort: 'recommended',
+                    search: null
+                };
+                this.feed = [];
+                this.loading = false;
+                this.page = 0;
+                this.limit = 30;
+                
+                this.init();
+            }
+
+            getUserId() {
+                // Get user ID from localStorage or generate temp one
+                let userId = localStorage.getItem('userId');
+                if (!userId) {
+                    userId = 'user_' + Math.random().toString(36).substr(2, 9);
+                    localStorage.setItem('userId', userId);
+                }
+                return userId;
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.loadFeed();
+                this.loadUserProfile();
+            }
+
+            setupEventListeners() {
+                // Filter options
+                document.querySelectorAll('.filter-option').forEach(option => {
+                    option.addEventListener('click', () => this.handleFilterClick(option));
+                });
+
+                // Search
+                const searchInput = document.getElementById('searchInput');
+                let searchTimeout;
+                searchInput.addEventListener('input', (e) => {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        this.filters.search = e.target.value || null;
+                        this.loadFeed();
+                    }, 500);
+                });
+
+                // Refresh button
+                document.getElementById('refreshBtn').addEventListener('click', () => {
+                    this.refreshFeed();
+                });
+
+                // View switcher
+                document.querySelectorAll('.view-btn').forEach(btn => {
+                    btn.addEventListener('click', () => this.switchView(btn));
+                });
+
+                // Infinite scroll
+                window.addEventListener('scroll', () => {
+                    if (this.shouldLoadMore()) {
+                        this.loadMore();
+                    }
+                });
+            }
+
+            handleFilterClick(option) {
+                const filterType = option.dataset.filterType;
+                const value = option.dataset.value;
+
+                // Update active state in sidebar
+                const siblings = option.parentElement.querySelectorAll('.filter-option');
+                siblings.forEach(sib => sib.classList.remove('active'));
+                option.classList.add('active');
+
+                // Update filters
+                if (filterType === 'types') {
+                    if (value === 'all') {
+                        this.filters.types = 'video,article,music';
+                    } else {
+                        this.filters.types = value;
+                    }
+                } else if (filterType === 'level') {
+                    this.filters.level = value === 'all' ? null : value;
+                } else if (filterType === 'topic') {
+                    this.filters.topic = value === 'all' ? null : value;
+                } else if (filterType === 'sort') {
+                    this.filters.sort = value;
+                }
+
+                // Reload feed
+                this.loadFeed();
+            }
+
+            async loadFeed() {
+                if (this.loading) return;
+
+                this.loading = true;
+                this.page = 0;
+                this.showLoading();
+
+                try {
+                    const params = new URLSearchParams({
+                        userId: this.userId,
+                        limit: this.limit,
+                        offset: this.page * this.limit,
+                        types: this.filters.types,
+                        sort: this.filters.sort
+                    });
+
+                    if (this.filters.level) params.append('level', this.filters.level);
+                    if (this.filters.topic) params.append('topic', this.filters.topic);
+                    if (this.filters.search) params.append('search', this.filters.search);
+
+                    const response = await fetch(`/api/feed/comprehensive?${params}`);
+                    const data = await response.json();
+
+                    if (data.success) {
+                        this.feed = data.items;
+                        this.renderFeed();
+                        this.updateTitle();
+                    } else {
+                        this.showError(data.error);
+                    }
+                } catch (error) {
+                    console.error('Error loading feed:', error);
+                    this.showError('Failed to load feed');
+                } finally {
+                    this.loading = false;
+                }
+            }
+
+            async loadMore() {
+                if (this.loading) return;
+
+                this.loading = true;
+                this.page++;
+
+                try {
+                    const params = new URLSearchParams({
+                        userId: this.userId,
+                        limit: this.limit,
+                        offset: this.page * this.limit,
+                        types: this.filters.types,
+                        sort: this.filters.sort
+                    });
+
+                    if (this.filters.level) params.append('level', this.filters.level);
+                    if (this.filters.topic) params.append('topic', this.filters.topic);
+                    if (this.filters.search) params.append('search', this.filters.search);
+
+                    const response = await fetch(`/api/feed/comprehensive?${params}`);
+                    const data = await response.json();
+
+                    if (data.success) {
+                        this.feed.push(...data.items);
+                        this.renderMoreItems(data.items);
+                    }
+                } catch (error) {
+                    console.error('Error loading more:', error);
+                } finally {
+                    this.loading = false;
+                }
+            }
+
+            renderFeed() {
+                const feedGrid = document.getElementById('feedGrid');
+                
+                if (this.feed.length === 0) {
+                    feedGrid.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">🔍</div>
+                            <div class="empty-title">No content found</div>
+                            <p>Try adjusting your filters or search query</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                feedGrid.innerHTML = this.feed.map((item, index) => 
+                    this.createFeedCard(item, index)
+                ).join('');
+
+                // Add click listeners
+                feedGrid.querySelectorAll('.feed-card').forEach((card, index) => {
+                    card.addEventListener('click', () => this.openContent(this.feed[index]));
+                });
+            }
+
+            renderMoreItems(items) {
+                const feedGrid = document.getElementById('feedGrid');
+                const startIndex = this.feed.length - items.length;
+                
+                items.forEach((item, index) => {
+                    const cardHTML = this.createFeedCard(item, startIndex + index);
+                    feedGrid.insertAdjacentHTML('beforeend', cardHTML);
+                });
+
+                // Add click listeners to new cards
+                const newCards = feedGrid.querySelectorAll('.feed-card');
+                newCards.forEach((card, index) => {
+                    if (index >= startIndex) {
+                        card.addEventListener('click', () => this.openContent(this.feed[index]));
+                    }
+                });
+            }
+
+            createFeedCard(item, index) {
+                const typeIcon = {
+                    video: '🎥',
+                    article: '📰',
+                    music: '🎵'
+                }[item.type] || '📄';
+
+                const image = item.thumbnail || item.image || item.albumArt || 
+                             '/api/placeholder/400/225';
+
+                const comprehension = item.comprehension?.comprehensionPercentage || null;
+                
+                return `
+                    <div class="feed-card" style="--index: ${index}" data-id="${item.id}">
+                        <img src="${image}" alt="${item.title}" class="feed-card-image" 
+                             onerror="this.src='/api/placeholder/400/225'"/>
+                        
+                        <div class="feed-card-content">
+                            <div class="card-meta">
+                                <span class="card-type ${item.type}">
+                                    ${typeIcon} ${item.type}
+                                </span>
+                                <span class="level-badge ${item.difficulty || item.level}">
+                                    ${item.difficulty || item.level || 'B1'}
+                                </span>
+                                ${item.source ? `<span class="card-source">${item.source}</span>` : ''}
+                                ${item.duration ? `<span class="card-time">${item.duration}</span>` : ''}
+                                ${item.readTime ? `<span class="card-time">${item.readTime}</span>` : ''}
+                            </div>
+
+                            ${comprehension ? `
+                                <div class="comprehension-text">
+                                    ${Math.round(comprehension)}% comprehension
+                                </div>
+                                <div class="comprehension-bar">
+                                    <div class="comprehension-fill" style="width: ${comprehension}%"></div>
+                                </div>
+                            ` : ''}
+
+                            <h3 class="card-title">${item.title}</h3>
+                            
+                            ${item.description || item.excerpt ? `
+                                <p class="card-description">
+                                    ${item.description || item.excerpt || ''}
+                                </p>
+                            ` : ''}
+
+                            <div class="card-footer">
+                                <button class="card-action-btn primary" onclick="event.stopPropagation(); app.playContent('${item.id}')">
+                                    ▶️ ${item.type === 'article' ? 'Read' : item.type === 'video' ? 'Watch' : 'Listen'}
+                                </button>
+                                <button class="card-action-btn" onclick="event.stopPropagation(); app.saveContent('${item.id}')">
+                                    💾 Save
+                                </button>
+                                <button class="card-action-btn" onclick="event.stopPropagation(); app.translateContent('${item.id}')">
+                                    🌐 Translate
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            openContent(item) {
+                console.log('Opening content:', item);
+                
+                // Track interaction
+                this.trackInteraction(item.id, item.type, 'view');
+
+                // Redirect to appropriate player/viewer
+                if (item.type === 'video') {
+                    window.location.href = `/unified-infinite-feed.html?video=${item.id}`;
+                } else if (item.type === 'article') {
+                    window.location.href = `/discover-articles.html?article=${item.id}`;
+                } else if (item.type === 'music') {
+                    window.location.href = `/music-player.html?song=${item.id}`;
+                }
+            }
+
+            playContent(contentId) {
+                const item = this.feed.find(i => i.id === contentId);
+                if (item) {
+                    this.openContent(item);
+                }
+            }
+
+            async saveContent(contentId) {
+                const item = this.feed.find(i => i.id === contentId);
+                if (!item) return;
+
+                try {
+                    await this.trackInteraction(contentId, item.type, 'save');
+                    alert('✅ Content saved!');
+                } catch (error) {
+                    console.error('Error saving content:', error);
+                }
+            }
+
+            async translateContent(contentId) {
+                alert('🌐 Translation feature coming soon!');
+            }
+
+            async trackInteraction(contentId, contentType, interactionType) {
+                try {
+                    await fetch('/api/feed/interaction', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            userId: this.userId,
+                            contentId,
+                            contentType,
+                            interactionType
+                        })
+                    });
+                } catch (error) {
+                    console.error('Error tracking interaction:', error);
+                }
+            }
+
+            async refreshFeed() {
+                try {
+                    const response = await fetch('/api/feed/refresh', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ userId: this.userId })
+                    });
+
+                    if (response.ok) {
+                        this.loadFeed();
+                    }
+                } catch (error) {
+                    console.error('Error refreshing feed:', error);
+                }
+            }
+
+            async loadUserProfile() {
+                try {
+                    const response = await fetch(`/api/adaptive/user-profile?userId=${this.userId}`);
+                    const data = await response.json();
+
+                    if (data.success && data.profile) {
+                        const avatar = document.getElementById('userAvatar');
+                        avatar.textContent = data.profile.proficiency_level || 'A2';
+                    }
+                } catch (error) {
+                    console.error('Error loading user profile:', error);
+                }
+            }
+
+            updateTitle() {
+                const title = document.getElementById('feedTitle');
+                let text = 'Discover Content';
+
+                if (this.filters.search) {
+                    text = `Search: "${this.filters.search}"`;
+                } else if (this.filters.topic && this.filters.topic !== 'all') {
+                    text = `${this.capitalizeFirst(this.filters.topic)} Content`;
+                } else if (this.filters.level) {
+                    text = `${this.filters.level} Level Content`;
+                }
+
+                title.textContent = text;
+            }
+
+            capitalizeFirst(str) {
+                return str.charAt(0).toUpperCase() + str.slice(1);
+            }
+
+            switchView(btn) {
+                document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const view = btn.dataset.view;
+                const feedGrid = document.getElementById('feedGrid');
+                
+                // Could implement different view layouts here
+                console.log('Switched to', view, 'view');
+            }
+
+            showLoading() {
+                const feedGrid = document.getElementById('feedGrid');
+                feedGrid.innerHTML = `
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        <span>Loading your personalized feed...</span>
+                    </div>
+                `;
+            }
+
+            showError(message) {
+                const feedGrid = document.getElementById('feedGrid');
+                feedGrid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">❌</div>
+                        <div class="empty-title">Error</div>
+                        <p>${message}</p>
+                    </div>
+                `;
+            }
+
+            shouldLoadMore() {
+                const scrollPosition = window.innerHeight + window.scrollY;
+                const threshold = document.documentElement.scrollHeight - 500;
+                return scrollPosition >= threshold && !this.loading;
+            }
+        }
+
+        // Initialize app
+        const app = new ComprehensiveFeedApp();
+    </script>
+</body>
+</html>
+

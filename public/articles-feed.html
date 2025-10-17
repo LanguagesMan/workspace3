@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📰 Articles - Langflix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #1a1a1a;
+            --bg-card: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent-primary: #00ff88;
+            --accent-secondary: #00d4ff;
+            --accent-gradient: linear-gradient(135deg, #00ff88 0%, #00d4ff 100%);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'SF Pro', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            padding-bottom: 80px;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 20px;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .user-level {
+            padding: 8px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent-primary);
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            position: sticky;
+            top: 66px;
+            z-index: 99;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 20px;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .category-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tabs-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 12px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+        }
+
+        .tab.active {
+            background: var(--accent-gradient);
+            border-color: transparent;
+            color: #000;
+        }
+
+        /* Articles Grid */
+        .articles-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 20px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--border-color);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        /* Article Card */
+        .article-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .article-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent-primary);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+        }
+
+        .article-content {
+            padding: 20px;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            gap: 12px;
+        }
+
+        .article-source {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .source-logo {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            background: var(--bg-secondary);
+        }
+
+        .article-badges {
+            display: flex;
+            gap: 8px;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .difficulty-badge {
+            background: var(--accent-gradient);
+            color: #000;
+        }
+
+        .audio-badge {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--accent-primary);
+            border: 1px solid var(--accent-primary);
+        }
+
+        .article-title {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .article-excerpt {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .article-stats {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .comprehension-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
+
+        .comprehension-fill {
+            height: 100%;
+            background: var(--accent-gradient);
+            border-radius: 3px;
+            transition: width 0.6s ease;
+        }
+
+        .article-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            color: var(--text-primary);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .action-btn:hover {
+            background: var(--bg-secondary);
+            border-color: var(--accent-primary);
+        }
+
+        .action-btn.playing {
+            background: var(--accent-gradient);
+            color: #000;
+            border-color: transparent;
+        }
+
+        /* Sticky Audio Player */
+        .audio-player {
+            position: fixed;
+            bottom: 70px;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            padding: 16px 20px;
+            z-index: 98;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .audio-player.active {
+            transform: translateY(0);
+        }
+
+        .audio-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .audio-thumbnail {
+            width: 56px;
+            height: 56px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: var(--bg-secondary);
+        }
+
+        .audio-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .audio-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .audio-source {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            border: none;
+            color: #000;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .close-player {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .empty-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .empty-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .audio-content {
+                gap: 12px;
+            }
+
+            .audio-thumbnail {
+                width: 48px;
+                height: 48px;
+            }
+        }
+
+        /* Article Reader Modal */
+        .reader-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            z-index: 1000;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .reader-modal.active {
+            display: block;
+        }
+
+        .reader-header {
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 101;
+        }
+
+        .reader-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px 100px;
+        }
+
+        .reader-title {
+            font-size: 32px;
+            font-weight: 800;
+            line-height: 1.3;
+            margin-bottom: 24px;
+        }
+
+        .reader-text {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+
+        .reader-text p {
+            margin-bottom: 20px;
+        }
+
+        .translatable-word {
+            cursor: pointer;
+            border-bottom: 1px dotted var(--accent-primary);
+            transition: all 0.2s ease;
+        }
+
+        .translatable-word:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-bottom-style: solid;
+        }
+
+        /* Word Translation Tooltip */
+        .word-tooltip {
+            position: absolute;
+            background: var(--bg-card);
+            border: 1px solid var(--accent-primary);
+            border-radius: 12px;
+            padding: 12px 16px;
+            box-shadow: var(--shadow);
+            z-index: 102;
+            display: none;
+            min-width: 200px;
+        }
+
+        .word-tooltip.active {
+            display: block;
+        }
+
+        .tooltip-word {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 6px;
+        }
+
+        .tooltip-translation {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .tooltip-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tooltip-btn {
+            padding: 6px 12px;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">📰 Articles</div>
+            <div class="user-level" id="userLevel">A2 Level</div>
+        </div>
+    </div>
+
+    <!-- Category Tabs -->
+    <div class="category-tabs">
+        <div class="tabs-container" id="categoryTabs">
+            <button class="tab active" data-category="for-you">For You</button>
+            <button class="tab" data-category="news">News</button>
+            <button class="tab" data-category="culture">Culture</button>
+            <button class="tab" data-category="sports">Sports</button>
+            <button class="tab" data-category="technology">Technology</button>
+            <button class="tab" data-category="entertainment">Entertainment</button>
+            <button class="tab" data-category="science">Science</button>
+        </div>
+    </div>
+
+    <!-- Articles Container -->
+    <div class="articles-container">
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <p>Loading articles...</p>
+        </div>
+        <div class="articles-grid" id="articlesGrid" style="display: none;"></div>
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon">📰</div>
+            <div class="empty-title">No articles found</div>
+            <div class="empty-text">Try selecting a different category</div>
+        </div>
+    </div>
+
+    <!-- Sticky Audio Player -->
+    <div class="audio-player" id="audioPlayer">
+        <div class="audio-content">
+            <img src="" alt="" class="audio-thumbnail" id="audioThumbnail">
+            <div class="audio-info">
+                <div class="audio-title" id="audioTitle">Article Title</div>
+                <div class="audio-source" id="audioSource">Source</div>
+            </div>
+            <div class="audio-controls">
+                <button class="control-btn" id="playPauseBtn">▶</button>
+                <button class="close-player" id="closePlayer">✕</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Article Reader Modal -->
+    <div class="reader-modal" id="readerModal">
+        <div class="reader-header">
+            <h3>Reading Mode</h3>
+            <div style="display: flex; gap: 12px;">
+                <button class="action-btn" id="readerAudioBtn">🔊 Listen</button>
+                <button class="action-btn" id="closeReader">✕ Close</button>
+            </div>
+        </div>
+        <div class="reader-content">
+            <h1 class="reader-title" id="readerTitle"></h1>
+            <div class="reader-text" id="readerText"></div>
+        </div>
+    </div>
+
+    <!-- Word Translation Tooltip -->
+    <div class="word-tooltip" id="wordTooltip">
+        <div class="tooltip-word" id="tooltipWord"></div>
+        <div class="tooltip-translation" id="tooltipTranslation"></div>
+        <div class="tooltip-actions">
+            <button class="tooltip-btn" id="saveWordBtn">💾 Save</button>
+            <button class="tooltip-btn" id="hearWordBtn">🔊 Hear</button>
+        </div>
+    </div>
+
+    <!-- Include Bottom Navigation -->
+    <script>
+        // Load bottom navigation
+        fetch('/components/bottom-nav.html')
+            .then(response => response.text())
+            .then(html => {
+                document.body.insertAdjacentHTML('beforeend', html);
+            })
+            .catch(error => console.error('Error loading navigation:', error));
+    </script>
+
+    <script>
+        // State
+        let articles = [];
+        let currentCategory = 'for-you';
+        let currentAudio = null;
+        let currentArticle = null;
+        let userProfile = {
+            level: 'A2',
+            interests: ['culture', 'technology', 'news']
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUserProfile();
+            loadArticles();
+            setupEventListeners();
+        });
+
+        // Load user profile
+        function loadUserProfile() {
+            const level = localStorage.getItem('userLevel') || 'A2';
+            const interests = JSON.parse(localStorage.getItem('userInterests') || '["culture", "technology", "news"]');
+            userProfile = { level, interests };
+            document.getElementById('userLevel').textContent = `${level} Level`;
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Category tabs
+            document.getElementById('categoryTabs').addEventListener('click', (e) => {
+                if (e.target.classList.contains('tab')) {
+                    const category = e.target.dataset.category;
+                    switchCategory(category);
+                }
+            });
+
+            // Audio player controls
+            document.getElementById('playPauseBtn').addEventListener('click', toggleAudio);
+            document.getElementById('closePlayer').addEventListener('click', stopAudio);
+
+            // Reader modal
+            document.getElementById('closeReader').addEventListener('click', closeReader);
+            document.getElementById('readerAudioBtn').addEventListener('click', () => {
+                if (currentArticle) {
+                    playArticleAudio(currentArticle);
+                }
+            });
+
+            // Word tooltip
+            document.getElementById('saveWordBtn').addEventListener('click', saveCurrentWord);
+            document.getElementById('hearWordBtn').addEventListener('click', hearCurrentWord);
+        }
+
+        // Switch category
+        function switchCategory(category) {
+            currentCategory = category;
+            
+            // Update active tab
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.category === category);
+            });
+
+            // Reload articles
+            loadArticles();
+        }
+
+        // Load articles
+        async function loadArticles() {
+            const loading = document.getElementById('loading');
+            const grid = document.getElementById('articlesGrid');
+            const emptyState = document.getElementById('emptyState');
+
+            loading.style.display = 'block';
+            grid.style.display = 'none';
+            emptyState.style.display = 'none';
+
+            try {
+                const userId = localStorage.getItem('userId') || 'demo-user';
+                const interests = userProfile.interests.join(',');
+                
+                // Use enhanced API with ALL sources (NewsAPI, Guardian, Reddit, YouTube, etc.)
+                const response = await fetch(`/api/articles-enhanced/feed?category=${currentCategory}&level=${userProfile.level}&limit=24&userId=${userId}&interests=${interests}`);
+                const data = await response.json();
+
+                if (data.success && data.articles && data.articles.length > 0) {
+                    articles = data.articles;
+                    console.log(`✅ Loaded ${articles.length} articles from sources:`, data.sources);
+                    if (data.userProfile) {
+                        console.log(`👤 User profile: Level ${data.userProfile.level}, Vocabulary: ${data.userProfile.vocabulary} words`);
+                    }
+                    renderArticles();
+                    grid.style.display = 'grid';
+                } else {
+                    emptyState.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error loading articles:', error);
+                // Show fallback articles
+                articles = generateFallbackArticles();
+                renderArticles();
+                grid.style.display = 'grid';
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        // Render articles
+        function renderArticles() {
+            const grid = document.getElementById('articlesGrid');
+            grid.innerHTML = articles.map(article => createArticleCard(article)).join('');
+
+            // Add event listeners to article cards
+            grid.querySelectorAll('.article-card').forEach((card, index) => {
+                card.addEventListener('click', () => openArticle(articles[index]));
+            });
+
+            // Add event listeners to audio buttons
+            grid.querySelectorAll('.play-audio-btn').forEach((btn, index) => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    playArticleAudio(articles[index]);
+                });
+            });
+        }
+
+        // Create article card HTML
+        function createArticleCard(article) {
+            const comprehension = article.comprehension?.comprehensionPercentage || 85;
+            const readTime = article.readTime || '5 min';
+            const difficulty = article.difficulty || userProfile.level;
+
+            return `
+                <div class="article-card" data-id="${article.id}">
+                    <img src="${article.image || '/api/placeholder/400/200'}" alt="" class="article-image" onerror="this.src='/api/placeholder/400/200'">
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <div class="article-source">
+                                <img src="/api/placeholder/20/20" alt="" class="source-logo">
+                                <span>${article.source || 'Spanish News'}</span>
+                            </div>
+                            <div class="article-badges">
+                                <span class="badge difficulty-badge">${difficulty}</span>
+                                <span class="badge audio-badge">🔊</span>
+                            </div>
+                        </div>
+                        <h3 class="article-title">${article.title}</h3>
+                        <p class="article-excerpt">${article.excerpt || article.content?.substring(0, 150) + '...'}</p>
+                        <div class="comprehension-bar">
+                            <div class="comprehension-fill" style="width: ${comprehension}%"></div>
+                        </div>
+                        <div class="article-stats">
+                            <div class="stat-item">
+                                <span>📊 ${comprehension}% match</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>⏱️ ${readTime} read</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Open article in reader
+        function openArticle(article) {
+            currentArticle = article;
+            const modal = document.getElementById('readerModal');
+            const title = document.getElementById('readerTitle');
+            const text = document.getElementById('readerText');
+
+            title.textContent = article.title;
+            
+            // Make words clickable for translation
+            const content = article.content || article.excerpt || '';
+            const words = content.split(/\s+/);
+            const clickableText = words.map(word => {
+                const cleanWord = word.replace(/[.,!?;:]/g, '');
+                if (cleanWord.length > 3) {
+                    return `<span class="translatable-word" data-word="${cleanWord}">${word}</span>`;
+                }
+                return word;
+            }).join(' ');
+
+            text.innerHTML = `<p>${clickableText}</p>`;
+
+            // Add click listeners to words
+            text.querySelectorAll('.translatable-word').forEach(span => {
+                span.addEventListener('click', (e) => translateWord(e));
+            });
+
+            modal.classList.add('active');
+        }
+
+        // Close reader
+        function closeReader() {
+            document.getElementById('readerModal').classList.remove('active');
+        }
+
+        // Play article audio
+        function playArticleAudio(article) {
+            const player = document.getElementById('audioPlayer');
+            const thumbnail = document.getElementById('audioThumbnail');
+            const title = document.getElementById('audioTitle');
+            const source = document.getElementById('audioSource');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+
+            thumbnail.src = article.image || '/api/placeholder/56/56';
+            title.textContent = article.title;
+            source.textContent = article.source || 'Spanish News';
+
+            player.classList.add('active');
+            playPauseBtn.textContent = '⏸';
+
+            // Generate TTS audio
+            generateAndPlayTTS(article.content || article.excerpt || article.title);
+        }
+
+        // Generate and play TTS
+        async function generateAndPlayTTS(text) {
+            try {
+                // Stop current audio if playing
+                if (currentAudio) {
+                    currentAudio.pause();
+                    currentAudio = null;
+                }
+
+                // Use Enhanced TTS API (ElevenLabs → OpenAI) [[memory:6917657]]
+                const response = await fetch('/api/articles-enhanced/tts', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        text, 
+                        voice: 'nova',
+                        language: 'es'
+                    })
+                });
+
+                if (response.ok) {
+                    const audioBlob = await response.blob();
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    currentAudio = new Audio(audioUrl);
+                    currentAudio.play();
+
+                    currentAudio.onended = () => {
+                        document.getElementById('playPauseBtn').textContent = '▶';
+                    };
+                } else {
+                    console.error('TTS generation failed');
+                    // Fallback to Web Speech API
+                    speakWithWebSpeech(text);
+                }
+            } catch (error) {
+                console.error('Error generating TTS:', error);
+                // Fallback to Web Speech API
+                speakWithWebSpeech(text);
+            }
+        }
+
+        // Fallback Web Speech API
+        function speakWithWebSpeech(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'es-ES';
+                utterance.rate = 0.9;
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Toggle audio playback
+        function toggleAudio() {
+            const btn = document.getElementById('playPauseBtn');
+            if (currentAudio) {
+                if (currentAudio.paused) {
+                    currentAudio.play();
+                    btn.textContent = '⏸';
+                } else {
+                    currentAudio.pause();
+                    btn.textContent = '▶';
+                }
+            }
+        }
+
+        // Stop audio
+        function stopAudio() {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio = null;
+            }
+            document.getElementById('audioPlayer').classList.remove('active');
+            document.getElementById('playPauseBtn').textContent = '▶';
+        }
+
+        // Translate word
+        async function translateWord(event) {
+            const wordElement = event.target;
+            const word = wordElement.dataset.word;
+            const tooltip = document.getElementById('wordTooltip');
+
+            try {
+                // Use enhanced translation API (DeepL → OpenAI)
+                const response = await fetch(`/api/articles-enhanced/translate`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: word, from: 'es', to: 'en' })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('tooltipWord').textContent = word;
+                    document.getElementById('tooltipTranslation').textContent = data.translation;
+
+                    // Position tooltip
+                    const rect = wordElement.getBoundingClientRect();
+                    tooltip.style.left = `${rect.left}px`;
+                    tooltip.style.top = `${rect.bottom + 10}px`;
+                    tooltip.classList.add('active');
+
+                    // Store current word for actions
+                    tooltip.dataset.currentWord = word;
+                    tooltip.dataset.translation = data.translation;
+                }
+            } catch (error) {
+                console.error('Translation error:', error);
+            }
+        }
+
+        // Save current word
+        async function saveCurrentWord() {
+            const tooltip = document.getElementById('wordTooltip');
+            const word = tooltip.dataset.currentWord;
+            const translation = tooltip.dataset.translation;
+
+            try {
+                const userId = localStorage.getItem('userId') || 'demo-user';
+                await fetch('/api/vocabulary/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId,
+                        word,
+                        translation,
+                        context: currentArticle?.title || ''
+                    })
+                });
+
+                // Show success feedback
+                alert(`✅ "${word}" saved to vocabulary!`);
+                tooltip.classList.remove('active');
+            } catch (error) {
+                console.error('Error saving word:', error);
+            }
+        }
+
+        // Hear current word
+        function hearCurrentWord() {
+            const tooltip = document.getElementById('wordTooltip');
+            const word = tooltip.dataset.currentWord;
+            speakWithWebSpeech(word);
+        }
+
+        // Generate fallback articles
+        function generateFallbackArticles() {
+            const categories = {
+                'for-you': ['Cultura', 'Tecnología', 'Noticias'],
+                'news': ['Actualidad', 'Mundo', 'Economía'],
+                'culture': ['Arte', 'Literatura', 'Música'],
+                'sports': ['Fútbol', 'Tenis', 'Baloncesto'],
+                'technology': ['IA', 'Programación', 'Innovación'],
+                'entertainment': ['Cine', 'Series', 'Celebridades'],
+                'science': ['Investigación', 'Descubrimientos', 'Salud']
+            };
+
+            const topics = categories[currentCategory] || categories['for-you'];
+            
+            return Array.from({ length: 12 }, (_, i) => ({
+                id: `article-${i}`,
+                title: `${topics[i % topics.length]}: Artículo Interesante ${i + 1}`,
+                excerpt: 'Este es un artículo fascinante sobre temas actuales en español. Perfecto para tu nivel de aprendizaje.',
+                content: 'Este es un artículo fascinante sobre temas actuales en español. Perfecto para tu nivel de aprendizaje. Aprenderás vocabulario nuevo y mejorarás tu comprensión lectora.',
+                source: 'El País',
+                image: `/api/placeholder/400/200`,
+                difficulty: userProfile.level,
+                readTime: `${Math.floor(Math.random() * 5) + 3} min`,
+                comprehension: {
+                    comprehensionPercentage: 75 + Math.floor(Math.random() * 20)
+                }
+            }));
+        }
+
+        // Hide word tooltip when clicking outside
+        document.addEventListener('click', (e) => {
+            const tooltip = document.getElementById('wordTooltip');
+            if (!e.target.classList.contains('translatable-word') && !tooltip.contains(e.target)) {
+                tooltip.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
+

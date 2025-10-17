@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ Speed Round - Langflix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); /* Fire gradient */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 8px;
+            color: #ff6b6b;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #777;
+        }
+
+        .timer-container {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .timer {
+            font-size: 72px;
+            font-weight: 900;
+            color: #ff6b6b;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .timer.warning {
+            color: #ee5a6f;
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .score-display {
+            background: #f7f7f7;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .score-label {
+            font-size: 14px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .score-value {
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .question-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 48px 32px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .question-word {
+            font-size: 56px;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 12px;
+        }
+
+        .question-type {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 24px;
+            font-size: 28px;
+            font-weight: 700;
+            border: 3px solid #e5e5e5;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 24px;
+            transition: all 0.2s;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .answer-input.correct {
+            border-color: #58cc02;
+            background: #d7f5dd;
+        }
+
+        .answer-input.wrong {
+            border-color: #ff4b4b;
+            background: #fde8e8;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-12px); }
+            75% { transform: translateX(12px); }
+        }
+
+        .feedback {
+            text-align: center;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: 700;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #d7f5dd;
+            color: #58cc02;
+            display: block;
+        }
+
+        .feedback.wrong {
+            background: #fde8e8;
+            color: #ff4b4b;
+            display: block;
+        }
+
+        .streak-indicator {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 24px;
+            font-weight: 800;
+            color: #feca57;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            flex: 1;
+            padding: 20px;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-submit {
+            background: #58cc02;
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background: #42a802;
+            transform: translateY(-2px);
+        }
+
+        .btn-skip {
+            background: #e5e5e5;
+            color: #666;
+        }
+
+        .btn-skip:hover {
+            background: #d5d5d5;
+        }
+
+        .results-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .results-screen.active {
+            display: block;
+        }
+
+        .results-icon {
+            font-size: 100px;
+            margin-bottom: 20px;
+            animation: bounce 1s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .results-title {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+
+        .results-subtitle {
+            font-size: 20px;
+            color: #777;
+            margin-bottom: 32px;
+        }
+
+        .results-stats {
+            background: #f7f7f7;
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 32px;
+        }
+
+        .results-stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .results-stat:last-child {
+            border-bottom: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 0;
+        }
+
+        .loading-spinner {
+            border: 4px solid #e5e5e5;
+            border-top: 4px solid #ff6b6b;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button:hover {
+            background: white;
+            transform: translateY(-2px);
+        }
+
+        .combo-display {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 800;
+            color: #feca57;
+            margin: 16px 0;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="goBack()">← Games Hub</button>
+
+    <div class="game-container">
+        <!-- Loading Screen -->
+        <div id="loadingScreen" class="loading">
+            <div class="loading-spinner"></div>
+            <p style="font-size: 18px; color: #777;">Preparing speed round...</p>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" style="display: none;">
+            <div class="header">
+                <h1>⚡ Speed Round</h1>
+                <p class="subtitle">Translate as fast as you can!</p>
+            </div>
+
+            <div class="timer-container">
+                <div class="timer" id="timer">60</div>
+                <div style="font-size: 14px; color: #999; margin-top: 8px;">seconds remaining</div>
+            </div>
+
+            <div class="score-display">
+                <div class="score-label">Score</div>
+                <div class="score-value" id="score">0</div>
+            </div>
+
+            <div class="combo-display" id="comboDisplay"></div>
+
+            <div class="question-card">
+                <div class="question-type" id="questionType">SPANISH → ENGLISH</div>
+                <div class="question-word" id="questionWord">-</div>
+            </div>
+
+            <div class="feedback" id="feedback"></div>
+
+            <input 
+                type="text" 
+                id="answerInput" 
+                class="answer-input" 
+                placeholder="Type your answer..."
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+            />
+
+            <div class="buttons">
+                <button class="btn-skip" onclick="skipWord()">Skip ⏭</button>
+                <button class="btn-submit" onclick="submitAnswer()">Submit ✓</button>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px; color: #999; font-size: 14px;">
+                Press Enter to submit
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="results-screen">
+            <div class="results-icon">🚀</div>
+            <div class="results-title" style="color: #ff6b6b;">Lightning Fast!</div>
+            <div class="results-subtitle">Speed round complete!</div>
+
+            <div class="results-stats">
+                <div class="results-stat">
+                    <span>Words Translated</span>
+                    <span id="wordsTranslated" style="font-weight: 800; color: #ff6b6b; font-size: 24px;">0</span>
+                </div>
+                <div class="results-stat">
+                    <span>Accuracy</span>
+                    <span id="accuracy" style="font-weight: 700;">0%</span>
+                </div>
+                <div class="results-stat">
+                    <span>Final Score</span>
+                    <span id="finalScore" style="font-weight: 800; color: #feca57; font-size: 20px;">0</span>
+                </div>
+                <div class="results-stat">
+                    <span>XP Earned</span>
+                    <span id="xpEarned" style="font-weight: 800; color: #58cc02; font-size: 20px;">+0 XP</span>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="btn-skip" onclick="goBack()">← Games Hub</button>
+                <button class="btn-submit" onclick="playAgain()">🔄 Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let gameState = {
+            userId: localStorage.getItem('userId') || 'default-user',
+            words: [],
+            currentIndex: 0,
+            score: 0,
+            correct: 0,
+            streak: 0,
+            maxStreak: 0,
+            timer: 60,
+            timerInterval: null,
+            gameResults: []
+        };
+
+        // Initialize game
+        async function initGame() {
+            try {
+                const response = await fetch(`/api/games/speed-round?userId=${gameState.userId}&count=30`);
+                const data = await response.json();
+
+                if (!data.success || data.words.length === 0) {
+                    alert('No vocabulary found! Watch videos and save words first.');
+                    window.location.href = '/games-hub.html';
+                    return;
+                }
+
+                gameState.words = data.words;
+
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('gameScreen').style.display = 'block';
+
+                showWord();
+                startTimer();
+
+                // Focus input
+                document.getElementById('answerInput').focus();
+
+                // Enter key to submit
+                document.getElementById('answerInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        submitAnswer();
+                    }
+                });
+
+            } catch (error) {
+                console.error('Error initializing game:', error);
+                alert('Error loading game. Please try again.');
+                window.location.href = '/games-hub.html';
+            }
+        }
+
+        // Show current word
+        function showWord() {
+            if (gameState.currentIndex >= gameState.words.length) {
+                finishGame();
+                return;
+            }
+
+            const word = gameState.words[gameState.currentIndex];
+            
+            // Random: show Spanish or English
+            const showSpanish = Math.random() > 0.5;
+            
+            if (showSpanish) {
+                document.getElementById('questionType').textContent = 'SPANISH → ENGLISH';
+                document.getElementById('questionWord').textContent = word.word;
+                gameState.currentWord = word.word;
+                gameState.currentAnswer = word.translation;
+            } else {
+                document.getElementById('questionType').textContent = 'ENGLISH → SPANISH';
+                document.getElementById('questionWord').textContent = word.translation;
+                gameState.currentWord = word.translation;
+                gameState.currentAnswer = word.word;
+            }
+
+            // Clear input and feedback
+            const input = document.getElementById('answerInput');
+            input.value = '';
+            input.className = 'answer-input';
+            input.disabled = false;
+            input.focus();
+
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('feedback').textContent = '';
+        }
+
+        // Submit answer
+        function submitAnswer() {
+            const input = document.getElementById('answerInput');
+            const userAnswer = input.value.trim().toLowerCase();
+            const correctAnswer = gameState.currentAnswer.toLowerCase();
+
+            if (!userAnswer) return;
+
+            // Disable input
+            input.disabled = true;
+
+            // Check answer (allow minor typos)
+            const isCorrect = checkAnswer(userAnswer, correctAnswer);
+
+            if (isCorrect) {
+                input.classList.add('correct');
+                showFeedback(true);
+                gameState.correct++;
+                gameState.score += 10 + (gameState.streak * 2); // Bonus for streak
+                gameState.streak++;
+                gameState.maxStreak = Math.max(gameState.maxStreak, gameState.streak);
+                
+                gameState.gameResults.push({
+                    word: gameState.currentWord,
+                    correct: true
+                });
+
+                // Show combo
+                if (gameState.streak >= 3) {
+                    document.getElementById('comboDisplay').textContent = `🔥 ${gameState.streak}x COMBO!`;
+                }
+
+            } else {
+                input.classList.add('wrong');
+                showFeedback(false, correctAnswer);
+                gameState.streak = 0;
+                
+                gameState.gameResults.push({
+                    word: gameState.currentWord,
+                    correct: false
+                });
+
+                document.getElementById('comboDisplay').textContent = '';
+            }
+
+            updateUI();
+
+            // Next word after delay
+            setTimeout(() => {
+                gameState.currentIndex++;
+                showWord();
+            }, 800);
+        }
+
+        // Check answer (allow ~80% similarity)
+        function checkAnswer(user, correct) {
+            // Exact match
+            if (user === correct) return true;
+
+            // Very close match (Levenshtein distance)
+            const distance = levenshteinDistance(user, correct);
+            const maxAllowedDistance = Math.ceil(correct.length * 0.2); // 20% error margin
+            
+            return distance <= maxAllowedDistance;
+        }
+
+        // Levenshtein distance (edit distance)
+        function levenshteinDistance(a, b) {
+            const matrix = [];
+
+            for (let i = 0; i <= b.length; i++) {
+                matrix[i] = [i];
+            }
+
+            for (let j = 0; j <= a.length; j++) {
+                matrix[0][j] = j;
+            }
+
+            for (let i = 1; i <= b.length; i++) {
+                for (let j = 1; j <= a.length; j++) {
+                    if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                        matrix[i][j] = matrix[i - 1][j - 1];
+                    } else {
+                        matrix[i][j] = Math.min(
+                            matrix[i - 1][j - 1] + 1, // substitution
+                            matrix[i][j - 1] + 1,     // insertion
+                            matrix[i - 1][j] + 1      // deletion
+                        );
+                    }
+                }
+            }
+
+            return matrix[b.length][a.length];
+        }
+
+        // Show feedback
+        function showFeedback(correct, correctAnswer = '') {
+            const feedback = document.getElementById('feedback');
+            if (correct) {
+                feedback.className = 'feedback correct';
+                feedback.textContent = '✓ Correct!';
+            } else {
+                feedback.className = 'feedback wrong';
+                feedback.textContent = `✗ Correct answer: ${correctAnswer}`;
+            }
+        }
+
+        // Start timer
+        function startTimer() {
+            gameState.timerInterval = setInterval(() => {
+                gameState.timer--;
+                document.getElementById('timer').textContent = gameState.timer;
+
+                if (gameState.timer <= 10) {
+                    document.getElementById('timer').classList.add('warning');
+                }
+
+                if (gameState.timer <= 0) {
+                    finishGame();
+                }
+            }, 1000);
+        }
+
+        // Update UI
+        function updateUI() {
+            document.getElementById('score').textContent = gameState.score;
+        }
+
+        // Skip word
+        function skipWord() {
+            gameState.currentIndex++;
+            showWord();
+        }
+
+        // Finish game
+        async function finishGame() {
+            clearInterval(gameState.timerInterval);
+
+            const total = gameState.gameResults.length;
+            const accuracy = total > 0 ? Math.round((gameState.correct / total) * 100) : 0;
+            const xpGained = gameState.score;
+
+            // Submit results to API
+            try {
+                await fetch('/api/games/submit-results', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: gameState.userId,
+                        gameType: 'speed-round',
+                        results: gameState.gameResults,
+                        score: gameState.score,
+                        duration: 60 - gameState.timer
+                    })
+                });
+            } catch (error) {
+                console.error('Error submitting results:', error);
+            }
+
+            // Show results
+            document.getElementById('wordsTranslated').textContent = total;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+            document.getElementById('finalScore').textContent = gameState.score;
+            document.getElementById('xpEarned').textContent = '+' + xpGained + ' XP';
+
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('resultsScreen').classList.add('active');
+        }
+
+        // Play again
+        function playAgain() {
+            gameState = {
+                userId: gameState.userId,
+                words: [],
+                currentIndex: 0,
+                score: 0,
+                correct: 0,
+                streak: 0,
+                maxStreak: 0,
+                timer: 60,
+                timerInterval: null,
+                gameResults: []
+            };
+
+            document.getElementById('resultsScreen').classList.remove('active');
+            document.getElementById('loadingScreen').style.display = 'block';
+
+            initGame();
+        }
+
+        // Go back
+        function goBack() {
+            window.location.href = '/games-hub.html';
+        }
+
+        // Start game on load
+        window.onload = initGame;
+    </script>
+</body>
+</html>
+

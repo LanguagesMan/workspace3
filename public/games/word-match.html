@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Word Match - Langflix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #58cc02 0%, #42a802 100%); /* Duolingo green */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 12px;
+            color: #1cb0f6; /* Duolingo blue */
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #777;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f7f7f7;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: #58cc02;
+        }
+
+        .timer {
+            font-size: 28px;
+            font-weight: 800;
+            color: #ff4b4b;
+        }
+
+        .timer.warning {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: #e5e5e5;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 32px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #58cc02, #7ee510);
+            transition: width 0.3s ease;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .card {
+            aspect-ratio: 2/1;
+            background: #f7f7f7;
+            border: 3px solid #e5e5e5;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .card:hover:not(.matched):not(.selected) {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border-color: #1cb0f6;
+        }
+
+        .card.selected {
+            background: #1cb0f6;
+            color: white;
+            border-color: #1cb0f6;
+            transform: scale(1.05);
+        }
+
+        .card.matched {
+            background: #58cc02;
+            color: white;
+            border-color: #58cc02;
+            animation: matchSuccess 0.5s ease;
+            pointer-events: none;
+        }
+
+        .card.wrong {
+            background: #ff4b4b;
+            color: white;
+            border-color: #ff4b4b;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes matchSuccess {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15) rotate(3deg); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-12px); }
+            75% { transform: translateX(12px); }
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            flex: 1;
+            padding: 20px;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #58cc02;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #42a802;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(88, 204, 2, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e5e5e5;
+            color: #444;
+        }
+
+        .btn-secondary:hover {
+            background: #d5d5d5;
+        }
+
+        .results-screen {
+            display: none;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .results-screen.active {
+            display: block;
+        }
+
+        .results-icon {
+            font-size: 120px;
+            margin-bottom: 20px;
+            animation: bounce 1s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .results-title {
+            font-size: 48px;
+            font-weight: 800;
+            color: #58cc02;
+            margin-bottom: 12px;
+        }
+
+        .results-subtitle {
+            font-size: 20px;
+            color: #777;
+            margin-bottom: 32px;
+        }
+
+        .results-stats {
+            background: #f7f7f7;
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 32px;
+        }
+
+        .results-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .results-stat:last-child {
+            border-bottom: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 0;
+        }
+
+        .loading-spinner {
+            border: 4px solid #e5e5e5;
+            border-top: 4px solid #58cc02;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .combo-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #333;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 800;
+            margin-top: 12px;
+            animation: comboPop 0.3s ease;
+        }
+
+        @keyframes comboPop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 24px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .card {
+                font-size: 16px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="goBack()">← Games Hub</button>
+
+    <div class="game-container">
+        <!-- Loading State -->
+        <div id="loadingScreen" class="loading">
+            <div class="loading-spinner"></div>
+            <p style="font-size: 18px; color: #777;">Loading your words...</p>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" style="display: none;">
+            <div class="header">
+                <h1>🎯 Word Match</h1>
+                <p class="subtitle">Match Spanish words with English translations</p>
+            </div>
+
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-label">Score</div>
+                    <div class="stat-value" id="score">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Timer</div>
+                    <div class="timer" id="timer">30</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Streak</div>
+                    <div class="stat-value" id="streak">0</div>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress" style="width: 0%"></div>
+            </div>
+
+            <div id="comboContainer"></div>
+
+            <div class="game-grid" id="gameGrid"></div>
+
+            <div class="buttons">
+                <button class="btn-secondary" onclick="pauseGame()">⏸ Pause</button>
+                <button class="btn-primary" onclick="skipRound()" style="display: none;" id="nextBtn">Next Round →</button>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="results-screen">
+            <div class="results-icon">🏆</div>
+            <div class="results-title">Amazing!</div>
+            <div class="results-subtitle">You matched all the words!</div>
+
+            <div class="results-stats">
+                <div class="results-stat">
+                    <span>Final Score</span>
+                    <span id="finalScore" style="font-weight: 800; color: #58cc02; font-size: 24px;">0</span>
+                </div>
+                <div class="results-stat">
+                    <span>Time Remaining</span>
+                    <span id="finalTime" style="font-weight: 700;">0s</span>
+                </div>
+                <div class="results-stat">
+                    <span>Max Streak</span>
+                    <span id="maxStreak" style="font-weight: 700;">0</span>
+                </div>
+                <div class="results-stat">
+                    <span>XP Earned</span>
+                    <span id="xpEarned" style="font-weight: 800; color: #1cb0f6; font-size: 20px;">+0 XP</span>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="btn-secondary" onclick="goBack()">← Games Hub</button>
+                <button class="btn-primary" onclick="playAgain()">🔄 Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let gameState = {
+            userId: localStorage.getItem('userId') || 'default-user',
+            words: [],
+            cards: [],
+            selected: [],
+            matched: 0,
+            score: 0,
+            streak: 0,
+            maxStreak: 0,
+            timer: 30,
+            timerInterval: null,
+            round: 1,
+            totalPairs: 0,
+            gameResults: []
+        };
+
+        // Initialize game
+        async function initGame() {
+            try {
+                // Fetch user's vocabulary from API
+                const response = await fetch(`/api/games/word-match?userId=${gameState.userId}&count=8`);
+                const data = await response.json();
+
+                if (!data.success || data.words.length === 0) {
+                    alert('No vocabulary found! Watch some videos and save words first.');
+                    window.location.href = '/games-hub.html';
+                    return;
+                }
+
+                gameState.words = data.words;
+                gameState.totalPairs = data.words.length;
+
+                // Create card pairs
+                gameState.cards = createCardPairs(data.words);
+                
+                // Hide loading, show game
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('gameScreen').style.display = 'block';
+
+                // Render cards
+                renderCards();
+
+                // Start timer
+                startTimer();
+
+            } catch (error) {
+                console.error('Error initializing game:', error);
+                alert('Error loading game. Please try again.');
+                window.location.href = '/games-hub.html';
+            }
+        }
+
+        // Create card pairs from words
+        function createCardPairs(words) {
+            const cards = [];
+            words.forEach((word, index) => {
+                cards.push({ id: index * 2, text: word.word, type: 'spanish', pair: index });
+                cards.push({ id: index * 2 + 1, text: word.translation, type: 'english', pair: index });
+            });
+            return shuffleArray(cards);
+        }
+
+        // Shuffle array
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Render cards on grid
+        function renderCards() {
+            const grid = document.getElementById('gameGrid');
+            grid.innerHTML = '';
+
+            gameState.cards.forEach(card => {
+                const cardEl = document.createElement('div');
+                cardEl.className = 'card';
+                cardEl.textContent = card.text;
+                cardEl.dataset.id = card.id;
+                cardEl.dataset.pair = card.pair;
+                cardEl.onclick = () => selectCard(card, cardEl);
+                grid.appendChild(cardEl);
+            });
+        }
+
+        // Select card
+        function selectCard(card, cardEl) {
+            // Ignore if already matched or selected
+            if (cardEl.classList.contains('matched') || cardEl.classList.contains('selected')) {
+                return;
+            }
+
+            // Add to selected
+            gameState.selected.push({ card, element: cardEl });
+            cardEl.classList.add('selected');
+
+            // Check if two cards selected
+            if (gameState.selected.length === 2) {
+                checkMatch();
+            }
+        }
+
+        // Check if selected cards match
+        function checkMatch() {
+            const [first, second] = gameState.selected;
+
+            if (first.card.pair === second.card.pair) {
+                // Match!
+                first.element.classList.remove('selected');
+                second.element.classList.remove('selected');
+                first.element.classList.add('matched');
+                second.element.classList.add('matched');
+
+                gameState.matched++;
+                gameState.streak++;
+                gameState.score += 100 + (gameState.streak * 10); // Bonus for streak
+                gameState.maxStreak = Math.max(gameState.maxStreak, gameState.streak);
+
+                // Track result for API submission
+                gameState.gameResults.push({
+                    word: first.card.type === 'spanish' ? first.card.text : second.card.text,
+                    correct: true
+                });
+
+                // Add bonus time
+                gameState.timer += 3;
+
+                // Show combo
+                if (gameState.streak >= 3) {
+                    showCombo();
+                }
+
+                updateUI();
+
+                // Check if all matched
+                if (gameState.matched === gameState.totalPairs) {
+                    setTimeout(() => finishGame(), 500);
+                }
+
+            } else {
+                // No match
+                first.element.classList.add('wrong');
+                second.element.classList.add('wrong');
+
+                gameState.streak = 0; // Reset streak
+
+                setTimeout(() => {
+                    first.element.classList.remove('selected', 'wrong');
+                    second.element.classList.remove('selected', 'wrong');
+                }, 800);
+            }
+
+            // Clear selected
+            gameState.selected = [];
+        }
+
+        // Show combo badge
+        function showCombo() {
+            const container = document.getElementById('comboContainer');
+            container.innerHTML = `<div class="combo-badge">🔥 ${gameState.streak}x Combo!</div>`;
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 2000);
+        }
+
+        // Start timer
+        function startTimer() {
+            gameState.timerInterval = setInterval(() => {
+                gameState.timer--;
+                document.getElementById('timer').textContent = gameState.timer;
+
+                if (gameState.timer <= 5) {
+                    document.getElementById('timer').classList.add('warning');
+                }
+
+                if (gameState.timer <= 0) {
+                    gameOver();
+                }
+            }, 1000);
+        }
+
+        // Update UI
+        function updateUI() {
+            document.getElementById('score').textContent = gameState.score;
+            document.getElementById('streak').textContent = gameState.streak;
+            
+            const progress = (gameState.matched / gameState.totalPairs) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        // Game over (time ran out)
+        function gameOver() {
+            clearInterval(gameState.timerInterval);
+            alert('Time\'s up! 😢 Try again!');
+            playAgain();
+        }
+
+        // Finish game successfully
+        async function finishGame() {
+            clearInterval(gameState.timerInterval);
+
+            // Submit results to API
+            const xpGained = Math.floor(gameState.score / 10);
+            
+            try {
+                await fetch('/api/games/submit-results', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: gameState.userId,
+                        gameType: 'word-match',
+                        results: gameState.gameResults,
+                        score: gameState.score,
+                        duration: 30 - gameState.timer
+                    })
+                });
+            } catch (error) {
+                console.error('Error submitting results:', error);
+            }
+
+            // Show results
+            document.getElementById('finalScore').textContent = gameState.score;
+            document.getElementById('finalTime').textContent = gameState.timer + 's';
+            document.getElementById('maxStreak').textContent = gameState.maxStreak + 'x';
+            document.getElementById('xpEarned').textContent = '+' + xpGained + ' XP';
+
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('resultsScreen').classList.add('active');
+
+            // Confetti effect (simple)
+            playSuccessSound();
+        }
+
+        // Play again
+        function playAgain() {
+            // Reset state
+            gameState = {
+                userId: gameState.userId,
+                words: [],
+                cards: [],
+                selected: [],
+                matched: 0,
+                score: 0,
+                streak: 0,
+                maxStreak: 0,
+                timer: 30,
+                timerInterval: null,
+                round: 1,
+                totalPairs: 0,
+                gameResults: []
+            };
+
+            // Hide results, show loading
+            document.getElementById('resultsScreen').classList.remove('active');
+            document.getElementById('loadingScreen').style.display = 'block';
+
+            // Reinitialize
+            initGame();
+        }
+
+        // Pause game
+        function pauseGame() {
+            clearInterval(gameState.timerInterval);
+            const resume = confirm('Game Paused\n\nClick OK to resume');
+            if (resume) {
+                startTimer();
+            }
+        }
+
+        // Skip round (if stuck)
+        function skipRound() {
+            playAgain();
+        }
+
+        // Go back to hub
+        function goBack() {
+            window.location.href = '/games-hub.html';
+        }
+
+        // Play success sound (using Web Audio API)
+        function playSuccessSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.frequency.value = 523.25; // C5
+                oscillator.type = 'sine';
+
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.5);
+            } catch (e) {
+                console.log('Audio not supported');
+            }
+        }
+
+        // Start game on load
+        window.onload = initGame;
+    </script>
+</body>
+</html>
+

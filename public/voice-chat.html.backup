@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Voice Chat - Spanish Conversation Partner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #000;
+            --bg-secondary: #121212;
+            --bg-tertiary: #1a1a1a;
+            --accent-blue: #0095f6;
+            --accent-purple: #667eea;
+            --accent-pink: #fe2c55;
+            --text-primary: #fff;
+            --text-secondary: #a8a8a8;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            padding: 16px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 10;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .header-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .header-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Chat Messages */
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .messages-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .message {
+            display: flex;
+            gap: 12px;
+            animation: messageSlide 0.3s ease;
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-purple) 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .message.ai .message-avatar {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+        }
+
+        .message-content {
+            max-width: 70%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .message-bubble {
+            padding: 12px 16px;
+            border-radius: 18px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+        }
+
+        .message.user .message-bubble {
+            background: var(--accent-blue);
+            border: none;
+        }
+
+        .message-text {
+            font-size: 15px;
+            line-height: 1.4;
+            margin-bottom: 4px;
+        }
+
+        .message-translation {
+            font-size: 13px;
+            color: #ffeb3b;
+            font-style: italic;
+            margin-top: 4px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .message.user .message-translation {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .message-correction {
+            background: rgba(255, 59, 48, 0.1);
+            border: 1px solid rgba(255, 59, 48, 0.3);
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .correction-label {
+            color: #ff3b30;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Voice Controls */
+        .voice-controls {
+            padding: 20px;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .mic-button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .mic-button {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-purple) 0%, #764ba2 100%);
+            border: none;
+            color: var(--text-primary);
+            font-size: 36px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .mic-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 30px rgba(102, 126, 234, 0.6);
+        }
+
+        .mic-button:active {
+            transform: scale(0.95);
+        }
+
+        .mic-button.listening {
+            background: var(--accent-pink);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(254, 44, 85, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 20px rgba(254, 44, 85, 0);
+            }
+        }
+
+        .status-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .status-text.listening {
+            color: var(--accent-pink);
+        }
+
+        /* Vocabulary Stats */
+        .vocab-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: 40px;
+            opacity: 0.6;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .empty-state-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Loading Dots */
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-secondary);
+            animation: typingBounce 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Word Highlight */
+        .word-highlight {
+            background: rgba(255, 235, 59, 0.2);
+            padding: 2px 4px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .word-highlight:hover {
+            background: rgba(255, 235, 59, 0.4);
+        }
+
+        /* Browser Compatibility Notice */
+        .browser-notice {
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 59, 48, 0.9);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            z-index: 1000;
+            display: none;
+            max-width: 90%;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 0.5px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            z-index: 100;
+            padding: 0 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 4px 8px;
+            min-width: 44px;
+            min-height: 44px;
+            flex: 1;
+            justify-content: center;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .nav-item:active {
+            transform: scale(0.9);
+        }
+
+        .nav-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke-width: 2;
+            transition: all 0.2s ease;
+            stroke: var(--text-primary);
+            fill: none;
+        }
+
+        .nav-item:not(.active) .nav-icon svg {
+            opacity: 0.6;
+        }
+
+        .nav-item.active .nav-icon svg {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 600;
+            opacity: 0.7;
+        }
+
+        .nav-item.active .nav-label {
+            opacity: 1;
+            font-weight: 700;
+        }
+    </style>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <button class="back-btn" onclick="window.location.href='/tiktok-video-feed.html'">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M19 12H5M12 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <div class="header-title">🎙️ Spanish Conversation</div>
+            <div class="header-actions">
+                <button class="header-btn" onclick="clearConversation()">Clear</button>
+            </div>
+        </div>
+
+        <!-- Messages Container -->
+        <div class="messages-container" id="messagesContainer">
+            <div class="empty-state" id="emptyState">
+                <div class="empty-state-icon">💬</div>
+                <div class="empty-state-title">Start Speaking Spanish!</div>
+                <div class="empty-state-text">
+                    Press the microphone button and start talking in Spanish.<br>
+                    I'll help you practice using your saved vocabulary.
+                </div>
+            </div>
+        </div>
+
+        <!-- Voice Controls -->
+        <div class="voice-controls">
+            <div class="vocab-stats">
+                <div class="stat">
+                    <div class="stat-value" id="vocabCount">0</div>
+                    <div class="stat-label">Words</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="messageCount">0</div>
+                    <div class="stat-label">Messages</div>
+                </div>
+            </div>
+
+            <div class="mic-button-container">
+                <button class="mic-button" id="micButton">
+                    <span id="micIcon">🎤</span>
+                </button>
+                <div class="status-text" id="statusText">Tap to speak</div>
+            </div>
+        </div>
+
+        <!-- Browser Notice -->
+        <div class="browser-notice" id="browserNotice">
+            Voice features require Chrome or Safari
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="/tiktok-video-feed.html" class="nav-item">
+                <div class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    </svg>
+                </div>
+                <div class="nav-label">Home</div>
+            </a>
+
+            <a href="/saved-words.html" class="nav-item">
+                <div class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                </div>
+                <div class="nav-label">Words</div>
+            </a>
+
+            <a href="/voice-chat.html" class="nav-item active">
+                <div class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                        <line x1="12" y1="19" x2="12" y2="23"></line>
+                        <line x1="8" y1="23" x2="16" y2="23"></line>
+                    </svg>
+                </div>
+                <div class="nav-label">Chat</div>
+            </a>
+
+            <a href="/stats-dashboard.html" class="nav-item">
+                <div class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 6v6l4 2"></path>
+                    </svg>
+                </div>
+                <div class="nav-label">Stats</div>
+            </a>
+        </nav>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+        // Supabase client
+        const SUPABASE_URL = 'https://uejiwteujraxczrxbqff.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVlaml3dGV1anJheGN6cnhicWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk5NDMxMzksImV4cCI6MjA3NTUxOTEzOX0.iva8q5bMcLHfqd6niXqB_i-i-VrPmKLNGr9eiiPwZHQ';
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // State
+        let currentUser = null;
+        let userVocabulary = [];
+        let conversationHistory = [];
+        let isListening = false;
+        let recognition = null;
+        let synthesis = window.speechSynthesis;
+
+        // DOM Elements
+        const messagesContainer = document.getElementById('messagesContainer');
+        const emptyState = document.getElementById('emptyState');
+        const micButton = document.getElementById('micButton');
+        const micIcon = document.getElementById('micIcon');
+        const statusText = document.getElementById('statusText');
+        const vocabCount = document.getElementById('vocabCount');
+        const messageCount = document.getElementById('messageCount');
+        const browserNotice = document.getElementById('browserNotice');
+
+        // Initialize
+        async function init() {
+            // Check browser support
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                browserNotice.style.display = 'block';
+                micButton.disabled = true;
+                return;
+            }
+
+            // Setup Speech Recognition
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.lang = 'es-ES';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                handleUserSpeech(transcript);
+            };
+
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                stopListening();
+                statusText.textContent = 'Error: ' + event.error;
+            };
+
+            recognition.onend = () => {
+                stopListening();
+            };
+
+            // Load user and vocabulary
+            await loadUser();
+            await loadVocabulary();
+
+            // Load conversation from localStorage
+            loadConversation();
+
+            updateStats();
+        }
+
+        // Load current user
+        async function loadUser() {
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                currentUser = user;
+
+                if (!user) {
+                    // Create anonymous session
+                    currentUser = { id: 'demo-user', email: 'demo@example.com' };
+                }
+            } catch (error) {
+                console.error('Error loading user:', error);
+                currentUser = { id: 'demo-user', email: 'demo@example.com' };
+            }
+        }
+
+        // Load user's vocabulary from Supabase
+        async function loadVocabulary() {
+            try {
+                const { data: vocabulary, error } = await supabase
+                    .from('vocabulary')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                userVocabulary = vocabulary || [];
+                console.log(`✅ Loaded ${userVocabulary.length} vocabulary words`);
+            } catch (error) {
+                console.error('Error loading vocabulary:', error);
+                userVocabulary = [];
+            }
+        }
+
+        // Load conversation from localStorage
+        function loadConversation() {
+            const saved = localStorage.getItem('voiceChatHistory');
+            if (saved) {
+                conversationHistory = JSON.parse(saved);
+                renderMessages();
+            }
+        }
+
+        // Save conversation to localStorage
+        function saveConversation() {
+            localStorage.setItem('voiceChatHistory', JSON.stringify(conversationHistory));
+        }
+
+        // Mic button click
+        micButton.addEventListener('click', () => {
+            if (isListening) {
+                stopListening();
+            } else {
+                startListening();
+            }
+        });
+
+        // Start listening
+        function startListening() {
+            if (!recognition) return;
+
+            try {
+                recognition.start();
+                isListening = true;
+                micButton.classList.add('listening');
+                micIcon.textContent = '🔴';
+                statusText.textContent = 'Listening...';
+                statusText.classList.add('listening');
+            } catch (error) {
+                console.error('Error starting recognition:', error);
+            }
+        }
+
+        // Stop listening
+        function stopListening() {
+            if (recognition && isListening) {
+                recognition.stop();
+            }
+            isListening = false;
+            micButton.classList.remove('listening');
+            micIcon.textContent = '🎤';
+            statusText.textContent = 'Tap to speak';
+            statusText.classList.remove('listening');
+        }
+
+        // Handle user speech
+        async function handleUserSpeech(transcript) {
+            // Add user message
+            const userMessage = {
+                type: 'user',
+                text: transcript,
+                timestamp: Date.now()
+            };
+            conversationHistory.push(userMessage);
+            renderMessages();
+            saveConversation();
+            updateStats();
+
+            // Show typing indicator
+            showTypingIndicator();
+
+            // Get AI response
+            const aiResponse = await generateAIResponse(transcript);
+
+            // Remove typing indicator
+            hideTypingIndicator();
+
+            // Add AI message
+            const aiMessage = {
+                type: 'ai',
+                text: aiResponse.text,
+                translation: aiResponse.translation,
+                correction: aiResponse.correction,
+                timestamp: Date.now()
+            };
+            conversationHistory.push(aiMessage);
+            renderMessages();
+            saveConversation();
+            updateStats();
+
+            // Speak AI response
+            speakText(aiResponse.text);
+        }
+
+        // Generate AI response using vocabulary
+        async function generateAIResponse(userText) {
+            // Simple AI logic that uses user's vocabulary
+            const words = userText.toLowerCase().split(/\s+/);
+            const vocabWords = userVocabulary.map(v => v.word.toLowerCase());
+            const matchedWords = words.filter(w => vocabWords.includes(w));
+
+            let response = {
+                text: '',
+                translation: '',
+                correction: null
+            };
+
+            // Generate contextual response
+            if (matchedWords.length > 0) {
+                // User is using their vocabulary - encourage!
+                const responses = [
+                    `¡Excelente! Usaste "${matchedWords[0]}" correctamente.`,
+                    `Muy bien, veo que practicaste "${matchedWords[0]}".`,
+                    `¡Genial! "${matchedWords[0]}" es una palabra importante.`
+                ];
+                response.text = responses[Math.floor(Math.random() * responses.length)];
+
+                // Add follow-up question
+                const followUps = [
+                    ' ¿Puedes usarla en otra oración?',
+                    ' ¿Qué más puedes decirme?',
+                    ' Cuéntame más sobre eso.'
+                ];
+                response.text += followUps[Math.floor(Math.random() * followUps.length)];
+
+                response.translation = 'Excellent! Can you use it in another sentence?';
+            } else {
+                // General conversation
+                const greetings = ['hola', 'buenos', 'buenas', 'qué tal'];
+                const isGreeting = words.some(w => greetings.some(g => w.includes(g)));
+
+                if (isGreeting) {
+                    response.text = '¡Hola! ¿Cómo estás? ¿Qué quieres practicar hoy?';
+                    response.translation = 'Hello! How are you? What do you want to practice today?';
+                } else {
+                    const responses = [
+                        '¿Puedes repetir eso más despacio?',
+                        'Interesante. ¿Puedes explicar más?',
+                        'Entiendo. ¿Y qué piensas de eso?',
+                        '¿Podrías usar una de tus palabras guardadas?'
+                    ];
+                    response.text = responses[Math.floor(Math.random() * responses.length)];
+                    response.translation = 'Can you repeat that slower?';
+                }
+            }
+
+            // Check for common errors (simple grammar checking)
+            if (userText.includes('yo es')) {
+                response.correction = 'Corrección: "Yo soy" (not "yo es")';
+            } else if (userText.includes('tu eres')) {
+                response.correction = 'Corrección: "Tú eres" (with accent)';
+            }
+
+            return response;
+        }
+
+        // Speak text using Speech Synthesis
+        function speakText(text) {
+            if (!synthesis) return;
+
+            // Cancel any ongoing speech
+            synthesis.cancel();
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'es-ES';
+            utterance.rate = 0.9;
+            utterance.pitch = 1;
+
+            // Try to use a Spanish voice
+            const voices = synthesis.getVoices();
+            const spanishVoice = voices.find(v => v.lang.startsWith('es'));
+            if (spanishVoice) {
+                utterance.voice = spanishVoice;
+            }
+
+            synthesis.speak(utterance);
+        }
+
+        // Render all messages
+        function renderMessages() {
+            if (conversationHistory.length === 0) {
+                emptyState.style.display = 'flex';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+
+            const messagesHTML = conversationHistory.map(msg => {
+                const time = new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                if (msg.type === 'user') {
+                    return `
+                        <div class="message user">
+                            <div class="message-content">
+                                <div class="message-bubble">
+                                    <div class="message-text">${msg.text}</div>
+                                </div>
+                                <div class="message-time">${time}</div>
+                            </div>
+                            <div class="message-avatar">👤</div>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="message ai">
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-content">
+                                <div class="message-bubble">
+                                    <div class="message-text">${msg.text}</div>
+                                    ${msg.translation ? `<div class="message-translation">${msg.translation}</div>` : ''}
+                                </div>
+                                ${msg.correction ? `<div class="message-correction">
+                                    <div class="correction-label">💡 Tip</div>
+                                    ${msg.correction}
+                                </div>` : ''}
+                                <div class="message-time">${time}</div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
+
+            messagesContainer.innerHTML = messagesHTML;
+
+            // Scroll to bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Show typing indicator
+        function showTypingIndicator() {
+            const indicator = document.createElement('div');
+            indicator.className = 'message ai';
+            indicator.id = 'typingIndicator';
+            indicator.innerHTML = `
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    <div class="message-bubble">
+                        <div class="typing-indicator">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            messagesContainer.appendChild(indicator);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Hide typing indicator
+        function hideTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) {
+                indicator.remove();
+            }
+        }
+
+        // Update stats
+        function updateStats() {
+            vocabCount.textContent = userVocabulary.length;
+            messageCount.textContent = conversationHistory.length;
+        }
+
+        // Clear conversation
+        window.clearConversation = function() {
+            if (confirm('Clear all conversation history?')) {
+                conversationHistory = [];
+                saveConversation();
+                renderMessages();
+                updateStats();
+            }
+        };
+
+        // Load voices when available
+        if (synthesis) {
+            synthesis.onvoiceschanged = () => {
+                const voices = synthesis.getVoices();
+                console.log('Available voices:', voices.filter(v => v.lang.startsWith('es')));
+            };
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>

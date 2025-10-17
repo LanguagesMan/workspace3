@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👤 Profile - Langflix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000000;
+            min-height: 100vh;
+            padding: 20px;
+            color: #FFFFFF;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: #121212;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: #1F1F1F;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .user-info h1 {
+            color: white;
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .user-level {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #121212;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            background: #1F1F1F;
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .stat-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            background: #00F5FF;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #1a1a1a;
+        }
+
+        .progress-item {
+            margin-bottom: 20px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .progress-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .progress-value {
+            font-size: 14px;
+            color: #00F5FF;
+            font-weight: 700;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #00F5FF;
+            transition: width 0.3s ease;
+        }
+
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 12px;
+        }
+
+        .achievement-badge {
+            aspect-ratio: 1;
+            background: #f8f9fa;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .achievement-badge:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .achievement-badge.unlocked {
+            background: #00F5FF;
+        }
+
+        .achievement-icon {
+            font-size: 32px;
+            margin-bottom: 4px;
+        }
+
+        .achievement-badge.locked .achievement-icon {
+            opacity: 0.3;
+        }
+
+        .achievement-name {
+            font-size: 11px;
+            text-align: center;
+            color: #666;
+        }
+
+        .achievement-badge.unlocked .achievement-name {
+            color: white;
+            font-weight: 600;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e9ecef;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 24px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -28px;
+            top: 4px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #00F5FF;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #00F5FF;
+        }
+
+        .timeline-content {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .timeline-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .timeline-time {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+
+        .settings-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .toggle {
+            width: 48px;
+            height: 28px;
+            background: #dee2e6;
+            border-radius: 14px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle.active {
+            background: #00F5FF;
+        }
+
+        .toggle-knob {
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: all 0.2s;
+        }
+
+        .toggle.active .toggle-knob {
+            left: 22px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <div class="avatar">👤</div>
+                <div class="user-info">
+                    <h1 id="userName">Spanish Learner</h1>
+                    <div class="user-level" id="userLevel">Level 1 • Beginner</div>
+                </div>
+            </div>
+            <button class="back-btn" onclick="goBack()">← Back</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <div class="stat-value" id="wordsLearnedStat">0</div>
+                <div class="stat-label">Words Learned</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📹</div>
+                <div class="stat-value" id="videosWatchedStat">0</div>
+                <div class="stat-label">Videos Watched</div>
+            </div>
+            <div class="stat-card" style="position: relative;">
+                <div class="stat-icon">🔥</div>
+                <div class="stat-value" id="streakStat">0</div>
+                <div class="stat-label">Day Streak</div>
+                <button id="streakFreezeBtn" onclick="activateStreakFreeze()" style="
+                    position: absolute;
+                    bottom: 8px;
+                    right: 8px;
+                    background: #00F5FF;
+                    color: white;
+                    border: none;
+                    padding: 6px 12px;
+                    border-radius: 12px;
+                    font-size: 11px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                ">
+                    ❄️ Freeze
+                </button>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-value" id="xpStat">0</div>
+                <div class="stat-label">Total XP</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Progress to Next Level</div>
+            <div class="progress-item">
+                <div class="progress-header">
+                    <div class="progress-label">Level 1 → Level 2</div>
+                    <div class="progress-value" id="levelProgress">0 / 100 XP</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="levelProgressBar" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Achievements</div>
+            <div class="achievement-grid" id="achievementGrid">
+                <!-- Achievements will be loaded here -->
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Recent Activity</div>
+            <div class="timeline" id="timeline">
+                <!-- Timeline items will be loaded here -->
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Settings</div>
+            <div class="settings-item">
+                <div class="settings-label">Daily Reminders</div>
+                <div class="toggle" onclick="toggleSetting(this, 'dailyReminders')">
+                    <div class="toggle-knob"></div>
+                </div>
+            </div>
+            <div class="settings-item">
+                <div class="settings-label">Sound Effects</div>
+                <div class="toggle active" onclick="toggleSetting(this, 'soundEffects')">
+                    <div class="toggle-knob"></div>
+                </div>
+            </div>
+            <div class="settings-item">
+                <div class="settings-label">Autoplay Videos</div>
+                <div class="toggle active" onclick="toggleSetting(this, 'autoplay')">
+                    <div class="toggle-knob"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preferences Section -->
+        <div class="section" style="margin-bottom: 80px;">
+            <div class="section-title">🎯 Your Preferences</div>
+            
+            <div style="margin-bottom: 24px;">
+                <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #333;">Favorite Artists</h3>
+                <div id="favorite-artists" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; min-height: 32px;">
+                    <div style="color: #999; font-size: 14px;">Loading...</div>
+                </div>
+                <button onclick="showAddArtist()" style="background: #e9ecef; border: none; padding: 8px 16px; border-radius: 8px; font-size: 14px; cursor: pointer; font-weight: 600;">+ Add Artist</button>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+                <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #333;">Topics You Follow</h3>
+                <div id="favorite-topics" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; min-height: 32px;">
+                    <div style="color: #999; font-size: 14px;">Loading...</div>
+                </div>
+                <button onclick="showAddTopic()" style="background: #e9ecef; border: none; padding: 8px 16px; border-radius: 8px; font-size: 14px; cursor: pointer; font-weight: 600;">+ Add Topic</button>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+                <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #333;">Video Categories</h3>
+                <div id="favorite-categories" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; min-height: 32px;">
+                    <div style="color: #999; font-size: 14px;">Loading...</div>
+                </div>
+                <button onclick="showAddCategory()" style="background: #e9ecef; border: none; padding: 8px 16px; border-radius: 8px; font-size: 14px; cursor: pointer; font-weight: 600;">+ Add Category</button>
+            </div>
+
+            <div style="margin-bottom: 0;">
+                <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 20px; color: #333;">Content Mix</h3>
+                
+                <div style="margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <label style="font-size: 14px; color: #666;">Videos</label>
+                        <span id="video-percentage" style="font-weight: 600; color: #00F5FF;">40%</span>
+                    </div>
+                    <input type="range" min="0" max="100" value="40" id="video-slider" style="width: 100%;">
+                </div>
+
+                <div style="margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <label style="font-size: 14px; color: #666;">Articles</label>
+                        <span id="article-percentage" style="font-weight: 600; color: #00F5FF;">40%</span>
+                    </div>
+                    <input type="range" min="0" max="100" value="40" id="article-slider" style="width: 100%;">
+                </div>
+
+                <div style="margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <label style="font-size: 14px; color: #666;">Music</label>
+                        <span id="music-percentage" style="font-weight: 600; color: #00F5FF;">20%</span>
+                    </div>
+                    <input type="range" min="0" max="100" value="20" id="music-slider" style="width: 100%;">
+                </div>
+
+                <button onclick="saveContentMix()" style="background: #00F5FF; color: white; border: none; padding: 10px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 12px;">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/preference-manager.js"></script>
+    <script>
+        // Load user stats
+        function loadUserStats() {
+            const stats = {
+                wordsLearned: parseInt(localStorage.getItem('wordsLearned') || '0'),
+                videosWatched: parseInt(localStorage.getItem('videosWatched') || '0'),
+                streak: parseInt(localStorage.getItem('userStreak') || '0'),
+                xp: parseInt(localStorage.getItem('userXP') || '0'),
+                level: parseInt(localStorage.getItem('userLevel') || '1')
+            };
+
+            document.getElementById('wordsLearnedStat').textContent = stats.wordsLearned;
+            document.getElementById('videosWatchedStat').textContent = stats.videosWatched;
+            document.getElementById('streakStat').textContent = stats.streak;
+            document.getElementById('xpStat').textContent = stats.xp;
+
+            // Calculate level progress
+            const xpForNextLevel = stats.level * 100;
+            const xpInCurrentLevel = stats.xp % 100;
+            const progressPercent = (xpInCurrentLevel / xpForNextLevel) * 100;
+
+            document.getElementById('levelProgress').textContent = `${xpInCurrentLevel} / ${xpForNextLevel} XP`;
+            document.getElementById('levelProgressBar').style.width = progressPercent + '%';
+
+            // Update user level display
+            const levelNames = {
+                1: 'Beginner',
+                2: 'Elementary',
+                3: 'Intermediate',
+                4: 'Upper Intermediate',
+                5: 'Advanced'
+            };
+            document.getElementById('userLevel').textContent = `Level ${stats.level} • ${levelNames[stats.level] || 'Master'}`;
+        }
+
+        // Load achievements
+        function loadAchievements() {
+            const achievements = [
+                { id: 'first_video', icon: '👶', name: 'First Steps', unlocked: true },
+                { id: 'first_word', icon: '📝', name: 'Vocab Collector', unlocked: true },
+                { id: 'ten_videos', icon: '📺', name: 'Binge Watcher', unlocked: false },
+                { id: 'ten_words', icon: '📚', name: 'Vocab Builder', unlocked: false },
+                { id: 'three_day_streak', icon: '🔥', name: 'Consistent', unlocked: false },
+                { id: 'first_game', icon: '🎮', name: 'Game On', unlocked: true },
+                { id: 'week_warrior', icon: '🏆', name: 'Week Warrior', unlocked: false },
+                { id: 'level_up', icon: '⬆️', name: 'Level Up!', unlocked: false }
+            ];
+
+            const grid = document.getElementById('achievementGrid');
+            grid.innerHTML = achievements.map(achievement => `
+                <div class="achievement-badge ${achievement.unlocked ? 'unlocked' : 'locked'}">
+                    <div class="achievement-icon">${achievement.icon}</div>
+                    <div class="achievement-name">${achievement.name}</div>
+                </div>
+            `).join('');
+        }
+
+        // Load recent activity
+        function loadRecentActivity() {
+            const activities = [
+                { title: 'Completed Sentence Builder', time: '2 hours ago' },
+                { title: 'Learned 5 new words', time: '3 hours ago' },
+                { title: 'Watched 10 videos', time: '5 hours ago' },
+                { title: 'Started 3-day streak', time: 'Yesterday' },
+                { title: 'Unlocked "First Steps" achievement', time: '2 days ago' }
+            ];
+
+            const timeline = document.getElementById('timeline');
+            timeline.innerHTML = activities.map(activity => `
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">${activity.title}</div>
+                        <div class="timeline-time">${activity.time}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Toggle setting
+        function toggleSetting(element, settingName) {
+            element.classList.toggle('active');
+            const isActive = element.classList.contains('active');
+            localStorage.setItem(settingName, isActive);
+            console.log(`${settingName}: ${isActive}`);
+        }
+
+        // Go back
+        function goBack() {
+            window.location.href = '/tiktok-video-feed.html';
+        }
+
+        // Initialize
+        loadUserStats();
+        loadAchievements();
+        loadRecentActivity();
+
+        // Track page view
+        const profileVisits = parseInt(localStorage.getItem('profileVisits') || '0') + 1;
+        localStorage.setItem('profileVisits', profileVisits);
+
+        // === PREFERENCES MANAGEMENT ===
+
+        // Load preferences on page load
+        async function loadPreferences() {
+            await prefManager.fetchPreferences();
+            
+            if (prefManager.preferences) {
+                renderArtistChips();
+                renderTopicChips();
+                renderCategoryChips();
+                loadContentMix();
+            }
+        }
+
+        function renderArtistChips() {
+            const container = document.getElementById('favorite-artists');
+            const artists = prefManager.preferences.favorite_artists || [];
+            
+            if (artists.length === 0) {
+                container.innerHTML = '<div style="color: #999; font-size: 14px;">No favorite artists yet. Add some!</div>';
+                return;
+            }
+            
+            container.innerHTML = artists.map(artist => `
+                <div style="display: inline-flex; align-items: center; gap: 8px; background: #00F5FF; color: white; padding: 6px 12px; border-radius: 20px; font-size: 14px;">
+                    <span>${artist}</span>
+                    <button onclick="removeArtist('${artist.replace(/'/g, "\\'")}' )" style="background: none; border: none; color: white; cursor: pointer; font-size: 16px; padding: 0; margin: 0;">×</button>
+                </div>
+            `).join('');
+        }
+
+        function renderTopicChips() {
+            const container = document.getElementById('favorite-topics');
+            const topics = prefManager.preferences.favorite_topics || [];
+            
+            if (topics.length === 0) {
+                container.innerHTML = '<div style="color: #999; font-size: 14px;">No favorite topics yet. Add some!</div>';
+                return;
+            }
+            
+            container.innerHTML = topics.map(topic => `
+                <div style="display: inline-flex; align-items: center; gap: 8px; background: #00F5FF; color: white; padding: 6px 12px; border-radius: 20px; font-size: 14px;">
+                    <span>${topic}</span>
+                    <button onclick="removeTopic('${topic.replace(/'/g, "\\'")}' )" style="background: none; border: none; color: white; cursor: pointer; font-size: 16px; padding: 0; margin: 0;">×</button>
+                </div>
+            `).join('');
+        }
+
+        function renderCategoryChips() {
+            const container = document.getElementById('favorite-categories');
+            const categories = prefManager.preferences.favorite_categories || [];
+            
+            if (categories.length === 0) {
+                container.innerHTML = '<div style="color: #999; font-size: 14px;">No favorite categories yet. Add some!</div>';
+                return;
+            }
+            
+            container.innerHTML = categories.map(category => `
+                <div style="display: inline-flex; align-items: center; gap: 8px; background: #00F5FF; color: white; padding: 6px 12px; border-radius: 20px; font-size: 14px;">
+                    <span>${category}</span>
+                    <button onclick="removeCategory('${category.replace(/'/g, "\\'")}' )" style="background: none; border: none; color: white; cursor: pointer; font-size: 16px; padding: 0; margin: 0;">×</button>
+                </div>
+            `).join('');
+        }
+
+        function loadContentMix() {
+            const mix = prefManager.preferences.preferred_content_types || { videos: 40, articles: 40, music: 20 };
+            
+            document.getElementById('video-slider').value = mix.videos;
+            document.getElementById('video-percentage').textContent = mix.videos + '%';
+            
+            document.getElementById('article-slider').value = mix.articles;
+            document.getElementById('article-percentage').textContent = mix.articles + '%';
+            
+            document.getElementById('music-slider').value = mix.music;
+            document.getElementById('music-percentage').textContent = mix.music + '%';
+        }
+
+        async function removeArtist(artist) {
+            await prefManager.removeFromList('favorite_artists', artist);
+            renderArtistChips();
+        }
+
+        async function removeTopic(topic) {
+            await prefManager.removeFromList('favorite_topics', topic);
+            renderTopicChips();
+        }
+
+        async function removeCategory(category) {
+            await prefManager.removeFromList('favorite_categories', category);
+            renderCategoryChips();
+        }
+
+        function showAddArtist() {
+            const artist = prompt('Enter artist name:');
+            if (artist && artist.trim()) {
+                prefManager.addToList('favorite_artists', artist.trim()).then(() => {
+                    renderArtistChips();
+                });
+            }
+        }
+
+        function showAddTopic() {
+            const topic = prompt('Enter topic name:');
+            if (topic && topic.trim()) {
+                prefManager.addToList('favorite_topics', topic.trim().toLowerCase()).then(() => {
+                    renderTopicChips();
+                });
+            }
+        }
+
+        function showAddCategory() {
+            const category = prompt('Enter category name:');
+            if (category && category.trim()) {
+                prefManager.addToList('favorite_categories', category.trim().toLowerCase()).then(() => {
+                    renderCategoryChips();
+                });
+            }
+        }
+
+        // Slider listeners
+        document.getElementById('video-slider').addEventListener('input', (e) => {
+            document.getElementById('video-percentage').textContent = e.target.value + '%';
+        });
+
+        document.getElementById('article-slider').addEventListener('input', (e) => {
+            document.getElementById('article-percentage').textContent = e.target.value + '%';
+        });
+
+        document.getElementById('music-slider').addEventListener('input', (e) => {
+            document.getElementById('music-percentage').textContent = e.target.value + '%';
+        });
+
+        async function saveContentMix() {
+            const mix = {
+                videos: parseInt(document.getElementById('video-slider').value),
+                articles: parseInt(document.getElementById('article-slider').value),
+                music: parseInt(document.getElementById('music-slider').value)
+            };
+
+            await prefManager.updatePreferences({
+                preferred_content_types: mix
+            });
+
+            alert('✅ Content mix saved!');
+        }
+
+        // Load preferences after a short delay to ensure prefManager is ready
+        setTimeout(loadPreferences, 500);
+<<<<<<< HEAD
+
+        // ❄️ Streak Freeze Feature
+        function activateStreakFreeze() {
+            // Load gamification system if not already loaded
+            if (typeof GamificationSystem === 'undefined') {
+                const script = document.createElement('script');
+                script.src = '/lib/gamification-system.js';
+                script.onload = () => activateStreakFreeze();
+                document.head.appendChild(script);
+                return;
+            }
+
+            const gamification = new GamificationSystem();
+            const result = gamification.useStreakFreeze();
+
+            const btn = document.getElementById('streakFreezeBtn');
+
+            if (result.success) {
+                btn.textContent = '✅ Frozen!';
+                btn.style.background = 'linear-gradient(135deg, #4ade80 0%, #22c55e 100%)';
+                btn.disabled = true;
+
+                setTimeout(() => {
+                    btn.textContent = '❄️ Freeze';
+                    btn.style.background = '#00F5FF';
+                    btn.disabled = false;
+                }, 3000);
+            } else {
+                btn.textContent = result.message;
+                btn.style.fontSize = '10px';
+
+                setTimeout(() => {
+                    btn.textContent = '❄️ Freeze';
+                    btn.style.fontSize = '11px';
+                }, 3000);
+            }
+        }
+
+        // Update freeze button status on load
+        setTimeout(() => {
+            if (typeof GamificationSystem !== 'undefined') {
+                const gamification = new GamificationSystem();
+                const freezeAvailable = gamification.isStreakFreezeAvailable();
+
+                const btn = document.getElementById('streakFreezeBtn');
+                if (!freezeAvailable) {
+                    const timeUntil = gamification.getTimeUntilNextFreeze();
+                    btn.textContent = `⏳ ${timeUntil}`;
+                    btn.style.opacity = '0.5';
+                    btn.style.fontSize = '10px';
+                }
+            }
+        }, 1000);
+=======
+>>>>>>> agent-6-deployment
+    </script>
+
+    <!-- Bottom Navigation -->
+    <script>
+        fetch('/components/unified-bottom-nav.html')
+            .then(r => r.text())
+            .then(html => document.body.insertAdjacentHTML('beforeend', html));
+    </script>
+</body>
+</html>

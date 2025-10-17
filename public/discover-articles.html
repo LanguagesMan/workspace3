@@ -1,0 +1,3517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Discover - Spanish Articles AI Feed</title>
+    
+    <meta name="description" content="AI-powered Spanish news feed adapted to your learning level. Like ChatGPT Pulse meets Perplexity News for language learners.">
+    <meta name="theme-color" content="#000000">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/article-reader.css">
+
+    <style>
+        /* ========================================
+           CHATGPT PULSE + PERPLEXITY NEWS DESIGN
+           Modern, Clean, Professional
+           ========================================= */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-card: #1a1a1a;
+            --bg-hover: #222222;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-tertiary: #666666;
+            --accent-primary: #10a37f;
+            --accent-blue: #1a7ff5;
+            --accent-purple: #8b5cf6;
+            --accent-orange: #ff6b35;
+            --border: rgba(255, 255, 255, 0.1);
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ========================================
+           TOP HEADER - ChatGPT Style
+           ========================================= */
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-blue));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .auth-button {
+            padding: 10px 20px;
+            background: var(--accent-primary);
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .auth-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(16, 163, 127, 0.4);
+        }
+
+        /* Auth Modal */
+        .auth-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .auth-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .auth-modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 440px;
+            width: 90%;
+            box-shadow: var(--shadow);
+            animation: slideUpFade 0.3s ease;
+        }
+
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .auth-modal-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .auth-modal-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .auth-modal-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+            background: var(--bg-hover);
+            padding: 6px;
+            border-radius: 12px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .auth-tab.active {
+            background: var(--accent-primary);
+            color: #000;
+        }
+
+        .auth-form {
+<<<<<<< HEAD
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+=======
+            display: none !important;
+        }
+
+        .auth-form.active {
+            display: block !important;
+>>>>>>> agent-6-deployment
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--bg-hover);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            background: var(--bg-card);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .form-button {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent-primary);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .form-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 163, 127, 0.4);
+        }
+
+        .form-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 24px 0;
+            color: var(--text-tertiary);
+            font-size: 13px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .oauth-button {
+            width: 100%;
+            padding: 14px;
+            background: var(--bg-hover);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .oauth-button:hover {
+            background: var(--bg-card);
+            border-color: var(--accent-primary);
+        }
+
+        .oauth-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: 12px;
+        }
+
+        .forgot-password-link {
+            color: var(--accent-primary);
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .forgot-password-link:hover {
+            text-decoration: underline;
+        }
+
+        .auth-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .auth-error.visible {
+            display: block;
+        }
+
+        .auth-success {
+            background: rgba(88, 204, 2, 0.1);
+            border: 1px solid rgba(88, 204, 2, 0.3);
+            color: #58cc02;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .auth-success.visible {
+            display: block;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 8px;
+            min-width: 200px;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+
+        .user-dropdown.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dropdown-item:hover {
+            background: var(--bg-hover);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 8px 0;
+        }
+
+        .level-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .level-badge {
+            padding: 4px 8px;
+            background: var(--accent-primary);
+            color: #000;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* ========================================
+           CATEGORY TABS - Perplexity Style
+           ========================================= */
+
+        .tabs-container {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border);
+            z-index: 99;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .tabs-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+            padding: 12px 24px;
+            min-width: min-content;
+        }
+
+        .tab {
+            padding: 8px 20px;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 20px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .tab.active {
+            background: var(--accent-primary);
+            color: #000;
+            border-color: var(--accent-primary);
+        }
+
+        /* ========================================
+           MAIN CONTENT - Modern Card Grid
+           ========================================= */
+
+        .main {
+            margin-top: 128px;
+            padding: 0 24px 100px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .feed-header {
+            margin-bottom: 32px;
+        }
+
+        .feed-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .feed-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ========================================
+           ARTICLE CARDS - ChatGPT/Perplexity Style
+           ========================================= */
+
+        .article-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .article-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent-primary);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+        }
+
+        .article-content {
+            padding: 20px;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .article-source {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .article-time {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .difficulty-pill {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .difficulty-A1 { background: rgba(88, 204, 2, 0.2); color: #58cc02; }
+        .difficulty-A2 { background: rgba(0, 205, 156, 0.2); color: #00cd9c; }
+        .difficulty-B1 { background: rgba(26, 127, 245, 0.2); color: #1a7ff5; }
+        .difficulty-B2 { background: rgba(139, 92, 246, 0.2); color: #8b5cf6; }
+        .difficulty-C1 { background: rgba(236, 72, 153, 0.2); color: #ec4899; }
+        .difficulty-C2 { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+
+        .article-title {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .article-excerpt {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 16px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .article-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .comprehension-score {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .score-bar {
+            width: 80px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: var(--accent-primary);
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+
+        .article-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--bg-hover);
+            border: none;
+            color: var(--text-secondary);
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-btn:hover {
+            background: var(--border);
+            transform: scale(1.1);
+        }
+
+        .action-btn.saved {
+            color: var(--accent-orange);
+        }
+
+        /* ========================================
+           READER MODAL - Full Screen
+           ========================================= */
+
+        .reader-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            overflow-y: auto;
+        }
+
+        .reader-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .reader-header {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 10;
+        }
+
+        .close-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            background: var(--bg-hover);
+            transform: scale(1.05);
+        }
+
+        .reader-tools {
+            display: flex;
+            gap: 12px;
+        }
+
+        .tool-btn {
+            padding: 10px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tool-btn:hover {
+            background: var(--bg-hover);
+        }
+
+        .tool-btn.active {
+            background: var(--accent-primary);
+            color: #000;
+            border-color: var(--accent-primary);
+        }
+
+        .reader-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+        }
+
+        .reader-hero-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 32px;
+        }
+
+        .reader-meta-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .reader-title {
+            font-size: 36px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .reader-title-english {
+            font-size: 18px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 32px;
+        }
+
+        .translation-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        .translation-container.side-by-side {
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+        }
+
+        @media (max-width: 768px) {
+            .translation-container.side-by-side {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .article-text {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+
+        .article-text-english {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        /* Word-level translations */
+        .word {
+            cursor: pointer;
+            padding: 2px 4px;
+            margin: 0 2px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .word:hover {
+            background: rgba(16, 163, 127, 0.2);
+            color: var(--accent-primary);
+        }
+
+        .word.saved {
+            background: rgba(255, 107, 53, 0.2);
+            color: var(--accent-orange);
+            font-weight: 600;
+        }
+
+        /* Word Tooltip */
+        .word-tooltip {
+            position: fixed;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: var(--shadow);
+            z-index: 1001;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            min-width: 200px;
+        }
+
+        .word-tooltip.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .tooltip-word {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .tooltip-translation {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .tooltip-save-btn {
+            width: 100%;
+            padding: 10px;
+            background: var(--accent-primary);
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tooltip-save-btn:hover {
+            transform: scale(1.02);
+        }
+
+        /* ========================================
+           LOADING STATES
+           ========================================= */
+
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .skeleton-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .skeleton-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-hover) 50%, var(--bg-card) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .skeleton-content {
+            padding: 20px;
+        }
+
+        .skeleton-line {
+            height: 12px;
+            background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-hover) 50%, var(--bg-card) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .skeleton-line.title {
+            height: 20px;
+            width: 80%;
+        }
+
+        .skeleton-line.short {
+            width: 60%;
+        }
+
+        /* ========================================
+           ERROR & EMPTY STATES
+           ========================================= */
+
+        .error-container,
+        .empty-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .error-icon,
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+            opacity: 0.5;
+        }
+
+        .error-title,
+        .empty-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .error-message,
+        .empty-message {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            max-width: 400px;
+        }
+
+        .retry-btn {
+            padding: 12px 32px;
+            background: var(--accent-primary);
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .retry-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(16, 163, 127, 0.4);
+        }
+
+        .retry-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* ========================================
+           KEYBOARD SHORTCUTS HINT
+           ========================================= */
+
+        .keyboard-hint {
+            position: fixed;
+            bottom: 80px;
+            right: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            z-index: 50;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .keyboard-hint.visible {
+            opacity: 1;
+        }
+
+        .keyboard-hint kbd {
+            display: inline-block;
+            padding: 4px 8px;
+            background: var(--bg-hover);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 11px;
+            margin: 0 4px;
+        }
+
+        /* ========================================
+           BOTTOM STATS BAR
+           ========================================= */
+
+        .stats-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            z-index: 100;
+            padding: 0 24px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ========================================
+           TOAST NOTIFICATIONS
+           ========================================= */
+
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 10000;
+            box-shadow: var(--shadow);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, 20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        /* ========================================
+           RESPONSIVE
+           ========================================= */
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 0 16px;
+            }
+
+            .tabs {
+                padding: 12px 16px;
+            }
+
+            .main {
+                padding: 0 16px 100px;
+            }
+
+            .feed-title {
+                font-size: 24px;
+            }
+
+            .reader-title {
+                font-size: 28px;
+            }
+
+            .reader-tools {
+                flex-wrap: wrap;
+            }
+
+            .tool-btn {
+                font-size: 12px;
+                padding: 8px 12px;
+            }
+
+            .keyboard-hint {
+                display: none;
+            }
+
+            .stats-bar {
+                padding: 0 8px;
+            }
+
+            .stat-item {
+                font-size: 11px;
+            }
+
+            .stat-value {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 375px) {
+            .header {
+                padding: 0 12px;
+            }
+
+            .logo {
+                font-size: 16px;
+            }
+
+            .logo-icon {
+                width: 28px;
+                height: 28px;
+            }
+
+            .level-indicator {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            .articles-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .article-title {
+                font-size: 16px;
+            }
+
+            .article-excerpt {
+                font-size: 13px;
+            }
+
+            .feed-title {
+                font-size: 20px;
+            }
+
+            .feed-subtitle {
+                font-size: 14px;
+            }
+
+            .reader-content {
+                padding: 24px 16px 60px;
+            }
+
+            .reader-title {
+                font-size: 24px;
+            }
+
+            .article-text {
+                font-size: 16px;
+            }
+        }
+    </style>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" role="banner">
+        <div class="logo">
+            <div class="logo-icon" aria-hidden="true">🌐</div>
+            <span>Discover Spanish</span>
+        </div>
+        <div class="header-controls">
+            <div class="level-indicator" role="status" aria-label="Current learning level">
+                <span>Your Level:</span>
+                <div class="level-badge" id="userLevelBadge" aria-live="polite">B1</div>
+            </div>
+            
+            <!-- User Profile / Login Button -->
+            <div id="authControls">
+                <button class="auth-button" id="loginBtn" aria-label="Sign in to your account">
+                    Sign In
+                </button>
+                <div class="user-profile" id="userProfile" style="display: none;">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="dropdown-item" id="profileBtn">
+                            <span>👤</span>
+                            <span>Profile</span>
+                        </div>
+                        <div class="dropdown-item" id="settingsBtn">
+                            <span>⚙️</span>
+                            <span>Settings</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-item" id="signOutBtn">
+                            <span>🚪</span>
+                            <span>Sign Out</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Category Tabs -->
+    <nav class="tabs-container" role="navigation" aria-label="Article categories">
+        <div class="tabs" id="categoryTabs" role="tablist">
+            <button class="tab active" data-category="all" role="tab" aria-selected="true" aria-controls="articlesGrid">For You</button>
+            <button class="tab" data-category="news" role="tab" aria-selected="false" aria-controls="articlesGrid">News</button>
+            <button class="tab" data-category="sports" role="tab" aria-selected="false" aria-controls="articlesGrid">Sports</button>
+            <button class="tab" data-category="technology" role="tab" aria-selected="false" aria-controls="articlesGrid">Technology</button>
+            <button class="tab" data-category="culture" role="tab" aria-selected="false" aria-controls="articlesGrid">Culture</button>
+            <button class="tab" data-category="entertainment" role="tab" aria-selected="false" aria-controls="articlesGrid">Entertainment</button>
+            <button class="tab" data-category="international" role="tab" aria-selected="false" aria-controls="articlesGrid">International</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main" role="main">
+        <!-- Smart Filters -->
+        <div class="smart-filters" id="smartFilters">
+            <div class="filters-header">
+                <h2 class="filters-title">🎯 Smart Filters</h2>
+                <button class="filters-toggle" id="filtersToggle">Show Filters</button>
+            </div>
+            <div class="filters-content" id="filtersContent" style="display: none;">
+                <div class="filter-group">
+                    <label class="filter-label">Difficulty Level Range</label>
+                    <p class="filter-description">Select articles within your comfort zone</p>
+                    <input type="range" class="level-range-slider" id="levelRangeSlider" 
+                           min="0" max="5" value="2" step="1">
+                    <div class="level-markers">
+                        <span class="level-marker">A1</span>
+                        <span class="level-marker">A2</span>
+                        <span class="level-marker">B1</span>
+                        <span class="level-marker">B2</span>
+                        <span class="level-marker">C1</span>
+                        <span class="level-marker">C2</span>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Comprehension Target</label>
+                    <p class="filter-description">Show articles where you know</p>
+                    <div class="comprehension-range">
+                        <input type="number" class="comprehension-input" id="comprehensionMin" 
+                               placeholder="Min %" min="0" max="100" value="70">
+                        <span style="color: var(--text-secondary);">to</span>
+                        <input type="number" class="comprehension-input" id="comprehensionMax" 
+                               placeholder="Max %" min="0" max="100" value="90">
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Interest Tags</label>
+                    <p class="filter-description">Select topics you're interested in</p>
+                    <div class="interest-tags" id="interestTags">
+                        <button class="interest-tag" data-tag="news">📰 News</button>
+                        <button class="interest-tag" data-tag="sports">⚽ Sports</button>
+                        <button class="interest-tag" data-tag="tech">💻 Technology</button>
+                        <button class="interest-tag" data-tag="culture">🎨 Culture</button>
+                        <button class="interest-tag" data-tag="science">🔬 Science</button>
+                        <button class="interest-tag" data-tag="entertainment">🎬 Entertainment</button>
+                        <button class="interest-tag" data-tag="food">🍽️ Food</button>
+                        <button class="interest-tag" data-tag="travel">✈️ Travel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="feed-header">
+            <h1 class="feed-title">Personalized Spanish News</h1>
+            <p class="feed-subtitle">AI-curated articles adapted to your learning level</p>
+        </div>
+
+        <div class="articles-grid" id="articlesGrid" role="feed" aria-busy="true" aria-label="Article feed">
+            <!-- Articles will be inserted here -->
+        </div>
+
+        <div class="loading-container" id="loadingContainer" role="status" aria-live="polite">
+            <div class="spinner" aria-hidden="true"></div>
+            <p>Loading amazing articles...</p>
+        </div>
+    </main>
+
+    <!-- Reader Modal -->
+    <div class="reader-modal" id="readerModal" role="dialog" aria-modal="true" aria-labelledby="readerTitle" aria-hidden="true">
+        <div class="reader-header">
+            <button class="close-btn" id="closeReaderBtn" aria-label="Close article reader (Escape)">✕</button>
+            <div class="reader-tools" role="toolbar" aria-label="Article tools">
+                <button class="tool-btn" id="translationToggle" aria-label="Toggle translation" aria-pressed="false">
+                    <span aria-hidden="true">🌐</span>
+                    <span>Show Translation</span>
+                </button>
+                <button class="tool-btn" id="saveArticleBtn" aria-label="Save article" aria-pressed="false">
+                    <span aria-hidden="true">🔖</span>
+                    <span>Save</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Audio Player (will be shown when article opens) -->
+        <div class="audio-player-container" id="audioPlayerContainer" style="display: none;">
+            <div class="audio-player">
+                <div class="audio-header">
+                    <span class="audio-icon" id="audioIcon">🎙️</span>
+                    <span class="audio-title">Professional Audio Narration</span>
+                </div>
+                <div class="audio-controls-main">
+                    <button class="play-pause-btn" id="playPauseBtn" aria-label="Play audio narration">
+                        ▶️
+                    </button>
+                    <div class="audio-progress-container">
+                        <div class="audio-time-display">
+                            <span id="currentTime">0:00</span>
+                            <span id="totalTime">0:00</span>
+                        </div>
+                        <div class="audio-progress" id="audioProgress">
+                            <div class="audio-progress-fill" id="audioProgressFill"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="audio-secondary-controls">
+                    <div class="audio-control-group">
+                        <button class="audio-control-btn" id="autoScrollBtn">
+                            📜 Auto-Scroll
+                        </button>
+                        <div class="speed-selector">
+                            <button class="speed-btn" data-speed="0.5">0.5x</button>
+                            <button class="speed-btn" data-speed="0.75">0.75x</button>
+                            <button class="speed-btn active" data-speed="1.0">1x</button>
+                            <button class="speed-btn" data-speed="1.25">1.25x</button>
+                            <button class="speed-btn" data-speed="1.5">1.5x</button>
+                        </div>
+                    </div>
+                    <div class="audio-control-group">
+                        <div class="voice-selector-dropdown">
+                            <button class="audio-control-btn" id="voiceBtn">
+                                🗣️ Voice
+                            </button>
+                            <div class="voice-dropdown" id="voiceDropdown">
+                                <div class="voice-option selected" data-voice="spain_female">
+                                    <span class="voice-option-label">Spanish Female</span>
+                                    <span class="voice-option-accent">Spain 🇪🇸</span>
+                                </div>
+                                <div class="voice-option" data-voice="spain_male">
+                                    <span class="voice-option-label">Spanish Male</span>
+                                    <span class="voice-option-accent">Spain 🇪🇸</span>
+                                </div>
+                                <div class="voice-option" data-voice="mexico_female">
+                                    <span class="voice-option-label">Mexican Female</span>
+                                    <span class="voice-option-accent">Mexico 🇲🇽</span>
+                                </div>
+                                <div class="voice-option" data-voice="mexico_male">
+                                    <span class="voice-option-label">Mexican Male</span>
+                                    <span class="voice-option-accent">Mexico 🇲🇽</span>
+                                </div>
+                                <div class="voice-option" data-voice="argentina_female">
+                                    <span class="voice-option-label">Argentine Female</span>
+                                    <span class="voice-option-accent">Argentina 🇦🇷</span>
+                                </div>
+                                <div class="voice-option" data-voice="argentina_male">
+                                    <span class="voice-option-label">Argentine Male</span>
+                                    <span class="voice-option-accent">Argentina 🇦🇷</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="download-audio-btn" id="downloadAudioBtn">
+                            ⬇️ Download
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="reader-content" id="readerContent" tabindex="0">
+            <!-- Article content will be inserted here -->
+        </div>
+    </div>
+
+    <!-- Auto-Scroll Indicator -->
+    <div class="auto-scroll-indicator" id="autoScrollIndicator">
+        ⬇️
+    </div>
+
+    <!-- Auth Modal -->
+    <div class="auth-modal" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+        <div class="auth-modal-content">
+            <div class="auth-modal-header">
+                <h2 class="auth-modal-title" id="authModalTitle">Welcome Back</h2>
+                <p class="auth-modal-subtitle">Continue your Spanish learning journey</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login" id="loginTab">Sign In</button>
+                <button class="auth-tab" data-tab="signup" id="signupTab">Sign Up</button>
+            </div>
+
+            <div class="auth-error" id="authError"></div>
+            <div class="auth-success" id="authSuccess"></div>
+
+            <!-- Login Form -->
+            <form class="auth-form active" id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="loginEmail">Email</label>
+                    <input type="email" class="form-input" id="loginEmail" placeholder="your@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="loginPassword">Password</label>
+                    <input type="password" class="form-input" id="loginPassword" placeholder="••••••••" required>
+                </div>
+                <div class="forgot-password">
+                    <a class="forgot-password-link" id="forgotPasswordLink">Forgot password?</a>
+                </div>
+                <button type="submit" class="form-button" id="loginSubmitBtn">Sign In</button>
+            </form>
+
+            <!-- Signup Form -->
+            <form class="auth-form" id="signupForm">
+                <div class="form-group">
+                    <label class="form-label" for="signupEmail">Email</label>
+                    <input type="email" class="form-input" id="signupEmail" placeholder="your@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="signupPassword">Password</label>
+                    <input type="password" class="form-input" id="signupPassword" placeholder="••••••••" minlength="6" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="signupLevel">Learning Level</label>
+                    <select class="form-input" id="signupLevel" required>
+                        <option value="A1">A1 - Beginner</option>
+                        <option value="A2">A2 - Elementary</option>
+                        <option value="B1" selected>B1 - Intermediate</option>
+                        <option value="B2">B2 - Upper Intermediate</option>
+                        <option value="C1">C1 - Advanced</option>
+                        <option value="C2">C2 - Proficient</option>
+                    </select>
+                </div>
+                <button type="submit" class="form-button" id="signupSubmitBtn">Create Account</button>
+            </form>
+
+            <div class="divider">or continue with</div>
+
+            <button class="oauth-button" id="googleAuthBtn">
+                <svg class="oauth-icon" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Sign in with Google
+            </button>
+        </div>
+    </div>
+
+    <!-- Word Tooltip -->
+    <div class="word-tooltip" id="wordTooltip" role="tooltip" aria-hidden="true">
+        <div class="tooltip-word" id="tooltipWord"></div>
+        <div class="tooltip-translation" id="tooltipTranslation"></div>
+        <button class="tooltip-save-btn" id="tooltipSaveBtn" aria-label="Save word to vocabulary">Save to Vocabulary</button>
+    </div>
+
+    <!-- Keyboard Shortcuts Hint -->
+    <div class="keyboard-hint" id="keyboardHint" role="tooltip" aria-hidden="true">
+        <div style="margin-bottom: 8px; font-weight: 600;">Keyboard Shortcuts</div>
+        <div><kbd>↑</kbd> <kbd>↓</kbd> Navigate articles</div>
+        <div><kbd>Enter</kbd> Open article</div>
+        <div><kbd>Esc</kbd> Close reader</div>
+        <div><kbd>?</kbd> Toggle shortcuts</div>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar" role="complementary" aria-label="Learning statistics">
+        <div class="stat-item">
+            <div class="stat-value" id="articlesReadToday" aria-live="polite">0</div>
+            <div class="stat-label">Read Today</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="wordsLearned" aria-live="polite">0</div>
+            <div class="stat-label">Words Learned</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="comprehensionAvg" aria-live="polite">0%</div>
+            <div class="stat-label">Comprehension</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="readingStreak" aria-live="polite">0</div>
+            <div class="stat-label">Day Streak</div>
+        </div>
+    </div>
+
+    <!-- Supabase Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        /**
+         * 🔐 AUTHENTICATION MANAGER
+         */
+        class AuthManager {
+            constructor() {
+                // Initialize Supabase client
+<<<<<<< HEAD
+                const SUPABASE_URL = 'https://uejiwteujraxczrxbqff.supabase.co';
+                const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVlaml3dGV1anJheGN6cnhicWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk5NDMxMzksImV4cCI6MjA3NTUxOTEzOX0.iva8q5bMcLHfqd6niXqB_i-i-VrPmKLNGr9eiiPwZHQ';
+                
+                // Only initialize if Supabase library is loaded and configured
+                if (window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY && 
+                    SUPABASE_URL !== 'https://your-project.supabase.co') {
+                    this.supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    this.isConfigured = true;
+                } else {
+                    console.warn('⚠️ Supabase not configured. Authentication features will be limited.');
+                    this.supabase = null;
+                    this.isConfigured = false;
+                }
+                
+=======
+                const SUPABASE_URL = 'https://your-project.supabase.co'; // Will be configured
+                const SUPABASE_ANON_KEY = 'your-anon-key'; // Will be configured
+                
+                this.supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+>>>>>>> agent-6-deployment
+                this.currentUser = null;
+                this.session = null;
+                
+                this.init();
+            }
+
+            async init() {
+<<<<<<< HEAD
+                // Setup auth event listeners first
+                this.setupAuthEventListeners();
+
+                if (!this.isConfigured || !this.supabase) {
+                    // If not configured, still show guest UI
+                    this.updateUIForGuestUser();
+                    return;
+                }
+
+                // Check for existing session
+                try {
+                    const { data: { session } } = await this.supabase.auth.getSession();
+=======
+                // Check for existing session
+                const { data: { session } } = await this.supabase.auth.getSession();
+                
+                if (session) {
+                    this.session = session;
+                    this.currentUser = session.user;
+                    this.updateUIForAuthenticatedUser();
+                } else {
+                    this.updateUIForGuestUser();
+                }
+
+                // Listen for auth state changes
+                this.supabase.auth.onAuthStateChange((event, session) => {
+                    console.log('Auth state changed:', event, session);
+>>>>>>> agent-6-deployment
+                    
+                    if (session) {
+                        this.session = session;
+                        this.currentUser = session.user;
+                        this.updateUIForAuthenticatedUser();
+<<<<<<< HEAD
+                    } else {
+                        this.updateUIForGuestUser();
+                    }
+
+                    // Listen for auth state changes
+                    this.supabase.auth.onAuthStateChange((event, session) => {
+                        console.log('Auth state changed:', event, session);
+                        
+                        if (session) {
+                            this.session = session;
+                            this.currentUser = session.user;
+                            this.updateUIForAuthenticatedUser();
+                            
+                            if (event === 'SIGNED_IN') {
+                                this.closeAuthModal();
+                                this.showToast('Welcome back! 👋');
+                            }
+                        } else {
+                            this.session = null;
+                            this.currentUser = null;
+                            this.updateUIForGuestUser();
+                            
+                            if (event === 'SIGNED_OUT') {
+                                this.showToast('Signed out successfully');
+                            }
+                        }
+                    });
+                } catch (error) {
+                    console.error('Auth initialization error:', error);
+                    this.updateUIForGuestUser();
+                }
+=======
+                        
+                        if (event === 'SIGNED_IN') {
+                            this.closeAuthModal();
+                            this.showToast('Welcome back! 👋');
+                        }
+                    } else {
+                        this.session = null;
+                        this.currentUser = null;
+                        this.updateUIForGuestUser();
+                        
+                        if (event === 'SIGNED_OUT') {
+                            this.showToast('Signed out successfully');
+                        }
+                    }
+                });
+
+                // Setup auth event listeners
+                this.setupAuthEventListeners();
+>>>>>>> agent-6-deployment
+            }
+
+            setupAuthEventListeners() {
+                // Login button
+                document.getElementById('loginBtn').addEventListener('click', () => {
+                    this.openAuthModal('login');
+                });
+
+                // Auth tabs
+                document.querySelectorAll('.auth-tab').forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        this.switchAuthTab(tab.dataset.tab);
+                    });
+                });
+
+                // Login form
+                document.getElementById('loginForm').addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    await this.handleLogin();
+                });
+
+                // Signup form
+                document.getElementById('signupForm').addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    await this.handleSignup();
+                });
+
+                // Google auth
+                document.getElementById('googleAuthBtn').addEventListener('click', async () => {
+                    await this.handleGoogleAuth();
+                });
+
+                // Forgot password
+                document.getElementById('forgotPasswordLink').addEventListener('click', async () => {
+                    await this.handleForgotPassword();
+                });
+
+                // User dropdown
+                document.getElementById('userProfile').addEventListener('click', () => {
+                    document.getElementById('userDropdown').classList.toggle('active');
+                });
+
+                // Sign out
+                document.getElementById('signOutBtn').addEventListener('click', async () => {
+                    await this.handleSignOut();
+                });
+
+                // Close modal on outside click
+                document.getElementById('authModal').addEventListener('click', (e) => {
+                    if (e.target.id === 'authModal') {
+                        this.closeAuthModal();
+                    }
+                });
+
+                // Close dropdown on outside click
+                document.addEventListener('click', (e) => {
+                    const dropdown = document.getElementById('userDropdown');
+                    const profile = document.getElementById('userProfile');
+                    if (!profile.contains(e.target)) {
+                        dropdown.classList.remove('active');
+                    }
+                });
+            }
+
+            openAuthModal(tab = 'login') {
+                document.getElementById('authModal').classList.add('active');
+                this.switchAuthTab(tab);
+                document.body.style.overflow = 'hidden';
+            }
+
+            closeAuthModal() {
+                document.getElementById('authModal').classList.remove('active');
+                document.body.style.overflow = 'auto';
+                this.clearAuthMessages();
+            }
+
+            switchAuthTab(tab) {
+                // Update tabs
+                document.querySelectorAll('.auth-tab').forEach(t => {
+                    t.classList.toggle('active', t.dataset.tab === tab);
+                });
+
+                // Update forms
+                document.querySelectorAll('.auth-form').forEach(f => {
+                    f.classList.toggle('active', f.id === `${tab}Form`);
+                });
+
+                // Update modal title
+                const title = tab === 'login' ? 'Welcome Back' : 'Create Account';
+                const subtitle = tab === 'login' 
+                    ? 'Continue your Spanish learning journey'
+                    : 'Start learning Spanish with AI-powered articles';
+                
+                document.getElementById('authModalTitle').textContent = title;
+                document.querySelector('.auth-modal-subtitle').textContent = subtitle;
+
+                this.clearAuthMessages();
+            }
+
+            async handleLogin() {
+<<<<<<< HEAD
+                if (!this.isConfigured) {
+                    this.showAuthError('Authentication is not configured. Please set up Supabase credentials.');
+                    return;
+                }
+
+=======
+>>>>>>> agent-6-deployment
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                const btn = document.getElementById('loginSubmitBtn');
+
+                btn.disabled = true;
+                btn.textContent = 'Signing in...';
+
+                try {
+                    const { data, error } = await this.supabase.auth.signInWithPassword({
+                        email,
+                        password
+                    });
+
+                    if (error) throw error;
+
+                    // Success handled by onAuthStateChange
+                    
+                } catch (error) {
+                    console.error('Login error:', error);
+                    this.showAuthError(error.message);
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = 'Sign In';
+                }
+            }
+
+            async handleSignup() {
+                const email = document.getElementById('signupEmail').value;
+                const password = document.getElementById('signupPassword').value;
+                const level = document.getElementById('signupLevel').value;
+                const btn = document.getElementById('signupSubmitBtn');
+
+                btn.disabled = true;
+                btn.textContent = 'Creating account...';
+
+                try {
+                    const { data, error } = await this.supabase.auth.signUp({
+                        email,
+                        password,
+                        options: {
+                            data: {
+                                learningLevel: level,
+                                nativeLanguage: 'en',
+                                targetLanguage: 'es'
+                            }
+                        }
+                    });
+
+                    if (error) throw error;
+
+                    this.showAuthSuccess('Account created! Please check your email to verify your account.');
+                    
+                    // Clear form
+                    document.getElementById('signupForm').reset();
+
+                } catch (error) {
+                    console.error('Signup error:', error);
+                    this.showAuthError(error.message);
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = 'Create Account';
+                }
+            }
+
+            async handleGoogleAuth() {
+                try {
+                    const { data, error } = await this.supabase.auth.signInWithOAuth({
+                        provider: 'google',
+                        options: {
+                            redirectTo: window.location.origin + '/discover-articles.html'
+                        }
+                    });
+
+                    if (error) throw error;
+
+                } catch (error) {
+                    console.error('Google auth error:', error);
+                    this.showAuthError('Failed to sign in with Google');
+                }
+            }
+
+            async handleForgotPassword() {
+                const email = prompt('Enter your email address:');
+                if (!email) return;
+
+                try {
+                    const { error } = await this.supabase.auth.resetPasswordForEmail(email, {
+                        redirectTo: window.location.origin + '/reset-password.html'
+                    });
+
+                    if (error) throw error;
+
+                    this.showAuthSuccess('Password reset email sent! Please check your inbox.');
+
+                } catch (error) {
+                    console.error('Password reset error:', error);
+                    this.showAuthError('Failed to send password reset email');
+                }
+            }
+
+            async handleSignOut() {
+                try {
+                    const { error } = await this.supabase.auth.signOut();
+                    if (error) throw error;
+
+                    // Clear local storage
+                    localStorage.removeItem('articles_user');
+                    
+                    // Reload page
+                    window.location.reload();
+
+                } catch (error) {
+                    console.error('Sign out error:', error);
+                    this.showToast('Failed to sign out');
+                }
+            }
+
+            updateUIForAuthenticatedUser() {
+                const loginBtn = document.getElementById('loginBtn');
+                const userProfile = document.getElementById('userProfile');
+                const userAvatar = document.getElementById('userAvatar');
+
+                loginBtn.style.display = 'none';
+                userProfile.style.display = 'flex';
+
+                // Set avatar
+                const email = this.currentUser.email;
+                const initial = email.charAt(0).toUpperCase();
+                userAvatar.textContent = initial;
+
+                // Update level badge if available
+                const userLevel = this.currentUser.user_metadata?.learningLevel || 'B1';
+                document.getElementById('userLevelBadge').textContent = userLevel;
+            }
+
+            updateUIForGuestUser() {
+                const loginBtn = document.getElementById('loginBtn');
+                const userProfile = document.getElementById('userProfile');
+
+                loginBtn.style.display = 'block';
+                userProfile.style.display = 'none';
+            }
+
+            showAuthError(message) {
+                const errorEl = document.getElementById('authError');
+                errorEl.textContent = message;
+                errorEl.classList.add('visible');
+
+                setTimeout(() => {
+                    errorEl.classList.remove('visible');
+                }, 5000);
+            }
+
+            showAuthSuccess(message) {
+                const successEl = document.getElementById('authSuccess');
+                successEl.textContent = message;
+                successEl.classList.add('visible');
+
+                setTimeout(() => {
+                    successEl.classList.remove('visible');
+                }, 5000);
+            }
+
+            clearAuthMessages() {
+                document.getElementById('authError').classList.remove('visible');
+                document.getElementById('authSuccess').classList.remove('visible');
+            }
+
+            getAccessToken() {
+                return this.session?.access_token || null;
+            }
+
+            getUserId() {
+                return this.currentUser?.id || null;
+            }
+
+            isAuthenticated() {
+                return this.session !== null;
+            }
+
+            showToast(message) {
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.textContent = message;
+                document.body.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    setTimeout(() => toast.remove(), 300);
+                }, 2500);
+            }
+        }
+
+        /**
+         * 🔥 INTELLIGENT ARTICLES FEED
+         * ChatGPT Pulse + Perplexity News Style
+         * 
+         * Features:
+         * - Real-time article fetching
+         * - AI difficulty analysis
+         * - Personalized recommendations
+         * - Word-level translations
+         * - Comprehension tracking
+         * - Adaptive learning
+         * - User authentication
+         */
+
+        class IntelligentArticlesFeed {
+            constructor(authManager) {
+                this.API_BASE = '/api';
+                this.authManager = authManager;
+                this.currentUser = this.getOrCreateUser();
+                this.currentArticle = null;
+                this.articles = [];
+                this.category = 'all';
+                this.savedWords = new Set(this.currentUser.savedWords || []);
+                
+                // Audio player
+                this.audio = null;
+                this.audioData = null;
+                this.isPlaying = false;
+                this.currentSentenceIndex = -1;
+                this.autoScrollEnabled = false;
+                this.currentSpeed = 1.0;
+                this.currentVoice = 'spain_female';
+                
+                // Speech synthesis (fallback)
+                this.speechSynth = window.speechSynthesis;
+                this.currentUtterance = null;
+
+                // Keyboard navigation
+                this.selectedArticleIndex = -1;
+                this.keyboardHintVisible = false;
+
+                // Loading state
+                this.isLoading = false;
+
+                // Filters
+                this.filters = {
+                    levelRange: 2, // B1
+                    comprehensionMin: 70,
+                    comprehensionMax: 90,
+                    selectedTags: []
+                };
+
+                this.init();
+            }
+
+            async init() {
+                console.log('🚀 Initializing Intelligent Articles Feed...');
+
+                // Setup event listeners
+                this.setupEventListeners();
+                this.setupKeyboardShortcuts();
+
+                // Load articles
+                await this.loadArticles();
+
+                // Update UI
+                this.updateStats();
+
+                // Show keyboard hint briefly
+                this.showKeyboardHintBriefly();
+
+                console.log('✅ Feed ready!');
+            }
+
+            setupEventListeners() {
+                // Category tabs
+                document.querySelectorAll('.tab').forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        this.switchCategory(tab.dataset.category);
+                    });
+                });
+
+                // Reader modal controls
+                const closeBtn = document.getElementById('closeReaderBtn');
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', () => {
+                        this.closeReader();
+                    });
+                }
+
+                const translationToggle = document.getElementById('translationToggle');
+                if (translationToggle) {
+                    translationToggle.addEventListener('click', () => {
+                        this.toggleTranslation();
+                    });
+                }
+
+                const saveBtn = document.getElementById('saveArticleBtn');
+                if (saveBtn) {
+                    saveBtn.addEventListener('click', () => {
+                        this.saveArticle();
+                    });
+                }
+
+                // Audio player controls
+                const playPauseBtn = document.getElementById('playPauseBtn');
+                if (playPauseBtn) {
+                    playPauseBtn.addEventListener('click', () => {
+                        this.togglePlayPause();
+                    });
+                }
+
+                const autoScrollBtn = document.getElementById('autoScrollBtn');
+                if (autoScrollBtn) {
+                    autoScrollBtn.addEventListener('click', () => {
+                        this.toggleAutoScroll();
+                    });
+                }
+
+                const audioProgress = document.getElementById('audioProgress');
+                if (audioProgress) {
+                    audioProgress.addEventListener('click', (e) => {
+                        this.seekAudio(e);
+                    });
+                }
+
+                // Speed buttons
+                document.querySelectorAll('.speed-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        this.changeSpeed(parseFloat(btn.dataset.speed));
+                    });
+                });
+
+                // Voice selector
+                document.getElementById('voiceBtn').addEventListener('click', () => {
+                    document.getElementById('voiceDropdown').classList.toggle('active');
+                });
+
+                document.querySelectorAll('.voice-option').forEach(option => {
+                    option.addEventListener('click', () => {
+                        this.changeVoice(option.dataset.voice);
+                    });
+                });
+
+                document.getElementById('downloadAudioBtn').addEventListener('click', () => {
+                    this.downloadAudio();
+                });
+
+                // Filter controls
+                document.getElementById('filtersToggle').addEventListener('click', () => {
+                    this.toggleFilters();
+                });
+
+                document.getElementById('levelRangeSlider').addEventListener('input', (e) => {
+                    this.filters.levelRange = parseInt(e.target.value);
+                    this.applyFilters();
+                });
+
+                document.getElementById('comprehensionMin').addEventListener('change', (e) => {
+                    this.filters.comprehensionMin = parseInt(e.target.value);
+                    this.applyFilters();
+                });
+
+                document.getElementById('comprehensionMax').addEventListener('change', (e) => {
+                    this.filters.comprehensionMax = parseInt(e.target.value);
+                    this.applyFilters();
+                });
+
+                document.querySelectorAll('.interest-tag').forEach(tag => {
+                    tag.addEventListener('click', () => {
+                        this.toggleInterestTag(tag);
+                    });
+                });
+
+                // Word tooltip
+                document.getElementById('tooltipSaveBtn').addEventListener('click', () => {
+                    this.saveCurrentWord();
+                });
+
+                // Infinite scroll
+                window.addEventListener('scroll', () => {
+                    this.handleScroll();
+                });
+
+                // Close dropdowns on outside click
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.voice-selector-dropdown')) {
+                        document.getElementById('voiceDropdown').classList.remove('active');
+                    }
+                });
+            }
+
+            setupKeyboardShortcuts() {
+                document.addEventListener('keydown', (e) => {
+                    // Don't handle shortcuts when modal is open, except Esc
+                    const modalOpen = document.getElementById('readerModal').classList.contains('active');
+                    
+                    if (e.key === 'Escape') {
+                        if (modalOpen) {
+                            this.closeReader();
+                        }
+                        return;
+                    }
+
+                    if (modalOpen) return;
+
+                    switch(e.key) {
+                        case 'ArrowDown':
+                            e.preventDefault();
+                            this.navigateArticles('down');
+                            break;
+                        case 'ArrowUp':
+                            e.preventDefault();
+                            this.navigateArticles('up');
+                            break;
+                        case 'Enter':
+                            e.preventDefault();
+                            if (this.selectedArticleIndex >= 0) {
+                                this.openReader(this.articles[this.selectedArticleIndex]);
+                            }
+                            break;
+                        case '?':
+                            e.preventDefault();
+                            this.toggleKeyboardHint();
+                            break;
+                    }
+                });
+            }
+
+            navigateArticles(direction) {
+                if (this.articles.length === 0) return;
+
+                if (direction === 'down') {
+                    this.selectedArticleIndex = Math.min(this.selectedArticleIndex + 1, this.articles.length - 1);
+                } else {
+                    this.selectedArticleIndex = Math.max(this.selectedArticleIndex - 1, 0);
+                }
+
+                this.highlightSelectedArticle();
+                this.scrollToSelectedArticle();
+            }
+
+            highlightSelectedArticle() {
+                const cards = document.querySelectorAll('.article-card');
+                cards.forEach((card, index) => {
+                    if (index === this.selectedArticleIndex) {
+                        card.style.outline = '3px solid var(--accent-primary)';
+                        card.setAttribute('aria-selected', 'true');
+                    } else {
+                        card.style.outline = 'none';
+                        card.setAttribute('aria-selected', 'false');
+                    }
+                });
+            }
+
+            scrollToSelectedArticle() {
+                const cards = document.querySelectorAll('.article-card');
+                if (cards[this.selectedArticleIndex]) {
+                    cards[this.selectedArticleIndex].scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                }
+            }
+
+            toggleKeyboardHint() {
+                const hint = document.getElementById('keyboardHint');
+                this.keyboardHintVisible = !this.keyboardHintVisible;
+                
+                if (this.keyboardHintVisible) {
+                    hint.classList.add('visible');
+                    hint.setAttribute('aria-hidden', 'false');
+                } else {
+                    hint.classList.remove('visible');
+                    hint.setAttribute('aria-hidden', 'true');
+                }
+            }
+
+            showKeyboardHintBriefly() {
+                const hint = document.getElementById('keyboardHint');
+                hint.classList.add('visible');
+                hint.setAttribute('aria-hidden', 'false');
+                
+                setTimeout(() => {
+                    if (!this.keyboardHintVisible) {
+                        hint.classList.remove('visible');
+                        hint.setAttribute('aria-hidden', 'true');
+                    }
+                }, 3000);
+            }
+
+            getOrCreateUser() {
+                let user = localStorage.getItem('articles_user');
+                if (!user) {
+                    user = {
+                        id: 'user_' + Date.now(),
+                        level: 'B1',
+                        savedWords: [],
+                        savedArticles: [],
+                        articlesRead: [],
+                        wordsLearned: 0,
+                        streak: 0,
+                        lastActiveDate: new Date().toISOString().split('T')[0]
+                    };
+                    localStorage.setItem('articles_user', JSON.stringify(user));
+                } else {
+                    user = JSON.parse(user);
+                }
+                return user;
+            }
+
+            saveUser() {
+                localStorage.setItem('articles_user', JSON.stringify(this.currentUser));
+            }
+
+            async loadArticles() {
+                if (this.isLoading) return;
+                this.isLoading = true;
+
+                try {
+                    // Show loading skeletons
+                    this.showSkeletonLoaders();
+                    document.getElementById('articlesGrid').setAttribute('aria-busy', 'true');
+
+                    const response = await fetch(
+                        `${this.API_BASE}/articles/feed?userId=${this.currentUser.id}&category=${this.category}&limit=20&withAnalysis=true&includeTranslations=true`
+                    );
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+
+                    const data = await response.json();
+                    this.articles = data.articles || [];
+
+                    if (this.articles.length === 0) {
+                        this.showEmptyState();
+                    } else {
+                        this.renderArticles();
+                    }
+
+                    this.announceToScreenReader(`Loaded ${this.articles.length} articles`);
+
+                } catch (error) {
+                    console.error('Error loading articles:', error);
+                    this.showErrorState(error);
+                } finally {
+                    this.isLoading = false;
+                    document.getElementById('articlesGrid').setAttribute('aria-busy', 'false');
+                }
+            }
+
+            showSkeletonLoaders() {
+                const grid = document.getElementById('articlesGrid');
+                const loading = document.getElementById('loadingContainer');
+                
+                loading.style.display = 'none';
+                grid.innerHTML = '';
+
+                // Show 6 skeleton cards
+                for (let i = 0; i < 6; i++) {
+                    const skeleton = document.createElement('div');
+                    skeleton.className = 'skeleton-card';
+                    skeleton.innerHTML = `
+                        <div class="skeleton-image"></div>
+                        <div class="skeleton-content">
+                            <div class="skeleton-line short"></div>
+                            <div class="skeleton-line title"></div>
+                            <div class="skeleton-line title"></div>
+                            <div class="skeleton-line"></div>
+                            <div class="skeleton-line"></div>
+                            <div class="skeleton-line short"></div>
+                        </div>
+                    `;
+                    grid.appendChild(skeleton);
+                }
+            }
+
+            showErrorState(error) {
+                const grid = document.getElementById('articlesGrid');
+                const loading = document.getElementById('loadingContainer');
+                
+                grid.innerHTML = '';
+                loading.style.display = 'none';
+
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-container';
+                errorDiv.setAttribute('role', 'alert');
+                errorDiv.innerHTML = `
+                    <div class="error-icon" aria-hidden="true">⚠️</div>
+                    <h2 class="error-title">Failed to Load Articles</h2>
+                    <p class="error-message">${error.message || 'Unable to connect to the server. Please check your internet connection and try again.'}</p>
+                    <button class="retry-btn" id="retryBtn">Retry</button>
+                `;
+                
+                grid.appendChild(errorDiv);
+
+                // Add retry handler
+                document.getElementById('retryBtn').addEventListener('click', () => {
+                    this.loadArticles();
+                });
+
+                this.announceToScreenReader('Failed to load articles');
+            }
+
+            showEmptyState() {
+                const grid = document.getElementById('articlesGrid');
+                const loading = document.getElementById('loadingContainer');
+                
+                grid.innerHTML = '';
+                loading.style.display = 'none';
+
+                const emptyDiv = document.createElement('div');
+                emptyDiv.className = 'empty-container';
+                emptyDiv.setAttribute('role', 'status');
+                emptyDiv.innerHTML = `
+                    <div class="empty-icon" aria-hidden="true">📭</div>
+                    <h2 class="empty-title">No Articles Found</h2>
+                    <p class="empty-message">We couldn't find any articles in this category. Try selecting a different category or check back later!</p>
+                    <button class="retry-btn" id="backToAllBtn">View All Articles</button>
+                `;
+                
+                grid.appendChild(emptyDiv);
+
+                // Add handler to go back to "all"
+                document.getElementById('backToAllBtn').addEventListener('click', () => {
+                    this.switchCategory('all');
+                });
+
+                this.announceToScreenReader('No articles found');
+            }
+
+            announceToScreenReader(message) {
+                const announcement = document.createElement('div');
+                announcement.setAttribute('role', 'status');
+                announcement.setAttribute('aria-live', 'polite');
+                announcement.className = 'sr-only';
+                announcement.style.position = 'absolute';
+                announcement.style.left = '-10000px';
+                announcement.style.width = '1px';
+                announcement.style.height = '1px';
+                announcement.style.overflow = 'hidden';
+                announcement.textContent = message;
+                
+                document.body.appendChild(announcement);
+                setTimeout(() => announcement.remove(), 1000);
+            }
+
+            loadFallbackArticles() {
+                // Load from static JSON as fallback
+                fetch('/content/articles.json')
+                    .then(res => res.json())
+                    .then(articles => {
+                        this.articles = articles;
+                        this.renderArticles();
+                    })
+                    .catch(err => {
+                        console.error('Error loading fallback:', err);
+                        document.getElementById('loadingContainer').innerHTML = 
+                            '<p>Unable to load articles. Please check your connection.</p>';
+                    });
+            }
+
+            renderArticles() {
+                const grid = document.getElementById('articlesGrid');
+                const loading = document.getElementById('loadingContainer');
+
+                grid.innerHTML = '';
+                loading.style.display = 'none';
+
+                if (this.articles.length === 0) {
+                    loading.innerHTML = '<p>No articles found for this category.</p>';
+                    loading.style.display = 'flex';
+                    return;
+                }
+
+                this.articles.forEach(article => {
+                    const card = this.createArticleCard(article);
+                    grid.appendChild(card);
+                });
+            }
+
+            createArticleCard(article) {
+                const card = document.createElement('div');
+                card.className = 'article-card';
+                card.setAttribute('role', 'article');
+                card.setAttribute('tabindex', '0');
+                card.setAttribute('aria-label', `${article.title}. ${article.difficulty} level. ${article.readTime || '5 min'} read.`);
+
+                const comprehensionScore = article.comprehension?.comprehensionPercentage || 50;
+                const readTime = article.readTime || '5 min';
+                const difficulty = article.difficulty || 'B1';
+
+                card.innerHTML = `
+                    <img src="${article.image}" alt="" class="article-image" 
+                         onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800'">
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-source">${article.source || 'Spanish News'}</span>
+                            <span class="article-time">${readTime}</span>
+                            <span class="difficulty-pill difficulty-${difficulty}" role="status">${difficulty}</span>
+                        </div>
+                        <h3 class="article-title">${article.title}</h3>
+                        <p class="article-excerpt">${article.excerpt}</p>
+                        <div class="article-footer">
+                            <div class="comprehension-score">
+                                <span>Comprehension</span>
+                                <div class="score-bar" role="progressbar" aria-valuenow="${comprehensionScore}" aria-valuemin="0" aria-valuemax="100">
+                                    <div class="score-fill" style="width: ${comprehensionScore}%"></div>
+                                </div>
+                                <span>${comprehensionScore}%</span>
+                            </div>
+                            <div class="article-actions">
+                                <button class="action-btn save-btn" aria-label="Save article for later">
+                                    🔖
+                                </button>
+                                <button class="action-btn share-btn" aria-label="Share article">
+                                    ↗️
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Click to open
+                card.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('action-btn')) {
+                        this.openReader(article);
+                    }
+                });
+
+                // Keyboard support for card
+                card.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.openReader(article);
+                    }
+                });
+
+                // Save button
+                const saveBtn = card.querySelector('.save-btn');
+                saveBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.toggleSaveArticle(article, saveBtn);
+                });
+
+                return card;
+            }
+
+            async openReader(article) {
+                this.currentArticle = article;
+                const modal = document.getElementById('readerModal');
+                const content = document.getElementById('readerContent');
+
+                // Store last focused element
+                this.lastFocusedElement = document.activeElement;
+
+                // Track article read
+                this.trackArticleRead(article);
+
+                // Calculate comprehension (unknown words vs known words)
+                const comprehension = this.calculateComprehension(article.content);
+                
+                // Render content with comprehension banner and highlighted words
+                content.innerHTML = `
+                    <img src="${article.image}" alt="${article.title}" class="reader-hero-image"
+                         onerror="this.style.display='none'">
+                    <div class="reader-meta-info">
+                        <span class="article-source">${article.source}</span>
+                        <span class="difficulty-pill difficulty-${article.difficulty}">${article.difficulty}</span>
+                        <span class="article-time">${article.readTime}</span>
+                    </div>
+                    <h1 class="reader-title" id="readerTitle">${article.title}</h1>
+                    ${article.titleEnglish ? `<p class="reader-title-english">${article.titleEnglish}</p>` : ''}
+                    
+                    <!-- Comprehension Banner -->
+                    <div class="comprehension-banner">
+                        <div class="comprehension-info">
+                            <div class="comprehension-icon">🎯</div>
+                            <div class="comprehension-text">
+                                <div class="comprehension-percentage">${comprehension.percentage}%</div>
+                                <div class="comprehension-level">You know ${comprehension.knownWords} of ${comprehension.totalWords} words (${article.difficulty} level)</div>
+                            </div>
+                        </div>
+                        <div class="comprehension-details">
+                            <div>${comprehension.unknownWords} unknown words</div>
+                            <div>Click highlighted words to learn</div>
+                        </div>
+                    </div>
+
+                    <div class="translation-container" id="translationContainer">
+                        <div class="article-text audio-enabled" id="spanishText">
+                            ${this.makeWordsClickableWithHighlighting(article.content, comprehension.unknownWordSet)}
+                        </div>
+                        <div class="article-text-english" id="englishText" style="display: none;">
+                            ${article.contentEnglish || article.content}
+                        </div>
+                    </div>
+                `;
+
+                // Show modal
+                modal.classList.add('active');
+                modal.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+
+                // Show audio player
+                document.getElementById('audioPlayerContainer').style.display = 'block';
+
+                // Generate audio
+                await this.loadAudio(article);
+
+                // Focus management - focus close button for accessibility
+                setTimeout(() => {
+                    document.getElementById('closeReaderBtn').focus();
+                }, 100);
+
+                // Setup word click handlers
+                this.setupWordClickHandlers();
+
+                this.announceToScreenReader(`Reading article: ${article.title}. Comprehension: ${comprehension.percentage}%`);
+            }
+            
+            /**
+             * Calculate comprehension based on known words
+             */
+            calculateComprehension(text) {
+                const words = text.toLowerCase()
+                    .replace(/[.,;:!?¿¡()"""''-]/g, '')
+                    .split(/\s+/)
+                    .filter(w => w.length > 2); // Filter out very short words
+                
+                const uniqueWords = [...new Set(words)];
+                const totalWords = uniqueWords.length;
+                
+                // Get user's known words (simulated for now)
+                const knownWords = this.getUserKnownWords();
+                
+                const unknownWordSet = new Set();
+                uniqueWords.forEach(word => {
+                    if (!knownWords.has(word)) {
+                        unknownWordSet.add(word);
+                    }
+                });
+                
+                const knownWordCount = totalWords - unknownWordSet.size;
+                const percentage = Math.round((knownWordCount / totalWords) * 100);
+                
+                return {
+                    percentage: percentage,
+                    totalWords: totalWords,
+                    knownWords: knownWordCount,
+                    unknownWords: unknownWordSet.size,
+                    unknownWordSet: unknownWordSet
+                };
+            }
+
+            /**
+             * Get user's known words (mock implementation)
+             */
+            getUserKnownWords() {
+                // For now, use a common Spanish words list
+                // In production, this would come from user's vocabulary database
+                const commonWords = new Set([
+                    'el', 'la', 'de', 'que', 'y', 'a', 'en', 'un', 'ser', 'se',
+                    'no', 'haber', 'por', 'con', 'su', 'para', 'como', 'estar', 'tener', 'le',
+                    'lo', 'todo', 'pero', 'más', 'hacer', 'o', 'poder', 'decir', 'este', 'ir',
+                    'otro', 'ese', 'la', 'si', 'me', 'ya', 'ver', 'porque', 'dar', 'cuando',
+                    'él', 'muy', 'sin', 'vez', 'mucho', 'saber', 'qué', 'sobre', 'mi', 'alguno',
+                    'mismo', 'yo', 'también', 'hasta', 'año', 'dos', 'querer', 'entre', 'así', 'primero',
+                    'desde', 'grande', 'eso', 'ni', 'nos', 'llegar', 'pasar', 'tiempo', 'ella', 'sí',
+                    // Add level-based words
+                    ...this.getLevelBasedWords()
+                ]);
+                
+                // Add user's saved words
+                this.savedWords.forEach(word => commonWords.add(word));
+                
+                return commonWords;
+            }
+            
+            /**
+             * Get known words based on user level
+             */
+            getLevelBasedWords() {
+                const levelWords = {
+                    A1: ['casa', 'comer', 'agua', 'niño', 'día', 'noche', 'madre', 'padre'],
+                    A2: ['trabajo', 'ciudad', 'persona', 'vida', 'momento', 'parte', 'caso', 'mano'],
+                    B1: ['gobierno', 'sociedad', 'economía', 'desarrollo', 'situación', 'problema'],
+                    B2: ['consecuencia', 'contexto', 'análisis', 'perspectiva', 'estrategia'],
+                    C1: ['paradigma', 'fenómeno', 'implicación', 'controversia'],
+                    C2: ['epistemología', 'hermenéutica', 'dicotomía']
+                };
+                
+                const userLevel = this.currentUser.level || 'B1';
+                const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+                const userLevelIndex = levels.indexOf(userLevel);
+                
+                let words = [];
+                for (let i = 0; i <= userLevelIndex; i++) {
+                    words.push(...(levelWords[levels[i]] || []));
+                }
+                
+                return words;
+            }
+
+            makeWordsClickable(text) {
+                if (!text) return '';
+
+                const words = text.split(/(\s+|[.,;:!?¿¡()"""''-])/);
+                return words.map(word => {
+                    if (!word.trim() || /^[.,;:!?¿¡()"""''-]+$/.test(word)) {
+                        return word;
+                    }
+
+                    const cleanWord = word.toLowerCase().replace(/[.,;:!?¿¡()"""''-]/g, '');
+                    const isSaved = this.savedWords.has(cleanWord);
+                    
+                    return `<span class="word ${isSaved ? 'saved' : ''}" data-word="${cleanWord}">${word}</span>`;
+                }).join('');
+            }
+
+            /**
+             * Make words clickable WITH unknown word highlighting
+             */
+            makeWordsClickableWithHighlighting(text, unknownWords) {
+                if (!text) return '';
+
+                // First segment into sentences for audio synchronization
+                const sentences = text.match(/[^.!?¿¡]+[.!?¿¡]+/g) || [text];
+                
+                return sentences.map((sentence, sentenceIndex) => {
+                    const words = sentence.split(/(\s+|[.,;:!?¿¡()"""''-])/);
+                    const highlightedSentence = words.map(word => {
+                        if (!word.trim() || /^[.,;:!?¿¡()"""''-]+$/.test(word)) {
+                            return word;
+                        }
+
+                        const cleanWord = word.toLowerCase().replace(/[.,;:!?¿¡()"""''-]/g, '');
+                        const isSaved = this.savedWords.has(cleanWord);
+                        const isUnknown = unknownWords.has(cleanWord);
+                        
+                        const classes = ['word'];
+                        if (isSaved) classes.push('saved');
+                        if (isUnknown) classes.push('unknown');
+                        
+                        return `<span class="${classes.join(' ')}" data-word="${cleanWord}">${word}</span>`;
+                    }).join('');
+                    
+                    return `<span class="sentence" data-sentence="${sentenceIndex}">${highlightedSentence}</span>`;
+                }).join(' ');
+            }
+
+            setupWordClickHandlers() {
+                const words = document.querySelectorAll('.word');
+                words.forEach(word => {
+                    word.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.showWordTranslation(word.dataset.word, word);
+                    });
+                });
+            }
+
+            async showWordTranslation(word, element) {
+                // Get translation (simple mock for now)
+                const translation = await this.translateWord(word);
+
+                // Show tooltip
+                const tooltip = document.getElementById('wordTooltip');
+                document.getElementById('tooltipWord').textContent = word;
+                document.getElementById('tooltipTranslation').textContent = translation;
+
+                // Position tooltip
+                const rect = element.getBoundingClientRect();
+                tooltip.style.left = Math.min(rect.left, window.innerWidth - 220) + 'px';
+                tooltip.style.top = (rect.bottom + 10) + 'px';
+                tooltip.classList.add('active');
+
+                // Store current word
+                this.currentWord = { word, translation };
+
+                // Hide on outside click
+                const hideTooltip = (e) => {
+                    if (!tooltip.contains(e.target) && e.target !== element) {
+                        tooltip.classList.remove('active');
+                        document.removeEventListener('click', hideTooltip);
+                    }
+                };
+                setTimeout(() => document.addEventListener('click', hideTooltip), 100);
+            }
+
+            async translateWord(word) {
+                // Use real translation API
+                try {
+                    const response = await fetch(`/api/translate/word?word=${encodeURIComponent(word)}&sourceLang=es&targetLang=en`);
+                    
+                    if (!response.ok) {
+                        throw new Error('Translation API failed');
+                    }
+
+                    const data = await response.json();
+                    
+                    if (data.success && data.translation) {
+                        return data.translation;
+                    }
+
+                    // Fallback to simple translation
+                    return this.getFallbackTranslation(word);
+
+                } catch (error) {
+                    console.error('Translation error:', error);
+                    return this.getFallbackTranslation(word);
+                }
+            }
+
+            getFallbackTranslation(word) {
+                // Common words for instant fallback
+                const dict = {
+                    'el': 'the', 'la': 'the', 'los': 'the', 'las': 'the',
+                    'un': 'a', 'una': 'a', 'unos': 'some', 'unas': 'some',
+                    'es': 'is', 'son': 'are', 'está': 'is', 'están': 'are',
+                    'tiene': 'has', 'tienen': 'have', 'hay': 'there is/are',
+                    'muy': 'very', 'más': 'more', 'menos': 'less',
+                    'grande': 'big', 'pequeño': 'small', 'bueno': 'good',
+                    'malo': 'bad', 'nuevo': 'new', 'viejo': 'old'
+                };
+
+                return dict[word.toLowerCase()] || `translation of "${word}"`;
+            }
+
+            saveCurrentWord() {
+                if (!this.currentWord) return;
+
+                const { word, translation } = this.currentWord;
+
+                // Add to saved words
+                this.savedWords.add(word);
+                this.currentUser.savedWords.push({
+                    word,
+                    translation,
+                    articleId: this.currentArticle.id,
+                    savedAt: new Date().toISOString()
+                });
+                this.currentUser.wordsLearned++;
+                this.saveUser();
+
+                // Update UI
+                document.querySelectorAll(`.word[data-word="${word}"]`).forEach(el => {
+                    el.classList.add('saved');
+                });
+
+                // Hide tooltip
+                document.getElementById('wordTooltip').classList.remove('active');
+
+                this.showToast('Word saved to vocabulary! 📚');
+                this.updateStats();
+            }
+
+            toggleTranslation() {
+                const btn = document.getElementById('translationToggle');
+                const container = document.getElementById('translationContainer');
+                const english = document.getElementById('englishText');
+
+                if (container.classList.contains('side-by-side')) {
+                    container.classList.remove('side-by-side');
+                    english.style.display = 'none';
+                    btn.querySelector('span:last-child').textContent = 'Show Translation';
+                    btn.setAttribute('aria-pressed', 'false');
+                    this.announceToScreenReader('Translation hidden');
+                } else {
+                    container.classList.add('side-by-side');
+                    english.style.display = 'block';
+                    btn.querySelector('span:last-child').textContent = 'Hide Translation';
+                    btn.setAttribute('aria-pressed', 'true');
+                    this.announceToScreenReader('Translation shown');
+                }
+            }
+
+            readAloud() {
+                if (!this.currentArticle) return;
+
+                this.speechSynth.cancel();
+
+                const utterance = new SpeechSynthesisUtterance(this.currentArticle.content);
+                utterance.lang = 'es-ES';
+                utterance.rate = 0.9;
+
+                const voices = this.speechSynth.getVoices();
+                const spanishVoice = voices.find(v => v.lang.startsWith('es'));
+                if (spanishVoice) utterance.voice = spanishVoice;
+
+                this.speechSynth.speak(utterance);
+                this.showToast('Reading article aloud... 🔊');
+            }
+
+            /**
+             * Load audio for article
+             */
+            async loadAudio(article) {
+                console.log('🎙️ Loading audio for article...');
+                
+                try {
+                    // Show loading state
+                    document.getElementById('playPauseBtn').disabled = true;
+                    document.getElementById('audioIcon').textContent = '⏳';
+                    
+                    // Generate audio using API
+                    const response = await fetch(`${this.API_BASE}/articles/audio?text=${encodeURIComponent(article.content)}&voice=${this.currentVoice}&speed=${this.currentSpeed}`);
+                    
+                    if (!response.ok) {
+                        throw new Error('Failed to generate audio');
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        this.audioData = data.audio;
+                        
+                        // Create audio element
+                        if (this.audio) {
+                            this.audio.pause();
+                            this.audio = null;
+                        }
+                        
+                        if (this.audioData.provider === 'browser') {
+                            // Use browser TTS
+                            this.setupBrowserTTS();
+                        } else {
+                            // Use pre-generated audio
+                            this.audio = new Audio(this.audioData.dataUrl);
+                            this.audio.addEventListener('timeupdate', () => this.updateAudioProgress());
+                            this.audio.addEventListener('ended', () => this.onAudioEnded());
+                        }
+                        
+                        // Update duration display
+                        document.getElementById('totalTime').textContent = this.formatTime(this.audioData.duration / 1000);
+                        
+                        console.log(`✅ Audio loaded (${this.audioData.provider})`);
+                    }
+                    
+                } catch (error) {
+                    console.error('Error loading audio:', error);
+                    // Fallback to browser TTS
+                    this.setupBrowserTTS();
+                } finally {
+                    document.getElementById('playPauseBtn').disabled = false;
+                    document.getElementById('audioIcon').textContent = '🎙️';
+                }
+            }
+
+            /**
+             * Setup browser TTS as fallback
+             */
+            setupBrowserTTS() {
+                this.audioData = {
+                    provider: 'browser',
+                    sentences: this.segmentTextIntoSentences(this.currentArticle.content),
+                    duration: this.estimateDuration(this.currentArticle.content)
+                };
+            }
+
+            /**
+             * Segment text into sentences
+             */
+            segmentTextIntoSentences(text) {
+                const sentences = text.match(/[^.!?¿¡]+[.!?¿¡]+/g) || [text];
+                let offset = 0;
+                
+                return sentences.map((sentence, index) => {
+                    const duration = this.estimateSentenceDuration(sentence);
+                    const result = {
+                        text: sentence.trim(),
+                        start: offset,
+                        end: offset + duration,
+                        duration: duration
+                    };
+                    offset += duration;
+                    return result;
+                });
+            }
+
+            /**
+             * Estimate duration for text
+             */
+            estimateDuration(text) {
+                const words = text.split(/\s+/).length;
+                const wpm = 155; // Average Spanish speaking rate
+                return (words / wpm) * 60 * 1000; // milliseconds
+            }
+
+            /**
+             * Estimate duration for sentence
+             */
+            estimateSentenceDuration(sentence) {
+                const words = sentence.split(/\s+/).length;
+                const wpm = 155;
+                return ((words / wpm) * 60 + 0.3) * 1000; // Add 0.3s pause
+            }
+
+            /**
+             * Toggle play/pause
+             */
+            async togglePlayPause() {
+                if (this.isPlaying) {
+                    this.pauseAudio();
+                } else {
+                    await this.playAudio();
+                }
+            }
+
+            /**
+             * Play audio
+             */
+            async playAudio() {
+                if (this.audioData.provider === 'browser') {
+                    this.playBrowserTTS();
+                } else if (this.audio) {
+                    await this.audio.play();
+                    this.isPlaying = true;
+                    this.updatePlayPauseButton();
+                    this.startProgressTracking();
+                }
+            }
+
+            /**
+             * Play using browser TTS
+             */
+            playBrowserTTS() {
+                if (!this.audioData || !this.audioData.sentences) return;
+                
+                this.isPlaying = true;
+                this.updatePlayPauseButton();
+                this.currentSentenceIndex = 0;
+                
+                this.playNextSentence();
+            }
+
+            /**
+             * Play next sentence with browser TTS
+             */
+            playNextSentence() {
+                if (!this.isPlaying || this.currentSentenceIndex >= this.audioData.sentences.length) {
+                    this.onAudioEnded();
+                    return;
+                }
+                
+                const sentence = this.audioData.sentences[this.currentSentenceIndex];
+                
+                // Highlight current sentence
+                this.highlightSentence(this.currentSentenceIndex);
+                
+                // Speak sentence
+                const utterance = new SpeechSynthesisUtterance(sentence.text);
+                utterance.lang = 'es-ES';
+                utterance.rate = this.currentSpeed;
+                
+                utterance.onend = () => {
+                    this.currentSentenceIndex++;
+                    setTimeout(() => this.playNextSentence(), 100);
+                };
+                
+                this.speechSynth.speak(utterance);
+            }
+
+            /**
+             * Pause audio
+             */
+            pauseAudio() {
+                if (this.audioData.provider === 'browser') {
+                    this.speechSynth.cancel();
+                } else if (this.audio) {
+                    this.audio.pause();
+                }
+                
+                this.isPlaying = false;
+                this.updatePlayPauseButton();
+            }
+
+            /**
+             * Update play/pause button
+             */
+            updatePlayPauseButton() {
+                const btn = document.getElementById('playPauseBtn');
+                btn.textContent = this.isPlaying ? '⏸️' : '▶️';
+                btn.classList.toggle('playing', this.isPlaying);
+            }
+
+            /**
+             * Start progress tracking
+             */
+            startProgressTracking() {
+                if (this.progressInterval) {
+                    clearInterval(this.progressInterval);
+                }
+                
+                this.progressInterval = setInterval(() => {
+                    this.updateAudioProgress();
+                }, 100);
+            }
+
+            /**
+             * Update audio progress
+             */
+            updateAudioProgress() {
+                if (!this.audio) return;
+                
+                const currentTime = this.audio.currentTime;
+                const duration = this.audio.duration;
+                
+                if (isNaN(duration)) return;
+                
+                const percentage = (currentTime / duration) * 100;
+                document.getElementById('audioProgressFill').style.width = `${percentage}%`;
+                document.getElementById('currentTime').textContent = this.formatTime(currentTime);
+                
+                // Highlight current sentence
+                if (this.audioData && this.audioData.sentences) {
+                    const currentMs = currentTime * 1000;
+                    const sentenceIndex = this.audioData.sentences.findIndex(s => 
+                        currentMs >= s.start && currentMs < s.end
+                    );
+                    
+                    if (sentenceIndex !== this.currentSentenceIndex && sentenceIndex >= 0) {
+                        this.highlightSentence(sentenceIndex);
+                        this.currentSentenceIndex = sentenceIndex;
+                    }
+                }
+            }
+
+            /**
+             * Highlight current sentence
+             */
+            highlightSentence(index) {
+                // Remove previous highlights
+                document.querySelectorAll('.sentence.highlight').forEach(el => {
+                    el.classList.remove('highlight');
+                });
+                
+                // Add new highlight
+                const sentence = document.querySelector(`[data-sentence="${index}"]`);
+                if (sentence) {
+                    sentence.classList.add('highlight');
+                    
+                    // Auto-scroll if enabled
+                    if (this.autoScrollEnabled) {
+                        sentence.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+            }
+
+            /**
+             * Seek audio to position
+             */
+            seekAudio(e) {
+                const progressBar = e.currentTarget;
+                const rect = progressBar.getBoundingClientRect();
+                const percentage = (e.clientX - rect.left) / rect.width;
+                
+                if (this.audio) {
+                    this.audio.currentTime = this.audio.duration * percentage;
+                }
+            }
+
+            /**
+             * Change playback speed
+             */
+            changeSpeed(speed) {
+                this.currentSpeed = speed;
+                
+                if (this.audio) {
+                    this.audio.playbackRate = speed;
+                }
+                
+                // Update UI
+                document.querySelectorAll('.speed-btn').forEach(btn => {
+                    btn.classList.toggle('active', parseFloat(btn.dataset.speed) === speed);
+                });
+                
+                this.showToast(`Speed: ${speed}x`);
+            }
+
+            /**
+             * Change voice
+             */
+            async changeVoice(voice) {
+                this.currentVoice = voice;
+                
+                // Update UI
+                document.querySelectorAll('.voice-option').forEach(option => {
+                    option.classList.toggle('selected', option.dataset.voice === voice);
+                });
+                
+                document.getElementById('voiceDropdown').classList.remove('active');
+                
+                // Reload audio with new voice
+                if (this.currentArticle) {
+                    this.pauseAudio();
+                    await this.loadAudio(this.currentArticle);
+                }
+                
+                this.showToast(`Voice changed`);
+            }
+
+            /**
+             * Toggle auto-scroll
+             */
+            toggleAutoScroll() {
+                this.autoScrollEnabled = !this.autoScrollEnabled;
+                
+                const btn = document.getElementById('autoScrollBtn');
+                btn.classList.toggle('active', this.autoScrollEnabled);
+                
+                const indicator = document.getElementById('autoScrollIndicator');
+                indicator.classList.toggle('visible', this.autoScrollEnabled);
+                
+                this.showToast(this.autoScrollEnabled ? 'Auto-scroll enabled' : 'Auto-scroll disabled');
+            }
+
+            /**
+             * Download audio
+             */
+            downloadAudio() {
+                if (!this.audioData || !this.audioData.dataUrl) {
+                    this.showToast('Audio not available for download');
+                    return;
+                }
+                
+                const link = document.createElement('a');
+                link.href = this.audioData.dataUrl;
+                link.download = `article-${Date.now()}.mp3`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                this.showToast('Audio downloaded! 📥');
+            }
+
+            /**
+             * Audio ended handler
+             */
+            onAudioEnded() {
+                this.isPlaying = false;
+                this.updatePlayPauseButton();
+                this.currentSentenceIndex = -1;
+                
+                // Remove all highlights
+                document.querySelectorAll('.sentence.highlight').forEach(el => {
+                    el.classList.remove('highlight');
+                });
+                
+                if (this.progressInterval) {
+                    clearInterval(this.progressInterval);
+                }
+                
+                this.showToast('Audio finished! 🎉');
+            }
+
+            /**
+             * Format time in MM:SS
+             */
+            formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            }
+
+            /**
+             * Toggle filters
+             */
+            toggleFilters() {
+                const content = document.getElementById('filtersContent');
+                const btn = document.getElementById('filtersToggle');
+                const isVisible = content.style.display !== 'none';
+                
+                content.style.display = isVisible ? 'none' : 'block';
+                btn.textContent = isVisible ? 'Show Filters' : 'Hide Filters';
+            }
+
+            /**
+             * Toggle interest tag
+             */
+            toggleInterestTag(tag) {
+                const tagValue = tag.dataset.tag;
+                const isSelected = tag.classList.contains('selected');
+                
+                tag.classList.toggle('selected');
+                
+                if (isSelected) {
+                    this.filters.selectedTags = this.filters.selectedTags.filter(t => t !== tagValue);
+                } else {
+                    this.filters.selectedTags.push(tagValue);
+                }
+                
+                this.applyFilters();
+            }
+
+            /**
+             * Apply filters to articles
+             */
+            async applyFilters() {
+                console.log('🔍 Applying filters:', this.filters);
+                
+                // Filter articles based on criteria
+                const filtered = this.articles.filter(article => {
+                    // Level filter
+                    const levelMap = { A1: 0, A2: 1, B1: 2, B2: 3, C1: 4, C2: 5 };
+                    const articleLevel = levelMap[article.difficulty] || 2;
+                    if (Math.abs(articleLevel - this.filters.levelRange) > 1) return false;
+                    
+                    // Comprehension filter
+                    const comprehension = article.comprehension?.comprehensionPercentage || 75;
+                    if (comprehension < this.filters.comprehensionMin || comprehension > this.filters.comprehensionMax) {
+                        return false;
+                    }
+                    
+                    // Interest tags filter
+                    if (this.filters.selectedTags.length > 0) {
+                        const articleTags = [article.category].map(c => c.toLowerCase());
+                        const hasMatch = this.filters.selectedTags.some(tag => 
+                            articleTags.includes(tag.toLowerCase())
+                        );
+                        if (!hasMatch) return false;
+                    }
+                    
+                    return true;
+                });
+                
+                console.log(`✅ ${filtered.length} articles match filters`);
+                
+                // Re-render filtered articles
+                this.articles = filtered;
+                this.renderArticles();
+            }
+
+            closeReader() {
+                const modal = document.getElementById('readerModal');
+                modal.classList.remove('active');
+                modal.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = 'auto';
+                
+                // Stop audio
+                this.pauseAudio();
+                if (this.audio) {
+                    this.audio.pause();
+                    this.audio.currentTime = 0;
+                }
+                if (this.speechSynth) {
+                    this.speechSynth.cancel();
+                }
+                
+                // Hide audio player
+                document.getElementById('audioPlayerContainer').style.display = 'none';
+                
+                // Clear progress interval
+                if (this.progressInterval) {
+                    clearInterval(this.progressInterval);
+                }
+
+                // Restore focus to last focused element
+                if (this.lastFocusedElement) {
+                    setTimeout(() => {
+                        this.lastFocusedElement.focus();
+                    }, 100);
+                }
+
+                this.announceToScreenReader('Article closed');
+            }
+
+            toggleSaveArticle(article, btn) {
+                const isSaved = this.currentUser.savedArticles.includes(article.id);
+
+                if (isSaved) {
+                    const index = this.currentUser.savedArticles.indexOf(article.id);
+                    this.currentUser.savedArticles.splice(index, 1);
+                    btn.classList.remove('saved');
+                    this.showToast('Article removed from saved');
+                } else {
+                    this.currentUser.savedArticles.push(article.id);
+                    btn.classList.add('saved');
+                    this.showToast('Article saved! 🔖');
+                }
+
+                this.saveUser();
+            }
+
+            saveArticle() {
+                if (!this.currentArticle) return;
+                const btn = document.getElementById('saveArticleBtn');
+                this.toggleSaveArticle(this.currentArticle, btn);
+            }
+
+            trackArticleRead(article) {
+                if (!this.currentUser.articlesRead.includes(article.id)) {
+                    this.currentUser.articlesRead.push(article.id);
+                    this.updateStreak();
+                    this.saveUser();
+                    this.updateStats();
+                }
+            }
+
+            updateStreak() {
+                const today = new Date().toISOString().split('T')[0];
+                if (this.currentUser.lastActiveDate !== today) {
+                    const yesterday = new Date();
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+                    if (this.currentUser.lastActiveDate === yesterdayStr) {
+                        this.currentUser.streak++;
+                    } else {
+                        this.currentUser.streak = 1;
+                    }
+
+                    this.currentUser.lastActiveDate = today;
+                }
+            }
+
+            updateStats() {
+                const today = new Date().toISOString().split('T')[0];
+                const todayArticles = this.currentUser.articlesRead.filter(id => {
+                    // Simplified - in production, track timestamps
+                    return true;
+                }).length;
+
+                document.getElementById('articlesReadToday').textContent = Math.min(todayArticles, 20);
+                document.getElementById('wordsLearned').textContent = this.currentUser.wordsLearned || 0;
+                document.getElementById('readingStreak').textContent = this.currentUser.streak || 0;
+                document.getElementById('comprehensionAvg').textContent = '75%'; // Calculate from articles
+                document.getElementById('userLevelBadge').textContent = this.currentUser.level;
+            }
+
+            async switchCategory(category) {
+                this.category = category;
+
+                // Update active tab
+                document.querySelectorAll('.tab').forEach(tab => {
+                    const isActive = tab.dataset.category === category;
+                    tab.classList.toggle('active', isActive);
+                    tab.setAttribute('aria-selected', isActive);
+                });
+
+                // Clear grid and reload
+                document.getElementById('articlesGrid').innerHTML = '';
+                this.selectedArticleIndex = -1;
+                
+                await this.loadArticles();
+
+                this.announceToScreenReader(`Switched to ${category} category`);
+            }
+
+            handleScroll() {
+                // Infinite scroll
+                const scrollPosition = window.innerHeight + window.scrollY;
+                const threshold = document.documentElement.scrollHeight - 500;
+
+                if (scrollPosition >= threshold) {
+                    // Load more articles
+                    console.log('Load more articles...');
+                }
+            }
+
+            showToast(message) {
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.textContent = message;
+                document.body.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    setTimeout(() => toast.remove(), 300);
+                }, 2500);
+            }
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const app = new IntelligentArticlesFeed();
+                window.articlesApp = app;
+                console.log('✅ App initialized successfully');
+            } catch (error) {
+                console.error('❌ Failed to initialize app:', error);
+            }
+        });
+    </script>
+
+    <!-- Bottom Navigation -->
+    <script>
+        fetch('/components/unified-bottom-nav.html')
+            .then(r => r.text())
+            .then(html => document.body.insertAdjacentHTML('beforeend', html));
+    </script>
+</body>
+</html>
+

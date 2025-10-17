@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover - Langflix</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .level-badge {
+            padding: 8px 16px;
+            background: #10a37f;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #000;
+            cursor: pointer;
+        }
+
+        /* Feed Container */
+        .container {
+            padding: 80px 20px 100px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Article Card */
+        .article-card {
+            background: #111;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .article-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+        }
+
+        .article-content {
+            padding: 20px;
+        }
+
+        .article-header {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .level-badge-card {
+            background: rgba(16, 163, 127, 0.2);
+            color: #10a37f;
+        }
+
+        .category-badge {
+            background: rgba(255, 255, 255, 0.1);
+            color: #888;
+        }
+
+        .article-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .article-summary {
+            font-size: 15px;
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .article-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary {
+            background: #10a37f;
+            color: #000;
+            border-color: #10a37f;
+        }
+
+        .btn-primary:hover {
+            background: #0d8a6a;
+        }
+
+        /* Reader Modal */
+        .reader-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #000;
+            z-index: 2000;
+            display: none;
+            overflow-y: auto;
+        }
+
+        .reader-modal.active {
+            display: block;
+        }
+
+        .reader-header {
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-btn {
+            padding: 8px 16px;
+            background: #222;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .reader-content {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .reader-title {
+            font-size: 32px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .reader-meta {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .reader-text {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #ddd;
+        }
+
+        .reader-text p {
+            margin-bottom: 20px;
+        }
+
+        /* Clickable Words */
+        .word {
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: all 0.15s;
+            position: relative;
+        }
+
+        .word:hover {
+            background: #10a37f;
+            color: #000;
+        }
+
+        /* Translation Tooltip */
+        .tooltip {
+            position: fixed;
+            background: #1a1a1a;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            z-index: 3000;
+            display: none;
+            min-width: 250px;
+        }
+
+        .tooltip.active {
+            display: block;
+        }
+
+        .tooltip-word {
+            font-size: 20px;
+            font-weight: 700;
+            color: #10a37f;
+            margin-bottom: 8px;
+        }
+
+        .tooltip-translation {
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .tooltip-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tooltip-btn {
+            flex: 1;
+            padding: 10px;
+            background: #222;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .tooltip-btn:hover {
+            background: #333;
+        }
+
+        .tooltip-btn.primary {
+            background: #10a37f;
+            color: #000;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            z-index: 1000;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            color: #10a37f;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">📰 Discover</div>
+        <div class="level-badge" id="levelBadge">B1</div>
+    </div>
+
+    <!-- Feed Container -->
+    <div class="container" id="feedContainer">
+        <div class="loading">Loading articles...</div>
+    </div>
+
+    <!-- Reader Modal -->
+    <div class="reader-modal" id="readerModal">
+        <div class="reader-header">
+            <button class="close-btn" onclick="closeReader()">← Back</button>
+            <button class="close-btn" onclick="speakArticle()">🔊 Listen</button>
+        </div>
+        <div class="reader-content" id="readerContent"></div>
+    </div>
+
+    <!-- Translation Tooltip -->
+    <div class="tooltip" id="tooltip">
+        <div class="tooltip-word" id="tooltipWord"></div>
+        <div class="tooltip-translation" id="tooltipTranslation"></div>
+        <div class="tooltip-actions">
+            <button class="tooltip-btn primary" onclick="saveWord()">💾 Save</button>
+            <button class="tooltip-btn" onclick="speakWord()">🔊 Hear</button>
+            <button class="tooltip-btn" onclick="closeTooltip()">✕</button>
+        </div>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <span>📚</span>
+            <span class="stat-value" id="articlesRead">0</span>
+            <span>read</span>
+        </div>
+        <div class="stat-item">
+            <span>📝</span>
+            <span class="stat-value" id="wordsLearned">0</span>
+            <span>words</span>
+        </div>
+        <div class="stat-item">
+            <span>🔥</span>
+            <span class="stat-value" id="streak">0</span>
+            <span>streak</span>
+        </div>
+    </div>
+
+    <script>
+        // State
+        const state = {
+            articles: [],
+            currentArticle: null,
+            currentWord: null,
+            stats: {
+                articlesRead: parseInt(localStorage.getItem('articlesRead') || '0'),
+                wordsLearned: parseInt(localStorage.getItem('wordsLearned') || '0'),
+                streak: parseInt(localStorage.getItem('streak') || '0')
+            }
+        };
+
+        // Initialize
+        async function init() {
+            updateStats();
+            await loadArticles();
+        }
+
+        // Load Articles
+        async function loadArticles() {
+            const container = document.getElementById('feedContainer');
+            
+            try {
+                // Try API first
+                const response = await fetch('/api/articles/personalized?userId=test&level=B1&limit=10');
+                const data = await response.json();
+                
+                if (data.articles && data.articles.length > 0) {
+                    state.articles = data.articles;
+                } else {
+                    // Use mock articles if API returns empty
+                    state.articles = getMockArticles();
+                }
+            } catch (error) {
+                console.error('API error, using mock articles:', error);
+                state.articles = getMockArticles();
+            }
+
+            container.innerHTML = '';
+            state.articles.forEach((article, index) => {
+                container.appendChild(createArticleCard(article, index));
+            });
+        }
+
+        // Create Article Card
+        function createArticleCard(article, index) {
+            const card = document.createElement('div');
+            card.className = 'article-card';
+            card.onclick = () => openReader(index);
+
+            card.innerHTML = `
+                ${article.imageUrl ? `<img src="${article.imageUrl}" class="article-image" alt="${article.title}">` : '<div class="article-image"></div>'}
+                <div class="article-content">
+                    <div class="article-header">
+                        <span class="badge level-badge-card">${article.difficulty || 'B1'}</span>
+                        <span class="badge category-badge">${article.category || 'General'}</span>
+                    </div>
+                    <div class="article-title">${article.title}</div>
+                    <div class="article-summary">${article.summary || article.content.substring(0, 150) + '...'}</div>
+                    <div class="article-actions">
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); openReader(${index})">📖 Read</button>
+                        <button class="btn" onclick="event.stopPropagation(); playAudio(${index})">🔊 Listen</button>
+                        <button class="btn" onclick="event.stopPropagation(); saveArticle(${index})">💾 Save</button>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        // Open Reader
+        function openReader(index) {
+            const article = state.articles[index];
+            state.currentArticle = article;
+
+            const modal = document.getElementById('readerModal');
+            const content = document.getElementById('readerContent');
+
+            content.innerHTML = `
+                <h1 class="reader-title">${article.title}</h1>
+                <div class="reader-meta">
+                    <span class="badge level-badge-card">${article.difficulty || 'B1'}</span>
+                    <span class="badge category-badge">${article.category || 'General'}</span>
+                    <span class="badge category-badge">⏱️ ${article.readingTime || '5'} min</span>
+                </div>
+                <div class="reader-text">
+                    ${makeWordsClickable(article.content)}
+                </div>
+            `;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Update stats
+            state.stats.articlesRead++;
+            localStorage.setItem('articlesRead', state.stats.articlesRead);
+            updateStats();
+        }
+
+        function closeReader() {
+            document.getElementById('readerModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Make Words Clickable
+        function makeWordsClickable(text) {
+            const sentences = text.split(/([.!?]\s+)/);
+            return sentences.map(sentence => {
+                if (sentence.match(/^[.!?]\s+$/)) return sentence;
+                
+                const words = sentence.split(/(\s+|[.,!?;:—])/);
+                return '<p>' + words.map(word => {
+                    if (word.match(/^[a-záéíóúñüA-ZÁÉÍÓÚÑÜ]+$/i)) {
+                        return `<span class="word" onclick="showTranslation(event, '${word.toLowerCase()}')">${word}</span>`;
+                    }
+                    return word;
+                }).join('') + '</p>';
+            }).join('');
+        }
+
+        // Show Translation
+        async function showTranslation(event, word) {
+            const tooltip = document.getElementById('tooltip');
+            const tooltipWord = document.getElementById('tooltipWord');
+            const tooltipTranslation = document.getElementById('tooltipTranslation');
+
+            state.currentWord = word;
+
+            // Get translation
+            const translation = await translateWord(word);
+            
+            tooltipWord.textContent = word;
+            tooltipTranslation.textContent = translation;
+
+            // Position tooltip
+            const rect = event.target.getBoundingClientRect();
+            tooltip.style.left = Math.min(rect.left, window.innerWidth - 270) + 'px';
+            tooltip.style.top = (rect.bottom + 10) + 'px';
+
+            tooltip.classList.add('active');
+        }
+
+        function closeTooltip() {
+            document.getElementById('tooltip').classList.remove('active');
+        }
+
+        // Translate Word
+        async function translateWord(word) {
+            try {
+                const response = await fetch(`/api/translate/word?word=${encodeURIComponent(word)}&targetLang=en`);
+                const data = await response.json();
+                return data.translation || getOfflineTranslation(word);
+            } catch (error) {
+                return getOfflineTranslation(word);
+            }
+        }
+
+        function getOfflineTranslation(word) {
+            const translations = {
+                'hola': 'hello', 'mundo': 'world', 'español': 'Spanish', 'artículo': 'article',
+                'tecnología': 'technology', 'cultura': 'culture', 'deporte': 'sport',
+                'comida': 'food', 'viaje': 'travel', 'ciencia': 'science',
+                'importante': 'important', 'nuevo': 'new', 'grande': 'big',
+                'pequeño': 'small', 'bueno': 'good', 'malo': 'bad',
+                'casa': 'house', 'tiempo': 'time', 'persona': 'person',
+                'día': 'day', 'año': 'year', 'vida': 'life',
+                'trabajo': 'work', 'familia': 'family', 'amigo': 'friend',
+                'escuela': 'school', 'ciudad': 'city', 'país': 'country',
+                'el': 'the', 'la': 'the', 'un': 'a', 'una': 'a',
+                'de': 'of', 'en': 'in', 'que': 'that', 'y': 'and',
+                'es': 'is', 'por': 'for', 'con': 'with', 'no': 'no',
+                'se': 'itself', 'los': 'the', 'las': 'the', 'del': 'of the'
+            };
+            return translations[word] || '(translation)';
+        }
+
+        // Save Word
+        function saveWord() {
+            if (!state.currentWord) return;
+
+            const translation = document.getElementById('tooltipTranslation').textContent;
+            
+            // Save to vocabulary (in production, call API)
+            const savedWords = JSON.parse(localStorage.getItem('savedWords') || '[]');
+            if (!savedWords.find(w => w.word === state.currentWord)) {
+                savedWords.push({ word: state.currentWord, translation });
+                localStorage.setItem('savedWords', JSON.stringify(savedWords));
+                
+                state.stats.wordsLearned++;
+                localStorage.setItem('wordsLearned', state.stats.wordsLearned);
+                updateStats();
+            }
+
+            alert(`✅ Saved "${state.currentWord}" to your vocabulary!`);
+            closeTooltip();
+        }
+
+        // Speak Word
+        function speakWord() {
+            if (!state.currentWord) return;
+            const utterance = new SpeechSynthesisUtterance(state.currentWord);
+            utterance.lang = 'es-ES';
+            utterance.rate = 0.8;
+            speechSynthesis.speak(utterance);
+        }
+
+        // Play Article Audio
+        function playAudio(index) {
+            const article = state.articles[index];
+            const utterance = new SpeechSynthesisUtterance(article.content);
+            utterance.lang = 'es-ES';
+            utterance.rate = 0.9;
+            speechSynthesis.speak(utterance);
+        }
+
+        // Speak Article
+        function speakArticle() {
+            if (!state.currentArticle) return;
+            const utterance = new SpeechSynthesisUtterance(state.currentArticle.content);
+            utterance.lang = 'es-ES';
+            utterance.rate = 0.9;
+            speechSynthesis.speak(utterance);
+        }
+
+        // Save Article
+        function saveArticle(index) {
+            alert('✅ Article saved!');
+        }
+
+        // Update Stats
+        function updateStats() {
+            document.getElementById('articlesRead').textContent = state.stats.articlesRead;
+            document.getElementById('wordsLearned').textContent = state.stats.wordsLearned;
+            document.getElementById('streak').textContent = state.stats.streak;
+        }
+
+        // Get Mock Articles
+        function getMockArticles() {
+            return [
+                {
+                    id: '1',
+                    title: 'La tecnología cambia el mundo moderno',
+                    summary: 'La tecnología está transformando nuestra vida diaria de maneras increíbles. Desde los teléfonos inteligentes hasta la inteligencia artificial.',
+                    content: 'La tecnología está transformando nuestra vida diaria. Los teléfonos inteligentes son ahora parte esencial de nuestro día. La inteligencia artificial está cambiando muchos trabajos. Las computadoras son más rápidas cada año. Internet conecta a personas de todo el mundo.',
+                    category: 'Technology',
+                    difficulty: 'B1',
+                    readingTime: 3
+                },
+                {
+                    id: '2',
+                    title: 'Cultura y tradiciones en España',
+                    summary: 'España tiene una cultura rica con muchas tradiciones interesantes. La música flamenca y la comida española son famosas en todo el mundo.',
+                    content: 'España es un país con una cultura muy rica. El flamenco es una música tradicional muy bonita. La paella es un plato típico de Valencia. Las fiestas españolas son muy alegres. La familia es muy importante en la cultura española.',
+                    category: 'Culture',
+                    difficulty: 'A2',
+                    readingTime: 3
+                },
+                {
+                    id: '3',
+                    title: 'El deporte en América Latina',
+                    summary: 'El fútbol es el deporte más popular en América Latina. Millones de personas juegan y miran fútbol cada semana.',
+                    content: 'El fútbol es el deporte favorito en América Latina. Los niños juegan fútbol en las calles. Los equipos grandes tienen muchos fanáticos. El béisbol también es popular en algunos países. El deporte une a las comunidades.',
+                    category: 'Sports',
+                    difficulty: 'A2',
+                    readingTime: 2
+                },
+                {
+                    id: '4',
+                    title: 'Comida saludable para una vida mejor',
+                    summary: 'Comer bien es importante para la salud. Las frutas y verduras son esenciales en una dieta equilibrada.',
+                    content: 'Comer frutas y verduras es muy importante. El agua es esencial para el cuerpo. Las proteínas ayudan a construir músculos. Los carbohidratos dan energía. Una dieta balanceada incluye todos los grupos de alimentos.',
+                    category: 'Food',
+                    difficulty: 'A2',
+                    readingTime: 3
+                },
+                {
+                    id: '5',
+                    title: 'Viajes: Destinos increíbles en 2025',
+                    summary: 'Viajar es una experiencia maravillosa que abre la mente. Hay muchos lugares hermosos para visitar en el mundo.',
+                    content: 'Viajar es una experiencia increíble. Conocer nuevas culturas es enriquecedor. Las montañas ofrecen vistas espectaculares. Las playas son perfectas para relajarse. Cada ciudad tiene su propia historia única.',
+                    category: 'Travel',
+                    difficulty: 'B1',
+                    readingTime: 4
+                }
+            ];
+        }
+
+        // Click outside to close tooltip
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.word') && !e.target.closest('.tooltip')) {
+                closeTooltip();
+            }
+        });
+
+        // ESC to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeReader();
+                closeTooltip();
+            }
+        });
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>
+

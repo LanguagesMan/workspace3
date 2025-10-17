@@ -1,0 +1,35 @@
+
+> unified-feed-server@1.0.0 start
+> node server.js
+
+📹 Loading video catalog from MULTIPLE sources...
+✅ Loaded 687 videos from Langfeed
+✅ Loaded 138 videos from public/videos/reels/
+🎬 TOTAL: 825 videos loaded
+🎯 Spanish Frequency Database loaded - 10K+ words organized by CEFR bands
+🎯 Spanish Frequency System loaded - TOP 20 words with viral contexts!
+🔥 Spanish Gossip Feed loaded - 8 celebrity drama items ready!
+🎯 Spanish Frequency Database loaded - 10K+ words organized by CEFR bands
+🔥 Smart Feed System initialized with frequency targeting
+🧠 Personalized SRS Feed System initialized
+✅ VideoDifficultyScorer initialized with 10k Spanish words
+⚠️ Supabase credentials not found in environment variables. Database features will be limited.
+   Please set SUPABASE_URL and SUPABASE_ANON_KEY in your .env file.
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+/Users/mindful/_projects/workspace3/lib/collection-generator.js:175
+            const discoveryS ongs = allSongs.filter(song => {
+                  ^^^^^^^^^^
+
+SyntaxError: Missing initializer in const declaration
+    at wrapSafe (node:internal/modules/cjs/loader:1662:18)
+    at Module._compile (node:internal/modules/cjs/loader:1704:20)
+    at Object..js (node:internal/modules/cjs/loader:1895:10)
+    at Module.load (node:internal/modules/cjs/loader:1465:32)
+    at Function._load (node:internal/modules/cjs/loader:1282:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1487:12)
+    at require (node:internal/modules/helpers:135:16)
+    at Object.<anonymous> (/Users/mindful/_projects/workspace3/server.js:48:29)
+
+Node.js v22.17.1

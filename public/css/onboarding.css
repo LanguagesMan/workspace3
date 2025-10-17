@@ -1,0 +1,314 @@
+/**
+ * 🎓 ONBOARDING SYSTEM STYLES
+ * Based on TikTok's first-time UX
+ */
+
+/* Onboarding Overlay */
+.onboarding-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 20000;
+    animation: fadeIn 0.3s ease;
+}
+
+.onboarding-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(20px);
+}
+
+.onboarding-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(to top, #000 0%, #1a1a1a 100%);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    padding: 40px 30px calc(env(safe-area-inset-bottom, 20px) + 20px);
+    animation: slideUpBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Progress Dots */
+.onboarding-progress {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 30px;
+}
+
+.progress-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: all 0.3s;
+}
+
+.progress-dot.active {
+    width: 24px;
+    border-radius: 4px;
+    background: #00F5FF;
+    box-shadow: 0 0 10px rgba(0, 245, 255, 0.6);
+}
+
+.progress-dot.completed {
+    background: #00AACC;
+}
+
+/* Content */
+.onboarding-image {
+    font-size: 100px;
+    text-align: center;
+    margin-bottom: 20px;
+    animation: bounceIn 0.8s ease;
+}
+
+.onboarding-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.onboarding-message {
+    font-size: 16px;
+    color: #999;
+    text-align: center;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+/* Buttons */
+.onboarding-action {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(90deg, #00F5FF, #00AACC);
+    color: #000;
+    border: none;
+    border-radius: 16px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 15px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 20px rgba(0, 245, 255, 0.3);
+}
+
+.onboarding-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 30px rgba(0, 245, 255, 0.5);
+}
+
+.onboarding-action:active {
+    transform: translateY(0);
+}
+
+.onboarding-skip {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    color: #666;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.onboarding-skip:hover {
+    color: #999;
+}
+
+/* Highlight Effect */
+.onboarding-highlight {
+    position: relative;
+    z-index: 20001 !important;
+    box-shadow: 0 0 0 4px #00F5FF, 0 0 20px rgba(0, 245, 255, 0.6);
+    border-radius: 12px;
+}
+
+.onboarding-spotlight {
+    position: fixed;
+    z-index: 19999;
+    border: 3px solid #00F5FF;
+    border-radius: 12px;
+    pointer-events: none;
+    animation: pulse 2s ease-in-out infinite;
+    box-shadow:
+        0 0 20px rgba(0, 245, 255, 0.6),
+        inset 0 0 20px rgba(0, 245, 255, 0.2);
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.02);
+    }
+}
+
+/* Gesture Animations */
+.gesture-animation {
+    position: fixed;
+    z-index: 20002;
+    pointer-events: none;
+}
+
+.gesture-swipe-up {
+    bottom: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.gesture-hand {
+    font-size: 60px;
+    animation: swipeUp 2s ease-in-out infinite;
+}
+
+.gesture-arrow {
+    font-size: 40px;
+    text-align: center;
+    margin-top: -10px;
+    animation: arrowUp 2s ease-in-out infinite;
+}
+
+@keyframes swipeUp {
+    0%, 100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    50% {
+        transform: translateY(-50px);
+        opacity: 0.5;
+    }
+}
+
+@keyframes arrowUp {
+    0%, 100% {
+        transform: translateY(0);
+        opacity: 0.5;
+    }
+    50% {
+        transform: translateY(-20px);
+        opacity: 1;
+    }
+}
+
+/* Pointer Animation */
+.onboarding-pointer {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    z-index: 20002;
+    pointer-events: none;
+    animation: tap 1.5s ease-in-out infinite;
+}
+
+.onboarding-pointer::before {
+    content: '👆';
+    font-size: 40px;
+    display: block;
+}
+
+@keyframes tap {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+    .onboarding-content {
+        padding: 30px 20px calc(env(safe-area-inset-bottom, 20px) + 20px);
+    }
+
+    .onboarding-image {
+        font-size: 80px;
+    }
+
+    .onboarding-title {
+        font-size: 24px;
+    }
+
+    .onboarding-message {
+        font-size: 14px;
+    }
+
+    .onboarding-action {
+        padding: 16px;
+        font-size: 16px;
+    }
+}
+
+/* Landscape Mode */
+@media (max-width: 896px) and (orientation: landscape) {
+    .onboarding-content {
+        padding: 20px 30px calc(env(safe-area-inset-bottom, 10px) + 10px);
+        max-height: 100vh;
+        overflow-y: auto;
+    }
+
+    .onboarding-image {
+        font-size: 60px;
+        margin-bottom: 10px;
+    }
+
+    .onboarding-title {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .onboarding-message {
+        font-size: 13px;
+        margin-bottom: 15px;
+    }
+
+    .onboarding-action {
+        padding: 12px;
+        font-size: 15px;
+    }
+}
+
+/* Animations */
+@keyframes slideUpBounce {
+    0% {
+        transform: translateY(100%);
+    }
+    60% {
+        transform: translateY(-10px);
+    }
+    80% {
+        transform: translateY(5px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+    }
+}

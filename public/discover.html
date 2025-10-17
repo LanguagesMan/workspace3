@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover - Langflix</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, sans-serif; padding-bottom: 70px; }
+        
+        .header { padding: 20px; background: #000; position: sticky; top: 0; z-index: 100; }
+        .header h1 { font-size: 24px; }
+        
+        .articles { padding: 0 16px; }
+        .article-card { background: #1a1a1a; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+        .article-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+        .article-content { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.6; }
+        .article-meta { margin-top: 12px; font-size: 12px; color: rgba(255,255,255,0.5); }
+        
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
+        .nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px; background: none; border: none; color: rgba(255,255,255,0.6); font-size: 24px; cursor: pointer; }
+        .nav-btn.active { color: #fff; }
+        .nav-btn span { font-size: 10px; }
+        
+        .loading { text-align: center; padding: 40px; color: rgba(255,255,255,0.5); }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔍 Discover</h1>
+    </div>
+
+    <div class="articles" id="articles">
+        <div class="loading">Loading articles...</div>
+    </div>
+
+    <nav class="bottom-nav">
+        <button class="nav-btn" onclick="location.href='/tiktok-video-feed.html'"><div>🎬</div><span>Videos</span></button>
+        <button class="nav-btn active"><div>🔍</div><span>Discover</span></button>
+        <button class="nav-btn" onclick="location.href='/premium.html'"><div>👑</div><span>Premium</span></button>
+        <button class="nav-btn" onclick="location.href='/profile.html'"><div>👤</div><span>Profile</span></button>
+    </nav>
+
+    <script>
+        async function loadArticles() {
+            try {
+                const res = await fetch('/api/articles/personalized?limit=20');
+                if (!res.ok) {
+                    document.getElementById('articles').innerHTML = '<div class="loading">No articles available</div>';
+                    return;
+                }
+                
+                const data = await res.json();
+                const articles = data.articles || [];
+                
+                const container = document.getElementById('articles');
+                container.innerHTML = '';
+                
+                if (articles.length === 0) {
+                    container.innerHTML = '<div class="loading">No articles found. Check back soon!</div>';
+                    return;
+                }
+                
+                articles.forEach(article => {
+                    const card = document.createElement('div');
+                    card.className = 'article-card';
+                    card.innerHTML = `
+                        <div class="article-title">${article.title || 'Spanish News'}</div>
+                        <div class="article-content">${article.summary || article.content || 'Click to read more...'}</div>
+                        <div class="article-meta">${article.level || 'A2'} • ${article.source || 'News'}</div>
+                    `;
+                    container.appendChild(card);
+                });
+                
+                console.log(`✅ Loaded ${articles.length} articles`);
+            } catch (e) {
+                console.error('❌', e);
+                document.getElementById('articles').innerHTML = '<div class="loading">❌ Error loading articles</div>';
+            }
+        }
+
+        loadArticles();
+    </script>
+</body>
+</html>

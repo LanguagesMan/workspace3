@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <title>Video Test</title>
+    <style>
+        body { margin: 0; background: #000; color: #fff; font-family: sans-serif; }
+        .container { padding: 20px; max-width: 800px; margin: 0 auto; }
+        video { width: 100%; max-width: 600px; display: block; margin: 20px 0; background: #222; }
+        .status { padding: 10px; background: #333; margin: 10px 0; border-radius: 8px; }
+        .success { background: #0a4; }
+        .error { background: #a00; }
+    </style>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Video Loading Test</h1>
+        <p id="status">Testing video playback...</p>
+
+        <h2>Direct Video Element:</h2>
+        <video id="testVideo" controls autoplay muted playsinline>
+            <source src="/videos/reels/Andheld_camera_footage_202509112217_yzrzq.mp4" type="video/mp4">
+        </video>
+
+        <div id="info" class="status"></div>
+
+        <h2>API Response Test:</h2>
+        <pre id="apiResponse" style="background: #222; padding: 10px; border-radius: 8px; overflow-x: auto;"></pre>
+    </div>
+
+    <script>
+        const video = document.getElementById('testVideo');
+        const info = document.getElementById('info');
+        const status = document.getElementById('status');
+        const apiResponse = document.getElementById('apiResponse');
+
+        video.addEventListener('loadeddata', () => {
+            info.innerHTML += '<div class="success">✅ Video data loaded</div>';
+            status.textContent = '✅ Video is loading correctly!';
+            status.className = 'success';
+        });
+
+        video.addEventListener('play', () => {
+            info.innerHTML += '<div class="success">✅ Video playing</div>';
+        });
+
+        video.addEventListener('error', (e) => {
+            info.innerHTML += '<div class="error">❌ Video error: ' + (e.target.error?.message || 'Unknown error') + '</div>';
+            status.textContent = '❌ Video failed to load!';
+            status.className = 'error';
+        });
+
+        fetch('/api/feed/videos?limit=1')
+            .then(r => r.json())
+            .then(data => {
+                apiResponse.textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(err => {
+                apiResponse.textContent = 'API Error: ' + err.message;
+                apiResponse.className = 'error';
+            });
+    </script>
+</body>
+</html>

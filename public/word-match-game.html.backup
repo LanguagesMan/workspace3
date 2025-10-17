@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🎯 Word Match Game - Langflix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .score-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .score-value {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .timer {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            aspect-ratio: 1;
+            background: #f8f9fa;
+            border: 3px solid transparent;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .card:hover:not(.matched):not(.selected) {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border-color: #667eea;
+        }
+
+        .card.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            transform: scale(1.05);
+        }
+
+        .card.matched {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+            animation: matchAnimation 0.5s ease;
+        }
+
+        .card.wrong {
+            background: #ef4444;
+            color: white;
+            border-color: #ef4444;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes matchAnimation {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-home {
+            background: #f1f3f5;
+            color: #495057;
+        }
+
+        .btn-home:hover {
+            background: #e9ecef;
+        }
+
+        .results {
+            display: none;
+            text-align: center;
+            padding: 32px 0;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .results h2 {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .results p {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .celebration {
+            font-size: 80px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <h1>🎯 Word Match Game</h1>
+            <p style="color: #666;">Match Spanish words with English translations</p>
+        </div>
+
+        <div class="score-bar">
+            <div class="score-item">
+                <div class="score-label">Score</div>
+                <div class="score-value" id="scoreDisplay">0</div>
+            </div>
+            <div class="score-item">
+                <div class="timer" id="timerDisplay">30s</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label">Streak</div>
+                <div class="score-value" id="streakDisplay">0</div>
+            </div>
+        </div>
+
+        <div id="gameSection">
+            <div class="game-grid" id="gameGrid"></div>
+
+            <div class="buttons">
+                <button class="btn-next" onclick="nextRound()">
+                    Next Round →
+                </button>
+                <button class="btn-home" onclick="goHome()">
+                    🏠 Home
+                </button>
+            </div>
+        </div>
+
+        <div class="results" id="resultsSection">
+            <div class="celebration">🎉</div>
+            <h2 id="finalScore">0</h2>
+            <p id="resultsMessage">Great job!</p>
+            <button class="btn-next" onclick="playAgain()">
+                🔄 Play Again
+            </button>
+            <button class="btn-home" onclick="goHome()" style="margin-top: 12px;">
+                🏠 Back to Home
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // API configuration
+        const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
+        let userId = localStorage.getItem('langflix-user-id') || 'user-' + Date.now();
+        if (!localStorage.getItem('langflix-user-id')) {
+            localStorage.setItem('langflix-user-id', userId);
+        }
+
+        // Fallback word pairs if no vocabulary available
+        const fallbackPairs = [
+            { spanish: 'hola', english: 'hello', level: 'A1', masteryLevel: 0 },
+            { spanish: 'adiós', english: 'goodbye', level: 'A1', masteryLevel: 0 },
+            { spanish: 'gracias', english: 'thank you', level: 'A1', masteryLevel: 0 },
+            { spanish: 'por favor', english: 'please', level: 'A1', masteryLevel: 0 },
+            { spanish: 'agua', english: 'water', level: 'A1', masteryLevel: 0 },
+            { spanish: 'comida', english: 'food', level: 'A2', masteryLevel: 0 },
+            { spanish: 'casa', english: 'house', level: 'A1', masteryLevel: 0 },
+            { spanish: 'amor', english: 'love', level: 'A2', masteryLevel: 0 },
+            { spanish: 'tiempo', english: 'time', level: 'A2', masteryLevel: 0 },
+            { spanish: 'amigo', english: 'friend', level: 'A2', masteryLevel: 0 },
+            { spanish: 'familia', english: 'family', level: 'A2', masteryLevel: 0 },
+            { spanish: 'trabajo', english: 'work', level: 'B1', masteryLevel: 0 },
+            { spanish: 'escuela', english: 'school', level: 'A2', masteryLevel: 0 },
+            { spanish: 'libro', english: 'book', level: 'A2', masteryLevel: 0 },
+            { spanish: 'música', english: 'music', level: 'A2', masteryLevel: 0 },
+            { spanish: 'película', english: 'movie', level: 'B1', masteryLevel: 0 },
+            { spanish: 'ciudad', english: 'city', level: 'B1', masteryLevel: 0 },
+            { spanish: 'país', english: 'country', level: 'B1', masteryLevel: 0 },
+            { spanish: 'dinero', english: 'money', level: 'B1', masteryLevel: 0 },
+            { spanish: 'vida', english: 'life', level: 'B1', masteryLevel: 0 }
+        ];
+
+        let wordPairs = [];
+        let score = 0;
+        let streak = 0;
+        let round = 1;
+        let selectedCards = [];
+        let matchedPairs = 0;
+        let currentPairs = [];
+        let timeLeft = 30;
+        let timerInterval;
+        let totalCorrect = 0;
+        let totalAttempts = 0;
+        let wordPerformance = {};
+
+        async function startGame() {
+            score = 0;
+            streak = 0;
+            round = 1;
+            matchedPairs = 0;
+            timeLeft = 30;
+            totalCorrect = 0;
+            totalAttempts = 0;
+            wordPerformance = {};
+            
+            // Fetch user's vocabulary
+            await fetchUserVocabulary();
+            
+            updateDisplay();
+            loadRound();
+            startTimer();
+        }
+
+        async function fetchUserVocabulary() {
+            try {
+                console.log('📚 Fetching personalized vocabulary...');
+                const response = await fetch(`${API_BASE}/api/vocabulary/get?userId=${userId}&saved=true&limit=100`);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch vocabulary');
+                }
+
+                const data = await response.json();
+                let words = data.words || [];
+
+                // Transform to game format
+                words = words.map(w => ({
+                    id: w.id,
+                    spanish: w.word || w.spanish,
+                    english: w.translation || w.english,
+                    level: w.level || 'A2',
+                    masteryLevel: w.masteryLevel || w.mastery_level || 0,
+                    nextReview: w.nextReview || w.next_review
+                }));
+
+                if (words.length >= 8) {
+                    // Prioritize words due for review and low mastery
+                    words.sort((a, b) => {
+                        const aDue = new Date(a.nextReview) <= new Date();
+                        const bDue = new Date(b.nextReview) <= new Date();
+                        
+                        if (aDue && !bDue) return -1;
+                        if (!aDue && bDue) return 1;
+                        
+                        return a.masteryLevel - b.masteryLevel;
+                    });
+
+                    wordPairs = words;
+                    console.log(`✅ Loaded ${wordPairs.length} personalized words for game`);
+                    
+                    // Show personalization message
+                    const subtitle = document.querySelector('.header p');
+                    if (subtitle) {
+                        subtitle.textContent = `🎯 Testing your Spanish from words you've saved (${words.length} words)`;
+                        subtitle.style.color = '#10b981';
+                        subtitle.style.fontWeight = '600';
+                    }
+                } else {
+                    console.log('⚠️ Not enough saved words, using fallback vocabulary');
+                    wordPairs = fallbackPairs;
+                    
+                    const subtitle = document.querySelector('.header p');
+                    if (subtitle) {
+                        subtitle.textContent = '💡 Save words from videos to get personalized games!';
+                        subtitle.style.color = '#f59e0b';
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching vocabulary:', error);
+                wordPairs = fallbackPairs;
+            }
+        }
+
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timerDisplay').textContent = timeLeft + 's';
+                
+                if (timeLeft <= 10) {
+                    document.getElementById('timerDisplay').style.color = '#ef4444';
+                }
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function loadRound() {
+            // Select 4 random pairs for this round
+            const shuffled = [...wordPairs].sort(() => Math.random() - 0.5);
+            currentPairs = shuffled.slice(0, 4);
+            
+            // Create cards (4 Spanish + 4 English = 8 cards)
+            const cards = [];
+            currentPairs.forEach((pair, index) => {
+                cards.push({
+                    text: pair.spanish,
+                    type: 'spanish',
+                    pairId: index,
+                    id: 'sp-' + index
+                });
+                cards.push({
+                    text: pair.english,
+                    type: 'english',
+                    pairId: index,
+                    id: 'en-' + index
+                });
+            });
+            
+            // Shuffle cards
+            cards.sort(() => Math.random() - 0.5);
+            
+            // Render cards
+            const grid = document.getElementById('gameGrid');
+            grid.innerHTML = '';
+            
+            cards.forEach(card => {
+                const cardEl = document.createElement('div');
+                cardEl.className = 'card';
+                cardEl.textContent = card.text;
+                cardEl.dataset.pairId = card.pairId;
+                cardEl.dataset.type = card.type;
+                cardEl.dataset.id = card.id;
+                cardEl.onclick = () => selectCard(cardEl, card);
+                grid.appendChild(cardEl);
+            });
+            
+            selectedCards = [];
+            matchedPairs = 0;
+        }
+
+        function selectCard(cardEl, card) {
+            // Ignore if already selected or matched
+            if (cardEl.classList.contains('selected') || cardEl.classList.contains('matched')) {
+                return;
+            }
+            
+            // Ignore if already have 2 selected cards
+            if (selectedCards.length >= 2) {
+                return;
+            }
+            
+            cardEl.classList.add('selected');
+            selectedCards.push({ element: cardEl, card: card });
+            
+            // Check for match when 2 cards are selected
+            if (selectedCards.length === 2) {
+                setTimeout(checkMatch, 500);
+            }
+        }
+
+        function checkMatch() {
+            const [first, second] = selectedCards;
+            
+            totalAttempts++;
+            
+            // Check if they form a matching pair
+            if (first.card.pairId === second.card.pairId && first.card.type !== second.card.type) {
+                // Match!
+                first.element.classList.remove('selected');
+                second.element.classList.remove('selected');
+                first.element.classList.add('matched');
+                second.element.classList.add('matched');
+                
+                matchedPairs++;
+                score += 10;
+                streak++;
+                timeLeft += 3; // Bonus time for correct match
+                totalCorrect++;
+                
+                // Track word performance
+                const wordId = currentPairs[first.card.pairId].id;
+                if (wordId) {
+                    if (!wordPerformance[wordId]) {
+                        wordPerformance[wordId] = { correct: 0, total: 0 };
+                    }
+                    wordPerformance[wordId].correct++;
+                    wordPerformance[wordId].total++;
+                }
+                
+                updateDisplay();
+                
+                // Check if round is complete
+                if (matchedPairs === currentPairs.length) {
+                    setTimeout(() => {
+                        round++;
+                        score += 20; // Round completion bonus
+                        updateDisplay();
+                        loadRound();
+                    }, 1000);
+                }
+            } else {
+                // No match
+                first.element.classList.remove('selected');
+                second.element.classList.remove('selected');
+                first.element.classList.add('wrong');
+                second.element.classList.add('wrong');
+                
+                streak = 0;
+                
+                // Track word performance (incorrect)
+                const wordId = currentPairs[first.card.pairId]?.id;
+                if (wordId) {
+                    if (!wordPerformance[wordId]) {
+                        wordPerformance[wordId] = { correct: 0, total: 0 };
+                    }
+                    wordPerformance[wordId].total++;
+                }
+                
+                updateDisplay();
+                
+                setTimeout(() => {
+                    first.element.classList.remove('wrong');
+                    second.element.classList.remove('wrong');
+                }, 500);
+            }
+            
+            selectedCards = [];
+        }
+
+        function updateDisplay() {
+            document.getElementById('scoreDisplay').textContent = score;
+            document.getElementById('streakDisplay').textContent = streak;
+        }
+
+        function nextRound() {
+            round++;
+            loadRound();
+        }
+
+        async function endGame() {
+            clearInterval(timerInterval);
+            
+            document.getElementById('gameSection').style.display = 'none';
+            document.getElementById('resultsSection').classList.add('active');
+            document.getElementById('finalScore').textContent = score + ' points';
+            
+            const accuracy = totalAttempts > 0 ? Math.round((totalCorrect / totalAttempts) * 100) : 0;
+            const wordsMastered = Object.keys(wordPerformance).length;
+            
+            let message = '';
+            if (score >= 100) {
+                message = `🏆 Amazing! You're a word master! ${accuracy}% accuracy on ${wordsMastered} words!`;
+            } else if (score >= 50) {
+                message = `🌟 Great job! ${accuracy}% accuracy. Keep practicing!`;
+            } else {
+                message = `💪 Good effort! ${accuracy}% accuracy. You're improving!`;
+            }
+            
+            document.getElementById('resultsMessage').textContent = message;
+            
+            // Submit game results to API
+            try {
+                const response = await fetch(`${API_BASE}/api/games/score`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: userId,
+                        gameType: 'word-match',
+                        score: totalCorrect,
+                        totalQuestions: totalAttempts,
+                        timeSpent: 30 - timeLeft,
+                        wordPerformance: wordPerformance,
+                        timestamp: new Date().toISOString()
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('✅ Game results submitted:', data);
+                    
+                    if (data.newWordsMastered > 0) {
+                        const masteredMsg = document.createElement('p');
+                        masteredMsg.style.cssText = 'color: #10b981; font-weight: 600; margin-top: 10px; font-size: 16px;';
+                        masteredMsg.textContent = `🎉 You've mastered ${data.newWordsMastered} new word${data.newWordsMastered > 1 ? 's' : ''}!`;
+                        document.getElementById('resultsSection').appendChild(masteredMsg);
+                    }
+                }
+            } catch (error) {
+                console.error('Error submitting game results:', error);
+            }
+            
+            // Save score to localStorage
+            const bestScore = parseInt(localStorage.getItem('wordMatchBestScore') || '0');
+            if (score > bestScore) {
+                localStorage.setItem('wordMatchBestScore', score);
+            }
+        }
+
+        function playAgain() {
+            document.getElementById('gameSection').style.display = 'block';
+            document.getElementById('resultsSection').classList.remove('active');
+            startGame();
+        }
+
+        function goHome() {
+            window.location.href = '/tiktok-video-feed.html';
+        }
+
+        // Start game on load
+        startGame();
+        
+        console.log('🎯 Word Match Game - Personalized Mode Active');
+    </script>
+</body>
+</html>

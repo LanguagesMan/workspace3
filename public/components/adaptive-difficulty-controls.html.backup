@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <title>Adaptive Difficulty Controls Component</title>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <!-- 
+        🎯 ADAPTIVE DIFFICULTY CONTROLS COMPONENT
+        Include this component in video/article pages for real-time difficulty adjustment
+        
+        Usage:
+        <div id="adaptive-controls-container"></div>
+        <script src="/components/adaptive-difficulty-controls.html"></script>
+    -->
+    
+    <style>
+        /* Adaptive Difficulty Controls Styles */
+        .adaptive-controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            margin: 16px 0;
+        }
+
+        .difficulty-button {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .difficulty-button:active {
+            transform: scale(0.95);
+        }
+
+        .too-hard-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+        }
+
+        .too-hard-btn:hover {
+            background: linear-gradient(135deg, #ff5252 0%, #e63946 100%);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        }
+
+        .too-easy-btn {
+            background: linear-gradient(135deg, #51cf66 0%, #37b24d 100%);
+            color: white;
+        }
+
+        .too-easy-btn:hover {
+            background: linear-gradient(135deg, #40c057 0%, #2f9e44 100%);
+            box-shadow: 0 4px 12px rgba(81, 207, 102, 0.3);
+        }
+
+        .perfect-btn {
+            background: linear-gradient(135deg, #4c8aef 0%, #3b82f6 100%);
+            color: white;
+        }
+
+        .perfect-btn:hover {
+            background: linear-gradient(135deg, #3b7cd8 0%, #2563eb 100%);
+            box-shadow: 0 4px 12px rgba(76, 138, 239, 0.3);
+        }
+
+        /* Feedback notification */
+        .feedback-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            z-index: 10000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            max-width: 350px;
+        }
+
+        .feedback-notification.show {
+            transform: translateX(0);
+        }
+
+        .feedback-notification .title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feedback-notification .message {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .feedback-notification .emoji {
+            font-size: 24px;
+        }
+
+        /* Level indicator */
+        .level-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .level-indicator .level {
+            font-size: 18px;
+        }
+
+        .level-indicator .arrow {
+            font-size: 12px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        /* Progress bar for next level */
+        .level-progress {
+            margin-top: 12px;
+        }
+
+        .level-progress .progress-label {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .level-progress .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .level-progress .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            transition: width 0.3s ease;
+        }
+
+        .level-progress .progress-text {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        /* Beginner mode badge */
+        .beginner-mode-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: linear-gradient(135deg, #ffd93d 0%, #ffb700 100%);
+            color: #333;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(255, 183, 0, 0.3);
+        }
+
+        /* Milestone celebration */
+        .milestone-celebration {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: white;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            z-index: 10001;
+            text-align: center;
+            max-width: 400px;
+            transition: transform 0.3s ease;
+        }
+
+        .milestone-celebration.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .milestone-celebration .emoji {
+            font-size: 64px;
+            margin-bottom: 20px;
+            animation: celebrate 0.6s ease;
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.2) rotate(-5deg); }
+            75% { transform: scale(1.2) rotate(5deg); }
+        }
+
+        .milestone-celebration .title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .milestone-celebration .message {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .milestone-celebration button {
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .milestone-celebration button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+
+    <script>
+        class AdaptiveDifficultyControls {
+            constructor(containerId, options = {}) {
+                this.containerId = containerId;
+                this.options = {
+                    contentId: options.contentId || null,
+                    contentType: options.contentType || 'video',
+                    showLevelIndicator: options.showLevelIndicator !== false,
+                    showProgress: options.showProgress !== false,
+                    onFeedback: options.onFeedback || null
+                };
+                
+                this.userId = null;
+                this.currentLevel = 'A1';
+                this.wordCount = 0;
+                this.nextMilestone = null;
+                
+                this.init();
+            }
+
+            async init() {
+                // Get user ID from session
+                this.userId = await this.getUserId();
+                
+                if (!this.userId) {
+                    console.log('User not logged in - adaptive controls hidden');
+                    return;
+                }
+                
+                // Load user profile
+                await this.loadUserProfile();
+                
+                // Render controls
+                this.render();
+                
+                // Setup event listeners
+                this.setupEventListeners();
+            }
+
+            async getUserId() {
+                try {
+                    const supabase = window.supabase?.createClient(
+                        'https://uejiwteujraxczrxbqff.supabase.co',
+                        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVlaml3dGV1anJheGN6cnhicWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk5NDMxMzksImV4cCI6MjA3NTUxOTEzOX0.iva8q5bMcLHfqd6niXqB_i-i-VrPmKLNGr9eiiPwZHQ'
+                    );
+                    
+                    if (!supabase) return null;
+                    
+                    const { data: { user } } = await supabase.auth.getUser();
+                    return user?.id;
+                } catch (error) {
+                    console.error('Error getting user ID:', error);
+                    return null;
+                }
+            }
+
+            async loadUserProfile() {
+                try {
+                    const response = await fetch(`/api/adaptive/user-profile/${this.userId}`);
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        this.currentLevel = data.profile.signals?.recommendation?.level || 'A1';
+                        this.wordCount = data.profile.sessionStats?.totalWordsSaved || 0;
+                        this.nextMilestone = data.profile.nextMilestone;
+                    }
+                } catch (error) {
+                    console.error('Error loading user profile:', error);
+                }
+            }
+
+            render() {
+                const container = document.getElementById(this.containerId);
+                if (!container) return;
+                
+                let html = '<div class="adaptive-controls-wrapper">';
+                
+                // Level indicator
+                if (this.options.showLevelIndicator) {
+                    html += this.renderLevelIndicator();
+                }
+                
+                // Difficulty buttons
+                html += this.renderDifficultyButtons();
+                
+                // Progress bar
+                if (this.options.showProgress && this.nextMilestone) {
+                    html += this.renderProgress();
+                }
+                
+                html += '</div>';
+                
+                container.innerHTML = html;
+            }
+
+            renderLevelIndicator() {
+                const isBeginnerMode = this.wordCount < 100;
+                
+                let html = '<div style="display: flex; gap: 12px; margin-bottom: 16px;">';
+                html += `<div class="level-indicator">
+                    <span class="level">${this.currentLevel}</span>
+                    <span>${this.wordCount} words</span>
+                </div>`;
+                
+                if (isBeginnerMode) {
+                    html += `<div class="beginner-mode-badge">
+                        🌱 Beginner Mode
+                    </div>`;
+                }
+                
+                html += '</div>';
+                return html;
+            }
+
+            renderDifficultyButtons() {
+                return `
+                    <div class="adaptive-controls">
+                        <button class="difficulty-button too-hard-btn" data-feedback="too_hard">
+                            😰 Too Hard
+                        </button>
+                        <button class="difficulty-button perfect-btn" data-feedback="perfect">
+                            👌 Perfect
+                        </button>
+                        <button class="difficulty-button too-easy-btn" data-feedback="too_easy">
+                            🥱 Too Easy
+                        </button>
+                    </div>
+                `;
+            }
+
+            renderProgress() {
+                if (!this.nextMilestone) return '';
+                
+                const progress = ((this.wordCount / this.nextMilestone.next) * 100).toFixed(0);
+                
+                return `
+                    <div class="level-progress">
+                        <div class="progress-label">${this.nextMilestone.message}</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progress}%"></div>
+                        </div>
+                        <div class="progress-text">${progress}% complete</div>
+                    </div>
+                `;
+            }
+
+            setupEventListeners() {
+                const container = document.getElementById(this.containerId);
+                if (!container) return;
+                
+                // Difficulty button clicks
+                const buttons = container.querySelectorAll('.difficulty-button');
+                buttons.forEach(button => {
+                    button.addEventListener('click', async (e) => {
+                        const feedback = e.currentTarget.dataset.feedback;
+                        await this.handleFeedback(feedback);
+                    });
+                });
+            }
+
+            async handleFeedback(feedbackType) {
+                try {
+                    // Track interaction
+                    const response = await fetch('/api/adaptive/track-interaction', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            userId: this.userId,
+                            interactionType: 'button_click',
+                            data: {
+                                buttonType: feedbackType,
+                                contentId: this.options.contentId
+                            }
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        // Show feedback notification
+                        this.showFeedbackNotification(feedbackType, data.result.adjustment);
+                        
+                        // Check for milestone
+                        if (data.milestone) {
+                            this.showMilestoneCelebration(data.milestone);
+                        }
+                        
+                        // Call custom callback
+                        if (this.options.onFeedback) {
+                            this.options.onFeedback(feedbackType, data);
+                        }
+                        
+                        // Reload profile after feedback
+                        setTimeout(() => this.loadUserProfile().then(() => this.render()), 1000);
+                    }
+                } catch (error) {
+                    console.error('Error handling feedback:', error);
+                }
+            }
+
+            showFeedbackNotification(feedbackType, adjustment) {
+                const messages = {
+                    too_hard: {
+                        emoji: '😰',
+                        title: 'We hear you!',
+                        message: adjustment?.changed 
+                            ? `We've adjusted your level from ${adjustment.oldLevel} to ${adjustment.newLevel}. Next videos will be easier!`
+                            : "We'll show you easier content next time!"
+                    },
+                    too_easy: {
+                        emoji: '🚀',
+                        title: 'Level up!',
+                        message: adjustment?.changed
+                            ? `Great progress! You're now at ${adjustment.newLevel} level. Get ready for more challenge!`
+                            : "We'll show you more challenging content!"
+                    },
+                    perfect: {
+                        emoji: '👌',
+                        title: 'Perfect!',
+                        message: "We'll keep showing content at this difficulty level!"
+                    }
+                };
+                
+                const config = messages[feedbackType];
+                
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.className = 'feedback-notification';
+                notification.innerHTML = `
+                    <div class="title">
+                        <span class="emoji">${config.emoji}</span>
+                        ${config.title}
+                    </div>
+                    <div class="message">${config.message}</div>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Show notification
+                setTimeout(() => notification.classList.add('show'), 100);
+                
+                // Hide and remove after 3 seconds
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => notification.remove(), 300);
+                }, 3000);
+            }
+
+            showMilestoneCelebration(milestone) {
+                const celebration = document.createElement('div');
+                celebration.className = 'milestone-celebration';
+                celebration.innerHTML = `
+                    <div class="emoji">${milestone.emoji}</div>
+                    <div class="title">${milestone.milestone} Words!</div>
+                    <div class="message">${milestone.message}</div>
+                    <button onclick="this.closest('.milestone-celebration').remove()">
+                        Continue Learning! 🎉
+                    </button>
+                `;
+                
+                document.body.appendChild(celebration);
+                
+                // Show celebration
+                setTimeout(() => celebration.classList.add('show'), 100);
+            }
+        }
+
+        // Make available globally
+        window.AdaptiveDifficultyControls = AdaptiveDifficultyControls;
+    </script>
+</body>
+</html>
+

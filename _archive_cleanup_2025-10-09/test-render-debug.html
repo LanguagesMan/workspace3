@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head><title>Test Video Rendering</title></head>
+<body style="font-family: monospace; padding: 20px;">
+<h2>Video API Rendering Test</h2>
+<div id="status">Loading...</div>
+<div id="error" style="color:red; white-space: pre-wrap;"></div>
+<div id="output"></div>
+<script>
+async function test() {
+  try {
+    console.log('Fetching videos...');
+    const res = await fetch('http://localhost:3002/api/videos');
+    const videos = await res.json();
+    document.getElementById('status').textContent = 'Loaded ' + videos.length + ' videos';
+    console.log('Videos loaded:', videos.length);
+
+    const v = videos[0];
+    console.log('First video:', v);
+
+    let html = '<h3>First Video Data:</h3>';
+    html += '<p>Title: ' + v.title + '</p>';
+    html += '<p>Level: ' + v.level + '</p>';
+    html += '<p>Spanish transcription lines: ' + v.transcription.spanish.length + '</p>';
+    html += '<p>Words in first line: ' + v.transcription.spanish[0].words.length + '</p>';
+    html += '<p>First 3 words: ' + v.transcription.spanish[0].words.slice(0,3).join(', ') + '</p>';
+    html += '<p>English text: ' + v.transcription.english[0].text + '</p>';
+
+    document.getElementById('output').innerHTML = html;
+    console.log('Render successful!');
+  } catch(e) {
+    document.getElementById('error').textContent = 'ERROR: ' + e.message + '\n\nStack:\n' + e.stack;
+    console.error('Error:', e);
+  }
+}
+test();
+</script>
+</body>
+</html>

@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📰 Articles Feed - VIDA Spanish Learning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        /* MEDIUM/FLIPBOARD STYLE - Card-based articles */
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .article-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .article-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .article-content {
+            padding: 20px;
+            color: #333;
+        }
+
+        .article-category {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #667eea;
+            color: #fff;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .article-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+
+        .article-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        /* VIRAL FEATURE: Simplify On-Demand Button */
+        .simplify-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        }
+
+        .simplify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .simplify-btn:active {
+            transform: scale(0.95);
+        }
+
+        .simplicity-level {
+            display: inline-flex;
+            gap: 4px;
+            align-items: center;
+            padding: 6px 12px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 20px;
+            font-size: 12px;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        /* Learned words highlighting */
+        .learned-word {
+            background: linear-gradient(135deg, #a8e6cf, #dcedc1);
+            color: #333;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            border-bottom: 2px solid #4caf50;
+        }
+
+        /* LINGOPIE FEATURE - Interactive words */
+        .interactive-word {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #333;
+            padding: 2px 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .interactive-word:hover {
+            transform: scale(1.1);
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid #eee;
+        }
+
+        .difficulty-badge {
+            padding: 6px 12px;
+            background: #764ba2;
+            color: #fff;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .read-time {
+            font-size: 14px;
+            color: #999;
+        }
+
+        /* TRANSLATION MODAL */
+        .translation-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 1000;
+            max-width: 90%;
+        }
+
+        .translation-modal.active {
+            display: block;
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            z-index: 999;
+        }
+
+        .modal-overlay.active {
+            display: block;
+        }
+
+        .modal-word {
+            font-size: 36px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 16px;
+        }
+
+        .modal-translation {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 24px;
+        }
+
+        .modal-example {
+            font-size: 16px;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 24px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .modal-btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+        }
+
+        .btn-close {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        /* 2025 Hybrid Infinite Scroll Styles */
+        .load-more-btn {
+            padding: 16px 48px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .load-more-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .load-more-btn:active {
+            transform: scale(0.95);
+        }
+
+        .loading-indicator {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: center;
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1>📰 Articles Feed</h1>
+    <div class="articles-grid" id="articlesContainer">
+        <!-- Articles will be loaded here -->
+    </div>
+
+    <!-- 2025 Hybrid Infinite Scroll: Load More Button -->
+    <div style="text-align: center; padding: 40px;">
+        <button id="loadMoreBtn" class="load-more-btn" style="display: none;">
+            📰 Load More Articles
+        </button>
+        <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+            <div class="spinner"></div>
+            Loading...
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay" onclick="articlesFeed.closeModal()"></div>
+    <div class="translation-modal" id="translationModal">
+        <div class="modal-word"></div>
+        <div class="modal-translation"></div>
+        <div class="modal-example"></div>
+        <div class="modal-actions">
+            <button class="modal-btn btn-save" onclick="articlesFeed.saveFlashcard()">💾 Save Flashcard</button>
+            <button class="modal-btn btn-close" onclick="articlesFeed.closeModal()">✕ Close</button>
+        </div>
+    </div>
+
+    <script>
+        class ArticlesFeed {
+            constructor() {
+                this.container = document.getElementById('articlesContainer');
+                this.loadMoreBtn = document.getElementById('loadMoreBtn');
+                this.loadingIndicator = document.getElementById('loadingIndicator');
+                this.savedWords = JSON.parse(localStorage.getItem('savedWords') || '[]');
+                this.currentWord = null;
+
+                // Pagination state
+                this.page = 1;
+                this.itemsLoaded = 0;
+                this.isLoading = false;
+                this.INITIAL_LOAD = 10; // Auto-load first 10
+                this.BATCH_SIZE = 10;   // Then load 10 per click
+
+                // Setup Load More button
+                this.loadMoreBtn.addEventListener('click', () => this.loadMore());
+
+                // Setup Intersection Observer for automatic loading (2025 best practice)
+                this.setupIntersectionObserver();
+
+                // Initial load
+                this.loadArticles();
+            }
+
+            setupIntersectionObserver() {
+                // Trigger "Load More" automatically when button becomes visible
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && !this.isLoading) {
+                            this.loadMore();
+                        }
+                    });
+                }, {
+                    rootMargin: '100px' // Trigger 100px before button is visible
+                });
+
+                observer.observe(this.loadMoreBtn);
+            }
+
+            async loadArticles() {
+                if (this.isLoading) return;
+
+                this.isLoading = true;
+                this.showLoading();
+
+                try {
+                    // First page: Load from API + viral content fallback
+                    if (this.page === 1) {
+                        // Try API first
+                        const response = await fetch(`http://localhost:3002/api/unified-feed?limit=20&page=1`);
+                        const data = await response.json();
+                        const articles = data.videos.filter(item => item.type === 'article');
+                        articles.forEach(article => this.createArticleCard(article));
+
+                        // Add viral content to fill out initial batch
+                        this.addViralContent();
+                        this.itemsLoaded = this.container.querySelectorAll('.article-card').length;
+
+                        // Show Load More button after initial load
+                        if (this.itemsLoaded > 0) {
+                            this.showLoadMoreButton();
+                        }
+                    } else {
+                        // Subsequent pages: More viral content batches
+                        const startIdx = (this.page - 2) * this.BATCH_SIZE;
+                        const extraArticles = this.getExtraViralArticles(startIdx, this.BATCH_SIZE);
+                        extraArticles.forEach(article => this.createArticleCard(article));
+                        this.itemsLoaded += extraArticles.length;
+
+                        // Hide Load More if no more content
+                        if (extraArticles.length === 0) {
+                            this.loadMoreBtn.style.display = 'none';
+                        }
+                    }
+
+                } catch (error) {
+                    console.error('Error loading articles:', error);
+                    // Fallback to viral content even if API fails
+                    if (this.page === 1) {
+                        this.addViralContent();
+                        this.itemsLoaded = this.container.querySelectorAll('.article-card').length;
+                        this.showLoadMoreButton();
+                    }
+                }
+
+                this.isLoading = false;
+                this.hideLoading();
+            }
+
+            async loadMore() {
+                this.page++;
+                await this.loadArticles();
+            }
+
+            showLoading() {
+                this.loadMoreBtn.style.display = 'none';
+                this.loadingIndicator.style.display = 'flex';
+            }
+
+            hideLoading() {
+                this.loadingIndicator.style.display = 'none';
+            }
+
+            showLoadMoreButton() {
+                this.loadMoreBtn.style.display = 'inline-block';
+            }
+
+            getExtraViralArticles(startIdx, count) {
+                // Generate extra articles for pagination (duplicates with variation)
+                const templates = [
+                    {
+                        id: 'extra_spanish_culture',
+                        type: 'article',
+                        title: '🎭 La rica cultura española',
+                        spanish: 'España tiene una cultura milenaria. El flamenco es una tradición importante. La arquitectura de Gaudí es mundialmente famosa. Las fiestas populares son increíbles y llenas de color.',
+                        thumbnail: 'https://images.unsplash.com/photo-1543783207-ec64e4d95325?w=400',
+                        difficulty_level: 'A2'
+                    },
+                    {
+                        id: 'extra_latin_food',
+                        type: 'article',
+                        title: '🍴 Comida latina deliciosa',
+                        spanish: 'La comida latinoamericana es muy variada. Cada país tiene platos únicos y especiales. Los ingredientes frescos son muy importantes. La cocina mexicana, peruana y argentina son famosas.',
+                        thumbnail: 'https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?w=400',
+                        difficulty_level: 'A2'
+                    },
+                    {
+                        id: 'extra_music_trends',
+                        type: 'article',
+                        title: '🎵 Tendencias musicales latinas',
+                        spanish: 'La música latina domina las listas globales. Artistas como J Balvin y Karol G son superestrellas. El reggaetón evoluciona constantemente. La fusión de géneros crea sonidos nuevos.',
+                        thumbnail: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=400',
+                        difficulty_level: 'B1'
+                    }
+                ];
+
+                const result = [];
+                for (let i = 0; i < count; i++) {
+                    const template = templates[i % templates.length];
+                    result.push({
+                        ...template,
+                        id: `${template.id}_${startIdx + i}`
+                    });
+                }
+                return result;
+            }
+
+            addViralContent() {
+                const viralArticles = [
+                    {
+                        id: 'viral_1',
+                        type: 'article',
+                        title: '💥 Shakira y Piqué: El drama continúa',
+                        spanish: 'La cantante colombiana Shakira lanzó otra canción sobre su ex-novio Gerard Piqué. Los fans están muy emocionados con la nueva música. Shakira es una artista muy famosa en todo el mundo. Sus canciones son populares en muchos países diferentes.',
+                        thumbnail: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400',
+                        difficulty_level: 'A2'
+                    },
+                    {
+                        id: 'viral_2',
+                        type: 'article',
+                        title: '⚽ Real Madrid gana otra vez',
+                        spanish: 'El Real Madrid es el equipo más exitoso de España. Ganaron el partido importante contra Barcelona. Los jugadores celebraron con los fans después del partido. El fútbol español es muy emocionante y popular.',
+                        thumbnail: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=400',
+                        difficulty_level: 'A2'
+                    },
+                    {
+                        id: 'viral_3',
+                        type: 'article',
+                        title: '🔥 Bad Bunny lanza nuevo álbum',
+                        spanish: 'Bad Bunny es el artista latino más famoso del momento. Su nueva música es increíble y muy popular. Millones de personas escuchan sus canciones todos los días. La música latina está dominando el mundo entero.',
+                        thumbnail: 'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=400',
+                        difficulty_level: 'A2'
+                    },
+                    {
+                        id: 'viral_4',
+                        type: 'article',
+                        title: '🌮 La mejor comida callejera de México',
+                        spanish: 'Los tacos mexicanos son deliciosos y muy populares. La comida callejera en México es increíble. Muchas personas viajan a México solo para comer tacos auténticos. La cultura mexicana es rica y hermosa.',
+                        thumbnail: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400',
+                        difficulty_level: 'A1'
+                    },
+                    {
+                        id: 'viral_5',
+                        type: 'article',
+                        title: '💃 Rosalía revoluciona el flamenco',
+                        spanish: 'Rosalía es una cantante española muy moderna y talentosa. Ella mezcla el flamenco tradicional con música contemporánea. Sus videos musicales son artísticos y visuales. Rosalía representa la nueva generación de artistas españoles.',
+                        thumbnail: 'https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=400',
+                        difficulty_level: 'B1'
+                    },
+                    {
+                        id: 'viral_6',
+                        type: 'article',
+                        title: '🏖️ Las playas más hermosas de España',
+                        spanish: 'España tiene playas increíbles en la costa mediterránea. El agua es clara y azul. Muchos turistas visitan España cada verano. Las islas Baleares son especialmente populares para vacaciones.',
+                        thumbnail: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400',
+                        difficulty_level: 'A2'
+                    }
+                ];
+
+                viralArticles.forEach(article => this.createArticleCard(article));
+            }
+
+            createArticleCard(article) {
+                const card = document.createElement('div');
+                card.className = 'article-card';
+                card.dataset.articleId = article.id;
+
+                const spanishText = article.spanish || 'El español es un idioma hermoso que se habla en muchos países.';
+                const interactiveText = this.makeWordsInteractive(spanishText);
+
+                card.innerHTML = `
+                    <img src="${article.thumbnail || 'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=400'}"
+                         alt="${article.title}" class="article-image">
+                    <div class="article-content">
+                        <div class="article-category">${article.difficulty_level || 'A2'}</div>
+                        <h2 class="article-title">${article.title}</h2>
+
+                        <div class="simplicity-level" data-level="normal">
+                            📊 Level: <strong>Normal</strong>
+                        </div>
+
+                        <button class="simplify-btn" onclick="articlesFeed.simplifyArticle('${article.id}')">
+                            🔽 Make it Simpler
+                        </button>
+
+                        <p class="article-text" data-original="${spanishText}">${interactiveText}</p>
+                        <div class="article-meta">
+                            <span class="difficulty-badge">${article.difficulty_level || 'Intermediate'}</span>
+                            <span class="read-time">⏱️ 3 min read</span>
+                        </div>
+                    </div>
+                `;
+
+                this.container.appendChild(card);
+            }
+
+            makeWordsInteractive(text) {
+                const words = ['español', 'hermoso', 'idioma', 'países', 'cultura', 'tradicional', 'paella', 'flamenco'];
+                const learnedWords = JSON.parse(localStorage.getItem('savedWords') || '[]').map(w => w.word.toLowerCase());
+                let result = text;
+
+                // First, highlight learned words
+                learnedWords.forEach(word => {
+                    const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                    result = result.replace(regex, match =>
+                        `<span class="learned-word" title="You learned this!" onclick="articlesFeed.showTranslation('${match}')">${match}</span>`
+                    );
+                });
+
+                // Then, make other words interactive
+                words.forEach(word => {
+                    if (!learnedWords.includes(word.toLowerCase())) {
+                        const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                        result = result.replace(regex, match =>
+                            `<span class="interactive-word" onclick="articlesFeed.showTranslation('${match}')">${match}</span>`
+                        );
+                    }
+                });
+
+                return result;
+            }
+
+            // VIRAL FEATURE: Simplify On-Demand
+            simplifyArticle(articleId) {
+                const card = document.querySelector(`[data-article-id="${articleId}"]`);
+                const textElement = card.querySelector('.article-text');
+                const levelElement = card.querySelector('.simplicity-level');
+                const button = card.querySelector('.simplify-btn');
+
+                const currentLevel = levelElement.dataset.level;
+                const originalText = textElement.dataset.original;
+
+                // Simplification levels with real transformations
+                const simplifications = {
+                    'normal': {
+                        text: originalText,
+                        next: 'simple',
+                        nextLabel: 'Simple',
+                        buttonText: '🔽 Make it Simpler'
+                    },
+                    'simple': {
+                        text: this.simplifyText(originalText, 1),
+                        next: 'simpler',
+                        nextLabel: 'Simpler',
+                        buttonText: '🔽🔽 Even Simpler'
+                    },
+                    'simpler': {
+                        text: this.simplifyText(originalText, 2),
+                        next: 'simplest',
+                        nextLabel: 'Simplest',
+                        buttonText: '🔽🔽🔽 Super Simple'
+                    },
+                    'simplest': {
+                        text: this.simplifyText(originalText, 3),
+                        next: 'normal',
+                        nextLabel: 'Normal',
+                        buttonText: '🔄 Reset to Normal'
+                    }
+                };
+
+                const nextLevel = simplifications[currentLevel].next;
+                const simplified = simplifications[nextLevel];
+
+                // Update text with interactive words
+                textElement.innerHTML = this.makeWordsInteractive(simplified.text);
+
+                // Update level indicator
+                levelElement.dataset.level = nextLevel;
+                levelElement.innerHTML = `📊 Level: <strong>${simplifications[nextLevel].nextLabel}</strong>`;
+
+                // Update button
+                button.textContent = simplified.buttonText;
+
+                // Add animation
+                textElement.style.animation = 'none';
+                setTimeout(() => {
+                    textElement.style.animation = 'fadeIn 0.3s ease';
+                }, 10);
+            }
+
+            simplifyText(text, level) {
+                // Real text simplification algorithm
+                const simplifications = {
+                    1: { // Simple
+                        'hermoso': 'bonito',
+                        'idioma': 'lengua',
+                        'países': 'lugares',
+                        'tradicional': 'antiguo'
+                    },
+                    2: { // Simpler
+                        'hermoso': 'muy bueno',
+                        'bonito': 'muy bueno',
+                        'idioma': 'palabras',
+                        'lengua': 'palabras',
+                        'países': 'sitios',
+                        'lugares': 'sitios',
+                        'tradicional': 'viejo',
+                        'antiguo': 'viejo'
+                    },
+                    3: { // Simplest
+                        'hermoso': 'bueno',
+                        'bonito': 'bueno',
+                        'muy bueno': 'bueno',
+                        'idioma': 'lenguaje',
+                        'lengua': 'lenguaje',
+                        'palabras': 'lenguaje',
+                        'países': 'lugares',
+                        'sitios': 'lugares',
+                        'tradicional': 'de antes',
+                        'antiguo': 'de antes',
+                        'viejo': 'de antes'
+                    }
+                };
+
+                let result = text;
+                const replacements = simplifications[level] || {};
+
+                Object.entries(replacements).forEach(([from, to]) => {
+                    const regex = new RegExp(`\\b${from}\\b`, 'gi');
+                    result = result.replace(regex, to);
+                });
+
+                return result;
+            }
+
+            showTranslation(word) {
+                const translations = {
+                    'español': 'Spanish',
+                    'hermoso': 'beautiful',
+                    'idioma': 'language',
+                    'países': 'countries',
+                    'cultura': 'culture',
+                    'tradicional': 'traditional',
+                    'paella': 'Spanish rice dish',
+                    'flamenco': 'Spanish dance and music'
+                };
+
+                const examples = {
+                    'español': 'Me encanta aprender español.',
+                    'hermoso': 'Es un día hermoso.',
+                    'idioma': 'El español es un idioma romántico.',
+                    'países': 'Visité muchos países en Europa.'
+                };
+
+                const translation = translations[word.toLowerCase()] || 'Translation not found';
+                const example = examples[word.toLowerCase()] || '';
+
+                this.currentWord = { word, translation, example };
+
+                document.querySelector('.modal-word').textContent = word;
+                document.querySelector('.modal-translation').textContent = `= ${translation}`;
+                document.querySelector('.modal-example').textContent = example;
+
+                document.getElementById('modalOverlay').classList.add('active');
+                document.getElementById('translationModal').classList.add('active');
+            }
+
+            closeModal() {
+                document.getElementById('modalOverlay').classList.remove('active');
+                document.getElementById('translationModal').classList.remove('active');
+            }
+
+            saveFlashcard() {
+                if (this.currentWord) {
+                    this.savedWords.push(this.currentWord);
+                    localStorage.setItem('savedWords', JSON.stringify(this.savedWords));
+                    alert(`✅ "${this.currentWord.word}" saved to flashcards!`);
+                    this.closeModal();
+                }
+            }
+        }
+
+        const articlesFeed = new ArticlesFeed();
+    </script>
+
+    <!-- TikTok-style bottom navigation (Instagram/TikTok 2025 pattern) -->
+    <nav class="bottom-nav" aria-label="Main navigation" style="position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(20px); border-top: 0.5px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-around; align-items: center; padding: 0 8px; z-index: 1000; -webkit-backdrop-filter: blur(20px);">
+        <button class="nav-item" data-page="videos" aria-label="Videos" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; flex: 1; height: 100%; background: none; border: none; color: rgba(255, 255, 255, 0.7); cursor: pointer; transition: all 0.2s ease;">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width: 24px; height: 24px;">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            </svg>
+            <span style="font-size: 10px; font-weight: 600;">Videos</span>
+        </button>
+
+        <button class="nav-item active" data-page="articles" aria-label="Articles" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; flex: 1; height: 100%; background: none; border: none; color: white; cursor: pointer; transition: all 0.2s ease;">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width: 24px; height: 24px;">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+            </svg>
+            <span style="font-size: 10px; font-weight: 600;">Articles</span>
+        </button>
+
+        <button class="nav-item" data-page="music" aria-label="Music" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; flex: 1; height: 100%; background: none; border: none; color: rgba(255, 255, 255, 0.7); cursor: pointer; transition: all 0.2s ease;">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width: 24px; height: 24px;">
+                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+            </svg>
+            <span style="font-size: 10px; font-weight: 600;">Music</span>
+        </button>
+
+        <button class="nav-item" data-page="stories" aria-label="Stories" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; flex: 1; height: 100%; background: none; border: none; color: rgba(255, 255, 255, 0.7); cursor: pointer; transition: all 0.2s ease;">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width: 24px; height: 24px;">
+                <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/>
+            </svg>
+            <span style="font-size: 10px; font-weight: 600;">Stories</span>
+        </button>
+
+        <button class="nav-item" data-page="profile" aria-label="Profile" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; flex: 1; height: 100%; background: none; border: none; color: rgba(255, 255, 255, 0.7); cursor: pointer; transition: all 0.2s ease;">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width: 24px; height: 24px;">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+            </svg>
+            <span style="font-size: 10px; font-weight: 600;">Profile</span>
+        </button>
+    </nav>
+
+    <script>
+        // Bottom navigation functionality
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const page = item.dataset.page;
+                switch(page) {
+                    case 'videos':
+                        window.location.href = '/';
+                        break;
+                    case 'articles':
+                        // Already on articles page
+                        break;
+                    case 'music':
+                        window.location.href = '/music-feed.html';
+                        break;
+                    case 'stories':
+                        window.location.href = '/stories.html';
+                        break;
+                    case 'profile':
+                        window.location.href = '/stats-dashboard.html';
+                        break;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

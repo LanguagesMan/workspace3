@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Leaderboard - Langflix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 6px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            background: transparent;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: white;
+            color: #667eea;
+        }
+
+        .podium {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .podium-place {
+            flex: 1;
+            max-width: 100px;
+            text-align: center;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .podium-place:nth-child(2) { animation-delay: 0.1s; }
+        .podium-place:nth-child(1) { animation-delay: 0.2s; }
+        .podium-place:nth-child(3) { animation-delay: 0.3s; }
+
+        .podium-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            margin: 0 auto 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border: 3px solid white;
+        }
+
+        .podium-place:nth-child(1) .podium-avatar {
+            width: 80px;
+            height: 80px;
+            font-size: 32px;
+            border: 4px solid gold;
+        }
+
+        .podium-stand {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px 12px 0 0;
+            padding: 16px 8px;
+            position: relative;
+        }
+
+        .podium-place:nth-child(1) .podium-stand {
+            height: 140px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+        }
+
+        .podium-place:nth-child(2) .podium-stand {
+            height: 120px;
+            background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
+        }
+
+        .podium-place:nth-child(3) .podium-stand {
+            height: 100px;
+            background: linear-gradient(135deg, #cd7f32 0%, #daa520 100%);
+        }
+
+        .podium-rank {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 4px;
+        }
+
+        .podium-name {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .podium-xp {
+            font-size: 14px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .leaderboard-list {
+            background: white;
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 20px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .leaderboard-item:hover {
+            background: #f8f9fa;
+        }
+
+        .leaderboard-item.current-user {
+            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+            border: 2px solid #667eea;
+        }
+
+        .rank {
+            width: 40px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #666;
+        }
+
+        .rank.top {
+            color: #667eea;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-right: 12px;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .username {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .user-level {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .xp-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .your-rank-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #667eea;
+        }
+
+        .your-rank-card h3 {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .your-rank-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 900;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            opacity: 0.8;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏆 Leaderboard</h1>
+        <p>Weekly XP Rankings</p>
+    </div>
+
+    <div class="tabs">
+        <button class="tab active" onclick="switchTab('global')">Global</button>
+        <button class="tab" onclick="switchTab('friends')">Friends</button>
+    </div>
+
+    <div id="globalTab">
+        <div id="podium" class="podium"></div>
+
+        <div class="your-rank-card">
+            <h3>Your Rank</h3>
+            <div class="your-rank-stats">
+                <div class="stat">
+                    <div class="stat-value" id="yourRank">#-</div>
+                    <div class="stat-label">Rank</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="yourXP">0</div>
+                    <div class="stat-label">XP This Week</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="yourLevel">1</div>
+                    <div class="stat-label">Level</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="leaderboard-list" id="leaderboardList"></div>
+    </div>
+
+    <div id="friendsTab" style="display: none;">
+        <div class="empty-state">
+            <div class="empty-state-icon">👥</div>
+            <h3>No Friends Yet</h3>
+            <p>Connect with friends to compete on the leaderboard!</p>
+        </div>
+    </div>
+
+    <script src="/lib/gamification-system.js"></script>
+    <script>
+        const gamification = new GamificationSystem();
+        const userId = localStorage.getItem('userId') || 'user-' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('userId', userId);
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (tab === 'global') {
+                document.getElementById('globalTab').style.display = 'block';
+                document.getElementById('friendsTab').style.display = 'none';
+            } else {
+                document.getElementById('globalTab').style.display = 'none';
+                document.getElementById('friendsTab').style.display = 'block';
+            }
+        }
+
+        function generateMockLeaderboard() {
+            const currentUserData = gamification.getData();
+            const currentUserXP = currentUserData.todayXP || Math.floor(Math.random() * 500);
+
+            // Generate mock users
+            const mockUsers = [
+                { id: userId, name: 'You', xp: currentUserXP, level: currentUserData.level || 1 },
+                { id: 'user-1', name: 'Maria García', xp: 1250, level: 12 },
+                { id: 'user-2', name: 'Carlos Ruiz', xp: 1100, level: 10 },
+                { id: 'user-3', name: 'Ana López', xp: 980, level: 9 },
+                { id: 'user-4', name: 'Luis Martínez', xp: 875, level: 8 },
+                { id: 'user-5', name: 'Sofia Hernández', xp: 820, level: 8 },
+                { id: 'user-6', name: 'Diego Torres', xp: 750, level: 7 },
+                { id: 'user-7', name: 'Laura Sánchez', xp: 690, level: 7 },
+                { id: 'user-8', name: 'Pedro Ramírez', xp: 640, level: 6 },
+                { id: 'user-9', name: 'Isabel Flores', xp: 590, level: 6 },
+                { id: 'user-10', name: 'Miguel Castro', xp: 540, level: 5 }
+            ];
+
+            // Sort by XP
+            mockUsers.sort((a, b) => b.xp - a.xp);
+
+            return mockUsers;
+        }
+
+        function renderPodium(users) {
+            const podium = document.getElementById('podium');
+            podium.innerHTML = '';
+
+            const top3 = users.slice(0, 3);
+            const order = [1, 0, 2]; // 2nd, 1st, 3rd
+
+            order.forEach(index => {
+                if (top3[index]) {
+                    const user = top3[index];
+                    const rank = index + 1;
+                    const medal = ['🥇', '🥈', '🥉'][index];
+
+                    podium.innerHTML += `
+                        <div class="podium-place">
+                            <div class="podium-avatar">${user.name[0]}</div>
+                            <div class="podium-stand">
+                                <div class="podium-rank">${medal}</div>
+                                <div class="podium-name">${user.name}</div>
+                                <div class="podium-xp">${user.xp} XP</div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        function renderLeaderboard(users) {
+            const list = document.getElementById('leaderboardList');
+            list.innerHTML = '';
+
+            users.forEach((user, index) => {
+                const rank = index + 1;
+                const isCurrentUser = user.id === userId;
+                const isTop = rank <= 10;
+
+                const item = document.createElement('div');
+                item.className = `leaderboard-item ${isCurrentUser ? 'current-user' : ''}`;
+                item.style.animationDelay = `${index * 0.05}s`;
+
+                item.innerHTML = `
+                    <div class="rank ${isTop ? 'top' : ''}">#${rank}</div>
+                    <div class="avatar">${user.name[0]}</div>
+                    <div class="user-info">
+                        <div class="username">${user.name}${isCurrentUser ? ' (You)' : ''}</div>
+                        <div class="user-level">Level ${user.level}</div>
+                    </div>
+                    <div class="xp-badge">${user.xp} XP</div>
+                `;
+
+                list.appendChild(item);
+
+                // Update "Your Rank" card if this is the current user
+                if (isCurrentUser) {
+                    document.getElementById('yourRank').textContent = `#${rank}`;
+                    document.getElementById('yourXP').textContent = user.xp;
+                    document.getElementById('yourLevel').textContent = user.level;
+                }
+            });
+        }
+
+        // Initialize leaderboard
+        const users = generateMockLeaderboard();
+        renderPodium(users);
+        renderLeaderboard(users);
+
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            const updatedUsers = generateMockLeaderboard();
+            renderPodium(updatedUsers);
+            renderLeaderboard(updatedUsers);
+        }, 30000);
+    </script>
+
+    <!-- Bottom Navigation -->
+    <script>
+        fetch('/components/unified-bottom-nav.html')
+            .then(r => r.text())
+            .then(html => document.body.insertAdjacentHTML('beforeend', html));
+    </script>
+</body>
+</html>

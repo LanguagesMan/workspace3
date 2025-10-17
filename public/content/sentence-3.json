@@ -1,0 +1,12 @@
+{
+  "spanish": "¡El camión de tacos vuela! ¡Los tacos caen del cielo!",
+  "english": "The taco truck flies! Tacos fall from the sky!",
+  "words": [
+    "camión",
+    "tacos",
+    "vuela",
+    "cielo"
+  ],
+  "difficulty": "beginner",
+  "imagePrompt": "Flying food truck with wings, tacos raining down, cloud made of tortillas"
+}

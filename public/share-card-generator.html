@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📸 Share Your Progress</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 32px;
+        }
+
+        .card-preview {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 16px;
+            padding: 40px;
+            color: white;
+            text-align: center;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-preview::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .card-subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 24px;
+        }
+
+        .card-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        .card-footer {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .templates {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .template-btn {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .template-btn:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .template-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: transparent;
+        }
+
+        .template-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .template-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #495057;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        canvas {
+            display: none;
+        }
+    </style>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>📸 Share Your Progress</h1>
+        <p class="subtitle">Create a beautiful card to share with friends</p>
+
+        <div class="card-preview" id="cardPreview">
+            <div class="card-content">
+                <div class="card-icon" id="cardIcon">🔥</div>
+                <div class="card-title" id="cardTitle">7 Day Streak!</div>
+                <div class="card-subtitle" id="cardSubtitle">Keep the fire burning</div>
+                
+                <div class="card-stats">
+                    <div class="stat-box">
+                        <div class="stat-value" id="stat1Value">120</div>
+                        <div class="stat-label" id="stat1Label">Words</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="stat2Value">45</div>
+                        <div class="stat-label" id="stat2Label">Videos</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="stat3Value">B1</div>
+                        <div class="stat-label" id="stat3Label">Level</div>
+                    </div>
+                </div>
+
+                <div class="card-footer">Learning Spanish with Langflix 🚀</div>
+            </div>
+        </div>
+
+        <div class="templates">
+            <div class="template-btn active" onclick="changeTemplate('streak')">
+                <div class="template-icon">🔥</div>
+                <div class="template-name">Streak</div>
+            </div>
+            <div class="template-btn" onclick="changeTemplate('words')">
+                <div class="template-icon">📚</div>
+                <div class="template-name">Words</div>
+            </div>
+            <div class="template-btn" onclick="changeTemplate('level')">
+                <div class="template-icon">⭐</div>
+                <div class="template-name">Level</div>
+            </div>
+            <div class="template-btn" onclick="changeTemplate('videos')">
+                <div class="template-icon">📹</div>
+                <div class="template-name">Videos</div>
+            </div>
+            <div class="template-btn" onclick="changeTemplate('week')">
+                <div class="template-icon">📊</div>
+                <div class="template-name">Weekly</div>
+            </div>
+            <div class="template-btn" onclick="changeTemplate('milestone')">
+                <div class="template-icon">🏆</div>
+                <div class="template-name">Milestone</div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-secondary" onclick="downloadCard()">💾 Download</button>
+            <button class="btn btn-primary" onclick="shareCard()">📤 Share</button>
+        </div>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        let currentTemplate = 'streak';
+        let userStats = {
+            streak: parseInt(localStorage.getItem('userStreak') || '0'),
+            wordsLearned: parseInt(localStorage.getItem('wordsLearned') || '0'),
+            videosWatched: parseInt(localStorage.getItem('videosWatched') || '0'),
+            xp: parseInt(localStorage.getItem('userXP') || '0'),
+            level: localStorage.getItem('userLevel') || 'A2'
+        };
+
+        const templates = {
+            streak: {
+                icon: '🔥',
+                title: `${userStats.streak} Day Streak!`,
+                subtitle: 'Keep the fire burning',
+                stats: [
+                    { value: userStats.wordsLearned, label: 'Words' },
+                    { value: userStats.videosWatched, label: 'Videos' },
+                    { value: userStats.level, label: 'Level' }
+                ]
+            },
+            words: {
+                icon: '📚',
+                title: `${userStats.wordsLearned} Words Learned!`,
+                subtitle: 'Vocabulary growing',
+                stats: [
+                    { value: userStats.streak, label: 'Day Streak' },
+                    { value: userStats.videosWatched, label: 'Videos' },
+                    { value: userStats.xp, label: 'XP' }
+                ]
+            },
+            level: {
+                icon: '⭐',
+                title: `I'm ${userStats.level} Level!`,
+                subtitle: 'Leveling up in Spanish',
+                stats: [
+                    { value: userStats.wordsLearned, label: 'Words' },
+                    { value: userStats.videosWatched, label: 'Videos' },
+                    { value: userStats.streak, label: 'Days' }
+                ]
+            },
+            videos: {
+                icon: '📹',
+                title: `${userStats.videosWatched} Videos Watched!`,
+                subtitle: 'Learning through content',
+                stats: [
+                    { value: userStats.wordsLearned, label: 'Words' },
+                    { value: userStats.streak, label: 'Streak' },
+                    { value: userStats.level, label: 'Level' }
+                ]
+            },
+            week: {
+                icon: '📊',
+                title: 'Amazing Week!',
+                subtitle: 'Consistent progress',
+                stats: [
+                    { value: userStats.wordsLearned, label: 'Words' },
+                    { value: userStats.videosWatched, label: 'Videos' },
+                    { value: 7, label: 'Days' }
+                ]
+            },
+            milestone: {
+                icon: '🏆',
+                title: 'Major Milestone!',
+                subtitle: 'Achievement unlocked',
+                stats: [
+                    { value: userStats.xp, label: 'Total XP' },
+                    { value: userStats.wordsLearned, label: 'Words' },
+                    { value: userStats.level, label: 'Level' }
+                ]
+            }
+        };
+
+        function changeTemplate(templateName) {
+            currentTemplate = templateName;
+            const template = templates[templateName];
+
+            // Update active button
+            document.querySelectorAll('.template-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.closest('.template-btn').classList.add('active');
+
+            // Update card content
+            document.getElementById('cardIcon').textContent = template.icon;
+            document.getElementById('cardTitle').textContent = template.title;
+            document.getElementById('cardSubtitle').textContent = template.subtitle;
+            
+            document.getElementById('stat1Value').textContent = template.stats[0].value;
+            document.getElementById('stat1Label').textContent = template.stats[0].label;
+            document.getElementById('stat2Value').textContent = template.stats[1].value;
+            document.getElementById('stat2Label').textContent = template.stats[1].label;
+            document.getElementById('stat3Value').textContent = template.stats[2].value;
+            document.getElementById('stat3Label').textContent = template.stats[2].label;
+        }
+
+        async function generateCardImage() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            canvas.width = 1080;
+            canvas.height = 1080;
+
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const template = templates[currentTemplate];
+
+            // Draw icon
+            ctx.font = 'bold 180px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(template.icon, canvas.width / 2, 280);
+
+            // Draw title
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 80px Arial';
+            ctx.fillText(template.title, canvas.width / 2, 420);
+
+            // Draw subtitle
+            ctx.font = '40px Arial';
+            ctx.fillText(template.subtitle, canvas.width / 2, 480);
+
+            // Draw stats
+            const statsY = 600;
+            const statWidth = 300;
+            const statSpacing = 60;
+            const startX = (canvas.width - (statWidth * 3 + statSpacing * 2)) / 2;
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            for (let i = 0; i < 3; i++) {
+                const x = startX + i * (statWidth + statSpacing);
+                ctx.fillRect(x, statsY, statWidth, 150);
+            }
+
+            // Draw stat values and labels
+            ctx.fillStyle = 'white';
+            template.stats.forEach((stat, i) => {
+                const x = startX + i * (statWidth + statSpacing) + statWidth / 2;
+                
+                ctx.font = 'bold 60px Arial';
+                ctx.fillText(stat.value, x, statsY + 70);
+                
+                ctx.font = '30px Arial';
+                ctx.fillText(stat.label, x, statsY + 115);
+            });
+
+            // Draw footer
+            ctx.font = '35px Arial';
+            ctx.fillText('Learning Spanish with Langflix 🚀', canvas.width / 2, 920);
+
+            return canvas.toDataURL('image/png');
+        }
+
+        async function downloadCard() {
+            const dataUrl = await generateCardImage();
+            const link = document.createElement('a');
+            link.download = `langflix-progress-${Date.now()}.png`;
+            link.href = dataUrl;
+            link.click();
+        }
+
+        async function shareCard() {
+            try {
+                const dataUrl = await generateCardImage();
+                
+                // Convert data URL to blob
+                const response = await fetch(dataUrl);
+                const blob = await response.blob();
+                const file = new File([blob], 'langflix-progress.png', { type: 'image/png' });
+
+                if (navigator.share && navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        files: [file],
+                        title: 'My Langflix Progress',
+                        text: `Check out my Spanish learning progress! Join me: ${window.location.origin}`,
+                    });
+                } else {
+                    // Fallback: download
+                    await downloadCard();
+                    alert('Card downloaded! Share it on social media 🚀');
+                }
+            } catch (error) {
+                console.error('Share error:', error);
+                await downloadCard();
+                alert('Card downloaded! Share it on social media 🚀');
+            }
+        }
+
+        // Initialize with current stats
+        changeTemplate('streak');
+    </script>
+</body>
+</html>

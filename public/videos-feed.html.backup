@@ -1,0 +1,2723 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎬 Videos Feed - VIDA Spanish Learning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        /* YOUTUBE SHORTS / TIKTOK STYLE - Full-screen vertical videos */
+        .shorts-container {
+            height: 100vh;
+            width: 100vw;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
+            scroll-behavior: smooth; /* Smooth scrolling */
+            overscroll-behavior-y: contain; /* Prevent pull-to-refresh on mobile */
+            scroll-padding: 0; /* Remove padding for perfect snap */
+        }
+
+        .shorts-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .video-card {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
+            scroll-snap-stop: always; /* TikTok pattern: always stop at each video */
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* TIKTOK 2025 PATTERN: Skeleton loading screens for perceived performance */
+        .skeleton-loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                #1a1a1a 0%,
+                #2a2a2a 50%,
+                #1a1a1a 100%
+            );
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            z-index: 1;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .skeleton-loader.hidden {
+            display: none;
+        }
+
+        .skeleton-content {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+        }
+
+        .skeleton-line {
+            height: 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+
+        .skeleton-line.short {
+            width: 60%;
+        }
+
+        .skeleton-line.medium {
+            width: 80%;
+        }
+
+        .skeleton-line.long {
+            width: 100%;
+        }
+
+        /* LINGOPIE FEATURE - Interactive subtitles */
+        .interactive-subtitles {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            text-align: center;
+            font-size: 26px;
+            font-weight: 700;
+            text-shadow:
+                0 2px 4px rgba(0,0,0,0.9),
+                0 4px 8px rgba(0,0,0,0.8),
+                0 0 20px rgba(0,0,0,0.7),
+                2px 2px 0 rgba(0,0,0,0.5),
+                -2px -2px 0 rgba(0,0,0,0.5);
+            line-height: 1.5;
+            letter-spacing: 0.5px;
+        }
+
+        .word-clickable {
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-block;
+            position: relative;
+        }
+
+        .word-clickable:hover {
+            background: rgba(102, 126, 234, 0.8);
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .word-clickable:active {
+            transform: scale(0.95);
+            background: rgba(102, 126, 234, 1);
+        }
+
+        /* TikTok 2025: Tap feedback animation */
+        @keyframes tapPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        .word-clickable.tapped {
+            animation: tapPulse 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Duolingo-style click ripple effect */
+        .word-clickable::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            opacity: 0;
+        }
+
+        .word-clickable.clicked::after {
+            animation: rippleEffect 0.6s ease-out;
+        }
+
+        @keyframes rippleEffect {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 0.8;
+            }
+            100% {
+                width: 100px;
+                height: 100px;
+                opacity: 0;
+            }
+        }
+
+        /* DUOLINGO FEATURE: Known words get green highlight */
+        .word-clickable.known-word {
+            background: rgba(88, 214, 141, 0.3);
+            border-bottom: 3px solid #58d68d;
+        }
+
+        .word-clickable.known-word:hover {
+            background: rgba(88, 214, 141, 0.6);
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(88, 214, 141, 0.4);
+        }
+
+        /* TIKTOK 2025: Engagement metrics display */
+        .engagement-metrics {
+            position: absolute;
+            top: 120px;
+            left: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            padding: 10px 12px;
+            border-radius: 12px;
+            z-index: 50;
+            min-width: 120px;
+            opacity: 0.85;
+            transition: opacity 0.3s;
+        }
+
+        .engagement-metrics:hover {
+            opacity: 1;
+        }
+
+        .metric-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .metric-icon {
+            font-size: 16px;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Watch time progress indicator */
+        .watch-time-ring {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #667eea 0deg,
+                #667eea var(--watch-progress, 0deg),
+                rgba(255, 255, 255, 0.2) var(--watch-progress, 0deg)
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .watch-time-inner {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* PLAYBACK CONTROLS (Lingopie feature) */
+        .playback-controls {
+            position: absolute;
+            bottom: 200px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .control-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        /* Instagram Reels pattern: Mute/Unmute toggle */
+        .mute-toggle {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            transition: all 0.2s;
+        }
+
+        .mute-toggle:hover {
+            background: rgba(0, 0, 0, 0.8);
+            transform: scale(1.1);
+        }
+
+        .mute-toggle:active {
+            transform: scale(0.95);
+        }
+
+        .control-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* SPEED SELECTOR */
+        .speed-selector {
+            position: absolute;
+            bottom: 270px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 12px;
+            padding: 8px;
+            display: none;
+        }
+
+        .speed-selector.active {
+            display: block;
+        }
+
+        .speed-option {
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            text-align: left;
+            border-radius: 8px;
+        }
+
+        .speed-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .speed-option.active {
+            background: rgba(102, 126, 234, 0.5);
+        }
+
+        /* INTERACTION BUTTONS (YouTube Shorts style) */
+        .interaction-bar {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-around;
+            padding: 0 20px;
+        }
+
+        .interaction-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .interaction-btn .icon {
+            font-size: 28px;
+        }
+
+        /* WORD TRANSLATION POPUP (Lingopie 2025 + Duolingo animations) */
+        .translation-popup {
+            position: absolute;
+            bottom: 180px;
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95));
+            backdrop-filter: blur(30px);
+            padding: 24px;
+            border-radius: 20px;
+            max-width: 90%;
+            display: none;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .translation-popup.active {
+            display: block;
+            animation: bubblePopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .translation-popup.closing {
+            animation: bubblePopOut 0.3s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+        }
+
+        /* Duolingo-style bubble pop animation (more playful) */
+        @keyframes bubblePopIn {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) scale(0);
+            }
+            50% {
+                transform: translateX(-50%) scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1);
+            }
+        }
+
+        @keyframes bubblePopOut {
+            0% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(-50%) scale(0.8);
+            }
+        }
+
+        .translation-word {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .translation-meaning {
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .save-flashcard-btn {
+            margin-top: 12px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 20px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* TIKTOK 2025: Bottom drawer comment system */
+        .comments-drawer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70vh;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.98));
+            backdrop-filter: blur(30px);
+            border-radius: 24px 24px 0 0;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .comments-drawer.open {
+            transform: translateY(0);
+        }
+
+        .comments-drawer-handle {
+            width: 40px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            margin: 12px auto;
+            cursor: grab;
+        }
+
+        .comments-drawer-handle:active {
+            cursor: grabbing;
+        }
+
+        .comments-drawer-header {
+            padding: 0 20px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .comments-count {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .close-drawer-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .comments-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .comment {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .comment-content {
+            flex: 1;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .comment-text {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.4;
+        }
+
+        .comment-time {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 4px;
+        }
+
+        .comment-input-container {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .comment-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 24px;
+            padding: 12px 20px;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .comment-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .send-comment-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .send-comment-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* INSTAGRAM REELS PATTERN: Double-tap heart animation */
+        .heart-animation {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 120px;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .heart-animation.active {
+            animation: heartPop 0.8s ease;
+        }
+
+        @keyframes heartPop {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1.4);
+            }
+        }
+
+        /* DUOLINGO 2025: Success confetti animation when saving words */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10000;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #f1c40f;
+            animation: confettiFall 2s ease-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Success checkmark animation */
+        .success-checkmark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 120px;
+            z-index: 10001;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .success-checkmark.active {
+            animation: checkmarkPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes checkmarkPop {
+            0% {
+                transform: translate(-50%, -50%) scale(0) rotate(-45deg);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.3) rotate(10deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+                opacity: 0;
+            }
+        }
+
+        /* VIDEO PROGRESS BAR: Shows playback progress */
+        .video-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.2);
+            z-index: 10;
+            display: block;
+        }
+
+        .video-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.1s linear;
+            display: block;
+        }
+
+        /* TikTok Pattern: NO TOP NAV - Removed to show videos immediately */
+
+        /* DUOLINGO/BABBEL 2025: Streak badge (14% retention boost per research) */
+        /* TikTok Pattern: Floating widget in top-right corner */
+        .streak-badge-floating {
+            position: fixed;
+            top: 20px;
+            right: 140px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #ff6b35, #ff8c42);
+            padding: 8px 16px;
+            border-radius: 24px;
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            z-index: 1000;
+        }
+
+        .streak-badge-floating:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(255, 107, 53, 0.6);
+        }
+
+        .streak-fire {
+            font-size: 22px;
+            animation: fireFlicker 1.5s ease-in-out infinite;
+        }
+
+        @keyframes fireFlicker {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(-5deg); }
+            50% { transform: scale(0.95) rotate(5deg); }
+            75% { transform: scale(1.05) rotate(-3deg); }
+        }
+
+        .streak-count {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .streak-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* DUOLINGO 2025: Monthly Quest System (100 quests/month pattern) */
+        /* TikTok Pattern: Floating widget in top-right corner */
+        .quest-badge-floating {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 8px 16px;
+            border-radius: 24px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            z-index: 1000;
+        }
+
+        .quest-badge-floating:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.6);
+        }
+
+        .quest-icon {
+            font-size: 20px;
+        }
+
+        .quest-progress {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .quest-count {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .quest-label {
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Quest Modal Overlay */
+        .quest-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quest-modal-overlay.active {
+            display: flex;
+        }
+
+        .quest-modal {
+            background: linear-gradient(180deg, #1a1a1a, #2a2a2a);
+            border-radius: 24px;
+            padding: 32px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .quest-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .quest-modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .quest-close-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quest-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .quest-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: background 0.2s;
+        }
+
+        .quest-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .quest-item.completed {
+            opacity: 0.6;
+        }
+
+        .quest-item-icon {
+            font-size: 32px;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .quest-item-content {
+            flex: 1;
+        }
+
+        .quest-item-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .quest-item-desc {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .quest-item-reward {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #000;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .quest-item-check {
+            font-size: 24px;
+            color: #4ade80;
+        }
+
+        /* INSTAGRAM 2025: Stories bubble (top-left floating widget) */
+        .stories-badge-floating {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 70px;
+            height: 70px;
+            cursor: pointer;
+            z-index: 1000;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .stories-badge-floating:active {
+            transform: scale(0.95);
+        }
+
+        /* Instagram gradient ring */
+        .stories-ring {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f093fb, #f5576c, #ffd93d, #667eea);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: rotateGradient 3s linear infinite;
+            box-shadow: 0 4px 16px rgba(245, 87, 108, 0.4);
+        }
+
+        @keyframes rotateGradient {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .stories-inner {
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .stories-icon {
+            font-size: 28px;
+        }
+
+        .stories-text {
+            font-size: 9px;
+            color: #fff;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Pulse effect for new stories */
+        .stories-badge-floating.has-new {
+            animation: storiesPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes storiesPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
+        /* INSTAGRAM 2025: Stories horizontal carousel (NEW - per user command #2) */
+        .stories-carousel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 110px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 100%);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            z-index: 100;
+            padding: 0 16px;
+            pointer-events: none; /* Allow clicks to pass through to video below */
+        }
+
+        /* Make only story avatars clickable */
+        .stories-carousel .story-avatar {
+            pointer-events: auto;
+        }
+
+        .stories-carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .story-avatar {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .story-avatar:active {
+            transform: scale(0.95);
+        }
+
+        .story-avatar-ring {
+            width: 66px;
+            height: 66px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f093fb, #f5576c, #ffd93d, #667eea);
+            padding: 3px;
+            position: relative;
+        }
+
+        .story-avatar-ring.viewed {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .story-avatar-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            border: 2px solid #000;
+        }
+
+        .story-avatar-name {
+            font-size: 11px;
+            font-weight: 500;
+            color: #fff;
+            max-width: 66px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Stories fullscreen viewer */
+        .stories-viewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #000;
+            z-index: 10000;
+            display: none;
+        }
+
+        .stories-viewer.active {
+            display: block;
+        }
+
+        .story-content {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            display: none;
+        }
+
+        .story-content.active {
+            display: block;
+        }
+
+        .story-background {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+        }
+
+        .story-text-overlay {
+            text-align: center;
+            color: #fff;
+            max-width: 600px;
+        }
+
+        .story-emoji {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .story-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+        }
+
+        .story-description {
+            font-size: 20px;
+            line-height: 1.6;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+        }
+
+        /* Instagram Stories progress bars */
+        .story-progress-bars {
+            position: absolute;
+            top: 12px;
+            left: 8px;
+            right: 8px;
+            display: flex;
+            gap: 4px;
+            z-index: 10001;
+        }
+
+        .story-progress-bar {
+            flex: 1;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .story-progress-fill {
+            height: 100%;
+            background: #fff;
+            width: 0;
+            transition: width 0.1s linear;
+        }
+
+        .story-progress-fill.active {
+            animation: storyProgress 5s linear forwards;
+        }
+
+        .story-progress-fill.completed {
+            width: 100%;
+        }
+
+        @keyframes storyProgress {
+            to { width: 100%; }
+        }
+
+        /* Story tap zones (Instagram pattern: left = back, right = forward) */
+        .story-tap-zone {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 33.33%;
+            z-index: 10002;
+            cursor: pointer;
+        }
+
+        .story-tap-left {
+            left: 0;
+        }
+
+        .story-tap-right {
+            right: 0;
+        }
+
+        /* Story close button */
+        .story-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10003;
+        }
+
+        .story-close:active {
+            transform: scale(0.9);
+        }
+    </style>
+</head>
+<body>
+    <!-- TikTok Pattern: NO MENUS - Just streak/quest badges as floating widgets -->
+
+    <!-- INSTAGRAM 2025: Stories Horizontal Carousel (User Command #2) -->
+    <div class="stories-carousel" id="storiesCarousel">
+        <!-- Stories will be dynamically loaded -->
+    </div>
+
+    <!-- INSTAGRAM 2025: Stories Fullscreen Viewer (User Command #2) -->
+    <div class="stories-viewer" id="storiesViewer">
+        <button class="story-close" id="storyCloseBtn">×</button>
+        <div class="story-progress-bars" id="storyProgressBars"></div>
+        <div id="storiesContent"></div>
+        <div class="story-tap-zone story-tap-left" id="storyTapLeft"></div>
+        <div class="story-tap-zone story-tap-right" id="storyTapRight"></div>
+    </div>
+
+    <!-- Babbel 2025: Daily streak tracker (14% retention boost) -->
+    <div class="streak-badge-floating" id="streakBadge">
+        <div class="streak-fire">🔥</div>
+        <div class="streak-count" id="streakCount">0</div>
+        <div class="streak-label">day streak</div>
+    </div>
+    <!-- Duolingo 2025: Monthly Quest System (100 quests/month) -->
+    <div class="quest-badge-floating" id="questBadge">
+        <div class="quest-icon">🎯</div>
+        <div class="quest-progress">
+            <div class="quest-count" id="questCount">0/10</div>
+            <div class="quest-label">quests</div>
+        </div>
+    </div>
+
+    <!-- Quest Modal -->
+    <div class="quest-modal-overlay" id="questModal">
+        <div class="quest-modal">
+            <div class="quest-modal-header">
+                <h2 class="quest-modal-title">🎯 Daily Quests</h2>
+                <button class="quest-close-btn" id="questCloseBtn">×</button>
+            </div>
+            <div class="quest-list" id="questList">
+                <!-- Quests will be dynamically generated -->
+            </div>
+        </div>
+    </div>
+
+    <div class="shorts-container" id="videosContainer">
+        <!-- Videos will be loaded here dynamically -->
+    </div>
+
+    <!-- Duolingo 2025: Success celebrations -->
+    <div class="confetti-container" id="confettiContainer"></div>
+    <div class="success-checkmark" id="successCheckmark">✅</div>
+
+    <!-- TikTok 2025: Global comments drawer (bottom sheet) -->
+    <div class="comments-drawer" id="commentsDrawer">
+        <div class="comments-drawer-handle"></div>
+        <div class="comments-drawer-header">
+            <div class="comments-count">💬 <span id="commentsCountText">42 Comments</span></div>
+            <button class="close-drawer-btn" onclick="feed.closeComments()">✕</button>
+        </div>
+        <div class="comments-list" id="commentsList">
+            <!-- Sample Spanish learning comments -->
+            <div class="comment">
+                <div class="comment-avatar">👩</div>
+                <div class="comment-content">
+                    <div class="comment-author">María García</div>
+                    <div class="comment-text">¡Excelente lección! Esto me ayudó mucho con mi pronunciación 🎯</div>
+                    <div class="comment-time">2h ago</div>
+                </div>
+            </div>
+            <div class="comment">
+                <div class="comment-avatar">👨</div>
+                <div class="comment-content">
+                    <div class="comment-author">Carlos Rodriguez</div>
+                    <div class="comment-text">Me encanta aprender español así. Mucho mejor que las clases tradicionales! 🔥</div>
+                    <div class="comment-time">5h ago</div>
+                </div>
+            </div>
+            <div class="comment">
+                <div class="comment-avatar">👩</div>
+                <div class="comment-content">
+                    <div class="comment-author">Ana López</div>
+                    <div class="comment-text">¿Alguien más está aprendiendo español para viajar? 🌍✈️</div>
+                    <div class="comment-time">1d ago</div>
+                </div>
+            </div>
+            <div class="comment">
+                <div class="comment-avatar">👨</div>
+                <div class="comment-content">
+                    <div class="comment-author">Juan Martínez</div>
+                    <div class="comment-text">Increíble app! Ya llevo 30 días seguidos aprendiendo 🔥</div>
+                    <div class="comment-time">2d ago</div>
+                </div>
+            </div>
+        </div>
+        <div class="comment-input-container">
+            <input
+                type="text"
+                class="comment-input"
+                id="commentInput"
+                placeholder="Add a comment in Spanish..."
+                onkeypress="if(event.key === 'Enter') feed.sendComment()"
+            >
+            <button class="send-comment-btn" onclick="feed.sendComment()">➤</button>
+        </div>
+    </div>
+
+    <script>
+        class VideosFeed {
+            constructor() {
+                this.container = document.getElementById('videosContainer');
+                this.currentSpeed = 1.0;
+                this.savedWords = JSON.parse(localStorage.getItem('savedWords') || '[]');
+                this.knownWords = new Set(); // Track known words from unified database
+
+                // TikTok 2025: Translation cache for instant lookups
+                this.translationCache = JSON.parse(localStorage.getItem('translationCache') || '{}');
+                this.maxCacheSize = 500; // Limit cache to 500 words
+                this.translationCache = new Map(); // 2025: Cache translations for instant lookup
+
+                // Babbel 2025: Initialize streak tracker (14% retention boost)
+                this.initializeStreak();
+
+                // Duolingo 2025: Initialize quest system (100 quests/month)
+                this.initializeQuests();
+
+                // Instagram 2025: Initialize Stories (User Command #2)
+                this.currentStoryIndex = 0;
+                this.storiesData = [];
+                this.initializeStories();
+
+                this.loadKnownWords();
+                this.loadVideos();
+            }
+
+            // Babbel 2025: Daily streak system for retention
+            initializeStreak() {
+                const today = new Date().toDateString();
+                const streakData = JSON.parse(localStorage.getItem('learningStreak') || '{"count":0,"lastVisit":""}');
+
+                // Check if user visited today
+                if (streakData.lastVisit !== today) {
+                    const yesterday = new Date();
+                    yesterday.setDate(yesterday.getDate() - 1);
+
+                    if (streakData.lastVisit === yesterday.toDateString()) {
+                        // Consecutive day - increment streak
+                        streakData.count++;
+                        this.celebrateStreak(streakData.count);
+                    } else if (streakData.lastVisit === '') {
+                        // First time user
+                        streakData.count = 1;
+                    } else {
+                        // Streak broken - reset
+                        streakData.count = 1;
+                    }
+
+                    streakData.lastVisit = today;
+                    localStorage.setItem('learningStreak', JSON.stringify(streakData));
+                }
+
+                // Update UI
+                document.getElementById('streakCount').textContent = streakData.count;
+                console.log(`🔥 Daily streak: ${streakData.count} days`);
+            }
+
+            // Duolingo-style streak celebration
+            celebrateStreak(days) {
+                if (days % 7 === 0) {
+                    // Weekly milestone
+                    console.log(`🎉 ${days} day streak! You're on fire!`);
+                    this.playUISound('success');
+                    if ('vibrate' in navigator) {
+                        navigator.vibrate([50, 100, 50, 100, 50]);
+                    }
+                } else if (days > 1) {
+                    console.log(`🔥 ${days} day streak!`);
+                }
+            }
+
+            // Duolingo 2025: Daily Quest System (100 quests/month pattern)
+            initializeQuests() {
+                const today = new Date().toDateString();
+                let questData = JSON.parse(localStorage.getItem('dailyQuests') || 'null');
+
+                // Generate new quests if needed (daily reset)
+                if (!questData || questData.date !== today) {
+                    questData = {
+                        date: today,
+                        quests: this.generateDailyQuests(),
+                        completed: [],
+                        totalXP: 0
+                    };
+                    localStorage.setItem('dailyQuests', JSON.stringify(questData));
+                }
+
+                this.questData = questData;
+                this.updateQuestUI();
+
+                // Event listeners for quest modal
+                document.getElementById('questBadge').addEventListener('click', () => {
+                    document.getElementById('questModal').classList.add('active');
+                    this.renderQuests();
+                });
+
+                document.getElementById('questCloseBtn').addEventListener('click', () => {
+                    document.getElementById('questModal').classList.remove('active');
+                });
+
+                // Close modal on outside click
+                document.getElementById('questModal').addEventListener('click', (e) => {
+                    if (e.target.id === 'questModal') {
+                        document.getElementById('questModal').classList.remove('active');
+                    }
+                });
+            }
+
+            // Generate 10 daily quests (Duolingo pattern)
+            generateDailyQuests() {
+                const questTemplates = [
+                    { id: 'watch_3', icon: '📺', title: 'Watch 3 videos', desc: 'Complete 3 video lessons', reward: 50, progress: 0, target: 3, action: 'watch' },
+                    { id: 'save_5', icon: '💾', title: 'Save 5 new words', desc: 'Add words to your vocabulary', reward: 75, progress: 0, target: 5, action: 'save' },
+                    { id: 'translate_10', icon: '🔤', title: 'Translate 10 words', desc: 'Click to see translations', reward: 100, progress: 0, target: 10, action: 'translate' },
+                    { id: 'comment_1', icon: '💬', title: 'Leave a comment', desc: 'Engage with the community', reward: 30, progress: 0, target: 1, action: 'comment' },
+                    { id: 'like_3', icon: '❤️', title: 'Like 3 videos', desc: 'Show some love', reward: 25, progress: 0, target: 3, action: 'like' },
+                    { id: 'streak_1', icon: '🔥', title: 'Maintain streak', desc: 'Keep your learning streak alive', reward: 50, progress: 1, target: 1, action: 'streak' },
+                    { id: 'time_10', icon: '⏱️', title: 'Study 10 minutes', desc: 'Total watch time today', reward: 100, progress: 0, target: 600, action: 'time' },
+                    { id: 'explore_1', icon: '🌍', title: 'Explore culture', desc: 'Watch a cultural video', reward: 40, progress: 0, target: 1, action: 'explore' },
+                    { id: 'perfect_day', icon: '✨', title: 'Perfect day', desc: 'Complete all quests', reward: 200, progress: 0, target: 9, action: 'perfect' },
+                    { id: 'early_bird', icon: '🌅', title: 'Early bird', desc: 'Learn before noon', reward: 35, progress: new Date().getHours() < 12 ? 1 : 0, target: 1, action: 'early' }
+                ];
+
+                return questTemplates;
+            }
+
+            // Update quest UI badge
+            updateQuestUI() {
+                const completed = this.questData.completed.length;
+                const total = this.questData.quests.length;
+                document.getElementById('questCount').textContent = `${completed}/${total}`;
+            }
+
+            // Render quest modal
+            renderQuests() {
+                const questList = document.getElementById('questList');
+                questList.innerHTML = '';
+
+                this.questData.quests.forEach(quest => {
+                    const isCompleted = this.questData.completed.includes(quest.id);
+                    const progress = quest.progress >= quest.target ? quest.target : quest.progress;
+                    const percentage = (progress / quest.target) * 100;
+
+                    const questItem = document.createElement('div');
+                    questItem.className = `quest-item ${isCompleted ? 'completed' : ''}`;
+                    questItem.innerHTML = `
+                        <div class="quest-item-icon">${quest.icon}</div>
+                        <div class="quest-item-content">
+                            <div class="quest-item-title">${quest.title}</div>
+                            <div class="quest-item-desc">${quest.desc} (${progress}/${quest.target})</div>
+                            ${!isCompleted ? `<div style="background: rgba(255,255,255,0.1); height: 4px; border-radius: 2px; margin-top: 8px; overflow: hidden;">
+                                <div style="background: linear-gradient(135deg, #667eea, #764ba2); height: 100%; width: ${percentage}%; transition: width 0.3s;"></div>
+                            </div>` : ''}
+                        </div>
+                        ${isCompleted ? '<div class="quest-item-check">✓</div>' : `<div class="quest-item-reward">+${quest.reward} XP</div>`}
+                    `;
+                    questList.appendChild(questItem);
+                });
+            }
+
+            // Complete a quest
+            completeQuest(questId, progressIncrement = 1) {
+                const quest = this.questData.quests.find(q => q.id === questId);
+                if (!quest || this.questData.completed.includes(questId)) return;
+
+                quest.progress += progressIncrement;
+
+                if (quest.progress >= quest.target && !this.questData.completed.includes(questId)) {
+                    this.questData.completed.push(questId);
+                    this.questData.totalXP += quest.reward;
+                    console.log(`🎯 Quest completed: ${quest.title} (+${quest.reward} XP)`);
+                    this.playUISound('success');
+
+                    // Check perfect day quest
+                    const regularQuests = this.questData.quests.filter(q => q.id !== 'perfect_day').length;
+                    const completedRegular = this.questData.completed.filter(id => id !== 'perfect_day').length;
+                    if (completedRegular === regularQuests) {
+                        this.completeQuest('perfect_day');
+                    }
+                }
+
+                localStorage.setItem('dailyQuests', JSON.stringify(this.questData));
+                this.updateQuestUI();
+            }
+
+            // 🔥 KILLER FEATURE: Load user's known words from unified database
+            async loadKnownWords() {
+                try {
+                    const response = await fetch('/api/user/words/demo-user');
+                    const data = await response.json();
+
+                    if (data.success && data.words) {
+                        // Store all known words in a Set for fast lookup
+                        data.words.forEach(wordObj => {
+                            this.knownWords.add(wordObj.word);
+                        });
+                        console.log(`✅ Loaded ${this.knownWords.size} known words from unified database`);
+                    }
+                } catch (error) {
+                    console.error('Error loading known words:', error);
+                }
+            }
+
+            async loadVideos() {
+                try {
+                    // TikTok Pattern: Load ONLY videos with Spanish subtitles for clickable words
+                    const response = await fetch('http://localhost:3002/api/videos/with-subtitles');
+                    const data = await response.json();
+
+                    // Get ONLY videos that ACTUALLY have subtitles (filter out videos without .srt files)
+                    const videos = data.videos.filter(v => v.hasSubtitles === true);
+
+                    console.log(`✅ Loaded ${videos.length} REAL Spanish videos with clickable word subtitles (filtered ${data.videos.length - videos.length} without subtitles)`);
+
+                    // ✅ FIX: Load subtitles BEFORE creating cards (synchronous, not async)
+                    // Preload ALL subtitles for videos that have them
+                    for (const video of videos) {
+                        if (video.subtitlesPath) {
+                            video.loadedSubtitles = await this.fetchAndParseSubtitles(video.subtitlesPath);
+                        }
+                    }
+
+                    console.log(`📝 Preloaded subtitles for ${videos.filter(v => v.loadedSubtitles).length} videos`);
+
+                    // Create video cards with REAL subtitles already loaded
+                    videos.forEach((video, index) => this.createVideoCard(video, index));
+
+                    // Set up Intersection Observer for TikTok-style auto-play
+                    this.setupIntersectionObserver();
+
+                    // Start playing first video
+                    setTimeout(() => {
+                        const firstVideo = this.container.querySelector('video');
+                        if (firstVideo) {
+                            firstVideo.play().catch(e => console.log('Autoplay prevented - tap to play'));
+                        }
+                    }, 300);
+
+                } catch (error) {
+                    console.error('Error loading videos:', error);
+                    this.showError('Failed to load videos. Make sure server is running on port 3002.');
+                }
+            }
+
+            setupIntersectionObserver() {
+                // 🔥 TIKTOK 2025 PATTERN: Use NEW Chrome 129+ scroll snap events
+                // These are MORE precise than IntersectionObserver!
+                // Source: https://blog.logrocket.com/javascript-scroll-snap-events-scroll-triggered-animations/
+
+                if ('onscrollsnapchange' in this.container) {
+                    // ✅ MODERN BROWSERS (Chrome 129+): Use scroll snap events
+                    console.log('✨ Using NEW scrollsnapchange events (Chrome 129+) - TikTok 2025 pattern!');
+
+                    // Play video when it snaps into view (after scroll settles)
+                    this.container.addEventListener('scrollsnapchange', (event) => {
+                        const visibleCard = event.snapTargetBlock;
+                        if (visibleCard) {
+                            const video = visibleCard.querySelector('video');
+                            if (video) {
+                                video.play().catch(e => console.log('Autoplay blocked'));
+                                // Update video progress bar
+                                this.setupVideoProgress(video);
+                                // TikTok pattern: Preload next/previous videos for instant playback
+                                this.preloadAdjacentVideos(visibleCard);
+                            }
+                        }
+                    });
+
+                    // Pause video when scrolling starts (before new video snaps)
+                    this.container.addEventListener('scrollsnapchanging', (event) => {
+                        // Pause ALL videos except the one we're scrolling TO
+                        document.querySelectorAll('.video-card video').forEach(v => {
+                            if (!v.paused) {
+                                v.pause();
+                            }
+                        });
+                    });
+
+                } else {
+                    // ⚠️ FALLBACK for older browsers: Use IntersectionObserver
+                    console.log('⚠️ Browser doesn\'t support scrollsnapchange - using IntersectionObserver fallback');
+
+                    const options = {
+                        root: null,
+                        rootMargin: '0px',
+                        threshold: 0.75 // 75% visible to trigger
+                    };
+
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            const video = entry.target.querySelector('video');
+                            if (!video) return;
+
+                            if (entry.isIntersecting && entry.intersectionRatio > 0.75) {
+                                // Instagram Reels pattern: Auto-play muted
+                                video.play().catch(e => console.log('Autoplay blocked'));
+                                // Update video progress bar
+                                this.setupVideoProgress(video);
+                                // TikTok pattern: Preload adjacent videos
+                                this.preloadAdjacentVideos(entry.target);
+                            } else {
+                                // Video out of view - pause it
+                                video.pause();
+                                video.currentTime = 0; // Reset to start
+                            }
+                        });
+                    }, options);
+
+                    // Observe all video cards
+                    document.querySelectorAll('.video-card').forEach(card => {
+                        observer.observe(card);
+                    });
+                }
+            }
+
+            preloadAdjacentVideos(currentCard) {
+                // 🔥 YOUTUBE SHORTS + INSTAGRAM REELS PATTERN (2025):
+                // Smart preloading with viewport prediction
+                // Research: 30-40% reduction in black frame time during fast scrolls
+                // Source: fastpix.io/blog/strategies-to-optimize-performance-of-short-video-apps
+
+                const currentIndex = parseInt(currentCard.dataset.videoIndex);
+                const allCards = document.querySelectorAll('.video-card');
+
+                // ADAPTIVE PRELOADING: Adjust depth based on network conditions + battery
+                const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+                const battery = navigator.getBattery ? navigator.getBattery() : null;
+
+                let preloadDepth = 2; // Default: preload 2 videos ahead
+                let preloadQuality = 'metadata'; // Default: metadata only
+
+                if (connection) {
+                    // Slow network (2G/3G): Only preload 1 video ahead, metadata only
+                    if (connection.effectiveType === '2g' || connection.effectiveType === '3g') {
+                        preloadDepth = 1;
+                        preloadQuality = 'none';
+                    }
+                    // Fast network (4G/5G): Preload 3 videos ahead, auto preload
+                    else if (connection.effectiveType === '4g') {
+                        preloadDepth = 3;
+                        preloadQuality = 'auto';
+                    }
+                    // Check if connection is metered (mobile data)
+                    if (connection.saveData === true) {
+                        preloadDepth = 1;
+                        preloadQuality = 'none';
+                        console.log('📱 Data Saver mode detected - minimal preloading');
+                    }
+                }
+
+                // BATTERY-AWARE PRELOADING (2025 best practice)
+                if (battery) {
+                    battery.then(bat => {
+                        if (bat.level < 0.2 && !bat.charging) {
+                            // Low battery: reduce preloading
+                            preloadDepth = Math.min(preloadDepth, 1);
+                            preloadQuality = 'none';
+                            console.log('🔋 Low battery detected - minimal preloading');
+                        }
+                    });
+                }
+
+                // SCROLL-AWARE PRELOADING: Preload next N videos
+                for (let i = 1; i <= preloadDepth; i++) {
+                    const nextIndex = currentIndex + i;
+                    if (nextIndex < allCards.length) {
+                        const nextVideo = allCards[nextIndex].querySelector('video');
+                        if (nextVideo && nextVideo.readyState < 3) {
+                            nextVideo.preload = 'auto';
+                            nextVideo.load();
+                            console.log(`📥 Preloading video ${nextIndex} (${i} ahead) for instant playback`);
+                        }
+                    }
+                }
+
+                // BIDIRECTIONAL PRELOADING: Preload previous video (in case user scrolls up)
+                const prevIndex = currentIndex - 1;
+                if (prevIndex >= 0) {
+                    const prevVideo = allCards[prevIndex].querySelector('video');
+                    if (prevVideo && prevVideo.readyState < 3) {
+                        prevVideo.preload = 'auto';
+                        prevVideo.load();
+                        console.log(`📥 Preloading previous video ${prevIndex} for back-scroll`);
+                    }
+                }
+
+                // MEMORY OPTIMIZATION: Unload videos far from viewport to save memory
+                const memoryThreshold = 5; // Keep only 5 videos loaded at once
+                allCards.forEach((card, idx) => {
+                    if (Math.abs(idx - currentIndex) > memoryThreshold) {
+                        const video = card.querySelector('video');
+                        if (video && video.readyState >= 3) {
+                            // Video is loaded but too far away - free up memory
+                            video.src = ''; // Unload video data
+                            video.load(); // Reset to unloaded state
+                            console.log(`🗑️ Unloaded video ${idx} (too far from viewport)`);
+                        }
+                    }
+                });
+
+                console.log(`📊 Preload strategy: depth=${preloadDepth}, network=${connection?.effectiveType || 'unknown'}`);
+            }
+
+            showError(message) {
+                this.container.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: center; height: 100vh; color: #fff; text-align: center; padding: 20px;">
+                        <div>
+                            <div style="font-size: 48px; margin-bottom: 20px;">⚠️</div>
+                            <div style="font-size: 18px;">${message}</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            createVideoCard(video, index) {
+                const card = document.createElement('div');
+                card.className = 'video-card';
+                card.dataset.videoIndex = index;
+
+                // Generate real Spanish subtitles based on video content
+                const subtitles = this.generateSubtitles(video);
+
+                card.innerHTML = `
+                    <!-- TikTok 2025: Skeleton loader for perceived performance -->
+                    <div class="skeleton-loader">
+                        <div class="skeleton-content">
+                            <div class="skeleton-line long"></div>
+                            <div class="skeleton-line medium"></div>
+                            <div class="skeleton-line short"></div>
+                        </div>
+                    </div>
+
+                    <video src="${video.path}" loop muted playsinline preload="metadata" data-preload-strategy="adaptive"></video>
+
+                    <!-- TikTok 2025: Engagement metrics display -->
+                    <div class="engagement-metrics">
+                        <div class="metric-row">
+                            <span class="metric-icon">👁️</span>
+                            <div>
+                                <div class="metric-value views-count">${this.formatNumber(Math.floor(Math.random() * 50000) + 10000)}</div>
+                                <div class="metric-label">views</div>
+                            </div>
+                        </div>
+                        <div class="metric-row">
+                            <div class="watch-time-ring" style="--watch-progress: 0deg">
+                                <div class="watch-time-inner">
+                                    <span class="watch-percentage">0%</span>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="metric-value watch-time">0s</div>
+                                <div class="metric-label">watched</div>
+                            </div>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-icon">❤️</span>
+                            <div>
+                                <div class="metric-value likes-count">${this.formatNumber(Math.floor(Math.random() * 5000) + 500)}</div>
+                                <div class="metric-label">likes</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Instagram Reels: Double-tap heart animation -->
+                    <div class="heart-animation">❤️</div>
+
+                    <!-- Video progress bar -->
+                    <div class="video-progress">
+                        <div class="video-progress-bar"></div>
+                    </div>
+
+                    <div class="interactive-subtitles">
+                        ${subtitles}
+                    </div>
+
+                    <!-- Instagram Reels pattern: Mute/Unmute toggle -->
+                    <button class="mute-toggle" onclick="feed.toggleMute(event)" title="Mute/Unmute">
+                        🔇
+                    </button>
+
+                    <div class="playback-controls">
+                        <button class="control-btn" onclick="feed.toggleSpeed()" title="Playback speed">
+                            ${this.currentSpeed}x
+                        </button>
+                        <button class="control-btn" onclick="feed.togglePlay(event)" title="Play/Pause">
+                            ⏯️
+                        </button>
+                    </div>
+
+                    <div class="speed-selector" id="speedSelector">
+                        <button class="speed-option" data-speed="0.5" onclick="feed.setSpeed(0.5)">0.5x</button>
+                        <button class="speed-option" data-speed="0.75" onclick="feed.setSpeed(0.75)">0.75x</button>
+                        <button class="speed-option active" data-speed="1" onclick="feed.setSpeed(1)">1x</button>
+                        <button class="speed-option" data-speed="1.25" onclick="feed.setSpeed(1.25)">1.25x</button>
+                        <button class="speed-option" data-speed="1.5" onclick="feed.setSpeed(1.5)">1.5x</button>
+                    </div>
+
+                    <div class="interaction-bar">
+                        <button class="interaction-btn" onclick="feed.likeVideo()">
+                            <span class="icon">❤️</span>
+                            <span>Like</span>
+                        </button>
+                        <button class="interaction-btn" onclick="feed.openComments()">
+                            <span class="icon">💬</span>
+                            <span>Comments</span>
+                        </button>
+                        <button class="interaction-btn" onclick="feed.saveVideo()">
+                            <span class="icon">📚</span>
+                            <span>Save</span>
+                        </button>
+                        <button class="interaction-btn" onclick="feed.shareVideo()">
+                            <span class="icon">📤</span>
+                            <span>Share</span>
+                        </button>
+                    </div>
+
+                    <div class="translation-popup" id="translationPopup">
+                        <div class="translation-word"></div>
+                        <div class="translation-meaning"></div>
+                        <button class="save-flashcard-btn" onclick="feed.saveFlashcard()">💾 Save as Flashcard</button>
+                    </div>
+                `;
+
+                this.container.appendChild(card);
+
+                // TikTok 2025: Hide skeleton when video loads (perceived performance)
+                const videoElement = card.querySelector('video');
+                const skeleton = card.querySelector('.skeleton-loader');
+
+                videoElement.addEventListener('loadeddata', () => {
+                    // Video has loaded enough to display
+                    skeleton.classList.add('hidden');
+                    console.log(`✅ Video ${index + 1} loaded - hiding skeleton`);
+                });
+
+                videoElement.addEventListener('error', () => {
+                    // On error, still hide skeleton to show error state
+                    skeleton.classList.add('hidden');
+                    console.error(`❌ Video ${index + 1} failed to load`);
+                });
+
+                // Instagram Reels: Setup double-tap to like
+                this.setupDoubleTapLike(card);
+
+                // Setup video progress tracking
+                this.setupVideoProgress(card);
+            }
+
+            // Instagram Reels Pattern: Double-tap heart animation
+            setupDoubleTapLike(card) {
+                const video = card.querySelector('video');
+                const heartAnimation = card.querySelector('.heart-animation');
+                let lastTap = 0;
+
+                card.addEventListener('click', (e) => {
+                    // Ignore clicks on interactive elements
+                    if (e.target.closest('.word-clickable') ||
+                        e.target.closest('button') ||
+                        e.target.closest('.translation-popup')) {
+                        return;
+                    }
+
+                    const currentTime = new Date().getTime();
+                    const tapLength = currentTime - lastTap;
+
+                    if (tapLength < 300 && tapLength > 0) {
+                        // Double tap detected!
+                        heartAnimation.classList.add('active');
+                        this.likeVideo();
+
+                        // Remove animation class after it completes
+                        setTimeout(() => {
+                            heartAnimation.classList.remove('active');
+                        }, 800);
+                    }
+
+                    lastTap = currentTime;
+                });
+            }
+
+            // Video Progress Bar + TikTok 2025: Watch time tracking
+            setupVideoProgress(card) {
+                const video = card.querySelector('video');
+                const progressBar = card.querySelector('.video-progress-bar');
+                const watchTimeDisplay = card.querySelector('.watch-time');
+                const watchPercentage = card.querySelector('.watch-percentage');
+                const watchTimeRing = card.querySelector('.watch-time-ring');
+
+                if (!video || !progressBar) return;
+
+                // Track total watch time (TikTok 2025 pattern)
+                let totalWatchTime = 0;
+                let lastUpdateTime = 0;
+
+                video.addEventListener('timeupdate', () => {
+                    // Update progress bar
+                    const progress = (video.currentTime / video.duration) * 100;
+                    progressBar.style.width = `${progress}%`;
+
+                    // TikTok 2025: Track watch time
+                    if (!video.paused && video.duration) {
+                        const now = Date.now();
+                        if (lastUpdateTime > 0) {
+                            const delta = (now - lastUpdateTime) / 1000;
+                            totalWatchTime += delta;
+                        }
+                        lastUpdateTime = now;
+
+                        // Update watch time display
+                        if (watchTimeDisplay) {
+                            watchTimeDisplay.textContent = this.formatTime(totalWatchTime);
+                        }
+
+                        // Update circular progress ring
+                        const watchPercent = Math.min(100, (totalWatchTime / video.duration) * 100);
+                        if (watchPercentage) {
+                            watchPercentage.textContent = `${Math.round(watchPercent)}%`;
+                        }
+                        if (watchTimeRing) {
+                            const degrees = (watchPercent / 100) * 360;
+                            watchTimeRing.style.setProperty('--watch-progress', `${degrees}deg`);
+                        }
+                    }
+                });
+
+                video.addEventListener('pause', () => {
+                    lastUpdateTime = 0;
+                });
+
+                video.addEventListener('play', () => {
+                    lastUpdateTime = Date.now();
+                });
+
+                // Reset progress when video loops
+                video.addEventListener('ended', () => {
+                    progressBar.style.width = '0%';
+                    // Don't reset watch time - TikTok counts total time watched
+                });
+            }
+
+            // TikTok 2025: Format large numbers (10K, 1.5M, etc.)
+            formatNumber(num) {
+                if (num >= 1000000) {
+                    return (num / 1000000).toFixed(1) + 'M';
+                }
+                if (num >= 1000) {
+                    return (num / 1000).toFixed(1) + 'K';
+                }
+                return num.toString();
+            }
+
+            // TikTok 2025: Format time (5s, 1m 30s, etc.)
+            formatTime(seconds) {
+                if (seconds < 60) {
+                    return Math.floor(seconds) + 's';
+                }
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}m ${secs}s`;
+            }
+
+            async fetchAndParseSubtitles(subtitlesPath) {
+                // ✅ NEW: Fetch and parse subtitles SYNCHRONOUSLY during load
+                try {
+                    const response = await fetch(subtitlesPath);
+                    const srtContent = await response.text();
+
+                    // Parse SRT format and extract ONLY Spanish text
+                    const spanishText = this.parseSRT(srtContent);
+
+                    return spanishText;
+                } catch (error) {
+                    console.error('Error fetching SRT file:', subtitlesPath, error);
+                    return null;
+                }
+            }
+
+            generateSubtitles(video) {
+                // ✅ USER COMMAND #3: Use REAL Spanish content from .srt files (NO dummy data)
+                // Subtitles are NOW preloaded in video.loadedSubtitles
+                if (video.loadedSubtitles) {
+                    // Split into clickable words
+                    const words = video.loadedSubtitles.split(/\s+/).filter(w => w.length > 0);
+
+                    // Create clickable HTML for each word
+                    const clickableHTML = words.map(word => {
+                        const cleanWord = word.replace(/[¿¡,.:;!?()""]/g, '').trim();
+                        if (!cleanWord) return word; // Keep punctuation as-is
+
+                        const isKnown = this.knownWords.has(cleanWord.toLowerCase());
+                        const knownClass = isKnown ? ' known-word' : '';
+                        return `<span class="word-clickable${knownClass}" data-word="${cleanWord}" onclick="feed.showTranslation(this)">${word}</span>`;
+                    }).join(' ');
+
+                    return clickableHTML;
+                }
+
+                // Fallback for videos without subtitles
+                return `<span class="subtitle-placeholder">${video.title || video.name || 'Spanish Video'}</span>`;
+            }
+
+            async loadRealSubtitles(video) {
+                // Fetch REAL .srt file content (user command #3: real Spanish content)
+                try {
+                    const response = await fetch(video.subtitlesPath);
+                    const srtContent = await response.text();
+
+                    // Parse SRT format and extract Spanish text
+                    const spanishText = this.parseSRT(srtContent);
+
+                    // Split into clickable words
+                    const words = spanishText.split(/\s+/).filter(w => w.length > 0);
+
+                    // Create clickable HTML for each word
+                    const clickableHTML = words.map(word => {
+                        const cleanWord = word.replace(/[¿¡,.:;!?()""]/g, '').trim();
+                        if (!cleanWord) return word; // Keep punctuation as-is
+
+                        const isKnown = this.knownWords.has(cleanWord.toLowerCase());
+                        const knownClass = isKnown ? ' known-word' : '';
+                        return `<span class="word-clickable${knownClass}" data-word="${cleanWord}" onclick="feed.showTranslation(this)">${word}</span>`;
+                    }).join(' ');
+
+                    // Update the subtitle display with REAL clickable content
+                    // Find the video card by matching the video path
+                    const videoPath = video.path || video.videoPath;
+                    const allCards = document.querySelectorAll('.video-card');
+                    for (const card of allCards) {
+                        const videoElement = card.querySelector('video');
+                        if (videoElement && videoElement.src.includes(videoPath)) {
+                            const subtitleContainer = card.querySelector('.interactive-subtitles');
+                            if (subtitleContainer) {
+                                subtitleContainer.innerHTML = clickableHTML;
+                                console.log(`✅ Loaded REAL Spanish subtitles for: ${video.title}`);
+                            }
+                            break;
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error loading SRT file:', video.subtitlesPath, error);
+                }
+            }
+
+            parseSRT(srtContent) {
+                // Extract all Spanish text from SRT format
+                // SRT files have BOTH English (first half) and Spanish (second half)
+                // We need to extract ONLY the Spanish part
+                const lines = srtContent.split('\n');
+                let allTextLines = [];
+
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    // Skip index numbers and timestamps
+                    if (line && !line.match(/^\d+$/) && !line.match(/\d{2}:\d{2}:\d{2}/)) {
+                        allTextLines.push(line);
+                    }
+                }
+
+                // The file has English first, then Spanish
+                // Take only the SECOND HALF (Spanish)
+                const midpoint = Math.floor(allTextLines.length / 2);
+                const spanishLines = allTextLines.slice(midpoint);
+
+                return spanishLines.join(' ');
+            }
+
+            async showTranslation(element) {
+                const word = element.dataset.word;
+
+                // TikTok 2025: Add tap pulse animation
+                element.classList.add('tapped');
+                setTimeout(() => element.classList.remove('tapped'), 300);
+
+                // Duolingo 2025: Add ripple effect on word click
+                element.classList.add('clicked');
+                setTimeout(() => element.classList.remove('clicked'), 600);
+
+                // Duolingo 2025: Play UI sound feedback (gentle pop)
+                this.playUISound('pop');
+
+                // TikTok 2025: Enhanced haptic feedback pattern
+                if ('vibrate' in navigator) {
+                    navigator.vibrate([5, 25, 5]); // Pattern: short-medium-short
+                }
+
+                // Find the translation popup in the same video card
+                const card = element.closest('.video-card');
+                const popup = card.querySelector('.translation-popup');
+
+                // Clear any existing closing animation
+                popup.classList.remove('closing');
+
+                // Show loading state
+                popup.querySelector('.translation-word').textContent = word;
+                popup.querySelector('.translation-meaning').textContent = 'Translating...';
+                popup.classList.add('active');
+
+                let translation;
+
+                // OPTIMIZATION: Check cache first for instant lookup
+                if (this.translationCache[word]) {
+                    translation = this.translationCache[word];
+                    popup.querySelector('.translation-meaning').textContent = `= ${translation}`;
+                    this.currentWord = { word, translation };
+                    console.log(`⚡ Translation from cache: ${word} = ${translation}`);
+
+                    // Still track quest progress
+                    this.completeQuest('translate_10', 1);
+                } else {
+                    // ✅ Fetch translation from API (DeepL-powered) with retry logic
+                    try {
+                        const response = await this.fetchWithRetry('http://localhost:3002/api/translate/word', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ word, sourceLang: 'es', targetLang: 'en' })
+                        }, 3); // 3 retries
+
+                        const data = await response.json();
+                        translation = data.translation || word;
+
+                        // Cache translation for future instant lookups
+                        this.cacheTranslation(word, translation);
+
+                        // Cache translation in element for future clicks
+                        element.dataset.translation = translation;
+
+                        // Update popup with real translation
+                        popup.querySelector('.translation-meaning').textContent = `= ${translation}`;
+
+                        this.currentWord = { word, translation };
+
+                        console.log(`💡 Translation fetched: ${word} = ${translation} (source: ${data.source})`);
+
+                        // Duolingo 2025: Track quest progress - translate words
+                        this.completeQuest('translate_10', 1);
+
+                    } catch (error) {
+                        console.error('Translation error after retries:', error);
+                        popup.querySelector('.translation-meaning').textContent = '⚠️ Translation temporarily unavailable';
+                        popup.querySelector('.translation-meaning').style.color = '#ff6b6b';
+
+                        // Show user-friendly error message
+                        setTimeout(() => {
+                            popup.querySelector('.translation-meaning').style.color = '';
+                        }, 3000);
+                    }
+                }
+
+                // Auto-hide after 5 seconds with smooth exit animation
+                clearTimeout(this.popupTimeout);
+                this.popupTimeout = setTimeout(() => {
+                    popup.classList.add('closing');
+                    setTimeout(() => {
+                        popup.classList.remove('active', 'closing');
+                    }, 300);
+                }, 5000);
+            }
+
+            // Duolingo 2025: UI sound feedback system
+            playUISound(type) {
+                // Generate simple UI sounds using Web Audio API
+                // This is better than loading audio files - instant and lightweight
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                if (type === 'pop') {
+                    // Duolingo-style gentle pop sound
+                    oscillator.frequency.value = 800;
+                    oscillator.type = 'sine';
+                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                } else if (type === 'success') {
+                    // Success chime (for saving word)
+                    oscillator.frequency.value = 1200;
+                    oscillator.type = 'sine';
+                    gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                }
+
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.15);
+            }
+
+            async saveFlashcard() {
+                if (!this.currentWord) return;
+
+                const { word, translation } = this.currentWord;
+
+                try {
+                    // 🔥 KILLER FEATURE: Save to unified database (syncs across ALL apps!)
+                    const response = await fetch('/api/words/learned', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            userId: 'demo-user', // TODO: Replace with real user ID from auth
+                            word: word,
+                            translation: translation,
+                            level: 'A2',
+                            context: `From TikTok reel: "${word}"`
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        // Duolingo 2025: Play success sound
+                        this.playUISound('success');
+
+                        // Haptic feedback (stronger for success)
+                        if ('vibrate' in navigator) {
+                            navigator.vibrate([10, 50, 10]); // Pattern: short-long-short
+                        }
+
+                        // Also save to localStorage for offline access
+                        this.savedWords.push(this.currentWord);
+                        localStorage.setItem('savedWords', JSON.stringify(this.savedWords));
+
+                        // 🔥 DUOLINGO FEATURE: Add to known words immediately
+                        this.knownWords.add(word);
+
+                        // Update UI to show word is now known (green highlight)
+                        document.querySelectorAll(`.word-clickable[data-word="${word}"]`).forEach(el => {
+                            el.classList.add('known-word');
+                        });
+
+                        // Show success feedback with animation
+                        const popup = document.querySelector('.translation-popup.active');
+                        if (popup) {
+                            popup.querySelector('.translation-meaning').textContent = `✅ Saved to all apps!`;
+                            popup.querySelector('.translation-meaning').style.color = '#58d68d';
+                            setTimeout(() => {
+                                popup.classList.add('closing');
+                                setTimeout(() => {
+                                    popup.classList.remove('active', 'closing');
+                                    popup.querySelector('.translation-meaning').style.color = '';
+                                }, 300);
+                            }, 2000);
+                        }
+
+                        console.log(`✅ Word "${word}" saved to unified database! Now synced across ALL apps.`);
+
+                        // Duolingo 2025: Celebration animation!
+                        this.celebrateWordSaved();
+
+                        // Duolingo 2025: Track quest progress - save words
+                        this.completeQuest('save_5', 1);
+                    } else {
+                        throw new Error('Failed to save word');
+                    }
+                } catch (error) {
+                    console.error('Error saving word to database:', error);
+                    // Fallback to localStorage only
+                    this.savedWords.push(this.currentWord);
+                    localStorage.setItem('savedWords', JSON.stringify(this.savedWords));
+                    alert(`⚠️ Saved locally (database error)`);
+                }
+            }
+
+            toggleSpeed() {
+                const selector = document.getElementById('speedSelector');
+                selector.classList.toggle('active');
+            }
+
+            setSpeed(speed) {
+                this.currentSpeed = speed;
+                const videos = document.querySelectorAll('video');
+                videos.forEach(v => v.playbackRate = speed);
+
+                document.querySelectorAll('.speed-option').forEach(opt => {
+                    opt.classList.toggle('active', opt.dataset.speed == speed);
+                });
+
+                document.getElementById('speedSelector').classList.remove('active');
+            }
+
+            togglePlay(event) {
+                const video = event.target.closest('.video-card').querySelector('video');
+                if (video.paused) video.play();
+                else video.pause();
+            }
+
+            toggleMute(event) {
+                // Instagram Reels pattern: Toggle mute/unmute
+                const video = event.target.closest('.video-card').querySelector('video');
+                const button = event.target.closest('.mute-toggle');
+
+                video.muted = !video.muted;
+                button.textContent = video.muted ? '🔇' : '🔊';
+
+                console.log('🔊 Audio:', video.muted ? 'Muted' : 'Unmuted');
+            }
+
+            likeVideo() {
+                this.playUISound('pop');
+                if ('vibrate' in navigator) navigator.vibrate(10);
+                console.log('❤️ Video liked!');
+            }
+
+            saveVideo() {
+                this.playUISound('success');
+                if ('vibrate' in navigator) navigator.vibrate([10, 50, 10]);
+                console.log('📚 Video saved for later!');
+            }
+
+            shareVideo() {
+                this.playUISound('pop');
+                console.log('📤 Share functionality coming soon!');
+            }
+
+            // TikTok 2025: Comments drawer system
+            openComments() {
+                const drawer = document.getElementById('commentsDrawer');
+                drawer.classList.add('open');
+
+                // Play UI sound
+                this.playUISound('pop');
+
+                // Pause current video when comments open (TikTok pattern)
+                const currentVideo = document.querySelector('.video-card video:not([paused])');
+                if (currentVideo) {
+                    currentVideo.pause();
+                }
+
+                // Focus comment input
+                setTimeout(() => {
+                    document.getElementById('commentInput').focus();
+                }, 300);
+
+                console.log('💬 Comments drawer opened');
+            }
+
+            closeComments() {
+                const drawer = document.getElementById('commentsDrawer');
+                drawer.classList.remove('open');
+
+                // Play UI sound
+                this.playUISound('pop');
+
+                console.log('💬 Comments drawer closed');
+            }
+
+            sendComment() {
+                const input = document.getElementById('commentInput');
+                const commentText = input.value.trim();
+
+                if (!commentText) return;
+
+                // Create new comment element
+                const commentsList = document.getElementById('commentsList');
+                const newComment = document.createElement('div');
+                newComment.className = 'comment';
+                newComment.innerHTML = `
+                    <div class="comment-avatar">👤</div>
+                    <div class="comment-content">
+                        <div class="comment-author">You</div>
+                        <div class="comment-text">${this.escapeHtml(commentText)}</div>
+                        <div class="comment-time">Just now</div>
+                    </div>
+                `;
+
+                // Add to top of list (TikTok pattern - newest first)
+                commentsList.insertBefore(newComment, commentsList.firstChild);
+
+                // Play success sound
+                this.playUISound('success');
+
+                // Haptic feedback
+                if ('vibrate' in navigator) {
+                    navigator.vibrate([10, 50, 10]);
+                }
+
+                // Clear input
+                input.value = '';
+
+                // Update comment count
+                const countText = document.getElementById('commentsCountText');
+                const currentCount = parseInt(countText.textContent.match(/\d+/)[0]);
+                countText.textContent = `${currentCount + 1} Comments`;
+
+                console.log('💬 Comment posted:', commentText);
+
+                // Duolingo 2025: Track quest progress - post comments
+                this.completeQuest('comment_1', 1);
+            }
+
+            // Helper function to escape HTML
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            // PERFORMANCE: Fetch with automatic retry logic
+            async fetchWithRetry(url, options, retries = 3) {
+                for (let i = 0; i < retries; i++) {
+                    try {
+                        const response = await fetch(url, options);
+                        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                        return response;
+                    } catch (error) {
+                        console.log(`🔄 Retry ${i + 1}/${retries} for ${url}`);
+                        if (i === retries - 1) throw error;
+                        // Exponential backoff: 500ms, 1000ms, 2000ms
+                        await new Promise(resolve => setTimeout(resolve, 500 * Math.pow(2, i)));
+                    }
+                }
+            }
+
+            // OPTIMIZATION: Cache translations to localStorage
+            cacheTranslation(word, translation) {
+                this.translationCache[word] = translation;
+
+                // Limit cache size to prevent localStorage overflow
+                const cacheKeys = Object.keys(this.translationCache);
+                if (cacheKeys.length > this.maxCacheSize) {
+                    // Remove oldest entries (FIFO)
+                    const toRemove = cacheKeys.slice(0, cacheKeys.length - this.maxCacheSize);
+                    toRemove.forEach(key => delete this.translationCache[key]);
+                }
+
+                // Save to localStorage
+                localStorage.setItem('translationCache', JSON.stringify(this.translationCache));
+                console.log(`💾 Cached translation: ${word} = ${translation} (${cacheKeys.length}/${this.maxCacheSize} cached)`);
+            }
+
+            // Duolingo 2025: Celebration animation when saving words
+            celebrateWordSaved() {
+                // Show success checkmark
+                const checkmark = document.getElementById('successCheckmark');
+                checkmark.classList.add('active');
+                setTimeout(() => checkmark.classList.remove('active'), 600);
+
+                // Create confetti
+                const container = document.getElementById('confettiContainer');
+                const colors = ['#f1c40f', '#e74c3c', '#3498db', '#2ecc71', '#9b59b6', '#e67e22'];
+
+                for (let i = 0; i < 30; i++) {
+                    setTimeout(() => {
+                        const confetti = document.createElement('div');
+                        confetti.className = 'confetti';
+                        confetti.style.left = Math.random() * 100 + '%';
+                        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                        confetti.style.animationDelay = (Math.random() * 0.5) + 's';
+                        confetti.style.animationDuration = (Math.random() * 0.5 + 1.5) + 's';
+                        container.appendChild(confetti);
+
+                        // Remove after animation
+                        setTimeout(() => confetti.remove(), 2500);
+                    }, i * 20);
+                }
+
+                // Play success sound
+                this.playUISound('success');
+
+                // Triple haptic for celebration
+                if ('vibrate' in navigator) {
+                    navigator.vibrate([50, 100, 50, 100, 50]);
+                }
+            }
+
+            // ==================== INSTAGRAM STORIES IMPLEMENTATION (User Command #2) ====================
+
+            initializeStories() {
+                // Interesting Spanish learning stories content
+                this.storiesData = [
+                    {
+                        emoji: '🌮',
+                        title: 'Tacos al Pastor',
+                        description: 'Los tacos al pastor son originarios de México. Se cocinan con carne de cerdo marinada en chile y especias.',
+                        name: 'Comida',
+                        gradient: 'linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%)'
+                    },
+                    {
+                        emoji: '🎸',
+                        title: 'La Música Latina',
+                        description: 'La salsa, el reggaetón y el bachata son géneros musicales populares en América Latina.',
+                        name: 'Música',
+                        gradient: 'linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%)'
+                    },
+                    {
+                        emoji: '🏖️',
+                        title: 'Playas Hermosas',
+                        description: 'España y México tienen algunas de las playas más hermosas del mundo. ¡Perfectas para vacaciones!',
+                        name: 'Viajes',
+                        gradient: 'linear-gradient(135deg, #00b894 0%, #00cec9 100%)'
+                    },
+                    {
+                        emoji: '⚽',
+                        title: 'Fútbol Pasión',
+                        description: 'El fútbol es el deporte más popular en países hispanohablantes. ¡La pasión es increíble!',
+                        name: 'Deportes',
+                        gradient: 'linear-gradient(135deg, #fdcb6e 0%, #e17055 100%)'
+                    },
+                    {
+                        emoji: '🎭',
+                        title: 'Arte y Cultura',
+                        description: 'Frida Kahlo, Pablo Picasso y Diego Rivera son artistas famosos de habla hispana.',
+                        name: 'Arte',
+                        gradient: 'linear-gradient(135deg, #fd79a8 0%, #e84393 100%)'
+                    },
+                    {
+                        emoji: '📚',
+                        title: 'Literatura Clásica',
+                        description: 'Don Quijote de la Mancha es una de las obras más importantes de la literatura española.',
+                        name: 'Libros',
+                        gradient: 'linear-gradient(135deg, #81ecec 0%, #74b9ff 100%)'
+                    },
+                    {
+                        emoji: '🍷',
+                        title: 'Vinos Españoles',
+                        description: 'España produce vinos excelentes. La Rioja es una región famosa por sus vinos tintos.',
+                        name: 'Bebidas',
+                        gradient: 'linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%)'
+                    },
+                    {
+                        emoji: '💃',
+                        title: 'Baile Flamenco',
+                        description: 'El flamenco es un baile tradicional español. Es apasionado y lleno de emoción.',
+                        name: 'Baile',
+                        gradient: 'linear-gradient(135deg, #ff7675 0%, #d63031 100%)'
+                    }
+                ];
+
+                // Render Stories carousel
+                this.renderStoriesCarousel();
+
+                // Setup Stories viewer event listeners
+                document.getElementById('storyCloseBtn').addEventListener('click', () => this.closeStories());
+                document.getElementById('storyTapLeft').addEventListener('click', () => this.previousStory());
+                document.getElementById('storyTapRight').addEventListener('click', () => this.nextStory());
+
+                // Keyboard navigation for Stories
+                document.addEventListener('keydown', (e) => {
+                    const viewer = document.getElementById('storiesViewer');
+                    if (!viewer.classList.contains('active')) return;
+
+                    if (e.key === 'Escape') this.closeStories();
+                    if (e.key === 'ArrowLeft') this.previousStory();
+                    if (e.key === 'ArrowRight') this.nextStory();
+                });
+            }
+
+            renderStoriesCarousel() {
+                const carousel = document.getElementById('storiesCarousel');
+                const viewedStories = JSON.parse(localStorage.getItem('viewedStories') || '[]');
+
+                carousel.innerHTML = this.storiesData.map((story, index) => {
+                    const isViewed = viewedStories.includes(index);
+                    const ringClass = isViewed ? 'viewed' : '';
+
+                    return `
+                        <div class="story-avatar" onclick="feed.openStory(${index})">
+                            <div class="story-avatar-ring ${ringClass}">
+                                <div class="story-avatar-inner">
+                                    ${story.emoji}
+                                </div>
+                            </div>
+                            <div class="story-avatar-name">${story.name}</div>
+                        </div>
+                    `;
+                }).join('');
+
+                console.log(`📖 Loaded ${this.storiesData.length} Spanish learning stories`);
+            }
+
+            openStory(index) {
+                this.currentStoryIndex = index;
+                const viewer = document.getElementById('storiesViewer');
+                viewer.classList.add('active');
+
+                // Render Stories content
+                this.renderStoryContent();
+
+                // Start progress animation
+                this.startStoryProgress();
+
+                // Mark as viewed
+                const viewedStories = JSON.parse(localStorage.getItem('viewedStories') || '[]');
+                if (!viewedStories.includes(index)) {
+                    viewedStories.push(index);
+                    localStorage.setItem('viewedStories', JSON.stringify(viewedStories));
+                    this.renderStoriesCarousel(); // Update carousel UI
+                }
+
+                // Haptic feedback
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(10);
+                }
+            }
+
+            renderStoryContent() {
+                const story = this.storiesData[this.currentStoryIndex];
+                const contentContainer = document.getElementById('storiesContent');
+
+                contentContainer.innerHTML = `
+                    <div class="story-content active">
+                        <div class="story-background" style="background: ${story.gradient}">
+                            <div class="story-text-overlay">
+                                <div class="story-emoji">${story.emoji}</div>
+                                <div class="story-title">${story.title}</div>
+                                <div class="story-description">${story.description}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Render progress bars
+                const progressBars = document.getElementById('storyProgressBars');
+                progressBars.innerHTML = this.storiesData.map((_, index) => {
+                    const fillClass = index < this.currentStoryIndex ? 'completed' :
+                                    index === this.currentStoryIndex ? 'active' : '';
+                    return `
+                        <div class="story-progress-bar">
+                            <div class="story-progress-fill ${fillClass}"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            startStoryProgress() {
+                // Clear any existing timer
+                if (this.storyTimer) {
+                    clearTimeout(this.storyTimer);
+                }
+
+                // Auto-advance to next story after 5 seconds
+                this.storyTimer = setTimeout(() => {
+                    this.nextStory();
+                }, 5000);
+            }
+
+            nextStory() {
+                if (this.currentStoryIndex < this.storiesData.length - 1) {
+                    this.currentStoryIndex++;
+                    this.renderStoryContent();
+                    this.startStoryProgress();
+
+                    // Haptic feedback
+                    if ('vibrate' in navigator) {
+                        navigator.vibrate(10);
+                    }
+                } else {
+                    // All stories viewed - close
+                    this.closeStories();
+                }
+            }
+
+            previousStory() {
+                if (this.currentStoryIndex > 0) {
+                    this.currentStoryIndex--;
+                    this.renderStoryContent();
+                    this.startStoryProgress();
+
+                    // Haptic feedback
+                    if ('vibrate' in navigator) {
+                        navigator.vibrate(10);
+                    }
+                }
+            }
+
+            closeStories() {
+                const viewer = document.getElementById('storiesViewer');
+                viewer.classList.remove('active');
+
+                // Clear timer
+                if (this.storyTimer) {
+                    clearTimeout(this.storyTimer);
+                    this.storyTimer = null;
+                }
+            }
+        }
+
+        // Initialize feed
+        const feed = new VideosFeed();
+    </script>
+</body>
+</html>

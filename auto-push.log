@@ -1,0 +1,1401 @@
+[master 90e5d4f] 🤖 Auto-backup: 2025-10-04 08:09:50
+ 3 files changed, 27 insertions(+)
+ create mode 100644 auto-push-error.log
+ create mode 100644 auto-push.log
+ create mode 100755 auto-push.sh
+[2025-10-04 08:09:50] Changes pushed to GitHub
+[master 0faf0d4] 🤖 Auto-backup: 2025-10-04 08:39:52
+ 54 files changed, 1685 insertions(+), 15303 deletions(-)
+ create mode 100644 README_TIKTOK_RESEARCH.md
+ create mode 100644 RESEARCH_SUMMARY.md
+ create mode 100644 TIKTOK_RESEARCH_INDEX.md
+ create mode 100644 TIKTOK_SCROLL_QUICK_START.md
+ delete mode 100644 "test-results/action-buttons-quality-\342\234\205-Q-12d42-ttons-present-and-clickable-chromium/error-context.md"
+ delete mode 100644 "test-results/action-buttons-quality-\342\234\205-Q-5c18d-ike-and-Save-state-persists-chromium/error-context.md"
+ delete mode 100644 "test-results/action-buttons-quality-\342\234\205-Q-b1f93-ime-100ms-Interaction-150ms-chromium/error-context.md"
+ delete mode 100644 "test-results/action-buttons-quality-\342\234\205-Q-b63da--navigation-and-ARIA-labels-chromium/error-context.md"
+ delete mode 100644 "test-results/all-pages-complete-\360\237\216\257-ALL--17bb4--ALL-PAGES---Desktop-Mobile-chromium/error-context.md"
+ delete mode 100644 test-results/all-works-test-ALL-WORKS---8cd96--Everything-works-correctly-chromium/error-context.md
+ delete mode 100644 test-results/app-navigation-Complete-Ap-337f0-ntent-with-proper-structure-chromium/error-context.md
+ delete mode 100644 test-results/app-navigation-Complete-Ap-8f4bb-p-heart-animation-on-videos-chromium/error-context.md
+ delete mode 100644 "test-results/app-navigation-Complete-Ap-d86d4-\342\206\222-articles-\342\206\222-back-to-videos-chromium/error-context.md"
+ delete mode 100644 "test-results/apple-design-\360\237\215\216-Apple-Styl-f3913-rify-floating-action-button-chromium/error-context.md"
+ delete mode 100644 test-results/audio-before-click.png
+ delete mode 100644 test-results/audio-integration-Audio-In-0e2fd-ructure-with-audio-controls-chromium/error-context.md
+ delete mode 100644 test-results/audio-integration-Audio-In-12d42-ibility-with-audio-controls-chromium/error-context.md
+ delete mode 100644 test-results/audio-integration-Audio-In-2d553--Mobile-viewport-with-audio-chromium/error-context.md
+ delete mode 100644 test-results/audio-integration-Audio-In-9362a-ot-page-with-audio-controls-chromium/error-context.md
+ delete mode 100644 test-results/audio-integration-Audio-In-c782c-Desktop-viewport-with-audio-chromium/error-context.md
+ delete mode 100644 test-results/auto-play-after-scroll.png
+ delete mode 100644 test-results/auto-play-audio-Auto-Play--237f2-tion-Observer-for-auto-play-chromium/error-context.md
+ delete mode 100644 test-results/auto-play-audio-Auto-Play--c2317-bile-viewport-for-auto-play-chromium/error-context.md
+ delete mode 100644 test-results/auto-play-audio-Auto-Play--d6817--notification-on-audio-play-chromium/error-context.md
+ delete mode 100644 test-results/auto-play-audio-Auto-Play--e15d4--play-audio-on-button-click-chromium/error-context.md
+ delete mode 100644 test-results/auto-play-audio-Auto-Play--ecc3a--audio-buttons-on-all-cards-chromium/error-context.md
+ delete mode 100644 test-results/auto-play-initial.png
+ delete mode 100644 test-results/card-data-attributes.png
+ delete mode 100644 "test-results/comments-system-\342\234\205-Comments-1fc7e-hen-clicking-comment-button-chromium/error-context.md"
+ delete mode 100644 "test-results/comments-system-\342\234\205-Comments-3346d-hen-clicking-comment-button-chromium/error-context.md"
+ delete mode 100644 "test-results/comments-system-\342\234\205-Comments-4d159-l-has-all-required-elements-chromium/error-context.md"
+ delete mode 100644 "test-results/comments-system-\342\234\205-Comments-6157a-nts-persist-in-localStorage-chromium/error-context.md"
+ delete mode 100644 "test-results/comments-system-\342\234\205-Comments-6c23f-loses-when-clicking-overlay-chromium/error-context.md"
+ delete mode 100644 "test-results/comments-system-\342\234\205-Comments-6cbf1-l-has-all-required-elements-chromium/error-context.md"
+ delete mode 100644 "test-results/comments-system-\342\234\205-Comments-95b8b-ile-Enter-key-posts-comment-chromium/error-context.md"
+ delete mode 100644 "test-results/comments-system-\342\234\205-Comments-96de8---Mobile-Can-post-a-comment-chromium/error-context.md"
+ delete mode 100644 "test-results/comments-system-\342\234\205-Comments-cad10-oses-when-clicking-X-button-chromium/error-context.md"
+ delete mode 100644 "test-results/comments-system-\342\234\205-Comments-fd817-ount-displays-on-feed-cards-chromium/error-context.md"
+ delete mode 100644 test-results/duplicate-prevention.png
+ delete mode 100644 test-results/mobile-auto-play.png
+ delete mode 100644 test-results/test-reels-stories-complet-4bec7-eels-tab-no-redirect-delay--chromium/error-context.md
+ delete mode 100644 test-results/test-reels-stories-complet-5fc04-P-and-Streak-banner-visible-chromium/error-context.md
+ delete mode 100644 test-results/test-reels-stories-complet-652fe-on-shows-full-screen-videos-chromium/error-context.md
+ delete mode 100644 "test-results/test-reels-stories-complet-9f77f-ly---Reels-\342\206\222-Stories-\342\206\222-Feed-chromium/error-context.md"
+ delete mode 100644 test-results/test-reels-stories-complet-ab3d9--browser-console-for-errors-chromium/error-context.md
+ delete mode 100644 test-results/test-reels-stories-complet-fef39-isible---Stories-Reels-Feed-chromium/error-context.md
+ create mode 100644 test-results/tiktok-videos-verification-43fd4-croll-with-snap-stop-always-chromium/error-context.md
+ create mode 100644 test-results/tiktok-videos-verification-8b4cf-tent-real-videos-not-dummy--chromium/error-context.md
+ create mode 100644 tests/tiktok-videos-verification.spec.js
+ create mode 100644 tiktok-videos-spanish-reels.png
+[2025-10-04 08:39:52] Changes pushed to GitHub
+[master ef0bdcd] 🤖 Auto-backup: 2025-10-04 09:09:55
+ 1 file changed, 69 insertions(+), 46 deletions(-)
+[2025-10-04 09:09:55] Changes pushed to GitHub
+[2025-10-04 09:39:58] No changes to push
+[master 4844396] 🤖 Auto-backup: 2025-10-04 10:09:59
+ 1 file changed, 17 insertions(+)
+ create mode 100644 check-display.js
+[2025-10-04 10:09:59] Changes pushed to GitHub
+[master cf1d618] 🤖 Auto-backup: 2025-10-04 10:40:03
+ 1 file changed, 280 insertions(+)
+ create mode 100644 public/index-old.html
+[2025-10-04 10:40:03] Changes pushed to GitHub
+On branch master
+nothing to commit, working tree clean
+[2025-10-04 10:52:14] Changes pushed to GitHub
+[master 1df9469] 🤖 Auto-backup: 2025-10-04 11:22:55
+ 3 files changed, 6 insertions(+), 35 deletions(-)
+ delete mode 100644 API_ERROR_RECOVERY.md
+[2025-10-04 11:22:55] Changes pushed to GitHub
+[master 3cd46e6] 🤖 Auto-backup: 2025-10-04 11:52:59
+ 21 files changed, 574 insertions(+), 61 deletions(-)
+ create mode 100644 screenshots/audio-integration-root-1759567557490.png
+ create mode 100644 screenshots/desktop-audio-1759567566972.png
+ create mode 100644 screenshots/mobile-audio-1759567559770.png
+ create mode 100644 screenshots/route--audio-1759567560504.png
+ create mode 100644 screenshots/route-comedy-audio-1759567560504.png
+ create mode 100644 screenshots/route-stats-audio-1759567560504.png
+ create mode 100644 screenshots/route-unified-audio-1759567560504.png
+ create mode 100644 screenshots/workspace3/2025-10-04T08-45-44-948Z_desktop_01_videos.png
+ create mode 100644 screenshots/workspace3/articles-feed-initial_2025-10-04T08-49-17.png
+ create mode 100644 screenshots/workspace3/page_discover-feed_html_2025-10-04T08-49-20.png
+ create mode 100644 screenshots/workspace3/tiktok-videos-initial_2025-10-04T08-49-18.png
+ create mode 100644 screenshots/workspace3/tiktok-videos-scrolled_2025-10-04T08-49-18.png
+ create mode 100644 tests/multi-tab-navigation.spec.js
+[2025-10-04 11:52:59] Changes pushed to GitHub
+[master f49178b] 🤖 Auto-backup: 2025-10-04 12:23:05
+ 4 files changed, 219 insertions(+), 98 deletions(-)
+ create mode 100644 API_ERROR_RECOVERY.md
+ create mode 100644 screenshots/final-tiktok-with-stories.png
+ create mode 100644 screenshots/tiktok-reels-simplified.png
+[2025-10-04 12:23:05] Changes pushed to GitHub
+[master 390b8c3] 🤖 Auto-backup: 2025-10-04 12:53:09
+ 8 files changed, 4347 insertions(+), 3 deletions(-)
+ create mode 100644 API_ERROR_RECOVERY.md
+ create mode 100644 playwright-report/data/77c56d47a83ffe2c3261b6431389e09181797dee.md
+ create mode 100644 "test-results/tiktok-immediate-\360\237\232\200-TikTok-b21fb-eels-IMMEDIATELY---no-menus-chromium/error-context.md"
+ create mode 100644 "test-results/tiktok-immediate-\360\237\232\200-TikTok-ccdb0-Tok-For-You-page-experience-chromium/error-context.md"
+ create mode 100644 "test-results/tiktok-immediate-\360\237\232\200-TikTok-dd122-L-Spanish-content-no-dummy--chromium/error-context.md"
+ create mode 100644 tests/verify-immediate-reels.spec.js
+[2025-10-04 12:53:09] Changes pushed to GitHub
+[master 42fb14c] 🤖 Auto-backup: 2025-10-04 13:23:14
+ 11 files changed, 4558 insertions(+), 4340 deletions(-)
+ create mode 100644 screenshots/stories-bar-instagram-style.png
+ create mode 100644 screenshots/tiktok-reels-with-subtitles.png
+ create mode 100644 screenshots/user-requirements-validated.png
+ create mode 100644 test-results/.last-run.json
+ delete mode 100644 "test-results/performance-validation-\342\232\241-P-d4978-mooth-60fps-scroll-no-jank--chromium/error-context.md"
+ delete mode 100644 "test-results/performance-validation-\342\232\241-P-e8653-on-Button-tap-response-50ms-chromium/error-context.md"
+ create mode 100644 tests/screenshot-requirements.spec.js
+ create mode 100644 tests/user-requirements-validation.spec.js
+[2025-10-04 13:23:14] Changes pushed to GitHub
+[master 752d11b] 🤖 Auto-backup: 2025-10-04 13:53:17
+ 9 files changed, 36 insertions(+), 12 deletions(-)
+ create mode 100644 CRITICAL_RULES.md
+ delete mode 100644 test-results/.last-run.json
+ rename "test-results/youtube-shorts-parity-\360\237\216\254-Y-1f2f7-Pattern-Watch-time-tracking-chromium/error-context.md" => test-results/instagram-reels-double-tap-11945--Vertical-format-double-tap-chromium/error-context.md (100%)
+ rename "test-results/youtube-shorts-parity-\360\237\216\254-Y-62f63-missing-from-YouTube-Shorts-chromium/error-context.md" => test-results/instagram-reels-double-tap-284df-stantaneous-feedback-300ms--chromium/error-context.md (100%)
+ rename "test-results/youtube-shorts-parity-\360\237\216\254-Y-72961-re-Vertical-scroll-autoplay-chromium/error-context.md" => test-results/instagram-reels-double-tap-56589-art-animation-on-double-tap-chromium/error-context.md (100%)
+ rename "test-results/youtube-shorts-parity-\360\237\216\254-Y-baae4--9-16-vertical-aspect-ratio-chromium/error-context.md" => test-results/instagram-reels-double-tap-78534--Feature-Double-tap-to-like-chromium/error-context.md (100%)
+ rename "test-results/youtube-shorts-parity-\360\237\216\254-Y-df997-ture-3-minute-video-support-chromium/error-context.md" => test-results/instagram-reels-double-tap-b19ee-ddictive-double-tap-pattern-chromium/error-context.md (100%)
+[2025-10-04 13:53:17] Changes pushed to GitHub
+[2025-10-04 14:23:30] No changes to push
+[2025-10-04 14:53:31] No changes to push
+[master 07c0ca0] 🤖 Auto-backup: 2025-10-04 15:23:33
+ 9 files changed, 50 insertions(+), 1088 deletions(-)
+ delete mode 100644 playwright-report/data/9827c8810133e720abe8585476b0ea9cd050e2f4.md
+ delete mode 100644 test-results/CURRENT-APP-FULL-STATE.png
+ delete mode 100644 test-results/current-app-clickable-words.png
+ delete mode 100644 test-results/current-app-immediate-reels.png
+ delete mode 100644 test-results/current-app-real-content.png
+ delete mode 100644 test-results/current-app-stories-bar.png
+[2025-10-04 15:23:33] Changes pushed to GitHub
+[2025-10-04 15:53:42] No changes to push
+[master 91d5386] 🤖 Auto-backup: 2025-10-04 16:23:42
+ 1 file changed, 292 insertions(+)
+[2025-10-04 16:23:42] Changes pushed to GitHub
+[2025-10-04 16:53:54] No changes to push
+[master fc61669] 🤖 Auto-backup: 2025-10-04 17:23:54
+ 22 files changed, 377 insertions(+), 2032 deletions(-)
+ delete mode 100644 test-results/.last-run.json
+ create mode 100644 test-results/tiktok-momentum-scroll-Tik-3dba9-s-works-on-desktop-viewport-chromium/error-context.md
+ create mode 100644 test-results/tiktok-momentum-scroll-Tik-5e800--scroll-response-time-100ms-chromium/error-context.md
+ create mode 100644 test-results/tiktok-momentum-scroll-Tik-5eb9e-ap-type-is-set-to-mandatory-chromium/error-context.md
+ create mode 100644 test-results/tiktok-momentum-scroll-Tik-6dca7-ave-scroll-snap-stop-always-chromium/error-context.md
+ create mode 100644 test-results/tiktok-momentum-scroll-Tik-710b4--mobile-viewport-iPhone-12--chromium/error-context.md
+ create mode 100644 test-results/tiktok-momentum-scroll-Tik-7138e-iggers-advance-even-if-slow-chromium/error-context.md
+ create mode 100644 test-results/tiktok-momentum-scroll-Tik-77d3b-n-tablet-viewport-iPad-Pro--chromium/error-context.md
+ create mode 100644 test-results/tiktok-momentum-scroll-Tik-85863--snaps-back-to-current-card-chromium/error-context.md
+ create mode 100644 test-results/tiktok-momentum-scroll-Tik-8b716-ave-scroll-snap-align-start-chromium/error-context.md
+ create mode 100644 test-results/tiktok-momentum-scroll-Tik-95bd8-px-ms-advances-to-next-card-chromium/error-context.md
+ create mode 100644 test-results/tiktok-momentum-scroll-Tik-b5cc3-ll-animation-duration-350ms-chromium/error-context.md
+ create mode 100644 test-results/tiktok-momentum-scroll-Tik-b86a1-ndary-conditions-last-card--chromium/error-context.md
+ create mode 100644 test-results/tiktok-momentum-scroll-Tik-bae9b-dary-conditions-first-card--chromium/error-context.md
+ create mode 100644 test-results/tiktok-momentum-scroll-Tik-d7b19-ndles-rapid-scroll-gestures-chromium/error-context.md
+ create mode 100644 test-results/tiktok-momentum-scroll-Tik-deace-px-ms-snaps-to-nearest-card-chromium/error-context.md
+ delete mode 100644 test-results/tiktok-vertical-scroll-202-02984-y-mandatory-on-html-element-chromium/error-context.md
+ delete mode 100644 test-results/tiktok-vertical-scroll-202-25fd4--with-TikTok-YouTube-Shorts-chromium/error-context.md
+ delete mode 100644 test-results/tiktok-vertical-scroll-202-3d669-n-app-open---NO-menus-first-chromium/error-context.md
+ delete mode 100644 test-results/tiktok-vertical-scroll-202-9b38c-ttons-visible-on-right-side-chromium/error-context.md
+ delete mode 100644 test-results/tiktok-vertical-scroll-202-db03d-ubtitles---NO-dummy-content-chromium/error-context.md
+[2025-10-04 17:23:54] Changes pushed to GitHub
+[master e56beb4] 🤖 Auto-backup: 2025-10-04 17:54:07
+ 6 files changed, 752 insertions(+), 746 deletions(-)
+ create mode 100644 playwright-report/data/60697023ecf99063096f7cf18af612eab7324af6.md
+ delete mode 100644 playwright-report/data/6cd4c775585ce9ee80379a4ffcca872906f6dd1e.md
+ create mode 100644 test-results/instagram-reels-competitiv-7e0bb-m-Reels-standard-1080x1920--chromium/error-context.md
+ delete mode 100644 test-results/youtube-shorts-competitive-66634-io-YouTube-Shorts-standard--chromium/error-context.md
+[2025-10-04 17:54:07] Changes pushed to GitHub
+[master 26ff766] 🤖 Auto-backup: 2025-10-04 18:24:13
+ 1 file changed, 126 deletions(-)
+ delete mode 100644 API_ERROR_RECOVERY.md
+[2025-10-04 18:24:13] Changes pushed to GitHub
+[master 52111b1] 🤖 Auto-backup: 2025-10-04 18:54:18
+ 2 files changed, 128 insertions(+), 584 deletions(-)
+ create mode 100644 API_ERROR_RECOVERY.md
+[2025-10-04 18:54:18] Changes pushed to GitHub
+[master 8168d2f] 🤖 Auto-backup: 2025-10-04 19:24:23
+ 9 files changed, 49 insertions(+), 770 deletions(-)
+ delete mode 100644 autopilot/state/health.ok
+ create mode 100644 playwright-report/data/b180b4c66bc0b4a5fc6aff8d847f3052cc162f8e.md
+ delete mode 100644 playwright-report/data/ff7f212cc46362304b1368e9ce0cd35bc0a2bc87.md
+ create mode 100644 screenshots/1759594721.png
+ create mode 100644 screenshots/workspace3-current-1759594936.png
+ delete mode 100644 test-results/.last-run.json
+ delete mode 100644 test-results/visual-quality-check-Visua-bada9--design-to-TikTok-standards-chromium/error-context.md
+[2025-10-04 19:24:23] Changes pushed to GitHub
+[master 5cae111] 🤖 Auto-backup: 2025-10-04 19:54:33
+ 184 files changed, 2924 insertions(+), 664 deletions(-)
+ create mode 100644 playwright-report/data/399f630a3625174fb111dc3afa365d2b6c3a4ce0.md
+ create mode 100644 playwright-report/data/9a0d6884eff1a701c17bd249bbb5c7f0c7c7ceba.md
+ delete mode 100644 playwright-report/data/b180b4c66bc0b4a5fc6aff8d847f3052cc162f8e.md
+ create mode 100644 playwright-report/data/f390936f8cbb5f585c4d3e2bc59ac43c254bedd9.md
+ create mode 100644 screenshots/WORKING-APP-WITH-VIDEOS.png
+ create mode 100644 screenshots/debug-current.png
+ create mode 100644 "test-results/IMMEDIATE-REELS-TEST-\360\237\224\245-IM-2f563-console-errors-on-page-load-chromium/error-context.md"
+ create mode 100644 "test-results/IMMEDIATE-REELS-TEST-\360\237\224\245-IM-ab982-l-works-TikTok-style-swipe--chromium/error-context.md"
+ create mode 100644 "test-results/IMMEDIATE-REELS-TEST-\360\237\224\245-IM-b3cde-IATELY-no-redirect-no-menu--chromium/error-context.md"
+ create mode 100644 tests/quick-debug.spec.js
+ create mode 100644 tests/screenshot-working-app.spec.js
+[2025-10-04 19:54:33] Changes pushed to GitHub
+[master 6dbb0c5] 🤖 Auto-backup: 2025-10-04 20:24:42
+ 3 files changed, 195 insertions(+), 3 deletions(-)
+ create mode 100644 screenshots/complete_beginner-1759598613108.png
+ create mode 100644 tests/complete-beginner-test.spec.js
+[2025-10-04 20:24:42] Changes pushed to GitHub
+[master 56c85d1] 🤖 Auto-backup: 2025-10-04 20:54:45
+ 1 file changed, 64 insertions(+)
+[2025-10-04 20:54:45] Changes pushed to GitHub
+[2025-10-04 21:24:50] No changes to push
+[master acd6ad7] 🤖 Auto-backup: 2025-10-04 21:54:51
+ 6 files changed, 650 insertions(+), 13 deletions(-)
+ delete mode 100644 autopilot/state/health.ok
+ delete mode 100644 test-results/.last-run.json
+ create mode 100644 test-results/tiktok-immediate-reels-Tik-04fba-hen-clicking-a-Spanish-word-chromium/error-context.md
+ create mode 100644 test-results/tiktok-immediate-reels-Tik-719b9-s-NO-menu-selection-screen--chromium/error-context.md
+ create mode 100644 test-results/tiktok-immediate-reels-Tik-8f5e8-subtitles-no-dummy-content--chromium/error-context.md
+ create mode 100644 test-results/tiktok-immediate-reels-Tik-efe81-s-with-word-clickable-class-chromium/error-context.md
+[2025-10-04 21:54:51] Changes pushed to GitHub
+[2025-10-04 22:25:16] No changes to push
+[2025-10-04 22:55:16] No changes to push
+[2025-10-04 23:25:16] No changes to push
+[2025-10-04 23:55:17] No changes to push
+[2025-10-05 00:25:17] No changes to push
+[2025-10-05 00:55:18] No changes to push
+[master 21c98bc] 🤖 Auto-backup: 2025-10-05 01:25:46
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+[2025-10-05 01:25:46] Changes pushed to GitHub
+[master bd9d19e] 🤖 Auto-backup: 2025-10-05 02:11:19
+ 1 file changed, 26 insertions(+), 2 deletions(-)
+[2025-10-05 02:11:19] Changes pushed to GitHub
+[master d3c47d7] 🤖 Auto-backup: 2025-10-05 05:14:33
+ 3 files changed, 9 insertions(+), 1 deletion(-)
+[2025-10-05 05:14:33] Changes pushed to GitHub
+[master 1620371] 🤖 Auto-backup: 2025-10-05 05:44:59
+ 11 files changed, 245 insertions(+), 7 deletions(-)
+ create mode 100644 public/screenshots/1759631591.png
+ create mode 100644 screenshots/verification-1759631912865.png
+ create mode 100644 screenshots/visual-1759632086784.png
+ create mode 100644 screenshots/visual-inspection-1759631948709.png
+ create mode 100644 test-results-final.txt
+ create mode 100644 test-results/.last-run.json
+ create mode 100644 test-visual-inspection.js
+ create mode 100644 test-visual.js
+ create mode 100644 verify-requirements.js
+[2025-10-05 05:44:59] Changes pushed to GitHub
+[master f36f769] 🤖 Auto-backup: 2025-10-05 06:15:01
+ 10 files changed, 208 insertions(+), 55 deletions(-)
+ create mode 100644 playwright-report/data/5915c0ad40f5dcee916088574dc9f1f5774ec403.md
+ create mode 100644 playwright-report/data/65e74a0255354032333e22a1ae8b42c7a7d06a4f.md
+ create mode 100644 screenshots/1759633805.png
+ create mode 100644 screenshots/1759634035.png
+ create mode 100644 screenshots/current-state-1759633488.png
+ create mode 100644 screenshots/error-check-1759633243.png
+ create mode 100644 screenshots/error-check-1759633808.png
+ delete mode 100644 test-results/.last-run.json
+[2025-10-05 06:15:01] Changes pushed to GitHub
+[master e7b029c] 🤖 Auto-backup: 2025-10-05 06:45:04
+ 16 files changed, 148 insertions(+), 283 deletions(-)
+ create mode 100644 debug-404.js
+ delete mode 100644 playwright-report/data/1a7961ec26acc75fcd766383659aa4790e1954fe.md
+ create mode 100644 screenshots/1728098500-competitive-parity.png
+ create mode 100644 screenshots/1759635318-current-state.png
+ create mode 100644 screenshots/1759635411-error-check.png
+ create mode 100644 screenshots/1759635618828-error-diagnostic.png
+ create mode 100644 screenshots/1759635763964-error-diagnostic.png
+ create mode 100644 screenshots/1759635776-final-working-state.png
+ create mode 100644 test-console-errors.js
+ delete mode 100644 test-results/current-state-Current-Stat-c64f7-current-state-of-apple-feed-chromium/error-context.md
+ create mode 100644 tests/check-console-errors.spec.js
+[2025-10-05 06:45:04] Changes pushed to GitHub
+[2025-10-05 07:15:07] No changes to push
+[2025-10-05 07:45:07] No changes to push
+[2025-10-05 08:15:10] No changes to push
+[master aaf0f29] 🤖 Auto-backup: 2025-10-05 08:45:10
+ 3 files changed, 126 deletions(-)
+ delete mode 100644 API_ERROR_RECOVERY.md
+ create mode 100644 screenshots/1759642783-server-restarted.png
+ create mode 100644 screenshots/1759643090-tiktok-reference.png
+[2025-10-05 08:45:10] Changes pushed to GitHub
+[master dad45c8] 🤖 Auto-backup: 2025-10-05 09:15:12
+ 14 files changed, 3 insertions(+), 627 deletions(-)
+ delete mode 100644 playwright-report/data/e722e969fc440a74cf92d69793e567f24c70947f.md
+ delete mode 100644 test-results/COMPREHENSIVE-FEATURE-TEST-32174--with-animations-and-sounds-chromium/error-context.md
+ delete mode 100644 test-results/COMPREHENSIVE-FEATURE-TEST-95754-ion-Bar-All-buttons-present-chromium/error-context.md
+ delete mode 100644 test-results/COMPREHENSIVE-FEATURE-TEST-d4f00-ime-Likes-display-correctly-chromium/error-context.md
+ delete mode 100644 test-results/COMPREHENSIVE-FEATURE-TEST-da758-ok-style-vertical-scrolling-chromium/error-context.md
+ delete mode 100644 test-results/COMPREHENSIVE-FEATURE-TEST-e7138-fied-Database-Full-workflow-chromium/error-context.md
+ delete mode 100644 test-results/COMPREHENSIVE-FEATURE-TEST-f2fcf-tom-drawer-opens-and-closes-chromium/error-context.md
+ delete mode 100644 test-results/COMPREHENSIVE-FEATURE-TEST-f54c1-trols-Mute-Speed-Play-Pause-chromium/error-context.md
+[2025-10-05 09:15:12] Changes pushed to GitHub
+[master 9ad724e] 🤖 Auto-backup: 2025-10-05 09:45:15
+ 3 files changed, 4 deletions(-)
+ create mode 100644 public/screenshots/transcription-final-1759646271.png
+ create mode 100644 screenshots/working-proof-1759646465.png
+ delete mode 100644 test-results/.last-run.json
+[2025-10-05 09:45:15] Changes pushed to GitHub
+[master 42b1aac] 🤖 Auto-backup: 2025-10-05 10:15:19
+ 3 files changed, 127 insertions(+), 1 deletion(-)
+ create mode 100644 API_ERROR_RECOVERY.md
+ create mode 100644 screenshots/debug-1759647895.png
+[2025-10-05 10:15:19] Changes pushed to GitHub
+[2025-10-05 10:45:23] No changes to push
+[master 36999a2] 🤖 Auto-backup: 2025-10-05 11:15:23
+ 1 file changed, 223 insertions(+)
+[2025-10-05 11:15:23] Changes pushed to GitHub
+[master 57ff2e7] 🤖 Auto-backup: 2025-10-05 11:45:26
+ 23 files changed, 528 insertions(+), 525 deletions(-)
+ delete mode 100644 playwright-report/data/1417960a52284454dc5da7a4eca237e633b565b6.md
+ delete mode 100644 playwright-report/data/175ee6f9b4fb5b0c5a1166d3a48997074c272c06.md
+ delete mode 100644 playwright-report/data/197b04ad88c00ea8661409d34e69f8403a8a96ca.md
+ delete mode 100644 playwright-report/data/349e2958553ea983dfe90facea754a7acde807ba.md
+ delete mode 100644 playwright-report/data/68e94fee9b3cd002694d6f7f141810e039044d9f.md
+ create mode 100644 playwright-report/data/cb23eef9c99fe57f9115b2e9f7d3cbbd770c70e1.md
+ create mode 100644 screenshots/1-homepage-initial.png
+ create mode 100644 screenshots/10-video-playing.png
+ create mode 100644 screenshots/2-homepage-after-start.png
+ create mode 100644 screenshots/3-articles-fallback.png
+ create mode 100644 screenshots/4-videos-is-homepage.png
+ create mode 100644 screenshots/5-music-not-found.png
+ create mode 100644 screenshots/6-stories-not-found.png
+ create mode 100644 screenshots/7-no-words.png
+ create mode 100644 screenshots/error-check-1759653179.png
+ create mode 100644 screenshots/error-check-1759653529.png
+ create mode 100644 test-results/.last-run.json
+ create mode 100644 tests/app-navigation-depth.spec.js
+ create mode 100644 tests/debug-subtitles.spec.js
+[2025-10-05 11:45:26] Changes pushed to GitHub
+[2025-10-05 12:15:29] No changes to push
+[2025-10-05 12:45:29] No changes to push
+[master eff95eb] 🤖 Auto-backup: 2025-10-05 13:15:30
+ 2 files changed, 262 deletions(-)
+ delete mode 100644 test-results/.last-run.json
+ delete mode 100644 "test-results/app-navigation-depth-Navig-13e8c--\342\206\222-Videos-\342\206\222-Music-\342\206\222-Stories-chromium/error-context.md"
+[2025-10-05 13:15:30] Changes pushed to GitHub
+[master c2ec776] 🤖 Auto-backup: 2025-10-05 13:45:37
+ 11 files changed, 1188 insertions(+)
+ create mode 100644 screenshots/articles.png
+ create mode 100644 screenshots/homepage.png
+ create mode 100644 screenshots/music.png
+ create mode 100644 screenshots/stories.png
+ create mode 100644 screenshots/videos.png
+ create mode 100644 test-results/.last-run.json
+ create mode 100644 test-results/all-sections-Entertainment-25168-ap-to-Start-loads-correctly-chromium/error-context.md
+ create mode 100644 test-results/all-sections-Entertainment-7ad3f-ord-shows-translation-100ms-chromium/error-context.md
+ create mode 100644 test-results/all-sections-Entertainment-bb10f-on---Dual-language-captions-chromium/error-context.md
+ create mode 100644 test-results/all-sections-Entertainment-df7bd--TikTok-style-vertical-feed-chromium/error-context.md
+ create mode 100644 tests/all-sections.spec.js
+[2025-10-05 13:45:37] Changes pushed to GitHub
+[2025-10-05 14:15:42] No changes to push
+[master 0a85b5c] 🤖 Auto-backup: 2025-10-05 14:45:42
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+[2025-10-05 14:45:42] Changes pushed to GitHub
+[master ac2629a] 🤖 Auto-backup: 2025-10-05 15:15:46
+ 10 files changed, 713 insertions(+), 45 deletions(-)
+ create mode 100644 screenshots/entertainment-feed-1-videos.png
+ create mode 100644 screenshots/entertainment-feed-2-articles.png
+ create mode 100644 screenshots/entertainment-feed-3-music.png
+ create mode 100644 test-results/.last-run.json
+ create mode 100644 "test-results/entertainment-feed-section-34b23--\342\206\222-Music-\342\206\222-Stories-\342\206\222-Videos-chromium/error-context.md"
+ create mode 100644 test-results/entertainment-feed-section-3eb0a-Feed---Navigate-from-Videos-chromium/error-context.md
+ create mode 100644 test-results/entertainment-feed-section-b2b1e-Consistent-Across-All-Pages-chromium/error-context.md
+ create mode 100644 tests/entertainment-feed-sections.spec.js
+[2025-10-05 15:15:46] Changes pushed to GitHub
+[master 38e2a07] 🤖 Auto-backup: 2025-10-05 15:45:48
+ 3 files changed, 187 insertions(+), 1 deletion(-)
+ create mode 100644 test-results/transcription-real-time-sy-83ae0-ptions-with-video-timestamp-chromium/error-context.md
+ create mode 100644 test-results/transcription-real-time-sy-a65df-ronized-with-video-playback-chromium/error-context.md
+[2025-10-05 15:45:48] Changes pushed to GitHub
+[2025-10-05 16:15:52] No changes to push
+[master f21e112] 🤖 Auto-backup: 2025-10-05 16:45:52
+ 8 files changed, 167 insertions(+), 96 deletions(-)
+ create mode 100644 public/test-single-video.html
+ create mode 100644 screenshots/debug-transcription-1759671804492.png
+ create mode 100644 screenshots/video-loading-debug-1759671851395.png
+ delete mode 100644 test-results/entertainment-feed-complet-02e84--Video-loading-and-playback-chromium/error-context.md
+ create mode 100644 tests/test-single-video.spec.js
+ create mode 100644 tests/video-loading-detailed.spec.js
+[2025-10-05 16:45:52] Changes pushed to GitHub
+[master dff7b0b] 🤖 Auto-backup: 2025-10-05 17:15:56
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 screenshots/1759673543.png
+[2025-10-05 17:15:56] Changes pushed to GitHub
+[master 422c27f] 🤖 Auto-backup: 2025-10-05 18:16:01
+ 1 file changed, 118 insertions(+)
+[2025-10-05 18:16:01] Changes pushed to GitHub
+[master 7f192e5] 🤖 Auto-backup: 2025-10-05 18:46:06
+ 7 files changed, 517 insertions(+), 130 deletions(-)
+ create mode 100644 API_ERROR_RECOVERY.md
+ create mode 100644 public/content/articles.json
+ create mode 100644 public/content/music.json
+ create mode 100644 screenshots/unified-feed-1759678900.png
+[2025-10-05 18:46:06] Changes pushed to GitHub
+[master 351f3dd] 🤖 Auto-backup: 2025-10-05 19:16:18
+ 14 files changed, 292 insertions(+), 610 deletions(-)
+ delete mode 100644 test-results/entertainment-feed-complet-02e84--Video-loading-and-playback-chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-complet-4aa1c-d-TikTok-Instagram-pattern--chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-complet-61d8f-y-Navigate-to-Music-section-chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-complet-770ff-l-scroll-with-snap-behavior-chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-complet-7904d--Comment-Save-Share-buttons-chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-complet-9c69e-sive-design-Mobile-viewport-chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-complet-aacec-s-Content-not-blocked-by-UI-chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-complet-c8acf-avigate-to-Articles-section-chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-complet-cc823-Navigate-to-Stories-section-chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-complet-cf02a-nish-words-for-translations-chromium/error-context.md
+ create mode 100644 tests/test-word-translations.spec.js
+[2025-10-05 19:16:18] Changes pushed to GitHub
+[master 7612062] 🤖 Auto-backup: 2025-10-05 19:46:28
+ 6 files changed, 3581 insertions(+), 1257 deletions(-)
+ create mode 100644 test-results/entertainment-feed-Enterta-cf7d3-r-in-thumb-zone-right-side--chromium/error-context.md
+ create mode 100644 test-results/entertainment-feed-Enterta-daa3f-tion-matches-TikTok-pattern-chromium/error-context.md
+ create mode 100644 test-results/entertainment-feed-Enterta-e0ada--interaction-with-animation-chromium/error-context.md
+ create mode 100644 test-results/entertainment-feed-Enterta-e1e66-ap-behavior-works-correctly-chromium/error-context.md
+[2025-10-05 19:46:28] Changes pushed to GitHub
+[2025-10-05 20:47:33] No changes to push
+[master e7f7a00] 🤖 Auto-backup: 2025-10-05 22:17:43
+ 14 files changed, 506 insertions(+), 3569 deletions(-)
+ create mode 100644 test-results/entertainment-feed-compreh-2dcbd-sent-speed-like-save-share--chromium/error-context.md
+ create mode 100644 test-results/entertainment-feed-compreh-2fea3-vigation-has-all-5-sections-chromium/error-context.md
+ create mode 100644 test-results/entertainment-feed-compreh-61267-tent-videos-articles-music--chromium/error-context.md
+ create mode 100644 test-results/entertainment-feed-compreh-b1b13-e-vertical-scroll-with-snap-chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-port-30-07d62-s-bar-exists-on-video-cards-chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-port-30-1ee02-nt-matches-server-20-items--chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-port-30-53743-style-sidebar-buttons-exist-chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-port-30-5b699--screenshot-of-article-card-chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-port-30-66c32--badges-display-for-content-chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-port-30-8276c-ontent-has-vocabulary-chips-chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-port-30-aacea-ent-feed-loads-successfully-chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-port-30-ff81e--translations-are-clickable-chromium/error-context.md
+[2025-10-05 22:17:43] Changes pushed to GitHub
+[master 35ad9c4] 🤖 Auto-backup: 2025-10-05 22:47:50
+ 3 files changed, 14 insertions(+), 14 deletions(-)
+[2025-10-05 22:47:50] Changes pushed to GitHub
+[master 874cd78] 🤖 Auto-backup: 2025-10-05 23:17:57
+ 12 files changed, 311 insertions(+), 373 deletions(-)
+ delete mode 100644 test-results/entertainment-feed-compreh-2dcbd-sent-speed-like-save-share--chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-compreh-2fea3-vigation-has-all-5-sections-chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-compreh-61267-tent-videos-articles-music--chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-compreh-b1b13-e-vertical-scroll-with-snap-chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-compreh-d5d19-sts-Mobile-optimized-layout-chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-compreh-df37a-rds-display-Spanish-English-chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-compreh-f5a9e-e-scroll-loads-more-content-chromium/error-context.md
+ delete mode 100644 test-results/entertainment-feed-compreh-fe5f6-t-tracking-session-metrics--chromium/error-context.md
+ create mode 100644 test-video-playback.js
+ create mode 100644 tests/COMPREHENSIVE-USER-CHECK.spec.js
+[2025-10-05 23:17:57] Changes pushed to GitHub
+[master 4e12c65] 🤖 Auto-backup: 2025-10-05 23:48:01
+ 1 file changed, 2 insertions(+)
+[2025-10-05 23:48:01] Changes pushed to GitHub
+[master 094962d] 🤖 Auto-backup: 2025-10-06 00:18:06
+ 3 files changed, 2 insertions(+), 2023 deletions(-)
+ delete mode 100644 "test-results/COMPREHENSIVE-USER-CHECK-\357\277\275-60aa6-ideos-play-when-in-viewport-chromium/error-context.md"
+ delete mode 100644 "test-results/COMPREHENSIVE-USER-CHECK-\357\277\275-dd4e5-roll-through-multiple-items-chromium/error-context.md"
+[2025-10-06 00:18:06] Changes pushed to GitHub
+[2025-10-06 01:18:11] No changes to push
+[2025-10-06 01:48:16] No changes to push
+[2025-10-06 02:18:16] No changes to push
+[2025-10-06 02:48:17] No changes to push
+[2025-10-06 03:18:17] No changes to push
+[2025-10-06 03:48:18] No changes to push
+[2025-10-06 04:18:18] No changes to push
+[2025-10-06 04:48:18] No changes to push
+[2025-10-06 05:18:18] No changes to push
+[2025-10-06 05:48:19] No changes to push
+[2025-10-06 06:18:19] No changes to push
+[master 7b35587] 🤖 Auto-backup: 2025-10-06 06:48:19
+ 15 files changed, 2988 insertions(+), 443 deletions(-)
+ create mode 100644 localhost_2025-10-06_06-47-20.report.html
+ delete mode 100644 test-results/complete-feed-app-Complete-2b52b-orks-on-375px-width-iPhone--chromium/error-context.md
+ delete mode 100644 test-results/complete-feed-app-Complete-3b415-tching-updates-active-state-chromium/error-context.md
+ delete mode 100644 test-results/complete-feed-app-Complete-3d96d-ards-are-full-screen-100vh--chromium/error-context.md
+ delete mode 100644 test-results/complete-feed-app-Complete-5d394-on-shows-only-music-content-chromium/error-context.md
+ delete mode 100644 test-results/complete-feed-app-Complete-80f4b-on-shows-only-video-content-chromium/error-context.md
+ delete mode 100644 test-results/complete-feed-app-Complete-83ef1-ticle-play-music-read-story-chromium/error-context.md
+ delete mode 100644 test-results/complete-feed-app-Complete-9e337-on-shows-only-story-content-chromium/error-context.md
+ delete mode 100644 test-results/complete-feed-app-Complete-b00a9-nap-works-on-feed-container-chromium/error-context.md
+ delete mode 100644 test-results/complete-feed-app-Complete-c5e9b--shows-only-article-content-chromium/error-context.md
+ delete mode 100644 test-results/complete-feed-app-Complete-cacad--content-loaded-from-server-chromium/error-context.md
+ create mode 100644 tests/check-errors.spec.js
+[2025-10-06 06:48:19] Changes pushed to GitHub
+[2025-10-06 07:18:22] No changes to push
+[2025-10-06 07:48:23] No changes to push
+[2025-10-06 08:18:23] No changes to push
+[2025-10-06 08:48:23] No changes to push
+[master 0cb2146] 🤖 Auto-backup: 2025-10-06 09:18:24
+ 7 files changed, 401 insertions(+), 125 deletions(-)
+ create mode 100644 screenshots/articles-section-1759731458.png
+ create mode 100644 screenshots/music-section-1759731462.png
+ create mode 100644 screenshots/videos-section-1759731454.png
+ create mode 100644 test-results/.last-run.json
+[2025-10-06 09:18:24] Changes pushed to GitHub
+[2025-10-06 09:48:29] No changes to push
+[master 714d8d8] 🤖 Auto-backup: 2025-10-06 10:18:39
+ 6 files changed, 813 insertions(+), 426 deletions(-)
+ delete mode 100644 test-results/.last-run.json
+ create mode 100644 test-results/complete-feed-app-Complete-0d991-tion-has-proper-ARIA-labels-chromium/error-context.md
+ create mode 100644 test-results/complete-feed-app-Complete-c967e-ge-loads-in-under-3-seconds-chromium/error-context.md
+[2025-10-06 10:18:39] Changes pushed to GitHub
+[master be85016] 🤖 Auto-backup: 2025-10-06 10:48:46
+ 6 files changed, 10 insertions(+), 1040 deletions(-)
+ create mode 100644 autopilot/state/health.ok
+ delete mode 100644 test-results/complete-feed-app-Complete-0d991-tion-has-proper-ARIA-labels-chromium/error-context.md
+ delete mode 100644 test-results/complete-feed-app-Complete-5d394-on-shows-only-music-content-chromium/error-context.md
+ delete mode 100644 test-results/complete-feed-app-Complete-83ef1-ticle-play-music-read-story-chromium/error-context.md
+ delete mode 100644 test-results/complete-feed-app-Complete-c967e-ge-loads-in-under-3-seconds-chromium/error-context.md
+ delete mode 100644 test-results/complete-feed-app-Complete-d9cf8-n-bar-exists-with-5-buttons-chromium/error-context.md
+[2025-10-06 10:48:46] Changes pushed to GitHub
+[master a4eac03] 🤖 Auto-backup: 2025-10-06 11:18:55
+ 3 files changed, 5 insertions(+), 19 deletions(-)
+ delete mode 100644 playwright-report/data/54d80c5cf33293ec8c624d3e4b4aeb0578c7e458.md
+ create mode 100644 test-results/.last-run.json
+[2025-10-06 11:18:55] Changes pushed to GitHub
+[2025-10-06 11:49:00] No changes to push
+[2025-10-06 12:19:01] No changes to push
+[master 3bbd237] 🤖 Auto-backup: 2025-10-06 12:49:01
+ 48 files changed, 283 insertions(+), 3 deletions(-)
+ create mode 100644 public/videos/reels/Andheld_camera_footage_202509112217_yzrzq.srt
+ create mode 100644 public/videos/reels/Anime_style_character_202509122336_i79to.srt
+ create mode 100644 public/videos/reels/Art_museum_tour_202509130011_yme3v.srt
+ create mode 100644 public/videos/reels/Breaking_news_report_202509130021_xb6vv.srt
+ create mode 100644 public/videos/reels/Create_a_viral_202509090401 (1).srt
+ create mode 100644 public/videos/reels/Create_a_viral_202509090401 (2).srt
+ create mode 100644 public/videos/reels/Create_a_viral_202509090401 (3).srt
+ create mode 100644 public/videos/reels/Create_a_viral_202509090401 (5).srt
+ create mode 100644 public/videos/reels/Create_a_viral_202509090401 (8).srt
+ create mode 100644 public/videos/reels/Create_a_viral_202509090401.srt
+ create mode 100644 public/videos/reels/Dramatic_countdown_to_202509122348_aju6e.srt
+ create mode 100644 public/videos/reels/Epic_dramatic_tension_202509122323_gcy2e.srt
+ create mode 100644 public/videos/reels/Epic_dramatic_tension_202509122323_l31cc.srt
+ create mode 100644 public/videos/reels/Extreme_opposites_language_202509101705_8aa42.srt
+ create mode 100644 public/videos/reels/Genius_punchline_talking_202509101625_5r9vp.srt
+ create mode 100644 public/videos/reels/Greek_tragedy_theater_202509122337_gsaj5.srt
+ create mode 100644 public/videos/reels/Greek_tragedy_theater_202509122342_vipv1.srt
+ create mode 100644 public/videos/reels/Hilarious_character_spanish_202509121151_0ki.srt
+ create mode 100644 public/videos/reels/Langai_earth_globe_202509120621_nxmy5.srt
+ create mode 100644 public/videos/reels/Langai_eats_sandwich_202509120312_vrhhd.srt
+ create mode 100644 public/videos/reels/Langai_wise_globe_202509122009_fty61.srt
+ create mode 100644 public/videos/reels/Marco_just_woke_202509112203_watqq.srt
+ create mode 100644 public/videos/reels/Marco_real_40yearold_202509120542_6f7yt.srt
+ create mode 100644 public/videos/reels/Microscopic_character_says_202509130109_9kj19.srt
+ create mode 100644 public/videos/reels/Mime_acts_out_202509122353_whfwr.srt
+ create mode 100644 public/videos/reels/Perfect_timing_comedy_202509122149_w86qo.srt
+ create mode 100644 public/videos/reels/Person_brushing_teeth_202509130015_broku.srt
+ create mode 100644 public/videos/reels/Person_calmly_says_202509130042_hrmfv.srt
+ create mode 100644 public/videos/reels/Person_dramatically_prepares_202509130055_vc1.srt
+ create mode 100644 public/videos/reels/Person_says_estoy_202509130113_a7rw0.srt
+ create mode 100644 public/videos/reels/Person_says_me_202509130103_au4cr.srt
+ create mode 100644 public/videos/reels/Person_says_tengo_202509130112_zw000.srt
+ create mode 100644 public/videos/reels/Person_says_tengo_202509130114_w08k9.srt
+ create mode 100644 public/videos/reels/Person_says_tengo_202509130121_cdz81.srt
+ create mode 100644 public/videos/reels/Serious_dramatic_buildup_202509122247_8dd2r.srt
+ create mode 100644 public/videos/reels/Serious_dramatic_buildup_202509122342_ltiam.srt
+ create mode 100644 public/videos/reels/Serious_dramatic_buildup_202509122358_fw60h.srt
+ create mode 100644 public/videos/reels/Serious_dramatic_buildup_202509130030_gtw1z.srt
+ create mode 100644 public/videos/reels/Slapstick_comedy_cul_202509122356_aawfx.srt
+ create mode 100644 public/videos/reels/Slapstick_comedy_es_202509122344_bikhw.srt
+ create mode 100644 public/videos/reels/Sofia_beautiful_spanish_202509122006_x8crg.srt
+ create mode 100644 public/videos/reels/Sofia_stunning_25yearold_202509122108_qgi9.srt
+ create mode 100644 public/videos/reels/Spanish_comedy_character_202509122150_z56pw.srt
+ create mode 100644 public/videos/reels/Spanish_comedy_using_202509122211_1aqqr.srt
+ create mode 100644 public/videos/reels/Visual_comedy_35yearold_202509122152_294ev.srt
+ create mode 100644 screenshots/1759743467-feed-test.png
+[2025-10-06 12:49:01] Changes pushed to GitHub
+[master 7c06c8c] 🤖 Auto-backup: 2025-10-06 13:19:26
+ 14 files changed, 920 insertions(+), 662 deletions(-)
+ delete mode 100644 research-notes.md
+ delete mode 100644 test-results.txt
+ delete mode 100644 "test-results/all-pages-complete-\360\237\216\257-ALL--17bb4--ALL-PAGES---Desktop-Mobile-chromium/error-context.md"
+ delete mode 100644 test-results/all-sections-Entertainment-25168-ap-to-Start-loads-correctly-chromium/error-context.md
+ delete mode 100644 test-results/all-sections-Entertainment-7c1ea-on---Spotify-style-playlist-chromium/error-context.md
+ delete mode 100644 test-results/all-sections-Entertainment-df7bd--TikTok-style-vertical-feed-chromium/error-context.md
+ create mode 100644 test-results/vocab-review-Vocabulary-Re-20770-y-state-when-no-words-saved-chromium/error-context.md
+ create mode 100644 test-results/vocab-review-Vocabulary-Re-8915e--when-clicking-vocab-button-chromium/error-context.md
+ create mode 100644 test-results/vocab-review-Vocabulary-Re-8e7ee-ulary-review-section-in-DOM-chromium/error-context.md
+ create mode 100644 test-results/vocab-review-Vocabulary-Re-a45a7-ulary-review-system-scripts-chromium/error-context.md
+ create mode 100644 tests/vocab-review.spec.js
+ create mode 100644 vocabulary-review-styles.css
+[2025-10-06 13:19:26] Changes pushed to GitHub
+[master 4d6b213] 🤖 Auto-backup: 2025-10-06 14:19:30
+ 14 files changed, 628 insertions(+)
+ create mode 100644 screenshots/comprehensive-actions.png
+ create mode 100644 screenshots/comprehensive-feed-loaded.png
+ create mode 100644 screenshots/comprehensive-gamification.png
+ create mode 100644 screenshots/comprehensive-homepage.png
+ create mode 100644 screenshots/comprehensive-mobile.png
+ create mode 100644 screenshots/comprehensive-mock-data.png
+ create mode 100644 screenshots/comprehensive-stories.png
+ create mode 100644 screenshots/vocab-flashcard-css.png
+ create mode 100644 screenshots/vocab-section-manual-trigger.png
+ create mode 100644 screenshots/word-tooltip-initial.png
+ create mode 100644 screenshots/word-tooltip-subtitle-structure.png
+ create mode 100644 tests/comprehensive-current-features.spec.js
+ create mode 100644 tests/vocabulary-review-comprehensive.spec.js
+ create mode 100644 tests/word-tooltip-critical.spec.js
+[2025-10-06 14:19:30] Changes pushed to GitHub
+[master 0ceb4df] 🤖 Auto-backup: 2025-10-06 15:49:35
+ 6 files changed, 641 insertions(+), 3023 deletions(-)
+ create mode 100644 API_ERROR_RECOVERY.md
+ rename public/{videos-feed.html => videos-feed.html.backup} (100%)
+[2025-10-06 15:49:35] Changes pushed to GitHub
+[master 7f9d66c] 🤖 Auto-backup: 2025-10-06 16:19:46
+ 17 files changed, 150 insertions(+), 689 deletions(-)
+ delete mode 100644 API_ERROR_RECOVERY.md
+ rename test-results/video-feed-TikTok-Style-Vi-0e937-likes-video-and-shows-toast-chromium/error-context.md => playwright-report/data/0cb3d6c1d31ba41be581d1f83beafb8ab6b46e9e.md (100%)
+ delete mode 100644 test-results/.last-run.json
+ delete mode 100644 test-results/video-feed-TikTok-Style-Vi-20c74-ideo-loads-within-2-seconds-chromium/error-context.md
+ delete mode 100644 test-results/video-feed-TikTok-Style-Vi-538ff-translation-on-button-click-chromium/error-context.md
+ delete mode 100644 test-results/video-feed-TikTok-Style-Vi-6626b-s-video-feed-with-81-videos-chromium/error-context.md
+ delete mode 100644 test-results/video-feed-TikTok-Style-Vi-9f747-ions-in-Spanish-and-English-chromium/error-context.md
+ delete mode 100644 test-results/video-feed-TikTok-Style-Vi-ae8c6-iz-modal-and-completes-quiz-chromium/error-context.md
+ delete mode 100644 test-results/video-feed-TikTok-Style-Vi-c75d3-ation-tooltip-on-word-click-chromium/error-context.md
+ delete mode 100644 test-results/video-feed-TikTok-Style-Vi-eb795-progress-API-endpoint-works-chromium/error-context.md
+ delete mode 100644 test-results/video-feed-TikTok-Style-Vi-fa2da-ary-save-API-endpoint-works-chromium/error-context.md
+ delete mode 100644 test-results/video-feed-TikTok-Style-Video-Feed-changes-playback-speed-chromium/error-context.md
+ delete mode 100644 test-results/video-feed-TikTok-Style-Video-Feed-saves-word-to-vocabulary-chromium/error-context.md
+[2025-10-06 16:19:46] Changes pushed to GitHub
+[master 2c42e86] 🤖 Auto-backup: 2025-10-06 16:49:51
+ 11 files changed, 4139 insertions(+), 8943 deletions(-)
+ create mode 100644 quick-screenshot.js
+ create mode 100644 take-screenshot-quick.js
+ create mode 100644 test-results/transcription-sync-Video-T-23fe2-should-sync-with-video-time-chromium/error-context.md
+ create mode 100644 test-results/transcription-sync-Video-T-74c3e-ord-should-show-translation-chromium/error-context.md
+ delete mode 100644 test-results/video-feed-TikTok-Style-Vi-6626b-s-video-feed-with-81-videos-chromium/error-context.md
+ delete mode 100644 test-results/video-feed-TikTok-Style-Vi-8adb7--using-vertical-scroll-snap-chromium/error-context.md
+ delete mode 100644 test-results/video-feed-TikTok-Style-Vi-eb795-progress-API-endpoint-works-chromium/error-context.md
+ delete mode 100644 test-results/video-feed-TikTok-Style-Video-Feed-changes-playback-speed-chromium/error-context.md
+ delete mode 100644 test-results/video-feed-TikTok-Style-Video-Feed-saves-word-to-vocabulary-chromium/error-context.md
+[2025-10-06 16:49:51] Changes pushed to GitHub
+[master 786e88ac] 🤖 Auto-backup: 2025-10-06 17:19:56
+ 2 files changed, 2 insertions(+), 269 deletions(-)
+ delete mode 100644 test-results/articles-integration-Artic-c46f7-hould-have-proper-structure-chromium/error-context.md
+[2025-10-06 17:19:56] Changes pushed to GitHub
+[master bc16f2de] 🤖 Auto-backup: 2025-10-06 17:50:03
+ 3 files changed, 15 insertions(+), 273 deletions(-)
+ delete mode 100644 test-results/articles-integration-Artic-c46f7-hould-have-proper-structure-chromium/error-context.md
+[2025-10-06 17:50:03] Changes pushed to GitHub
+[master 69b85610] 🤖 Auto-backup: 2025-10-06 18:20:11
+ 6 files changed, 256 insertions(+), 4 deletions(-)
+ create mode 100644 lib/spanish-news-feed.js
+ create mode 100644 screenshots/current-page-state.png
+ create mode 100644 screenshots/entertainment-feed-check.png
+ create mode 100644 test-results/ai-punctuation-transcripti-2df6b-punctuation-and-translation-chromium/error-context.md
+[2025-10-06 18:20:11] Changes pushed to GitHub
+[2025-10-06 18:50:13] No changes to push
+[master 2e4764d7] 🤖 Auto-backup: 2025-10-06 19:20:14
+ 4 files changed, 260 insertions(+), 20 deletions(-)
+ delete mode 100644 test-results/ai-punctuation-transcripti-2df6b-punctuation-and-translation-chromium/error-context.md
+ create mode 100644 tests/video-speed-controls.spec.js
+[2025-10-06 19:20:14] Changes pushed to GitHub
+[master 21fb4ab0] 🤖 Auto-backup: 2025-10-06 19:50:18
+ 9 files changed, 1642 insertions(+), 117 deletions(-)
+[2025-10-06 19:50:18] Changes pushed to GitHub
+[master 8c0b2a86] 🤖 Auto-backup: 2025-10-06 20:20:20
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 screenshots/transcription-feature-1759771105.png
+[2025-10-06 20:20:20] Changes pushed to GitHub
+[master 1aaf25e7] 🤖 Auto-backup: 2025-10-06 20:50:22
+ 14 files changed, 65 insertions(+), 1713 deletions(-)
+ delete mode 100644 playwright-report/data/0cb3d6c1d31ba41be581d1f83beafb8ab6b46e9e.md
+ create mode 100644 playwright-report/data/54d80c5cf33293ec8c624d3e4b4aeb0578c7e458.md
+ delete mode 100644 test-results/video-speed-controls-Video-2a77d-YouTube-2025-bubble-pattern-chromium/error-context.md
+ delete mode 100644 test-results/video-speed-controls-Video-3312e--work-for-language-learning-chromium/error-context.md
+ delete mode 100644 test-results/video-speed-controls-Video-5b92b-close-after-selecting-speed-chromium/error-context.md
+ delete mode 100644 test-results/video-speed-controls-Video-5cfca-tions-should-work-correctly-chromium/error-context.md
+ delete mode 100644 test-results/video-speed-controls-Video-749b4--work-for-advanced-learners-chromium/error-context.md
+ delete mode 100644 test-results/video-speed-controls-Video-8d40a-uld-persist-in-localStorage-chromium/error-context.md
+ delete mode 100644 test-results/video-speed-controls-Video-9137f-tton-should-show-speed-menu-chromium/error-context.md
+ delete mode 100644 test-results/video-speed-controls-Video-d6122-d-update-video-playbackRate-chromium/error-context.md
+[2025-10-06 20:50:22] Changes pushed to GitHub
+[master 239737f2] 🤖 Auto-backup: 2025-10-06 21:20:25
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+[2025-10-06 21:20:25] Changes pushed to GitHub
+[2025-10-06 21:50:26] No changes to push
+[2025-10-06 22:20:26] No changes to push
+[2025-10-06 22:50:26] No changes to push
+[2025-10-06 23:20:27] No changes to push
+[master f83fceb7] 🤖 Auto-backup: 2025-10-06 23:50:27
+ 3 files changed, 128 insertions(+)
+ create mode 100644 API_ERROR_RECOVERY.md
+ create mode 100644 screenshots/after-restart-1759783812.png
+ create mode 100644 screenshots/current-state-1759783776.png
+[2025-10-06 23:50:27] Changes pushed to GitHub
+[master 7caadaa4] 🤖 Auto-backup: 2025-10-07 00:20:29
+ 1 file changed, 23 insertions(+), 23 deletions(-)
+[2025-10-07 00:20:29] Changes pushed to GitHub
+[master ecc9be9b] 🤖 Auto-backup: 2025-10-07 00:50:33
+ 1 file changed, 7 insertions(+), 56 deletions(-)
+[2025-10-07 00:50:33] Changes pushed to GitHub
+[2025-10-07 01:20:35] No changes to push
+[master 1d34ad4f] 🤖 Auto-backup: 2025-10-07 01:50:35
+ 13 files changed, 837 insertions(+), 1339 deletions(-)
+ create mode 100644 playwright-report/data/b619597304a2a6f1a1376bf7c1f96f02c7db4a7e.md
+ create mode 100644 screenshots/workspace3/2025-10-06T22-47-06-971Z_desktop_01_videos.png
+ delete mode 100644 test-results/ai-punctuation-transcripti-2df6b-punctuation-and-translation-chromium/error-context.md
+ delete mode 100644 "test-results/all-pages-complete-\360\237\216\257-ALL--17bb4--ALL-PAGES---Desktop-Mobile-chromium/error-context.md"
+ delete mode 100644 test-results/all-sections-Entertainment-25168-ap-to-Start-loads-correctly-chromium/error-context.md
+ create mode 100644 test-results/tiktok-immediate-reels-Tik-04fba-hen-clicking-a-Spanish-word-chromium/error-context.md
+ create mode 100644 test-results/tiktok-immediate-reels-Tik-32efb-full-screen-vertical-scroll-chromium/error-context.md
+ create mode 100644 test-results/tiktok-immediate-reels-Tik-719b9-s-NO-menu-selection-screen--chromium/error-context.md
+ create mode 100644 test-results/tiktok-immediate-reels-Tik-8f5e8-subtitles-no-dummy-content--chromium/error-context.md
+ create mode 100644 test-results/tiktok-immediate-reels-Tik-efe81-s-with-word-clickable-class-chromium/error-context.md
+[2025-10-07 01:50:35] Changes pushed to GitHub
+[master 4a398f93] 🤖 Auto-backup: 2025-10-07 02:20:36
+ 4 files changed, 101 insertions(+), 33 deletions(-)
+ create mode 100644 screenshots/1759792614613.png
+ create mode 100644 take-screenshot-now.js
+ create mode 100644 test-transcription-visual.js
+[2025-10-07 02:20:36] Changes pushed to GitHub
+[master b7e3cf35] 🤖 Auto-backup: 2025-10-07 02:50:38
+ 6 files changed, 179 insertions(+)
+ create mode 100644 screenshots/1759794593584-articles-feed.png
+ create mode 100644 screenshots/1759794593584-chat-ai-tutor.png
+ create mode 100644 screenshots/1759794593584-entertainment-feed--main-.png
+ create mode 100644 screenshots/1759794593584-home-landing-page.png
+ create mode 100644 screenshots/1759794593584-music-feed.png
+ create mode 100644 test-entire-app.spec.js
+[2025-10-07 02:50:38] Changes pushed to GitHub
+[master ed223930] 🤖 Auto-backup: 2025-10-07 03:20:39
+ 6 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 screenshots/1759795921193-achievements-page.png
+ create mode 100644 screenshots/1759795921193-articles-feed.png
+ create mode 100644 screenshots/1759795921193-discover-feed.png
+ create mode 100644 screenshots/1759795921193-entertainment-feed--main-.png
+ create mode 100644 screenshots/1759795921193-music-feed.png
+ create mode 100644 screenshots/entertainment-feed-1759795297954.png
+[2025-10-07 03:20:39] Changes pushed to GitHub
+[master aff56f09] 🤖 Auto-backup: 2025-10-07 03:50:42
+ 8 files changed, 126 insertions(+), 1484 deletions(-)
+ delete mode 100644 playwright-report/data/b619597304a2a6f1a1376bf7c1f96f02c7db4a7e.md
+ create mode 100644 test-results/.last-run.json
+ delete mode 100644 test-results/ai-punctuation-transcripti-2df6b-punctuation-and-translation-chromium/error-context.md
+ delete mode 100644 "test-results/all-pages-complete-\360\237\216\257-ALL--17bb4--ALL-PAGES---Desktop-Mobile-chromium/error-context.md"
+ delete mode 100644 test-results/all-sections-Entertainment-25168-ap-to-Start-loads-correctly-chromium/error-context.md
+ delete mode 100644 test-results/all-sections-Entertainment-df7bd--TikTok-style-vertical-feed-chromium/error-context.md
+[2025-10-07 03:50:42] Changes pushed to GitHub
+[master 594d0a2c] 🤖 Auto-backup: 2025-10-07 04:20:43
+ 6 files changed, 2 insertions(+), 62 deletions(-)
+ create mode 100644 screenshots/articles-feed-2025-hybrid-scroll.png
+ create mode 100644 screenshots/articles-feed-initial.png
+ create mode 100644 screenshots/articles-feed-loaded.png
+ delete mode 100644 test-results/articles-feed-hybrid-scrol-95077-news-content-from-RSS-feeds-chromium/error-context.md
+ delete mode 100644 test-results/articles-feed-hybrid-scrol-aa323-auto-load-Load-More-button--chromium/error-context.md
+[2025-10-07 04:20:43] Changes pushed to GitHub
+[master 7a186d3f] 🤖 Auto-backup: 2025-10-07 04:50:45
+ 20 files changed, 205 insertions(+), 217 deletions(-)
+ create mode 100644 screenshots/debug-tiktok-videos-timeout.png
+ create mode 100644 screenshots/workspace3/2025-10-07T01-45-16-495Z_01_index.png
+ create mode 100644 screenshots/workspace3/2025-10-07T01-45-16-495Z_02_tiktok_videos.png
+ create mode 100644 screenshots/workspace3/2025-10-07T01-45-16-495Z_03_video_loaded.png
+ create mode 100644 screenshots/workspace3/2025-10-07T01-45-16-495Z_04_video_scrolled.png
+ create mode 100644 screenshots/workspace3/2025-10-07T01-45-16-495Z_05_unified_feed.png
+ create mode 100644 screenshots/workspace3/2025-10-07T01-48-16-647Z_01_index.png
+ create mode 100644 screenshots/workspace3/2025-10-07T01-48-16-647Z_02_tiktok_videos.png
+ create mode 100644 screenshots/workspace3/2025-10-07T01-48-16-647Z_03_video_loaded.png
+ create mode 100644 screenshots/workspace3/2025-10-07T01-48-16-647Z_04_video_scrolled.png
+ create mode 100644 screenshots/workspace3/2025-10-07T01-48-16-647Z_05_unified_feed.png
+ create mode 100644 screenshots/workspace3/2025-10-07T01-48-16-647Z_06_filter_clicked.png
+ create mode 100644 screenshots/workspace3/2025-10-07T01-48-16-647Z_07_feed_scrolled.png
+ create mode 100644 screenshots/workspace3/2025-10-07T01-48-16-647Z_10_discover_feed.png
+ create mode 100644 screenshots/workspace3/2025-10-07T01-48-16-647Z_11_discover_scrolled.png
+ create mode 100644 screenshots/workspace3/2025-10-07T01-48-16-647Z_12_chat_page.png
+ create mode 100644 screenshots/workspace3/2025-10-07T01-48-16-647Z_13_chat_input.png
+ create mode 100644 screenshots/workspace3/2025-10-07T01-48-16-647Z_14_chat_sent.png
+[2025-10-07 04:50:45] Changes pushed to GitHub
+[master 7dc9affb] 🤖 Auto-backup: 2025-10-07 05:20:47
+ 17 files changed, 674 insertions(+), 2 deletions(-)
+ create mode 100644 screenshots/test-mobile-articles.png
+ create mode 100644 screenshots/test-mobile-videos.png
+ create mode 100644 screenshots/test-tiktok-mobile.png
+ create mode 100644 screenshots/test-tiktok-scroll.png
+ create mode 100644 screenshots/test-tiktok-videos.png
+ create mode 100644 screenshots/test-unified-filter-clicked.png
+ create mode 100644 screenshots/test-unified-scrolled.png
+ create mode 100644 screenshots/test-unified-words.png
+ create mode 100644 test-results/mobile-responsive-Mobile-R-03933-uld-work-on-tablet-viewport-chromium/error-context.md
+ create mode 100644 test-results/mobile-responsive-Mobile-R-1efbd-eed-page-on-mobile-viewport-chromium/error-context.md
+ create mode 100644 test-results/tiktok-videos-TikTok-Video-efac6-y-transcriptions-with-words-chromium/error-context.md
+ create mode 100644 test-results/unified-feed-Unified-Infin-1dc1b-d-with-articles-and-content-chromium/error-context.md
+ create mode 100644 tests/discover-feed.spec.js
+ create mode 100644 tests/mobile-responsive.spec.js
+ create mode 100644 tests/tiktok-videos.spec.js
+ create mode 100644 tests/unified-feed.spec.js
+[2025-10-07 05:20:47] Changes pushed to GitHub
+[master 821e6814] 🤖 Auto-backup: 2025-10-07 05:50:48
+ 15 files changed, 19 insertions(+), 76 deletions(-)
+ delete mode 100644 playwright-report/data/1a4319ea64643fcff8f2c3eaaedda7a5a926e3d0.md
+ create mode 100644 playwright-report/data/54d80c5cf33293ec8c624d3e4b4aeb0578c7e458.md
+ delete mode 100644 playwright-report/data/906ea526e89788c84b894781bb61196e0ecd78eb.md
+ delete mode 100644 test-results/mobile-responsive-Mobile-R-0a48d-eos-page-on-mobile-viewport-chromium/error-context.md
+ delete mode 100644 test-results/tiktok-videos-TikTok-Video-0d577-load-and-display-video-feed-chromium/error-context.md
+ delete mode 100644 test-results/tiktok-videos-TikTok-Video-cd0c6-ikTok-style-vertical-scroll-chromium/error-context.md
+[2025-10-07 05:50:48] Changes pushed to GitHub
+[master 1fdb0f7d] 🤖 Auto-backup: 2025-10-07 06:20:49
+ 1 file changed, 4 insertions(+)
+ create mode 100644 test-results/.last-run.json
+[2025-10-07 06:20:49] Changes pushed to GitHub
+[master 07089897] 🤖 Auto-backup: 2025-10-07 06:50:50
+ 1 file changed, 61 insertions(+), 5 deletions(-)
+[2025-10-07 06:50:50] Changes pushed to GitHub
+[master 8724c8f4] 🤖 Auto-backup: 2025-10-07 07:20:52
+ 1 file changed, 83 insertions(+), 34 deletions(-)
+[2025-10-07 07:20:52] Changes pushed to GitHub
+[2025-10-07 07:50:53] No changes to push
+[2025-10-07 08:20:54] No changes to push
+[2025-10-07 08:50:54] No changes to push
+[2025-10-07 09:20:54] No changes to push
+[2025-10-07 09:50:55] No changes to push
+[master 968254fe] 🤖 Auto-backup: 2025-10-07 10:20:55
+ 2 files changed, 1 insertion(+), 129 deletions(-)
+ delete mode 100644 API_ERROR_RECOVERY.md
+[2025-10-07 10:20:55] Changes pushed to GitHub
+[2025-10-07 10:50:58] No changes to push
+[master 890799fd] 🤖 Auto-backup: 2025-10-07 11:21:01
+ 7 files changed, 1468 insertions(+), 520 deletions(-)
+ create mode 100644 screenshots/workspace3/2025-10-07T08-11-59-867Z_desktop_01_videos.png
+ delete mode 100644 test-results/.last-run.json
+ create mode 100644 "test-results/all-pages-complete-\360\237\216\257-ALL--17bb4--ALL-PAGES---Desktop-Mobile-chromium/error-context.md"
+ create mode 100644 test-results/all-sections-Entertainment-25168-ap-to-Start-loads-correctly-chromium/error-context.md
+ create mode 100644 test-results/all-sections-Entertainment-df7bd--TikTok-style-vertical-feed-chromium/error-context.md
+[2025-10-07 11:21:01] Changes pushed to GitHub
+[master 9134f2ff] 🤖 Auto-backup: 2025-10-07 11:51:04
+ 7 files changed, 995 insertions(+), 1278 deletions(-)
+ create mode 100644 screenshots/workspace3/2025-10-07T08-39-39-189Z_desktop_01_videos.png
+ create mode 100644 screenshots/workspace3/2025-10-07T08-49-38-456Z_desktop_01_videos.png
+ delete mode 100644 test-results/all-sections-Entertainment-df7bd--TikTok-style-vertical-feed-chromium/error-context.md
+[2025-10-07 11:51:04] Changes pushed to GitHub
+[master a7bec232] 🤖 Auto-backup: 2025-10-07 12:21:08
+ 7 files changed, 1072 insertions(+), 1115 deletions(-)
+ create mode 100644 screenshots/workspace3/2025-10-07T09-09-37-726Z_desktop_01_videos.png
+ create mode 100644 screenshots/workspace3/2025-10-07T09-19-40-380Z_desktop_01_videos.png
+ delete mode 100644 test-results/all-sections-Entertainment-df7bd--TikTok-style-vertical-feed-chromium/error-context.md
+[2025-10-07 12:21:08] Changes pushed to GitHub
+[master 289ffe4c] 🤖 Auto-backup: 2025-10-07 12:51:12
+ 5 files changed, 462 insertions(+), 1009 deletions(-)
+ create mode 100644 screenshots/workspace3/2025-10-07T09-39-37-513Z_desktop_01_videos.png
+ delete mode 100644 "test-results/all-pages-complete-\360\237\216\257-ALL--17bb4--ALL-PAGES---Desktop-Mobile-chromium/error-context.md"
+ delete mode 100644 test-results/all-sections-Entertainment-25168-ap-to-Start-loads-correctly-chromium/error-context.md
+[2025-10-07 12:51:12] Changes pushed to GitHub
+[master eb373c27] 🤖 Auto-backup: 2025-10-07 13:21:18
+ 6 files changed, 944 insertions(+), 971 deletions(-)
+ create mode 100644 screenshots/workspace3/2025-10-07T10-19-42-691Z_desktop_01_videos.png
+ create mode 100644 test-results/all-sections-Entertainment-df7bd--TikTok-style-vertical-feed-chromium/error-context.md
+[2025-10-07 13:21:18] Changes pushed to GitHub
+[master 47aa9069] 🤖 Auto-backup: 2025-10-07 13:51:23
+ 6 files changed, 973 insertions(+), 956 deletions(-)
+ create mode 100644 screenshots/workspace3/2025-10-07T10-49-41-230Z_desktop_01_videos.png
+ create mode 100644 test-results/all-sections-Entertainment-df7bd--TikTok-style-vertical-feed-chromium/error-context.md
+[2025-10-07 13:51:23] Changes pushed to GitHub
+[master 7dcee93e] 🤖 Auto-backup: 2025-10-07 14:21:29
+ 5 files changed, 902 insertions(+), 1215 deletions(-)
+ create mode 100644 screenshots/workspace3/2025-10-07T11-19-42-782Z_desktop_01_videos.png
+[2025-10-07 14:21:29] Changes pushed to GitHub
+[master aa0a0240] 🤖 Auto-backup: 2025-10-07 14:51:34
+ 5 files changed, 1246 insertions(+), 1158 deletions(-)
+ create mode 100644 screenshots/workspace3/2025-10-07T11-49-40-485Z_desktop_01_videos.png
+[2025-10-07 14:51:34] Changes pushed to GitHub
+[master badc9255] 🤖 Auto-backup: 2025-10-07 15:21:39
+ 7 files changed, 301 insertions(+), 1359 deletions(-)
+ delete mode 100644 autopilot/state/health.ok
+ create mode 100644 lib/ai-translation-service.js
+ create mode 100644 lib/srt-parser.js
+ delete mode 100644 test-results/ai-punctuation-transcripti-2df6b-punctuation-and-translation-chromium/error-context.md
+ delete mode 100644 "test-results/all-pages-complete-\360\237\216\257-ALL--17bb4--ALL-PAGES---Desktop-Mobile-chromium/error-context.md"
+ delete mode 100644 test-results/all-sections-Entertainment-25168-ap-to-Start-loads-correctly-chromium/error-context.md
+[2025-10-07 15:21:39] Changes pushed to GitHub
+[master 564b5740] 🤖 Auto-backup: 2025-10-07 15:51:43
+ 6 files changed, 1264 insertions(+), 527 deletions(-)
+ create mode 100644 screenshots/quiz-feature-1759841013.png
+ create mode 100644 screenshots/workspace3/2025-10-07T12-49-39-065Z_desktop_01_videos.png
+ create mode 100644 "test-results/all-pages-complete-\360\237\216\257-ALL--17bb4--ALL-PAGES---Desktop-Mobile-chromium/error-context.md"
+ create mode 100644 test-results/all-sections-Entertainment-25168-ap-to-Start-loads-correctly-chromium/error-context.md
+[2025-10-07 15:51:43] Changes pushed to GitHub
+[master e65987a7] 🤖 Auto-backup: 2025-10-07 16:21:47
+ 1 file changed, 55 insertions(+), 55 deletions(-)
+[2025-10-07 16:21:47] Changes pushed to GitHub
+[2025-10-07 16:51:48] No changes to push
+[2025-10-07 17:21:49] No changes to push
+[master 77052e4b] 🤖 Auto-backup: 2025-10-07 17:51:49
+ 1 file changed, 87 insertions(+), 108 deletions(-)
+[2025-10-07 17:51:49] Changes pushed to GitHub
+[2025-10-07 18:21:56] No changes to push
+[2025-10-07 18:51:56] No changes to push
+[master 93713a6b] 🤖 Auto-backup: 2025-10-07 19:21:57
+ 2 files changed, 71 insertions(+), 74 deletions(-)
+ create mode 100644 test-results/ai-punctuation-transcripti-2df6b-punctuation-and-translation-chromium/error-context.md
+[2025-10-07 19:21:57] Changes pushed to GitHub
+[2025-10-07 19:52:03] No changes to push
+[2025-10-07 20:22:03] Changes pushed to GitHub
+[2025-10-07 20:52:06] Changes pushed to GitHub
+[2025-10-07 21:22:08] Changes pushed to GitHub
+[2025-10-07 21:52:12] Changes pushed to GitHub
+[2025-10-07 22:22:13] No changes to push
+[2025-10-07 22:52:15] No changes to push
+[master 01eec438] 🤖 Auto-backup: 2025-10-07 23:22:15
+ 2 files changed, 550 insertions(+), 1 deletion(-)
+ create mode 100644 test-results/transcription-test-real-ti-387e4-ription-with-AI-punctuation-chromium/error-context.md
+[2025-10-07 23:22:15] Changes pushed to GitHub
+[master 5f1ad880] 🤖 Auto-backup: 2025-10-07 23:52:18
+ 1 file changed, 7 insertions(+), 8 deletions(-)
+[2025-10-07 23:52:18] Changes pushed to GitHub
+[2025-10-08 00:22:24] Changes pushed to GitHub
+[2025-10-08 00:52:27] Changes pushed to GitHub
+[2025-10-08 01:22:29] Changes pushed to GitHub
+[2025-10-08 01:52:33] Changes pushed to GitHub
+[2025-10-08 02:22:34] Changes pushed to GitHub
+[2025-10-08 02:52:37] Changes pushed to GitHub
+[2025-10-08 03:22:41] Changes pushed to GitHub
+[2025-10-08 03:52:43] Changes pushed to GitHub
+[2025-10-08 04:22:43] Changes pushed to GitHub
+[2025-10-08 04:52:49] Changes pushed to GitHub
+[2025-10-08 05:22:54] Changes pushed to GitHub
+[2025-10-08 05:52:59] Changes pushed to GitHub
+[2025-10-08 06:23:12] Changes pushed to GitHub
+[2025-10-08 06:53:23] Changes pushed to GitHub
+[2025-10-08 07:23:34] Changes pushed to GitHub
+[2025-10-08 07:53:43] Changes pushed to GitHub
+[2025-10-08 08:23:52] Changes pushed to GitHub
+[2025-10-08 08:54:07] No changes to push
+[2025-10-08 09:24:11] No changes to push
+[2025-10-08 09:54:13] No changes to push
+[2025-10-08 10:24:17] No changes to push
+[2025-10-08 10:54:17] Changes pushed to GitHub
+[2025-10-08 11:24:22] Changes pushed to GitHub
+[2025-10-08 11:54:26] Changes pushed to GitHub
+[2025-10-08 12:24:29] Changes pushed to GitHub
+[2025-10-08 12:54:35] Changes pushed to GitHub
+[2025-10-08 13:24:37] Changes pushed to GitHub
+[2025-10-08 13:54:51] Changes pushed to GitHub
+[2025-10-08 14:24:55] Changes pushed to GitHub
+[2025-10-08 14:54:58] Changes pushed to GitHub
+[2025-10-08 15:25:01] Changes pushed to GitHub
+[2025-10-08 19:25:47] Changes pushed to GitHub
+[2025-10-08 19:55:48] No changes to push
+[master c1190af2] 🤖 Auto-backup: 2025-10-08 20:25:49
+ 4 files changed, 853 insertions(+), 6 deletions(-)
+ create mode 100644 API_ERROR_RECOVERY.md
+ create mode 100644 index.html
+[2025-10-08 20:25:49] Changes pushed to GitHub
+[2025-10-08 20:51:18] No changes to push
+[master 367d2432] 🤖 Auto-backup: 2025-10-08 21:21:35
+ 5 files changed, 1051 insertions(+), 2 deletions(-)
+ create mode 100644 public/tiktok-video-feed.html
+ create mode 100644 screenshots/1759947384547-tiktok-feed.png
+ create mode 100644 tests/tiktok-video-feed.spec.js
+[2025-10-08 21:21:35] Changes pushed to GitHub
+[master 55438e41] 🤖 Auto-backup: 2025-10-08 21:51:41
+ 15 files changed, 310 insertions(+), 1999 deletions(-)
+ delete mode 100644 API_ERROR_RECOVERY.md
+ create mode 100644 screenshots/final-improved-1759948904.png
+ create mode 100644 screenshots/improved-design-1759948532.png
+ rename test-results/{tiktok-video-feed-TikTok-S-2673e-ideo-cards-with-scroll-snap-chromium => test-improved-design-VIDA--19868-etween-Videos-and-News-tabs-chromium}/error-context.md (100%)
+ rename test-results/{tiktok-video-feed-TikTok-S-88723-bar-tracking-video-playback-chromium => test-improved-design-VIDA--5e870-only-ONE-navigation-element-chromium}/error-context.md (100%)
+ rename test-results/{tiktok-video-feed-TikTok-S-aa296-ormance---page-load-time-2s-chromium => test-improved-design-VIDA--7c231-ttom-navigation-like-TikTok-chromium}/error-context.md (100%)
+ rename test-results/{tiktok-video-feed-TikTok-S-c2597--controls-play-pause-speed--chromium => test-improved-design-VIDA--94100-popups-modals-achievements--chromium}/error-context.md (100%)
+ rename test-results/{tiktok-video-feed-TikTok-S-c6997-ith-like-save-share-buttons-chromium => test-improved-design-VIDA--d4d36-ok-style-full-screen-videos-chromium}/error-context.md (100%)
+ delete mode 100644 test-results/tiktok-video-feed-TikTok-S-c9580-o-next-video-vertical-snap--chromium/error-context.md
+ delete mode 100644 test-results/tiktok-video-feed-TikTok-S-d31e2-lay-video-info-title-level--chromium/error-context.md
+ delete mode 100644 test-results/tiktok-video-feed-TikTok-S-e9bb8-play-video-when-in-viewport-chromium/error-context.md
+ create mode 100644 tests/test-improved-design.spec.js
+[2025-10-08 21:51:41] Changes pushed to GitHub
+[2025-10-08 22:21:47] Changes pushed to GitHub
+[master ae7b1906] 🤖 Auto-backup: 2025-10-08 22:51:49
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+[2025-10-08 22:51:49] Changes pushed to GitHub
+[2025-10-08 23:21:52] No changes to push
+[master fc119826] 🤖 Auto-backup: 2025-10-08 23:51:53
+ 3 files changed, 123 insertions(+), 8 deletions(-)
+ create mode 100644 test-browser-loading.js
+[2025-10-08 23:51:53] Changes pushed to GitHub
+[master 055ecbcb] 🤖 Auto-backup: 2025-10-09 00:22:03
+ 4 files changed, 75 insertions(+), 95 deletions(-)
+ create mode 100644 screenshots/current-state-1759958494772.png
+ create mode 100644 test-results/.last-run.json
+[2025-10-09 00:22:03] Changes pushed to GitHub
+[master ba68c7e6] 🤖 Auto-backup: 2025-10-09 00:52:07
+ 3 files changed, 326 insertions(+), 79 deletions(-)
+[2025-10-09 00:52:07] Changes pushed to GitHub
+[2025-10-09 01:22:18] No changes to push
+[master 61d52695] 🤖 Auto-backup: 2025-10-09 01:52:18
+ 38 files changed, 1276 insertions(+), 23 deletions(-)
+ create mode 100644 generate-srt-for-missing-videos.js
+ create mode 100644 lib/srs-video-prioritizer.js
+ create mode 100644 public/videos/reels/Alejandro_handsome_30yearold_202509122036_.srt
+ create mode 100644 public/videos/reels/Back_to_what_202509101756_fhb2f.srt
+ create mode 100644 public/videos/reels/Back_to_what_202509101758_ab6bz.srt
+ create mode 100644 public/videos/reels/Classical_theater_dramatic_202509122347_7veb.srt
+ create mode 100644 public/videos/reels/Create_a_viral_202509090401 (6).srt
+ create mode 100644 public/videos/reels/Create_a_viral_202509090401 (7).srt
+ create mode 100644 public/videos/reels/Downy_owl_chick_202509110229_6zvtv.srt
+ create mode 100644 public/videos/reels/Dramatic_countdown_to_202509122350_rn7f4.srt
+ create mode 100644 public/videos/reels/Elderly_grandmother_secretly_202509110222_3d6.srt
+ create mode 100644 public/videos/reels/Ence_documentary_style_202509112201_qhskw.srt
+ create mode 100644 public/videos/reels/Existential_object_genius_202509101754_6ozz9.srt
+ create mode 100644 public/videos/reels/Extreme_opposites_language_202509101709_w4bzd.srt
+ create mode 100644 public/videos/reels/Fashion_announcer_describing_202509110020_cm8.srt
+ create mode 100644 public/videos/reels/Genius_punchline_talking_202509101625_6gjk5.srt
+ create mode 100644 public/videos/reels/Ive_handheld_beach_202509112107_w9v9c.srt
+ create mode 100644 public/videos/reels/Langai_cartoon_earth_202509121926_mw522.srt
+ create mode 100644 public/videos/reels/Langai_cartoon_earth_202509121956_qz8nw.srt
+ create mode 100644 public/videos/reels/Magic_show_magician_202509130018_q2gma.srt
+ create mode 100644 public/videos/reels/Medieval_court_scene_202509130044_4o2o6.srt
+ create mode 100644 public/videos/reels/Mime_acts_out_202509122351_io2s8.srt
+ create mode 100644 public/videos/reels/Opera_singer_dramatically_202509122349_dyzjg.srt
+ create mode 100644 public/videos/reels/Person_says_necesito_202509130115_ly6g0.srt
+ create mode 100644 public/videos/reels/Person_says_necesito_202509130115_xouyd.srt
+ create mode 100644 public/videos/reels/Person_says_tengo_202509130053_7iwnv.srt
+ create mode 100644 public/videos/reels/Person_says_tengo_202509130103_8qon7.srt
+ create mode 100644 public/videos/reels/Person_says_tengo_202509130113_e68cu.srt
+ create mode 100644 public/videos/reels/Person_trying_to_202509101652_vvx5z.srt
+ create mode 100644 public/videos/reels/Serious_theater_performance_202509122348_dzg.srt
+ create mode 100644 public/videos/reels/Sofia_beautiful_spanish_202509122009_tlcio.srt
+ create mode 100644 public/videos/reels/Someone_trying_to_202509101637_vrqtj.srt
+ create mode 100644 public/videos/reels/Spanish_conversation_naturally_202509122327_o.srt
+ create mode 100644 public/videos/reels/Viral_tiktok_spanish_202509120217_7q4kp.srt
+ create mode 100644 test-results/test-transcription-live-Tr-98e36-scriptions-without-flashing-chromium/error-context.md
+ create mode 100644 tests/test-transcription-live.spec.js
+[2025-10-09 01:52:18] Changes pushed to GitHub
+[2025-10-09 02:22:23] No changes to push
+[2025-10-09 02:52:23] Changes pushed to GitHub
+[2025-10-09 03:22:28] Changes pushed to GitHub
+[2025-10-09 03:52:32] Changes pushed to GitHub
+[2025-10-09 04:22:40] Changes pushed to GitHub
+[2025-10-09 04:52:49] Changes pushed to GitHub
+[2025-10-09 05:22:56] Changes pushed to GitHub
+[2025-10-09 05:53:13] Changes pushed to GitHub
+[2025-10-09 06:23:18] Changes pushed to GitHub
+[2025-10-09 06:53:26] Changes pushed to GitHub
+[2025-10-09 07:23:32] Changes pushed to GitHub
+[2025-10-09 07:53:42] Changes pushed to GitHub
+[2025-10-09 08:23:46] Changes pushed to GitHub
+[2025-10-09 08:53:55] Changes pushed to GitHub
+[2025-10-09 09:23:58] Changes pushed to GitHub
+[2025-10-09 09:55:17] Changes pushed to GitHub
+[2025-10-09 10:25:23] Changes pushed to GitHub
+[2025-10-09 10:55:28] Changes pushed to GitHub
+[2025-10-09 11:25:30] Changes pushed to GitHub
+[master 4f2ace52] 🤖 Auto-backup: 2025-10-09 11:56:46
+ 4 files changed, 8105 deletions(-)
+ delete mode 100644 test-results/.last-run.json
+ delete mode 100644 test-results/test-transcription-fix-Cli-a7e18-hout-breaking-transcription-chromium/error-context.md
+ delete mode 100644 test-results/test-transcription-fix-Tra-3074c-y-shows-and-hides-correctly-chromium/error-context.md
+ delete mode 100644 test-results/test-transcription-fix-Tra-9840d-e-smoothly-without-flashing-chromium/error-context.md
+[2025-10-09 11:56:46] Changes pushed to GitHub
+[2025-10-09 12:26:49] No changes to push
+[master 407a3bad] 🤖 Auto-backup: 2025-10-09 12:56:49
+ 3 files changed, 162 insertions(+)
+ create mode 100644 test-results/.last-run.json
+ create mode 100644 test-results/verify-entertainment-feed--74b3f-ld-load-page-without-errors-chromium/error-context.md
+ create mode 100644 tests/verify-entertainment-feed-works.spec.js
+[2025-10-09 12:56:49] Changes pushed to GitHub
+[master 3df35c41] 🤖 Auto-backup: 2025-10-09 13:28:06
+ 2 files changed, 54 insertions(+), 1 deletion(-)
+ create mode 100644 tests/verify-transcriptions.spec.js
+[2025-10-09 13:28:06] Changes pushed to GitHub
+[2025-10-09 13:59:21] No changes to push
+[2025-10-09 14:29:22] Changes pushed to GitHub
+[2025-10-09 14:59:22] Changes pushed to GitHub
+[2025-10-09 15:29:23] Changes pushed to GitHub
+[2025-10-09 15:59:24] Changes pushed to GitHub
+[2025-10-09 16:29:25] Changes pushed to GitHub
+[2025-10-09 16:59:26] Changes pushed to GitHub
+[2025-10-09 17:29:27] Changes pushed to GitHub
+[2025-10-09 17:59:28] Changes pushed to GitHub
+[2025-10-09 18:29:29] Changes pushed to GitHub
+[2025-10-09 19:00:44] Changes pushed to GitHub
+[2025-10-09 19:30:45] Changes pushed to GitHub
+[2025-10-09 20:00:46] Changes pushed to GitHub
+[2025-10-09 20:30:46] Changes pushed to GitHub
+[2025-10-09 21:00:47] Changes pushed to GitHub
+[2025-10-09 21:30:48] Changes pushed to GitHub
+[2025-10-09 22:00:49] Changes pushed to GitHub
+[2025-10-09 22:32:04] Changes pushed to GitHub
+[2025-10-09 23:02:05] Changes pushed to GitHub
+[2025-10-09 23:33:20] Changes pushed to GitHub
+[2025-10-10 00:03:22] Changes pushed to GitHub
+[2025-10-10 00:33:25] Changes pushed to GitHub
+[2025-10-10 01:04:42] Changes pushed to GitHub
+[2025-10-10 01:34:42] Changes pushed to GitHub
+[2025-10-10 02:04:45] Changes pushed to GitHub
+[2025-10-10 02:34:48] Changes pushed to GitHub
+[2025-10-10 03:04:53] Changes pushed to GitHub
+[2025-10-10 03:34:59] Changes pushed to GitHub
+[2025-10-10 04:05:03] Changes pushed to GitHub
+[2025-10-10 04:35:07] Changes pushed to GitHub
+[2025-10-10 05:05:16] Changes pushed to GitHub
+[2025-10-10 05:35:21] Changes pushed to GitHub
+[2025-10-10 06:05:25] Changes pushed to GitHub
+[2025-10-10 06:35:29] Changes pushed to GitHub
+[2025-10-10 07:05:34] Changes pushed to GitHub
+[2025-10-10 07:35:40] Changes pushed to GitHub
+[2025-10-10 08:05:46] Changes pushed to GitHub
+[2025-10-10 08:35:49] Changes pushed to GitHub
+[2025-10-10 09:05:52] Changes pushed to GitHub
+[2025-10-10 09:35:55] Changes pushed to GitHub
+[2025-10-10 10:05:58] Changes pushed to GitHub
+[2025-10-10 10:36:02] Changes pushed to GitHub
+[2025-10-10 11:07:19] Changes pushed to GitHub
+[2025-10-10 11:37:22] Changes pushed to GitHub
+[2025-10-10 12:07:25] Changes pushed to GitHub
+[2025-10-10 12:37:29] Changes pushed to GitHub
+[2025-10-10 13:07:32] Changes pushed to GitHub
+[2025-10-10 13:38:51] Changes pushed to GitHub
+[2025-10-10 14:08:58] Changes pushed to GitHub
+[2025-10-10 14:39:03] Changes pushed to GitHub
+[2025-10-10 15:09:08] Changes pushed to GitHub
+[2025-10-10 15:39:15] Changes pushed to GitHub
+[2025-10-10 16:09:20] Changes pushed to GitHub
+[2025-10-10 16:39:24] Changes pushed to GitHub
+[2025-10-10 17:09:27] Changes pushed to GitHub
+[2025-10-10 17:39:31] Changes pushed to GitHub
+[2025-10-10 18:09:37] Changes pushed to GitHub
+[2025-10-10 18:39:43] Changes pushed to GitHub
+[2025-10-10 19:09:50] Changes pushed to GitHub
+[2025-10-10 19:39:55] Changes pushed to GitHub
+[2025-10-10 20:11:13] Changes pushed to GitHub
+[2025-10-10 20:41:19] Changes pushed to GitHub
+[2025-10-10 21:11:25] Changes pushed to GitHub
+[2025-10-10 21:41:32] Changes pushed to GitHub
+[2025-10-10 22:12:51] Changes pushed to GitHub
+[2025-10-10 22:42:57] Changes pushed to GitHub
+[2025-10-10 23:13:04] Changes pushed to GitHub
+[2025-10-10 23:43:10] Changes pushed to GitHub
+[2025-10-11 00:13:17] Changes pushed to GitHub
+[2025-10-11 00:43:22] Changes pushed to GitHub
+[2025-10-11 01:13:30] Changes pushed to GitHub
+[2025-10-11 01:43:37] Changes pushed to GitHub
+[2025-10-11 02:13:41] Changes pushed to GitHub
+[2025-10-11 02:43:44] Changes pushed to GitHub
+[2025-10-11 03:13:51] Changes pushed to GitHub
+[2025-10-11 03:43:54] Changes pushed to GitHub
+[2025-10-11 04:14:00] Changes pushed to GitHub
+[2025-10-11 04:44:04] Changes pushed to GitHub
+[2025-10-11 05:14:07] Changes pushed to GitHub
+[2025-10-11 05:45:25] Changes pushed to GitHub
+[2025-10-11 06:15:32] Changes pushed to GitHub
+[2025-10-11 06:46:51] Changes pushed to GitHub
+[2025-10-11 07:16:55] Changes pushed to GitHub
+[2025-10-11 07:48:13] Changes pushed to GitHub
+[2025-10-11 08:18:17] Changes pushed to GitHub
+[2025-10-11 08:48:21] Changes pushed to GitHub
+[2025-10-11 09:18:27] Changes pushed to GitHub
+[2025-10-11 09:48:32] Changes pushed to GitHub
+[2025-10-11 10:18:36] Changes pushed to GitHub
+[2025-10-11 10:48:42] Changes pushed to GitHub
+[2025-10-11 11:20:01] Changes pushed to GitHub
+[2025-10-11 11:50:05] Changes pushed to GitHub
+[2025-10-11 12:21:24] Changes pushed to GitHub
+[2025-10-11 12:52:44] Changes pushed to GitHub
+[2025-10-11 13:24:02] Changes pushed to GitHub
+[2025-10-11 13:55:20] Changes pushed to GitHub
+[2025-10-11 14:25:24] Changes pushed to GitHub
+[2025-10-11 14:55:31] Changes pushed to GitHub
+[2025-10-11 15:25:39] Changes pushed to GitHub
+[2025-10-11 15:55:52] Changes pushed to GitHub
+[2025-10-11 16:25:57] Changes pushed to GitHub
+[2025-10-11 16:56:10] Changes pushed to GitHub
+[2025-10-11 17:26:24] Changes pushed to GitHub
+[2025-10-11 17:56:36] Changes pushed to GitHub
+[2025-10-11 18:26:43] Changes pushed to GitHub
+[2025-10-11 18:56:51] Changes pushed to GitHub
+[2025-10-11 19:26:56] Changes pushed to GitHub
+[2025-10-11 19:57:03] Changes pushed to GitHub
+[2025-10-11 20:28:19] Changes pushed to GitHub
+[2025-10-11 20:58:25] Changes pushed to GitHub
+[2025-10-11 21:28:30] Changes pushed to GitHub
+[2025-10-11 21:58:35] Changes pushed to GitHub
+[2025-10-11 22:28:39] Changes pushed to GitHub
+[2025-10-11 22:58:43] Changes pushed to GitHub
+[2025-10-11 23:28:48] Changes pushed to GitHub
+[2025-10-11 23:58:54] Changes pushed to GitHub
+[2025-10-12 00:28:58] Changes pushed to GitHub
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+<<<<<<< HEAD
+=======
+Auto-push disabled. Configure SSH keys or use manual push.
+>>>>>>> agent-6-deployment
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.
+Auto-push disabled. Configure SSH keys or use manual push.

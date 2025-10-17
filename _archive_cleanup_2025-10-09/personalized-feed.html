@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🌍 VIDA - Your Personal Feed</title>
+    <style>
+        /* RESET & BASE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary: #ff0050;
+            --secondary: #667eea;
+            --bg-dark: #000000;
+            --bg-card: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* MINIMALIST TOP BAR (Instagram 2025) */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* FEED CONTAINER - LAZY LOADING OPTIMIZED */
+        .feed-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 60px auto 80px;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* CONTENT CARD - Instagram 2025 Standard */
+        .content-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            margin: 16px;
+            overflow: hidden;
+            animation: fadeInUp 0.4s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* CARD HEADER */
+        .card-header {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            gap: 12px;
+        }
+
+        .card-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .card-info {
+            flex: 1;
+        }
+
+        .card-source {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .card-level {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* CARD MEDIA */
+        .card-media {
+            position: relative;
+            width: 100%;
+            background: #000;
+        }
+
+        .card-media img {
+            width: 100%;
+            display: block;
+            max-height: 400px;
+            object-fit: cover;
+        }
+
+        /* CARD CONTENT */
+        .card-content {
+            padding: 16px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .card-text {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .card-translation {
+            font-size: 14px;
+            color: var(--text-secondary);
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-top: 12px;
+            display: none;
+        }
+
+        .card-translation.show {
+            display: block;
+        }
+
+        /* CARD ACTIONS - Minimalist (TikTok 2025) */
+        .card-actions {
+            display: flex;
+            gap: 16px;
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        /* SRS REVIEW CARD - Special Styling */
+        .srs-review-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .srs-review-content {
+            padding: 24px;
+            text-align: center;
+        }
+
+        .srs-word {
+            font-size: 36px;
+            font-weight: 900;
+            margin-bottom: 16px;
+        }
+
+        .srs-translation {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .srs-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .srs-btn {
+            padding: 12px 24px;
+            border-radius: 20px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .srs-btn.forgot {
+            background: #ef4444;
+            color: white;
+        }
+
+        .srs-btn.hard {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .srs-btn.good {
+            background: #10b981;
+            color: white;
+        }
+
+        .srs-btn.easy {
+            background: #3b82f6;
+            color: white;
+        }
+
+        /* LOADING SPINNER - Instagram 2025 */
+        .loading {
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* LAZY LOAD PLACEHOLDER */
+        .lazy-placeholder {
+            height: 300px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            margin: 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="logo">VIDA</div>
+        <div class="stats-pill">
+            <span id="streakText">🔥 0</span>
+            <span id="wordsText">📚 0</span>
+        </div>
+    </div>
+
+    <!-- FEED CONTAINER -->
+    <div class="feed-container" id="feedContainer">
+        <!-- Content cards will be inserted here -->
+    </div>
+
+    <!-- LOADING SPINNER -->
+    <div class="loading" id="loadingIndicator">
+        <div class="spinner"></div>
+    </div>
+
+    <script>
+        // 🧠 PERSONALIZED FEED WITH SRS INTEGRATION
+        // Based on TikTok/Instagram 2025 algorithms
+
+        const userId = localStorage.getItem('userId') || 'default_user';
+        const userLevel = localStorage.getItem('userLevel') || 'A2';
+        const userInterests = localStorage.getItem('userInterests') || 'news,culture,technology';
+
+        let currentPage = 1;
+        let isLoading = false;
+        let hasMore = true;
+
+        const feedContainer = document.getElementById('feedContainer');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+
+        // Load initial feed
+        loadFeed();
+
+        // Infinite scroll (Instagram/TikTok pattern)
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.innerHeight + window.scrollY;
+            const threshold = document.documentElement.scrollHeight - 1000; // Load before end
+
+            if (scrollPosition >= threshold && !isLoading && hasMore) {
+                currentPage++;
+                loadFeed();
+            }
+        });
+
+        // Fetch personalized feed from API
+        async function loadFeed() {
+            if (isLoading) return;
+            isLoading = true;
+            loadingIndicator.style.display = 'flex';
+
+            try {
+                const response = await fetch(
+                    `/api/personalized-feed?page=${currentPage}&limit=20&level=${userLevel}&interests=${userInterests}`,
+                    {
+                        headers: {
+                            'x-user-id': userId
+                        }
+                    }
+                );
+
+                const data = await response.json();
+
+                if (data.success) {
+                    renderFeed(data.feed);
+                    hasMore = data.pagination.hasMore;
+                    updateStats();
+                }
+            } catch (error) {
+                console.error('❌ Feed load error:', error);
+            } finally {
+                isLoading = false;
+                loadingIndicator.style.display = 'none';
+            }
+        }
+
+        // Render feed items
+        function renderFeed(items) {
+            items.forEach(item => {
+                const card = createCard(item);
+                feedContainer.appendChild(card);
+            });
+        }
+
+        // Create card element based on type
+        function createCard(item) {
+            const card = document.createElement('div');
+
+            if (item.type === 'srs_review') {
+                card.className = 'content-card srs-review-card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="card-avatar">🧠</div>
+                        <div class="card-info">
+                            <div class="card-source">Vocabulary Review</div>
+                            <div class="card-level">Due for review</div>
+                        </div>
+                    </div>
+                    <div class="srs-review-content">
+                        <div class="srs-word">${item.word}</div>
+                        <div class="srs-translation">${item.translation}</div>
+                        <div class="srs-buttons">
+                            <button class="srs-btn forgot" onclick="reviewCard('${item.id}', 0)">Forgot</button>
+                            <button class="srs-btn hard" onclick="reviewCard('${item.id}', 3)">Hard</button>
+                            <button class="srs-btn good" onclick="reviewCard('${item.id}', 4)">Good</button>
+                            <button class="srs-btn easy" onclick="reviewCard('${item.id}', 5)">Easy</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Regular content card
+                card.className = 'content-card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="card-avatar">${getTypeEmoji(item.type)}</div>
+                        <div class="card-info">
+                            <div class="card-source">${item.source || 'VIDA'}</div>
+                            <div class="card-level">${item.difficulty_level || userLevel}</div>
+                        </div>
+                    </div>
+                    ${item.thumbnail ? `
+                    <div class="card-media">
+                        <img src="${item.thumbnail}" alt="${item.title}" loading="lazy">
+                    </div>
+                    ` : ''}
+                    <div class="card-content">
+                        ${item.title ? `<div class="card-title">${item.title}</div>` : ''}
+                        <div class="card-text">${item.spanish || item.content}</div>
+                        <div class="card-translation" id="translation_${item.id}">
+                            ${item.english || item.translation || 'Translation not available'}
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="action-btn" onclick="toggleTranslation('${item.id}')">
+                            👁️ Translation
+                        </button>
+                        <button class="action-btn" onclick="saveWord('${item.id}')">
+                            💾 Save
+                        </button>
+                        <button class="action-btn" onclick="recordEngagement('${item.id}', 'like')">
+                            ❤️ Like
+                        </button>
+                    </div>
+                `;
+            }
+
+            return card;
+        }
+
+        // Get emoji for content type
+        function getTypeEmoji(type) {
+            const emojis = {
+                article: '📰',
+                video: '🎬',
+                news: '📢',
+                social: '💬',
+                meme: '😂',
+                culture: '🎨',
+                post: '✍️'
+            };
+            return emojis[type] || '📱';
+        }
+
+        // Toggle translation visibility
+        function toggleTranslation(itemId) {
+            const translation = document.getElementById(`translation_${itemId}`);
+            translation.classList.toggle('show');
+            recordEngagement(itemId, 'view_translation');
+        }
+
+        // Save word to vocabulary
+        async function saveWord(itemId) {
+            // TODO: Extract word and save to SRS
+            recordEngagement(itemId, 'save');
+            alert('Word saved! ✅');
+        }
+
+        // Review SRS card
+        async function reviewCard(cardId, quality) {
+            try {
+                await fetch('/api/srs/review', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-user-id': userId
+                    },
+                    body: JSON.stringify({ cardId, quality })
+                });
+
+                // Remove card from feed
+                document.querySelector(`[data-card-id="${cardId}"]`)?.remove();
+                recordEngagement(cardId, 'review');
+            } catch (error) {
+                console.error('❌ Review error:', error);
+            }
+        }
+
+        // Record engagement (for algorithm learning)
+        async function recordEngagement(itemId, engagementType) {
+            try {
+                await fetch('/api/engagement', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-user-id': userId
+                    },
+                    body: JSON.stringify({ itemId, engagementType })
+                });
+            } catch (error) {
+                console.error('❌ Engagement tracking error:', error);
+            }
+        }
+
+        // Update stats in top bar
+        async function updateStats() {
+            try {
+                const response = await fetch('/api/user-stats', {
+                    headers: {
+                        'x-user-id': userId
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('streakText').textContent = `🔥 ${data.stats.streak}`;
+                    document.getElementById('wordsText').textContent = `📚 ${data.stats.totalWords}`;
+                }
+            } catch (error) {
+                console.error('❌ Stats error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

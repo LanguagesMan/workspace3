@@ -1,0 +1,92 @@
+{
+  "generated_at": "2025-10-01T06:30:00Z",
+  "source": "THEMED_SERIES_GENERATOR via Flow",
+  "total_videos": 6,
+  "videos": [
+    {
+      "id": 1,
+      "character": "MARCO",
+      "sentence": "Es-ta mú-si-ca es muy fuer-te",
+      "translation": "This music is very loud",
+      "visual_word": "FUERTE",
+      "visual_effect": "letters vibrating with sound waves",
+      "plot_twist": "Everyone starts dancing except him",
+      "hilarious_ending": "His belly starts jiggling to the beat and he becomes the main attraction",
+      "theme": "Spanish Festival"
+    },
+    {
+      "id": 2,
+      "character": "MARCO",
+      "sentence": "Ne-ce-si-to en-con-trar el ba-ño",
+      "translation": "I need to find the bathroom",
+      "visual_word": "BAÑO",
+      "visual_effect": "letters made of bathroom tiles and running water",
+      "plot_twist": "The word BAÑO makes him literally get flushed down a drain and appear in random bathrooms",
+      "hilarious_ending": "becomes so lost he accidentally discovers a new dimension and gets a Nobel Prize for interdimensional plumbing",
+      "theme": "Spanish Mall Navigation"
+    },
+    {
+      "id": 3,
+      "character": "PALOMA",
+      "sentence": "Es-ta bo-de-ga tie-ne vi-no ca-ro",
+      "translation": "This winery has expensive wine",
+      "visual_word": "CARO",
+      "visual_effect": "letters made of gold and diamonds that sparkle expensively",
+      "plot_twist": "The word CARO makes everything she touches turn to solid gold",
+      "hilarious_ending": "becomes so expensive she needs her own currency and starts the Bank of Paloma",
+      "theme": "Spanish Wine Country"
+    },
+    {
+      "id": 4,
+      "character": "MARCO",
+      "sentence": "Ne-ce-si-to en-con-trar el ba-ño",
+      "translation": "I need to find the bathroom",
+      "visual_word": "BAÑO",
+      "visual_effect": "letters made of bathroom tiles and running water",
+      "plot_twist": "The word BAÑO makes him literally get flushed down a drain and appear in random bathrooms",
+      "hilarious_ending": "becomes so lost he accidentally discovers a new dimension and gets a Nobel Prize for interdimensional plumbing",
+      "theme": "Spanish Mall Navigation"
+    },
+    {
+      "id": 5,
+      "character": "MARCO",
+      "sentence": "Es-ta mú-si-ca es muy fuer-te",
+      "translation": "This music is very loud",
+      "visual_word": "FUERTE",
+      "visual_effect": "letters vibrating with sound waves",
+      "plot_twist": "Everyone starts dancing except him",
+      "hilarious_ending": "His belly starts jiggling to the beat and he becomes the main attraction",
+      "theme": "Spanish Festival"
+    },
+    {
+      "id": 6,
+      "character": "CARMEN",
+      "sentence": "Es-te vi-en-to es muy fuer-te",
+      "translation": "This wind is very strong",
+      "visual_word": "FUERTE",
+      "visual_effect": "letters made of hurricane force winds that blow everything into orbit",
+      "plot_twist": "The word FUERTE makes her dance create actual hurricane winds",
+      "hilarious_ending": "becomes so mighty she accidentally high-fives the ocean and parts the Mediterranean Sea",
+      "theme": "Spanish Beach Vacation"
+    }
+  ],
+  "characters": {
+    "MARCO": {
+      "description": "40-year-old American tourist with massive belly, red 'I ❤️ ESPAÑA' t-shirt",
+      "voice": "Enthusiastic nasally American tourist, terrible Spanish with heavy accent"
+    },
+    "PALOMA": {
+      "description": "30-year-old sophisticated Spanish businesswoman, executive beauty",
+      "voice": "Sophisticated Spanish businesswoman, articulate with luxury accent"
+    },
+    "CARMEN": {
+      "description": "29-year-old passionate Spanish flamenco dancer, fiery beauty",
+      "voice": "Passionate flamenco dancer, dramatic Spanish with artistic flair"
+    }
+  },
+  "learning_format": {
+    "method": "Visual word formation + Comedy + Spanish immersion",
+    "pronunciation": "Ultra-slow (25-35 wpm)",
+    "structure": "Setup → Transformation → Comedy Peak → Spanish Learning → Surprise Ending"
+  }
+}

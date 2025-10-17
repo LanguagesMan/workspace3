@@ -1,0 +1,57 @@
+📹 Loading video catalog from MULTIPLE sources...
+✅ Loaded 687 videos from Langfeed
+✅ Loaded 138 videos from public/videos/reels/
+🎬 TOTAL: 825 videos loaded
+🎯 Spanish Frequency Database loaded - 10K+ words organized by CEFR bands
+🎯 Spanish Frequency System loaded - TOP 20 words with viral contexts!
+🔥 Spanish Gossip Feed loaded - 8 celebrity drama items ready!
+🎯 Spanish Frequency Database loaded - 10K+ words organized by CEFR bands
+🔥 Smart Feed System initialized with frequency targeting
+🧠 Personalized SRS Feed System initialized
+🎯 Extended Spanish Frequency System loaded - 1000+ words organized by CEFR levels!
+✅ VideoDifficultyScorer initialized with 10k Spanish words
+⚠️ Supabase credentials not found in environment variables. Database features will be limited.
+   Please set SUPABASE_URL and SUPABASE_ANON_KEY in your .env file.
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+🌐 Translation Service initialized
+   API URL: https://libretranslate.com
+   Rate limit: 5 req/s
+🤖 AI Content Adapter initialized with 90/10 theory
+🎯 Level Detection System initialized
+🎯 Frequency Lookup loaded: 9997 words indexed
+📁 Serving videos from public/videos folder
+🎥 Video Feed API endpoints loaded
+🧠 Adaptive Learning API endpoints loaded
+🤖 AI Systems loaded: Content Adapter + Level Detector
+🧠 SRS System loaded with SM-2 algorithm
+🏆 Gamification System loaded: Streaks, XP, Achievements
+📊 Engagement Tracker loaded: Watch time, Saves, Completions
+🎯 Spanish Frequency Database loaded - 10K+ words organized by CEFR bands
+📰 Adaptive News Curator loaded: ChatGPT Pulse + Perplexity style
+🤖 AI Discover Feed API loaded - ChatGPT Pulse style
+node:events:496
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::3001
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at Function.listen (/Users/mindful/_projects/workspace3/node_modules/express/lib/application.js:635:24)
+    at Object.<anonymous> (/Users/mindful/_projects/workspace3/server.js:3488:5)
+    at Module._compile (node:internal/modules/cjs/loader:1730:14)
+    at Object..js (node:internal/modules/cjs/loader:1895:10)
+    at Module.load (node:internal/modules/cjs/loader:1465:32)
+    at Function._load (node:internal/modules/cjs/loader:1282:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+Emitted 'error' event on Server instance at:
+    at emitErrorNT (node:net:1976:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  code: 'EADDRINUSE',
+  errno: -48,
+  syscall: 'listen',
+  address: '::',
+  port: 3001
+}
+
+Node.js v22.17.1

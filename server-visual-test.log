@@ -1,0 +1,1432 @@
+📹 Loading video catalog from MULTIPLE sources...
+✅ Loaded 687 videos from Langfeed
+✅ Loaded 138 videos from public/videos/reels/
+🎬 TOTAL: 825 videos loaded
+🎯 Spanish Frequency Database loaded - 10K+ words organized by CEFR bands
+🎯 Spanish Frequency System loaded - TOP 20 words with viral contexts!
+🔥 Spanish Gossip Feed loaded - 8 celebrity drama items ready!
+🎯 Spanish Frequency Database loaded - 10K+ words organized by CEFR bands
+🔥 Smart Feed System initialized with frequency targeting
+🧠 Personalized SRS Feed System initialized
+🎯 Extended Spanish Frequency System loaded - 1000+ words organized by CEFR levels!
+✅ VideoDifficultyScorer initialized with 10k Spanish words
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+🌐 Fast Translation Service initialized
+   Providers: Google Translate → DeepL → OpenAI
+✅ Personalization engine loaded
+🤖 AI Content Adapter initialized with 90/10 theory
+🎯 Level Detection System initialized
+🎯 Frequency Lookup loaded: 9997 words indexed
+🌐 Translation Service initialized
+   API URL: https://libretranslate.com
+   Rate limit: 5 req/s
+🔄 Preloading common translations...
+📁 Serving videos from public/videos folder
+🎥 Video Feed API endpoints loaded
+🧠 Adaptive Learning API endpoints loaded
+⚠️  Error tracking not initialized: Cannot find module '@sentry/profiling-node'
+Require stack:
+- /Users/mindful/_projects/workspace3/lib/error-tracking.js
+- /Users/mindful/_projects/workspace3/server.js
+📊 Monitoring & Analytics endpoints loaded
+🎓 Beginner Mode API endpoints loaded
+🤖 AI Systems loaded: Content Adapter + Level Detector
+🧠 SRS System loaded with SM-2 algorithm
+🏆 Gamification System loaded: Streaks, XP, Achievements
+📊 Engagement Tracker loaded: Watch time, Saves, Completions
+📊 Analytics API loaded: Track, Daily, Weekly, Progress, Interests, Insights
+🎯 Spanish Frequency Database loaded - 10K+ words organized by CEFR bands
+📰 Adaptive News Curator loaded: ChatGPT Pulse + Perplexity style
+🤖 AI Discover Feed API loaded - ChatGPT Pulse style
+✅ Server running on http://localhost:3000
+📊 Stats Dashboard: http://localhost:3000
+🔌 API Endpoints:
+    GET  /api/health/status       - System health check
+    POST /api/analytics           - Track user events
+    GET  /api/user/level/:userId
+    GET  /api/user/words/:userId
+    POST /api/words/learned
+    GET  /api/user/stats/:userId
+    GET  /api/user/progress/:userId
+    
+✅ TTS cache directory initialized: /Users/mindful/_projects/workspace3/cache/tts
+(node:43341) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/mindful/_projects/workspace3/lib/viralContentEngine.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/mindful/_projects/workspace3/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[Queue] Supabase not configured - running in test mode
+✅ Firecrawl integration loaded
+📹 Loading 57 reels videos with REAL transcriptions from SRT files...
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122247_8dd2r.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_gcy2e.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_l31cc.mp4: 1 lines
+✅ Loaded REAL transcription for Episode_126_handheld_202509112156_d6lgl.mp4: 1 lines
+✅ Loaded REAL transcription for Greek_tragedy_theater_202509122342_vipv1.mp4: 1 lines
+✅ Loaded REAL transcription for Hilarious_character_spanish_202509121151_0ki.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_earth_globe_202509120621_nxmy5.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_wise_globe_202509122009_fty61.mp4: 1 lines
+✅ Loaded REAL transcription for Meditation_instructor_slowly_202509122351_ha6.mp4: 1 lines
+✅ Loaded REAL transcription for Microscopic_character_says_202509130109_9kj19.mp4: 1 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122353_whfwr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_brushing_teeth_202509130015_broku.mp4: 1 lines
+✅ Loaded REAL transcription for Person_dramatically_prepares_202509130055_vc1.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_me_202509130103_au4cr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130121_cdz81.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122342_ltiam.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122358_fw60h.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509130030_gtw1z.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_cul_202509122356_aawfx.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_es_202509122344_bikhw.mp4: 1 lines
+✅ Loaded REAL transcription for Sofia_stunning_25yearold_202509122108_qgi9.mp4: 1 lines
+✅ Loaded REAL transcription for Viral_langai_reel_202509120232_28vf5.mp4: 1 lines
+✅ Loaded REAL transcription for Visual_comedy_35yearold_202509122152_294ev.mp4: 1 lines
+✅ Loaded REAL transcription for Andheld_camera_footage_202509112217_yzrzq.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101756_fhb2f.mp4: 2 lines
+✅ Loaded REAL transcription for Breaking_news_report_202509130021_xb6vv.mp4: 2 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (1).mp4: 4 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (3).mp4: 2 lines
+✅ Loaded REAL transcription for Ive_handheld_beach_202509112107_w9v9c.mp4: 2 lines
+✅ Loaded REAL transcription for Perfect_timing_comedy_202509122149_w86qo.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_ly6g0.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_xouyd.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130053_7iwnv.mp4: 2 lines
+✅ Loaded REAL transcription for Person_trying_to_202509101652_vvx5z.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101758_ab6bz.mp4: 3 lines
+✅ Loaded REAL transcription for Dramatic_countdown_to_202509122350_rn7f4.mp4: 3 lines
+✅ Loaded REAL transcription for Fashion_announcer_describing_202509110020_cm8.mp4: 3 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_5r9vp.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121926_mw522.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121956_qz8nw.mp4: 3 lines
+✅ Loaded REAL transcription for Magic_show_magician_202509130018_q2gma.mp4: 3 lines
+✅ Loaded REAL transcription for Person_calmly_says_202509130042_hrmfv.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130103_8qon7.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130113_e68cu.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130114_w08k9.mp4: 3 lines
+✅ Loaded REAL transcription for Sofia_beautiful_spanish_202509122009_tlcio.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_character_202509122150_z56pw.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_using_202509122211_1aqqr.mp4: 3 lines
+✅ Loaded REAL transcription for Elderly_grandmother_secretly_202509110222_3d6.mp4: 4 lines
+✅ Loaded REAL transcription for Ence_documentary_style_202509112201_qhskw.mp4: 4 lines
+✅ Loaded REAL transcription for Existential_object_genius_202509101754_6ozz9.mp4: 4 lines
+✅ Loaded REAL transcription for Extreme_opposites_language_202509101709_w4bzd.mp4: 4 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_6gjk5.mp4: 4 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122351_io2s8.mp4: 4 lines
+✅ Loaded REAL transcription for Someone_trying_to_202509101637_vrqtj.mp4: 4 lines
+✅ Loaded REAL transcription for Spanish_conversation_naturally_202509122327_o.mp4: 4 lines
+✅ Loaded REAL transcription for Viral_tiktok_spanish_202509120217_7q4kp.mp4: 4 lines
+✅ Difficulty scoring complete for 57 reels videos
+✅ Loaded 673 langfeed videos from catalog
+✅ Total videos: 730 (57 reels + 673 langfeed)
+✅ Loaded 25 articles from Unified Workspace
+✅ API returning 730 videos
+📹 Loading 57 reels videos with REAL transcriptions from SRT files...
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122247_8dd2r.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_gcy2e.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_l31cc.mp4: 1 lines
+✅ Loaded REAL transcription for Episode_126_handheld_202509112156_d6lgl.mp4: 1 lines
+✅ Loaded REAL transcription for Greek_tragedy_theater_202509122342_vipv1.mp4: 1 lines
+✅ Loaded REAL transcription for Hilarious_character_spanish_202509121151_0ki.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_earth_globe_202509120621_nxmy5.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_wise_globe_202509122009_fty61.mp4: 1 lines
+✅ Loaded REAL transcription for Meditation_instructor_slowly_202509122351_ha6.mp4: 1 lines
+✅ Loaded REAL transcription for Microscopic_character_says_202509130109_9kj19.mp4: 1 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122353_whfwr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_brushing_teeth_202509130015_broku.mp4: 1 lines
+✅ Loaded REAL transcription for Person_dramatically_prepares_202509130055_vc1.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_me_202509130103_au4cr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130121_cdz81.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122342_ltiam.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122358_fw60h.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509130030_gtw1z.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_cul_202509122356_aawfx.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_es_202509122344_bikhw.mp4: 1 lines
+✅ Loaded REAL transcription for Sofia_stunning_25yearold_202509122108_qgi9.mp4: 1 lines
+✅ Loaded REAL transcription for Viral_langai_reel_202509120232_28vf5.mp4: 1 lines
+✅ Loaded REAL transcription for Visual_comedy_35yearold_202509122152_294ev.mp4: 1 lines
+✅ Loaded REAL transcription for Andheld_camera_footage_202509112217_yzrzq.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101756_fhb2f.mp4: 2 lines
+✅ Loaded REAL transcription for Breaking_news_report_202509130021_xb6vv.mp4: 2 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (1).mp4: 4 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (3).mp4: 2 lines
+✅ Loaded REAL transcription for Ive_handheld_beach_202509112107_w9v9c.mp4: 2 lines
+✅ Loaded REAL transcription for Perfect_timing_comedy_202509122149_w86qo.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_ly6g0.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_xouyd.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130053_7iwnv.mp4: 2 lines
+✅ Loaded REAL transcription for Person_trying_to_202509101652_vvx5z.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101758_ab6bz.mp4: 3 lines
+✅ Loaded REAL transcription for Dramatic_countdown_to_202509122350_rn7f4.mp4: 3 lines
+✅ Loaded REAL transcription for Fashion_announcer_describing_202509110020_cm8.mp4: 3 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_5r9vp.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121926_mw522.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121956_qz8nw.mp4: 3 lines
+✅ Loaded REAL transcription for Magic_show_magician_202509130018_q2gma.mp4: 3 lines
+✅ Loaded REAL transcription for Person_calmly_says_202509130042_hrmfv.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130103_8qon7.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130113_e68cu.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130114_w08k9.mp4: 3 lines
+✅ Loaded REAL transcription for Sofia_beautiful_spanish_202509122009_tlcio.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_character_202509122150_z56pw.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_using_202509122211_1aqqr.mp4: 3 lines
+✅ Loaded REAL transcription for Elderly_grandmother_secretly_202509110222_3d6.mp4: 4 lines
+✅ Loaded REAL transcription for Ence_documentary_style_202509112201_qhskw.mp4: 4 lines
+✅ Loaded REAL transcription for Existential_object_genius_202509101754_6ozz9.mp4: 4 lines
+✅ Loaded REAL transcription for Extreme_opposites_language_202509101709_w4bzd.mp4: 4 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_6gjk5.mp4: 4 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122351_io2s8.mp4: 4 lines
+✅ Loaded REAL transcription for Someone_trying_to_202509101637_vrqtj.mp4: 4 lines
+✅ Loaded REAL transcription for Spanish_conversation_naturally_202509122327_o.mp4: 4 lines
+✅ Loaded REAL transcription for Viral_tiktok_spanish_202509120217_7q4kp.mp4: 4 lines
+✅ Difficulty scoring complete for 57 reels videos
+✅ Loaded 673 langfeed videos from catalog
+✅ Total videos: 730 (57 reels + 673 langfeed)
+✅ Loaded 25 articles from Unified Workspace
+✅ API returning 730 videos
+📹 Loading 57 reels videos with REAL transcriptions from SRT files...
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122247_8dd2r.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_gcy2e.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_l31cc.mp4: 1 lines
+✅ Loaded REAL transcription for Episode_126_handheld_202509112156_d6lgl.mp4: 1 lines
+✅ Loaded REAL transcription for Greek_tragedy_theater_202509122342_vipv1.mp4: 1 lines
+✅ Loaded REAL transcription for Hilarious_character_spanish_202509121151_0ki.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_earth_globe_202509120621_nxmy5.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_wise_globe_202509122009_fty61.mp4: 1 lines
+✅ Loaded REAL transcription for Meditation_instructor_slowly_202509122351_ha6.mp4: 1 lines
+✅ Loaded REAL transcription for Microscopic_character_says_202509130109_9kj19.mp4: 1 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122353_whfwr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_brushing_teeth_202509130015_broku.mp4: 1 lines
+✅ Loaded REAL transcription for Person_dramatically_prepares_202509130055_vc1.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_me_202509130103_au4cr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130121_cdz81.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122342_ltiam.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122358_fw60h.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509130030_gtw1z.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_cul_202509122356_aawfx.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_es_202509122344_bikhw.mp4: 1 lines
+✅ Loaded REAL transcription for Sofia_stunning_25yearold_202509122108_qgi9.mp4: 1 lines
+✅ Loaded REAL transcription for Viral_langai_reel_202509120232_28vf5.mp4: 1 lines
+✅ Loaded REAL transcription for Visual_comedy_35yearold_202509122152_294ev.mp4: 1 lines
+✅ Loaded REAL transcription for Andheld_camera_footage_202509112217_yzrzq.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101756_fhb2f.mp4: 2 lines
+✅ Loaded REAL transcription for Breaking_news_report_202509130021_xb6vv.mp4: 2 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (1).mp4: 4 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (3).mp4: 2 lines
+✅ Loaded REAL transcription for Ive_handheld_beach_202509112107_w9v9c.mp4: 2 lines
+✅ Loaded REAL transcription for Perfect_timing_comedy_202509122149_w86qo.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_ly6g0.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_xouyd.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130053_7iwnv.mp4: 2 lines
+✅ Loaded REAL transcription for Person_trying_to_202509101652_vvx5z.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101758_ab6bz.mp4: 3 lines
+✅ Loaded REAL transcription for Dramatic_countdown_to_202509122350_rn7f4.mp4: 3 lines
+✅ Loaded REAL transcription for Fashion_announcer_describing_202509110020_cm8.mp4: 3 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_5r9vp.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121926_mw522.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121956_qz8nw.mp4: 3 lines
+✅ Loaded REAL transcription for Magic_show_magician_202509130018_q2gma.mp4: 3 lines
+✅ Loaded REAL transcription for Person_calmly_says_202509130042_hrmfv.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130103_8qon7.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130113_e68cu.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130114_w08k9.mp4: 3 lines
+✅ Loaded REAL transcription for Sofia_beautiful_spanish_202509122009_tlcio.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_character_202509122150_z56pw.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_using_202509122211_1aqqr.mp4: 3 lines
+✅ Loaded REAL transcription for Elderly_grandmother_secretly_202509110222_3d6.mp4: 4 lines
+✅ Loaded REAL transcription for Ence_documentary_style_202509112201_qhskw.mp4: 4 lines
+✅ Loaded REAL transcription for Existential_object_genius_202509101754_6ozz9.mp4: 4 lines
+✅ Loaded REAL transcription for Extreme_opposites_language_202509101709_w4bzd.mp4: 4 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_6gjk5.mp4: 4 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122351_io2s8.mp4: 4 lines
+✅ Loaded REAL transcription for Someone_trying_to_202509101637_vrqtj.mp4: 4 lines
+✅ Loaded REAL transcription for Spanish_conversation_naturally_202509122327_o.mp4: 4 lines
+✅ Loaded REAL transcription for Viral_tiktok_spanish_202509120217_7q4kp.mp4: 4 lines
+✅ Difficulty scoring complete for 57 reels videos
+✅ Loaded 673 langfeed videos from catalog
+✅ Total videos: 730 (57 reels + 673 langfeed)
+✅ Loaded 25 articles from Unified Workspace
+✅ API returning 730 videos
+📹 Loading 57 reels videos with REAL transcriptions from SRT files...
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122247_8dd2r.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_gcy2e.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_l31cc.mp4: 1 lines
+✅ Loaded REAL transcription for Episode_126_handheld_202509112156_d6lgl.mp4: 1 lines
+✅ Loaded REAL transcription for Greek_tragedy_theater_202509122342_vipv1.mp4: 1 lines
+✅ Loaded REAL transcription for Hilarious_character_spanish_202509121151_0ki.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_earth_globe_202509120621_nxmy5.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_wise_globe_202509122009_fty61.mp4: 1 lines
+✅ Loaded REAL transcription for Meditation_instructor_slowly_202509122351_ha6.mp4: 1 lines
+✅ Loaded REAL transcription for Microscopic_character_says_202509130109_9kj19.mp4: 1 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122353_whfwr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_brushing_teeth_202509130015_broku.mp4: 1 lines
+✅ Loaded REAL transcription for Person_dramatically_prepares_202509130055_vc1.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_me_202509130103_au4cr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130121_cdz81.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122342_ltiam.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122358_fw60h.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509130030_gtw1z.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_cul_202509122356_aawfx.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_es_202509122344_bikhw.mp4: 1 lines
+✅ Loaded REAL transcription for Sofia_stunning_25yearold_202509122108_qgi9.mp4: 1 lines
+✅ Loaded REAL transcription for Viral_langai_reel_202509120232_28vf5.mp4: 1 lines
+✅ Loaded REAL transcription for Visual_comedy_35yearold_202509122152_294ev.mp4: 1 lines
+✅ Loaded REAL transcription for Andheld_camera_footage_202509112217_yzrzq.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101756_fhb2f.mp4: 2 lines
+✅ Loaded REAL transcription for Breaking_news_report_202509130021_xb6vv.mp4: 2 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (1).mp4: 4 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (3).mp4: 2 lines
+✅ Loaded REAL transcription for Ive_handheld_beach_202509112107_w9v9c.mp4: 2 lines
+✅ Loaded REAL transcription for Perfect_timing_comedy_202509122149_w86qo.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_ly6g0.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_xouyd.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130053_7iwnv.mp4: 2 lines
+✅ Loaded REAL transcription for Person_trying_to_202509101652_vvx5z.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101758_ab6bz.mp4: 3 lines
+✅ Loaded REAL transcription for Dramatic_countdown_to_202509122350_rn7f4.mp4: 3 lines
+✅ Loaded REAL transcription for Fashion_announcer_describing_202509110020_cm8.mp4: 3 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_5r9vp.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121926_mw522.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121956_qz8nw.mp4: 3 lines
+✅ Loaded REAL transcription for Magic_show_magician_202509130018_q2gma.mp4: 3 lines
+✅ Loaded REAL transcription for Person_calmly_says_202509130042_hrmfv.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130103_8qon7.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130113_e68cu.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130114_w08k9.mp4: 3 lines
+✅ Loaded REAL transcription for Sofia_beautiful_spanish_202509122009_tlcio.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_character_202509122150_z56pw.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_using_202509122211_1aqqr.mp4: 3 lines
+✅ Loaded REAL transcription for Elderly_grandmother_secretly_202509110222_3d6.mp4: 4 lines
+✅ Loaded REAL transcription for Ence_documentary_style_202509112201_qhskw.mp4: 4 lines
+✅ Loaded REAL transcription for Existential_object_genius_202509101754_6ozz9.mp4: 4 lines
+✅ Loaded REAL transcription for Extreme_opposites_language_202509101709_w4bzd.mp4: 4 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_6gjk5.mp4: 4 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122351_io2s8.mp4: 4 lines
+✅ Loaded REAL transcription for Someone_trying_to_202509101637_vrqtj.mp4: 4 lines
+✅ Loaded REAL transcription for Spanish_conversation_naturally_202509122327_o.mp4: 4 lines
+✅ Loaded REAL transcription for Viral_tiktok_spanish_202509120217_7q4kp.mp4: 4 lines
+✅ Difficulty scoring complete for 57 reels videos
+✅ Loaded 673 langfeed videos from catalog
+✅ Total videos: 730 (57 reels + 673 langfeed)
+✅ Loaded 25 articles from Unified Workspace
+✅ API returning 730 videos
+💾 Caching 81 common words...
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+📹 Loading 57 reels videos with REAL transcriptions from SRT files...
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122247_8dd2r.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_gcy2e.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_l31cc.mp4: 1 lines
+✅ Loaded REAL transcription for Episode_126_handheld_202509112156_d6lgl.mp4: 1 lines
+✅ Loaded REAL transcription for Greek_tragedy_theater_202509122342_vipv1.mp4: 1 lines
+✅ Loaded REAL transcription for Hilarious_character_spanish_202509121151_0ki.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_earth_globe_202509120621_nxmy5.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_wise_globe_202509122009_fty61.mp4: 1 lines
+✅ Loaded REAL transcription for Meditation_instructor_slowly_202509122351_ha6.mp4: 1 lines
+✅ Loaded REAL transcription for Microscopic_character_says_202509130109_9kj19.mp4: 1 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122353_whfwr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_brushing_teeth_202509130015_broku.mp4: 1 lines
+✅ Loaded REAL transcription for Person_dramatically_prepares_202509130055_vc1.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_me_202509130103_au4cr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130121_cdz81.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122342_ltiam.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122358_fw60h.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509130030_gtw1z.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_cul_202509122356_aawfx.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_es_202509122344_bikhw.mp4: 1 lines
+✅ Loaded REAL transcription for Sofia_stunning_25yearold_202509122108_qgi9.mp4: 1 lines
+✅ Loaded REAL transcription for Viral_langai_reel_202509120232_28vf5.mp4: 1 lines
+✅ Loaded REAL transcription for Visual_comedy_35yearold_202509122152_294ev.mp4: 1 lines
+✅ Loaded REAL transcription for Andheld_camera_footage_202509112217_yzrzq.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101756_fhb2f.mp4: 2 lines
+✅ Loaded REAL transcription for Breaking_news_report_202509130021_xb6vv.mp4: 2 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (1).mp4: 4 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (3).mp4: 2 lines
+✅ Loaded REAL transcription for Ive_handheld_beach_202509112107_w9v9c.mp4: 2 lines
+✅ Loaded REAL transcription for Perfect_timing_comedy_202509122149_w86qo.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_ly6g0.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_xouyd.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130053_7iwnv.mp4: 2 lines
+✅ Loaded REAL transcription for Person_trying_to_202509101652_vvx5z.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101758_ab6bz.mp4: 3 lines
+✅ Loaded REAL transcription for Dramatic_countdown_to_202509122350_rn7f4.mp4: 3 lines
+✅ Loaded REAL transcription for Fashion_announcer_describing_202509110020_cm8.mp4: 3 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_5r9vp.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121926_mw522.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121956_qz8nw.mp4: 3 lines
+✅ Loaded REAL transcription for Magic_show_magician_202509130018_q2gma.mp4: 3 lines
+✅ Loaded REAL transcription for Person_calmly_says_202509130042_hrmfv.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130103_8qon7.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130113_e68cu.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130114_w08k9.mp4: 3 lines
+✅ Loaded REAL transcription for Sofia_beautiful_spanish_202509122009_tlcio.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_character_202509122150_z56pw.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_using_202509122211_1aqqr.mp4: 3 lines
+✅ Loaded REAL transcription for Elderly_grandmother_secretly_202509110222_3d6.mp4: 4 lines
+✅ Loaded REAL transcription for Ence_documentary_style_202509112201_qhskw.mp4: 4 lines
+✅ Loaded REAL transcription for Existential_object_genius_202509101754_6ozz9.mp4: 4 lines
+✅ Loaded REAL transcription for Extreme_opposites_language_202509101709_w4bzd.mp4: 4 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_6gjk5.mp4: 4 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122351_io2s8.mp4: 4 lines
+✅ Loaded REAL transcription for Someone_trying_to_202509101637_vrqtj.mp4: 4 lines
+✅ Loaded REAL transcription for Spanish_conversation_naturally_202509122327_o.mp4: 4 lines
+✅ Loaded REAL transcription for Viral_tiktok_spanish_202509120217_7q4kp.mp4: 4 lines
+✅ Difficulty scoring complete for 57 reels videos
+✅ Loaded 673 langfeed videos from catalog
+✅ Total videos: 730 (57 reels + 673 langfeed)
+✅ Loaded 25 articles from Unified Workspace
+✅ API returning 730 videos
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+✅ User initialized: user_1760586262516_s8jf3c7g7
+✅ User initialized: user_1760586262516_s8jf3c7g7
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+📹 Loading 57 reels videos with REAL transcriptions from SRT files...
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122247_8dd2r.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_gcy2e.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_l31cc.mp4: 1 lines
+✅ Loaded REAL transcription for Episode_126_handheld_202509112156_d6lgl.mp4: 1 lines
+✅ Loaded REAL transcription for Greek_tragedy_theater_202509122342_vipv1.mp4: 1 lines
+✅ Loaded REAL transcription for Hilarious_character_spanish_202509121151_0ki.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_earth_globe_202509120621_nxmy5.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_wise_globe_202509122009_fty61.mp4: 1 lines
+✅ Loaded REAL transcription for Meditation_instructor_slowly_202509122351_ha6.mp4: 1 lines
+✅ Loaded REAL transcription for Microscopic_character_says_202509130109_9kj19.mp4: 1 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122353_whfwr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_brushing_teeth_202509130015_broku.mp4: 1 lines
+✅ Loaded REAL transcription for Person_dramatically_prepares_202509130055_vc1.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_me_202509130103_au4cr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130121_cdz81.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122342_ltiam.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122358_fw60h.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509130030_gtw1z.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_cul_202509122356_aawfx.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_es_202509122344_bikhw.mp4: 1 lines
+✅ Loaded REAL transcription for Sofia_stunning_25yearold_202509122108_qgi9.mp4: 1 lines
+✅ Loaded REAL transcription for Viral_langai_reel_202509120232_28vf5.mp4: 1 lines
+✅ Loaded REAL transcription for Visual_comedy_35yearold_202509122152_294ev.mp4: 1 lines
+✅ Loaded REAL transcription for Andheld_camera_footage_202509112217_yzrzq.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101756_fhb2f.mp4: 2 lines
+✅ Loaded REAL transcription for Breaking_news_report_202509130021_xb6vv.mp4: 2 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (1).mp4: 4 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (3).mp4: 2 lines
+✅ Loaded REAL transcription for Ive_handheld_beach_202509112107_w9v9c.mp4: 2 lines
+✅ Loaded REAL transcription for Perfect_timing_comedy_202509122149_w86qo.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_ly6g0.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_xouyd.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130053_7iwnv.mp4: 2 lines
+✅ Loaded REAL transcription for Person_trying_to_202509101652_vvx5z.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101758_ab6bz.mp4: 3 lines
+✅ Loaded REAL transcription for Dramatic_countdown_to_202509122350_rn7f4.mp4: 3 lines
+✅ Loaded REAL transcription for Fashion_announcer_describing_202509110020_cm8.mp4: 3 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_5r9vp.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121926_mw522.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121956_qz8nw.mp4: 3 lines
+✅ Loaded REAL transcription for Magic_show_magician_202509130018_q2gma.mp4: 3 lines
+✅ Loaded REAL transcription for Person_calmly_says_202509130042_hrmfv.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130103_8qon7.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130113_e68cu.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130114_w08k9.mp4: 3 lines
+✅ Loaded REAL transcription for Sofia_beautiful_spanish_202509122009_tlcio.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_character_202509122150_z56pw.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_using_202509122211_1aqqr.mp4: 3 lines
+✅ Loaded REAL transcription for Elderly_grandmother_secretly_202509110222_3d6.mp4: 4 lines
+✅ Loaded REAL transcription for Ence_documentary_style_202509112201_qhskw.mp4: 4 lines
+✅ Loaded REAL transcription for Existential_object_genius_202509101754_6ozz9.mp4: 4 lines
+✅ Loaded REAL transcription for Extreme_opposites_language_202509101709_w4bzd.mp4: 4 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_6gjk5.mp4: 4 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122351_io2s8.mp4: 4 lines
+✅ Loaded REAL transcription for Someone_trying_to_202509101637_vrqtj.mp4: 4 lines
+✅ Loaded REAL transcription for Spanish_conversation_naturally_202509122327_o.mp4: 4 lines
+✅ Loaded REAL transcription for Viral_tiktok_spanish_202509120217_7q4kp.mp4: 4 lines
+✅ Difficulty scoring complete for 57 reels videos
+✅ Loaded 673 langfeed videos from catalog
+✅ Total videos: 730 (57 reels + 673 langfeed)
+✅ Loaded 25 articles from Unified Workspace
+✅ API returning 730 videos
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+📹 Loading 57 reels videos with REAL transcriptions from SRT files...
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122247_8dd2r.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_gcy2e.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_l31cc.mp4: 1 lines
+✅ Loaded REAL transcription for Episode_126_handheld_202509112156_d6lgl.mp4: 1 lines
+✅ Loaded REAL transcription for Greek_tragedy_theater_202509122342_vipv1.mp4: 1 lines
+✅ Loaded REAL transcription for Hilarious_character_spanish_202509121151_0ki.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_earth_globe_202509120621_nxmy5.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_wise_globe_202509122009_fty61.mp4: 1 lines
+✅ Loaded REAL transcription for Meditation_instructor_slowly_202509122351_ha6.mp4: 1 lines
+✅ Loaded REAL transcription for Microscopic_character_says_202509130109_9kj19.mp4: 1 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122353_whfwr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_brushing_teeth_202509130015_broku.mp4: 1 lines
+✅ Loaded REAL transcription for Person_dramatically_prepares_202509130055_vc1.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_me_202509130103_au4cr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130121_cdz81.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122342_ltiam.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122358_fw60h.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509130030_gtw1z.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_cul_202509122356_aawfx.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_es_202509122344_bikhw.mp4: 1 lines
+✅ Loaded REAL transcription for Sofia_stunning_25yearold_202509122108_qgi9.mp4: 1 lines
+✅ Loaded REAL transcription for Viral_langai_reel_202509120232_28vf5.mp4: 1 lines
+✅ Loaded REAL transcription for Visual_comedy_35yearold_202509122152_294ev.mp4: 1 lines
+✅ Loaded REAL transcription for Andheld_camera_footage_202509112217_yzrzq.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101756_fhb2f.mp4: 2 lines
+✅ Loaded REAL transcription for Breaking_news_report_202509130021_xb6vv.mp4: 2 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (1).mp4: 4 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (3).mp4: 2 lines
+✅ Loaded REAL transcription for Ive_handheld_beach_202509112107_w9v9c.mp4: 2 lines
+✅ Loaded REAL transcription for Perfect_timing_comedy_202509122149_w86qo.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_ly6g0.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_xouyd.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130053_7iwnv.mp4: 2 lines
+✅ Loaded REAL transcription for Person_trying_to_202509101652_vvx5z.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101758_ab6bz.mp4: 3 lines
+✅ Loaded REAL transcription for Dramatic_countdown_to_202509122350_rn7f4.mp4: 3 lines
+✅ Loaded REAL transcription for Fashion_announcer_describing_202509110020_cm8.mp4: 3 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_5r9vp.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121926_mw522.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121956_qz8nw.mp4: 3 lines
+✅ Loaded REAL transcription for Magic_show_magician_202509130018_q2gma.mp4: 3 lines
+✅ Loaded REAL transcription for Person_calmly_says_202509130042_hrmfv.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130103_8qon7.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130113_e68cu.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130114_w08k9.mp4: 3 lines
+✅ Loaded REAL transcription for Sofia_beautiful_spanish_202509122009_tlcio.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_character_202509122150_z56pw.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_using_202509122211_1aqqr.mp4: 3 lines
+✅ Loaded REAL transcription for Elderly_grandmother_secretly_202509110222_3d6.mp4: 4 lines
+✅ Loaded REAL transcription for Ence_documentary_style_202509112201_qhskw.mp4: 4 lines
+✅ Loaded REAL transcription for Existential_object_genius_202509101754_6ozz9.mp4: 4 lines
+✅ Loaded REAL transcription for Extreme_opposites_language_202509101709_w4bzd.mp4: 4 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_6gjk5.mp4: 4 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122351_io2s8.mp4: 4 lines
+✅ Loaded REAL transcription for Someone_trying_to_202509101637_vrqtj.mp4: 4 lines
+✅ Loaded REAL transcription for Spanish_conversation_naturally_202509122327_o.mp4: 4 lines
+✅ Loaded REAL transcription for Viral_tiktok_spanish_202509120217_7q4kp.mp4: 4 lines
+✅ Difficulty scoring complete for 57 reels videos
+✅ Loaded 673 langfeed videos from catalog
+✅ Total videos: 730 (57 reels + 673 langfeed)
+✅ Loaded 25 articles from Unified Workspace
+✅ API returning 730 videos
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+Error caching translation: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.translations' in the schema cache"
+}
+✅ Common translations preloaded
+📹 Loading 57 reels videos with REAL transcriptions from SRT files...
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122247_8dd2r.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_gcy2e.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_l31cc.mp4: 1 lines
+✅ Loaded REAL transcription for Episode_126_handheld_202509112156_d6lgl.mp4: 1 lines
+✅ Loaded REAL transcription for Greek_tragedy_theater_202509122342_vipv1.mp4: 1 lines
+✅ Loaded REAL transcription for Hilarious_character_spanish_202509121151_0ki.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_earth_globe_202509120621_nxmy5.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_wise_globe_202509122009_fty61.mp4: 1 lines
+✅ Loaded REAL transcription for Meditation_instructor_slowly_202509122351_ha6.mp4: 1 lines
+✅ Loaded REAL transcription for Microscopic_character_says_202509130109_9kj19.mp4: 1 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122353_whfwr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_brushing_teeth_202509130015_broku.mp4: 1 lines
+✅ Loaded REAL transcription for Person_dramatically_prepares_202509130055_vc1.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_me_202509130103_au4cr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130121_cdz81.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122342_ltiam.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122358_fw60h.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509130030_gtw1z.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_cul_202509122356_aawfx.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_es_202509122344_bikhw.mp4: 1 lines
+✅ Loaded REAL transcription for Sofia_stunning_25yearold_202509122108_qgi9.mp4: 1 lines
+✅ Loaded REAL transcription for Viral_langai_reel_202509120232_28vf5.mp4: 1 lines
+✅ Loaded REAL transcription for Visual_comedy_35yearold_202509122152_294ev.mp4: 1 lines
+✅ Loaded REAL transcription for Andheld_camera_footage_202509112217_yzrzq.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101756_fhb2f.mp4: 2 lines
+✅ Loaded REAL transcription for Breaking_news_report_202509130021_xb6vv.mp4: 2 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (1).mp4: 4 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (3).mp4: 2 lines
+✅ Loaded REAL transcription for Ive_handheld_beach_202509112107_w9v9c.mp4: 2 lines
+✅ Loaded REAL transcription for Perfect_timing_comedy_202509122149_w86qo.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_ly6g0.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_xouyd.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130053_7iwnv.mp4: 2 lines
+✅ Loaded REAL transcription for Person_trying_to_202509101652_vvx5z.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101758_ab6bz.mp4: 3 lines
+✅ Loaded REAL transcription for Dramatic_countdown_to_202509122350_rn7f4.mp4: 3 lines
+✅ Loaded REAL transcription for Fashion_announcer_describing_202509110020_cm8.mp4: 3 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_5r9vp.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121926_mw522.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121956_qz8nw.mp4: 3 lines
+✅ Loaded REAL transcription for Magic_show_magician_202509130018_q2gma.mp4: 3 lines
+✅ Loaded REAL transcription for Person_calmly_says_202509130042_hrmfv.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130103_8qon7.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130113_e68cu.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130114_w08k9.mp4: 3 lines
+✅ Loaded REAL transcription for Sofia_beautiful_spanish_202509122009_tlcio.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_character_202509122150_z56pw.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_using_202509122211_1aqqr.mp4: 3 lines
+✅ Loaded REAL transcription for Elderly_grandmother_secretly_202509110222_3d6.mp4: 4 lines
+✅ Loaded REAL transcription for Ence_documentary_style_202509112201_qhskw.mp4: 4 lines
+✅ Loaded REAL transcription for Existential_object_genius_202509101754_6ozz9.mp4: 4 lines
+✅ Loaded REAL transcription for Extreme_opposites_language_202509101709_w4bzd.mp4: 4 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_6gjk5.mp4: 4 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122351_io2s8.mp4: 4 lines
+✅ Loaded REAL transcription for Someone_trying_to_202509101637_vrqtj.mp4: 4 lines
+✅ Loaded REAL transcription for Spanish_conversation_naturally_202509122327_o.mp4: 4 lines
+✅ Loaded REAL transcription for Viral_tiktok_spanish_202509120217_7q4kp.mp4: 4 lines
+✅ Difficulty scoring complete for 57 reels videos
+✅ Loaded 673 langfeed videos from catalog
+✅ Total videos: 730 (57 reels + 673 langfeed)
+✅ Loaded 25 articles from Unified Workspace
+✅ API returning 730 videos
+📹 Loading 57 reels videos with REAL transcriptions from SRT files...
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122247_8dd2r.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_gcy2e.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_l31cc.mp4: 1 lines
+✅ Loaded REAL transcription for Episode_126_handheld_202509112156_d6lgl.mp4: 1 lines
+✅ Loaded REAL transcription for Greek_tragedy_theater_202509122342_vipv1.mp4: 1 lines
+✅ Loaded REAL transcription for Hilarious_character_spanish_202509121151_0ki.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_earth_globe_202509120621_nxmy5.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_wise_globe_202509122009_fty61.mp4: 1 lines
+✅ Loaded REAL transcription for Meditation_instructor_slowly_202509122351_ha6.mp4: 1 lines
+✅ Loaded REAL transcription for Microscopic_character_says_202509130109_9kj19.mp4: 1 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122353_whfwr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_brushing_teeth_202509130015_broku.mp4: 1 lines
+✅ Loaded REAL transcription for Person_dramatically_prepares_202509130055_vc1.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_me_202509130103_au4cr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130121_cdz81.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122342_ltiam.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122358_fw60h.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509130030_gtw1z.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_cul_202509122356_aawfx.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_es_202509122344_bikhw.mp4: 1 lines
+✅ Loaded REAL transcription for Sofia_stunning_25yearold_202509122108_qgi9.mp4: 1 lines
+✅ Loaded REAL transcription for Viral_langai_reel_202509120232_28vf5.mp4: 1 lines
+✅ Loaded REAL transcription for Visual_comedy_35yearold_202509122152_294ev.mp4: 1 lines
+✅ Loaded REAL transcription for Andheld_camera_footage_202509112217_yzrzq.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101756_fhb2f.mp4: 2 lines
+✅ Loaded REAL transcription for Breaking_news_report_202509130021_xb6vv.mp4: 2 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (1).mp4: 4 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (3).mp4: 2 lines
+✅ Loaded REAL transcription for Ive_handheld_beach_202509112107_w9v9c.mp4: 2 lines
+✅ Loaded REAL transcription for Perfect_timing_comedy_202509122149_w86qo.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_ly6g0.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_xouyd.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130053_7iwnv.mp4: 2 lines
+✅ Loaded REAL transcription for Person_trying_to_202509101652_vvx5z.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101758_ab6bz.mp4: 3 lines
+✅ Loaded REAL transcription for Dramatic_countdown_to_202509122350_rn7f4.mp4: 3 lines
+✅ Loaded REAL transcription for Fashion_announcer_describing_202509110020_cm8.mp4: 3 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_5r9vp.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121926_mw522.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121956_qz8nw.mp4: 3 lines
+✅ Loaded REAL transcription for Magic_show_magician_202509130018_q2gma.mp4: 3 lines
+✅ Loaded REAL transcription for Person_calmly_says_202509130042_hrmfv.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130103_8qon7.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130113_e68cu.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130114_w08k9.mp4: 3 lines
+✅ Loaded REAL transcription for Sofia_beautiful_spanish_202509122009_tlcio.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_character_202509122150_z56pw.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_using_202509122211_1aqqr.mp4: 3 lines
+✅ Loaded REAL transcription for Elderly_grandmother_secretly_202509110222_3d6.mp4: 4 lines
+✅ Loaded REAL transcription for Ence_documentary_style_202509112201_qhskw.mp4: 4 lines
+✅ Loaded REAL transcription for Existential_object_genius_202509101754_6ozz9.mp4: 4 lines
+✅ Loaded REAL transcription for Extreme_opposites_language_202509101709_w4bzd.mp4: 4 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_6gjk5.mp4: 4 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122351_io2s8.mp4: 4 lines
+✅ Loaded REAL transcription for Someone_trying_to_202509101637_vrqtj.mp4: 4 lines
+✅ Loaded REAL transcription for Spanish_conversation_naturally_202509122327_o.mp4: 4 lines
+✅ Loaded REAL transcription for Viral_tiktok_spanish_202509120217_7q4kp.mp4: 4 lines
+✅ Difficulty scoring complete for 57 reels videos
+✅ Loaded 673 langfeed videos from catalog
+✅ Total videos: 730 (57 reels + 673 langfeed)
+✅ Loaded 25 articles from Unified Workspace
+✅ API returning 730 videos
+📹 Loading 57 reels videos with REAL transcriptions from SRT files...
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122247_8dd2r.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_gcy2e.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_l31cc.mp4: 1 lines
+✅ Loaded REAL transcription for Episode_126_handheld_202509112156_d6lgl.mp4: 1 lines
+✅ Loaded REAL transcription for Greek_tragedy_theater_202509122342_vipv1.mp4: 1 lines
+✅ Loaded REAL transcription for Hilarious_character_spanish_202509121151_0ki.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_earth_globe_202509120621_nxmy5.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_wise_globe_202509122009_fty61.mp4: 1 lines
+✅ Loaded REAL transcription for Meditation_instructor_slowly_202509122351_ha6.mp4: 1 lines
+✅ Loaded REAL transcription for Microscopic_character_says_202509130109_9kj19.mp4: 1 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122353_whfwr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_brushing_teeth_202509130015_broku.mp4: 1 lines
+✅ Loaded REAL transcription for Person_dramatically_prepares_202509130055_vc1.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_me_202509130103_au4cr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130121_cdz81.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122342_ltiam.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122358_fw60h.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509130030_gtw1z.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_cul_202509122356_aawfx.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_es_202509122344_bikhw.mp4: 1 lines
+✅ Loaded REAL transcription for Sofia_stunning_25yearold_202509122108_qgi9.mp4: 1 lines
+✅ Loaded REAL transcription for Viral_langai_reel_202509120232_28vf5.mp4: 1 lines
+✅ Loaded REAL transcription for Visual_comedy_35yearold_202509122152_294ev.mp4: 1 lines
+✅ Loaded REAL transcription for Andheld_camera_footage_202509112217_yzrzq.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101756_fhb2f.mp4: 2 lines
+✅ Loaded REAL transcription for Breaking_news_report_202509130021_xb6vv.mp4: 2 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (1).mp4: 4 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (3).mp4: 2 lines
+✅ Loaded REAL transcription for Ive_handheld_beach_202509112107_w9v9c.mp4: 2 lines
+✅ Loaded REAL transcription for Perfect_timing_comedy_202509122149_w86qo.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_ly6g0.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_xouyd.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130053_7iwnv.mp4: 2 lines
+✅ Loaded REAL transcription for Person_trying_to_202509101652_vvx5z.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101758_ab6bz.mp4: 3 lines
+✅ Loaded REAL transcription for Dramatic_countdown_to_202509122350_rn7f4.mp4: 3 lines
+✅ Loaded REAL transcription for Fashion_announcer_describing_202509110020_cm8.mp4: 3 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_5r9vp.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121926_mw522.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121956_qz8nw.mp4: 3 lines
+✅ Loaded REAL transcription for Magic_show_magician_202509130018_q2gma.mp4: 3 lines
+✅ Loaded REAL transcription for Person_calmly_says_202509130042_hrmfv.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130103_8qon7.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130113_e68cu.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130114_w08k9.mp4: 3 lines
+✅ Loaded REAL transcription for Sofia_beautiful_spanish_202509122009_tlcio.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_character_202509122150_z56pw.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_using_202509122211_1aqqr.mp4: 3 lines
+✅ Loaded REAL transcription for Elderly_grandmother_secretly_202509110222_3d6.mp4: 4 lines
+✅ Loaded REAL transcription for Ence_documentary_style_202509112201_qhskw.mp4: 4 lines
+✅ Loaded REAL transcription for Existential_object_genius_202509101754_6ozz9.mp4: 4 lines
+✅ Loaded REAL transcription for Extreme_opposites_language_202509101709_w4bzd.mp4: 4 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_6gjk5.mp4: 4 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122351_io2s8.mp4: 4 lines
+✅ Loaded REAL transcription for Someone_trying_to_202509101637_vrqtj.mp4: 4 lines
+✅ Loaded REAL transcription for Spanish_conversation_naturally_202509122327_o.mp4: 4 lines
+✅ Loaded REAL transcription for Viral_tiktok_spanish_202509120217_7q4kp.mp4: 4 lines
+✅ Difficulty scoring complete for 57 reels videos
+✅ Loaded 673 langfeed videos from catalog
+✅ Total videos: 730 (57 reels + 673 langfeed)
+✅ Loaded 25 articles from Unified Workspace
+✅ API returning 730 videos
+📹 Loading 57 reels videos with REAL transcriptions from SRT files...
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122247_8dd2r.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_gcy2e.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_l31cc.mp4: 1 lines
+✅ Loaded REAL transcription for Episode_126_handheld_202509112156_d6lgl.mp4: 1 lines
+✅ Loaded REAL transcription for Greek_tragedy_theater_202509122342_vipv1.mp4: 1 lines
+✅ Loaded REAL transcription for Hilarious_character_spanish_202509121151_0ki.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_earth_globe_202509120621_nxmy5.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_wise_globe_202509122009_fty61.mp4: 1 lines
+✅ Loaded REAL transcription for Meditation_instructor_slowly_202509122351_ha6.mp4: 1 lines
+✅ Loaded REAL transcription for Microscopic_character_says_202509130109_9kj19.mp4: 1 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122353_whfwr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_brushing_teeth_202509130015_broku.mp4: 1 lines
+✅ Loaded REAL transcription for Person_dramatically_prepares_202509130055_vc1.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_me_202509130103_au4cr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130121_cdz81.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122342_ltiam.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122358_fw60h.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509130030_gtw1z.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_cul_202509122356_aawfx.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_es_202509122344_bikhw.mp4: 1 lines
+✅ Loaded REAL transcription for Sofia_stunning_25yearold_202509122108_qgi9.mp4: 1 lines
+✅ Loaded REAL transcription for Viral_langai_reel_202509120232_28vf5.mp4: 1 lines
+✅ Loaded REAL transcription for Visual_comedy_35yearold_202509122152_294ev.mp4: 1 lines
+✅ Loaded REAL transcription for Andheld_camera_footage_202509112217_yzrzq.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101756_fhb2f.mp4: 2 lines
+✅ Loaded REAL transcription for Breaking_news_report_202509130021_xb6vv.mp4: 2 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (1).mp4: 4 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (3).mp4: 2 lines
+✅ Loaded REAL transcription for Ive_handheld_beach_202509112107_w9v9c.mp4: 2 lines
+✅ Loaded REAL transcription for Perfect_timing_comedy_202509122149_w86qo.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_ly6g0.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_xouyd.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130053_7iwnv.mp4: 2 lines
+✅ Loaded REAL transcription for Person_trying_to_202509101652_vvx5z.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101758_ab6bz.mp4: 3 lines
+✅ Loaded REAL transcription for Dramatic_countdown_to_202509122350_rn7f4.mp4: 3 lines
+✅ Loaded REAL transcription for Fashion_announcer_describing_202509110020_cm8.mp4: 3 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_5r9vp.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121926_mw522.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121956_qz8nw.mp4: 3 lines
+✅ Loaded REAL transcription for Magic_show_magician_202509130018_q2gma.mp4: 3 lines
+✅ Loaded REAL transcription for Person_calmly_says_202509130042_hrmfv.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130103_8qon7.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130113_e68cu.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130114_w08k9.mp4: 3 lines
+✅ Loaded REAL transcription for Sofia_beautiful_spanish_202509122009_tlcio.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_character_202509122150_z56pw.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_using_202509122211_1aqqr.mp4: 3 lines
+✅ Loaded REAL transcription for Elderly_grandmother_secretly_202509110222_3d6.mp4: 4 lines
+✅ Loaded REAL transcription for Ence_documentary_style_202509112201_qhskw.mp4: 4 lines
+✅ Loaded REAL transcription for Existential_object_genius_202509101754_6ozz9.mp4: 4 lines
+✅ Loaded REAL transcription for Extreme_opposites_language_202509101709_w4bzd.mp4: 4 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_6gjk5.mp4: 4 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122351_io2s8.mp4: 4 lines
+✅ Loaded REAL transcription for Someone_trying_to_202509101637_vrqtj.mp4: 4 lines
+✅ Loaded REAL transcription for Spanish_conversation_naturally_202509122327_o.mp4: 4 lines
+✅ Loaded REAL transcription for Viral_tiktok_spanish_202509120217_7q4kp.mp4: 4 lines
+✅ Difficulty scoring complete for 57 reels videos
+✅ Loaded 673 langfeed videos from catalog
+✅ Total videos: 730 (57 reels + 673 langfeed)
+✅ Loaded 25 articles from Unified Workspace
+✅ API returning 730 videos
+📹 Loading 57 reels videos with REAL transcriptions from SRT files...
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122247_8dd2r.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_gcy2e.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_l31cc.mp4: 1 lines
+✅ Loaded REAL transcription for Episode_126_handheld_202509112156_d6lgl.mp4: 1 lines
+✅ Loaded REAL transcription for Greek_tragedy_theater_202509122342_vipv1.mp4: 1 lines
+✅ Loaded REAL transcription for Hilarious_character_spanish_202509121151_0ki.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_earth_globe_202509120621_nxmy5.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_wise_globe_202509122009_fty61.mp4: 1 lines
+✅ Loaded REAL transcription for Meditation_instructor_slowly_202509122351_ha6.mp4: 1 lines
+✅ Loaded REAL transcription for Microscopic_character_says_202509130109_9kj19.mp4: 1 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122353_whfwr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_brushing_teeth_202509130015_broku.mp4: 1 lines
+✅ Loaded REAL transcription for Person_dramatically_prepares_202509130055_vc1.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_me_202509130103_au4cr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130121_cdz81.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122342_ltiam.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122358_fw60h.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509130030_gtw1z.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_cul_202509122356_aawfx.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_es_202509122344_bikhw.mp4: 1 lines
+✅ Loaded REAL transcription for Sofia_stunning_25yearold_202509122108_qgi9.mp4: 1 lines
+✅ Loaded REAL transcription for Viral_langai_reel_202509120232_28vf5.mp4: 1 lines
+✅ Loaded REAL transcription for Visual_comedy_35yearold_202509122152_294ev.mp4: 1 lines
+✅ Loaded REAL transcription for Andheld_camera_footage_202509112217_yzrzq.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101756_fhb2f.mp4: 2 lines
+✅ Loaded REAL transcription for Breaking_news_report_202509130021_xb6vv.mp4: 2 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (1).mp4: 4 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (3).mp4: 2 lines
+✅ Loaded REAL transcription for Ive_handheld_beach_202509112107_w9v9c.mp4: 2 lines
+✅ Loaded REAL transcription for Perfect_timing_comedy_202509122149_w86qo.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_ly6g0.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_xouyd.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130053_7iwnv.mp4: 2 lines
+✅ Loaded REAL transcription for Person_trying_to_202509101652_vvx5z.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101758_ab6bz.mp4: 3 lines
+✅ Loaded REAL transcription for Dramatic_countdown_to_202509122350_rn7f4.mp4: 3 lines
+✅ Loaded REAL transcription for Fashion_announcer_describing_202509110020_cm8.mp4: 3 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_5r9vp.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121926_mw522.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121956_qz8nw.mp4: 3 lines
+✅ Loaded REAL transcription for Magic_show_magician_202509130018_q2gma.mp4: 3 lines
+✅ Loaded REAL transcription for Person_calmly_says_202509130042_hrmfv.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130103_8qon7.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130113_e68cu.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130114_w08k9.mp4: 3 lines
+✅ Loaded REAL transcription for Sofia_beautiful_spanish_202509122009_tlcio.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_character_202509122150_z56pw.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_using_202509122211_1aqqr.mp4: 3 lines
+✅ Loaded REAL transcription for Elderly_grandmother_secretly_202509110222_3d6.mp4: 4 lines
+✅ Loaded REAL transcription for Ence_documentary_style_202509112201_qhskw.mp4: 4 lines
+✅ Loaded REAL transcription for Existential_object_genius_202509101754_6ozz9.mp4: 4 lines
+✅ Loaded REAL transcription for Extreme_opposites_language_202509101709_w4bzd.mp4: 4 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_6gjk5.mp4: 4 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122351_io2s8.mp4: 4 lines
+✅ Loaded REAL transcription for Someone_trying_to_202509101637_vrqtj.mp4: 4 lines
+✅ Loaded REAL transcription for Spanish_conversation_naturally_202509122327_o.mp4: 4 lines
+✅ Loaded REAL transcription for Viral_tiktok_spanish_202509120217_7q4kp.mp4: 4 lines
+✅ Difficulty scoring complete for 57 reels videos
+✅ Loaded 673 langfeed videos from catalog
+✅ Total videos: 730 (57 reels + 673 langfeed)
+✅ Loaded 25 articles from Unified Workspace
+✅ API returning 730 videos
+📹 Loading 57 reels videos with REAL transcriptions from SRT files...
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122247_8dd2r.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_gcy2e.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_l31cc.mp4: 1 lines
+✅ Loaded REAL transcription for Episode_126_handheld_202509112156_d6lgl.mp4: 1 lines
+✅ Loaded REAL transcription for Greek_tragedy_theater_202509122342_vipv1.mp4: 1 lines
+✅ Loaded REAL transcription for Hilarious_character_spanish_202509121151_0ki.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_earth_globe_202509120621_nxmy5.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_wise_globe_202509122009_fty61.mp4: 1 lines
+✅ Loaded REAL transcription for Meditation_instructor_slowly_202509122351_ha6.mp4: 1 lines
+✅ Loaded REAL transcription for Microscopic_character_says_202509130109_9kj19.mp4: 1 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122353_whfwr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_brushing_teeth_202509130015_broku.mp4: 1 lines
+✅ Loaded REAL transcription for Person_dramatically_prepares_202509130055_vc1.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_me_202509130103_au4cr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130121_cdz81.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122342_ltiam.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122358_fw60h.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509130030_gtw1z.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_cul_202509122356_aawfx.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_es_202509122344_bikhw.mp4: 1 lines
+✅ Loaded REAL transcription for Sofia_stunning_25yearold_202509122108_qgi9.mp4: 1 lines
+✅ Loaded REAL transcription for Viral_langai_reel_202509120232_28vf5.mp4: 1 lines
+✅ Loaded REAL transcription for Visual_comedy_35yearold_202509122152_294ev.mp4: 1 lines
+✅ Loaded REAL transcription for Andheld_camera_footage_202509112217_yzrzq.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101756_fhb2f.mp4: 2 lines
+✅ Loaded REAL transcription for Breaking_news_report_202509130021_xb6vv.mp4: 2 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (1).mp4: 4 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (3).mp4: 2 lines
+✅ Loaded REAL transcription for Ive_handheld_beach_202509112107_w9v9c.mp4: 2 lines
+✅ Loaded REAL transcription for Perfect_timing_comedy_202509122149_w86qo.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_ly6g0.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_xouyd.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130053_7iwnv.mp4: 2 lines
+✅ Loaded REAL transcription for Person_trying_to_202509101652_vvx5z.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101758_ab6bz.mp4: 3 lines
+✅ Loaded REAL transcription for Dramatic_countdown_to_202509122350_rn7f4.mp4: 3 lines
+✅ Loaded REAL transcription for Fashion_announcer_describing_202509110020_cm8.mp4: 3 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_5r9vp.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121926_mw522.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121956_qz8nw.mp4: 3 lines
+✅ Loaded REAL transcription for Magic_show_magician_202509130018_q2gma.mp4: 3 lines
+✅ Loaded REAL transcription for Person_calmly_says_202509130042_hrmfv.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130103_8qon7.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130113_e68cu.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130114_w08k9.mp4: 3 lines
+✅ Loaded REAL transcription for Sofia_beautiful_spanish_202509122009_tlcio.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_character_202509122150_z56pw.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_using_202509122211_1aqqr.mp4: 3 lines
+✅ Loaded REAL transcription for Elderly_grandmother_secretly_202509110222_3d6.mp4: 4 lines
+✅ Loaded REAL transcription for Ence_documentary_style_202509112201_qhskw.mp4: 4 lines
+✅ Loaded REAL transcription for Existential_object_genius_202509101754_6ozz9.mp4: 4 lines
+✅ Loaded REAL transcription for Extreme_opposites_language_202509101709_w4bzd.mp4: 4 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_6gjk5.mp4: 4 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122351_io2s8.mp4: 4 lines
+✅ Loaded REAL transcription for Someone_trying_to_202509101637_vrqtj.mp4: 4 lines
+✅ Loaded REAL transcription for Spanish_conversation_naturally_202509122327_o.mp4: 4 lines
+✅ Loaded REAL transcription for Viral_tiktok_spanish_202509120217_7q4kp.mp4: 4 lines
+✅ Difficulty scoring complete for 57 reels videos
+✅ Loaded 673 langfeed videos from catalog
+✅ Total videos: 730 (57 reels + 673 langfeed)
+✅ Loaded 25 articles from Unified Workspace
+✅ API returning 730 videos
+📹 Loading 57 reels videos with REAL transcriptions from SRT files...
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122247_8dd2r.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_gcy2e.mp4: 1 lines
+✅ Loaded REAL transcription for Epic_dramatic_tension_202509122323_l31cc.mp4: 1 lines
+✅ Loaded REAL transcription for Episode_126_handheld_202509112156_d6lgl.mp4: 1 lines
+✅ Loaded REAL transcription for Greek_tragedy_theater_202509122342_vipv1.mp4: 1 lines
+✅ Loaded REAL transcription for Hilarious_character_spanish_202509121151_0ki.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_earth_globe_202509120621_nxmy5.mp4: 1 lines
+✅ Loaded REAL transcription for Langai_wise_globe_202509122009_fty61.mp4: 1 lines
+✅ Loaded REAL transcription for Meditation_instructor_slowly_202509122351_ha6.mp4: 1 lines
+✅ Loaded REAL transcription for Microscopic_character_says_202509130109_9kj19.mp4: 1 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122353_whfwr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_brushing_teeth_202509130015_broku.mp4: 1 lines
+✅ Loaded REAL transcription for Person_dramatically_prepares_202509130055_vc1.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_me_202509130103_au4cr.mp4: 1 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130121_cdz81.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122342_ltiam.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509122358_fw60h.mp4: 1 lines
+✅ Loaded REAL transcription for Serious_dramatic_buildup_202509130030_gtw1z.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_cul_202509122356_aawfx.mp4: 1 lines
+✅ Loaded REAL transcription for Slapstick_comedy_es_202509122344_bikhw.mp4: 1 lines
+✅ Loaded REAL transcription for Sofia_stunning_25yearold_202509122108_qgi9.mp4: 1 lines
+✅ Loaded REAL transcription for Viral_langai_reel_202509120232_28vf5.mp4: 1 lines
+✅ Loaded REAL transcription for Visual_comedy_35yearold_202509122152_294ev.mp4: 1 lines
+✅ Loaded REAL transcription for Andheld_camera_footage_202509112217_yzrzq.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101756_fhb2f.mp4: 2 lines
+✅ Loaded REAL transcription for Breaking_news_report_202509130021_xb6vv.mp4: 2 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (1).mp4: 4 lines
+✅ Loaded REAL transcription for Create_a_viral_202509090401 (3).mp4: 2 lines
+✅ Loaded REAL transcription for Ive_handheld_beach_202509112107_w9v9c.mp4: 2 lines
+✅ Loaded REAL transcription for Perfect_timing_comedy_202509122149_w86qo.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_ly6g0.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_necesito_202509130115_xouyd.mp4: 2 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130053_7iwnv.mp4: 2 lines
+✅ Loaded REAL transcription for Person_trying_to_202509101652_vvx5z.mp4: 2 lines
+✅ Loaded REAL transcription for Back_to_what_202509101758_ab6bz.mp4: 3 lines
+✅ Loaded REAL transcription for Dramatic_countdown_to_202509122350_rn7f4.mp4: 3 lines
+✅ Loaded REAL transcription for Fashion_announcer_describing_202509110020_cm8.mp4: 3 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_5r9vp.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121926_mw522.mp4: 3 lines
+✅ Loaded REAL transcription for Langai_cartoon_earth_202509121956_qz8nw.mp4: 3 lines
+✅ Loaded REAL transcription for Magic_show_magician_202509130018_q2gma.mp4: 3 lines
+✅ Loaded REAL transcription for Person_calmly_says_202509130042_hrmfv.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130103_8qon7.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130113_e68cu.mp4: 3 lines
+✅ Loaded REAL transcription for Person_says_tengo_202509130114_w08k9.mp4: 3 lines
+✅ Loaded REAL transcription for Sofia_beautiful_spanish_202509122009_tlcio.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_character_202509122150_z56pw.mp4: 3 lines
+✅ Loaded REAL transcription for Spanish_comedy_using_202509122211_1aqqr.mp4: 3 lines
+✅ Loaded REAL transcription for Elderly_grandmother_secretly_202509110222_3d6.mp4: 4 lines
+✅ Loaded REAL transcription for Ence_documentary_style_202509112201_qhskw.mp4: 4 lines
+✅ Loaded REAL transcription for Existential_object_genius_202509101754_6ozz9.mp4: 4 lines
+✅ Loaded REAL transcription for Extreme_opposites_language_202509101709_w4bzd.mp4: 4 lines
+✅ Loaded REAL transcription for Genius_punchline_talking_202509101625_6gjk5.mp4: 4 lines
+✅ Loaded REAL transcription for Mime_acts_out_202509122351_io2s8.mp4: 4 lines
+✅ Loaded REAL transcription for Someone_trying_to_202509101637_vrqtj.mp4: 4 lines
+✅ Loaded REAL transcription for Spanish_conversation_naturally_202509122327_o.mp4: 4 lines
+✅ Loaded REAL transcription for Viral_tiktok_spanish_202509120217_7q4kp.mp4: 4 lines
+✅ Difficulty scoring complete for 57 reels videos
+✅ Loaded 673 langfeed videos from catalog
+✅ Total videos: 730 (57 reels + 673 langfeed)
+✅ Loaded 25 articles from Unified Workspace
+✅ API returning 730 videos
+✅ User initialized: user_1760586474115_hc8dv4pp3
+✅ User initialized: user_1760586474115_hc8dv4pp3

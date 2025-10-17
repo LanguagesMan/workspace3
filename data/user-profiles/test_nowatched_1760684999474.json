@@ -1,0 +1,137 @@
+{
+  "userId": "test_nowatched_1760684999474",
+  "level": "B1",
+  "watchedVideos": [
+    "langfeed_claymation_style_8second_202510132259_mr4jk_mp4",
+    "langfeed_barista_creating_insanely_202510091538_5u3rg_mp4",
+    "langfeed_sports_highlight_reel_202510091726_2307s_mp4",
+    "langfeed_create_a_tiktokstyle_202509191805_hmshs_mp4",
+    "langfeed_call_center_worker_202509140307_ys415_mp4",
+    "langfeed_create_an_8second_202510120045_a6vmq_mp4",
+    "langfeed_claymation_style_8second_202510142042_14qht_mp4",
+    "langfeed_generate_an_8second_202509211437_p5g8b_mp4",
+    "langfeed_anime_style_8second_202510121945_dnh6t_mp4",
+    "langfeed_contortionist_bending_impossibly_20251009163_mp4",
+    "langfeed_character_middleaged_professional_20250914_mp4",
+    "langfeed_claymation_style_8second_202510142200_p4pxr_mp4",
+    "reels__originals_sofia_beautiful_spanish_202509122006_x8crg_mp4",
+    "langfeed_chalk_animation_style_202510142207_j31ta_mp4",
+    "langfeed_character_young_energetic_202509141716_o0uqa_mp4",
+    "langfeed_claymation_stopmotion_style_202510090053_465_mp4",
+    "langfeed_dreamcore_aesthetic_style_202510132347_eihih_mp4",
+    "langfeed_8second_slow_spanish_202509181157_272z2_mp4",
+    "langfeed_chalk_art_chalkboard_202510091720_8n7k7_mp4",
+    "langfeed__el_zombie_202510112150_1z7x5_mp4"
+  ],
+  "interactions": [
+    {
+      "videoId": "langfeed_claymation_style_8second_202510132259_mr4jk_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:09:59.487Z"
+    },
+    {
+      "videoId": "langfeed_barista_creating_insanely_202510091538_5u3rg_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:09:59.492Z"
+    },
+    {
+      "videoId": "langfeed_sports_highlight_reel_202510091726_2307s_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:09:59.503Z"
+    },
+    {
+      "videoId": "langfeed_create_a_tiktokstyle_202509191805_hmshs_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:09:59.507Z"
+    },
+    {
+      "videoId": "langfeed_call_center_worker_202509140307_ys415_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:09:59.525Z"
+    },
+    {
+      "videoId": "langfeed_create_an_8second_202510120045_a6vmq_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:09:59.530Z"
+    },
+    {
+      "videoId": "langfeed_claymation_style_8second_202510142042_14qht_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:09:59.536Z"
+    },
+    {
+      "videoId": "langfeed_generate_an_8second_202509211437_p5g8b_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:09:59.540Z"
+    },
+    {
+      "videoId": "langfeed_anime_style_8second_202510121945_dnh6t_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:09:59.547Z"
+    },
+    {
+      "videoId": "langfeed_contortionist_bending_impossibly_20251009163_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:09:59.551Z"
+    },
+    {
+      "videoId": "langfeed_character_middleaged_professional_20250914_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:09:59.554Z"
+    },
+    {
+      "videoId": "langfeed_claymation_style_8second_202510142200_p4pxr_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:09:59.562Z"
+    },
+    {
+      "videoId": "reels__originals_sofia_beautiful_spanish_202509122006_x8crg_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:09:59.567Z"
+    },
+    {
+      "videoId": "langfeed_chalk_animation_style_202510142207_j31ta_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:09:59.571Z"
+    },
+    {
+      "videoId": "langfeed_character_young_energetic_202509141716_o0uqa_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:09:59.575Z"
+    },
+    {
+      "videoId": "langfeed_claymation_stopmotion_style_202510090053_465_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:09:59.578Z"
+    },
+    {
+      "videoId": "langfeed_dreamcore_aesthetic_style_202510132347_eihih_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:09:59.580Z"
+    },
+    {
+      "videoId": "langfeed_8second_slow_spanish_202509181157_272z2_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:09:59.582Z"
+    },
+    {
+      "videoId": "langfeed_chalk_art_chalkboard_202510091720_8n7k7_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:09:59.584Z"
+    },
+    {
+      "videoId": "langfeed__el_zombie_202510112150_1z7x5_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:09:59.586Z"
+    }
+  ],
+  "interests": {},
+  "seenThemes": {},
+  "knownWords": [],
+  "behaviorPatterns": {
+    "avgCompletionRate": 0.9965412354861796,
+    "avgWatchTime": 20,
+    "skipRate": 0.2,
+    "rewatchRate": 0.05
+  }
+}

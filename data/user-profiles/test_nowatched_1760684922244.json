@@ -1,0 +1,36 @@
+{
+  "userId": "test_nowatched_1760684922244",
+  "level": "B1",
+  "watchedVideos": [
+    "langfeed_character_young_energetic_202509141716_o0uqa_mp4",
+    "reels_dramatic_countdown_to_202509122350_rn7f4_mp4",
+    "langfeed_8second_slow_spanish_202509181157_272z2_mp4",
+    "langfeed_vintage_film_grain_202510132347_gtvg6_mp4",
+    "langfeed_claymation_style_8second_202510142200_p4pxr_mp4",
+    "langfeed_call_center_worker_202509140307_ys415_mp4",
+    "langfeed_episode_2_simple_202509150822_hcjn2_mp4",
+    "langfeed_anime_style_8second_202510121945_dnh6t_mp4",
+    "langfeed_episode_43_brand_202509151058_ou5nf_mp4",
+    "langfeed_barista_creating_insanely_202510091538_5u3rg_mp4",
+    "langfeed_create_a_tiktokstyle_202509191805_hmshs_mp4",
+    "langfeed_claymation_style_8second_202510142042_14qht_mp4",
+    "langfeed_claymation_style_8second_202510132259_mr4jk_mp4",
+    "langfeed_chalk_animation_style_202510142207_j31ta_mp4",
+    "langfeed_contortionist_bending_impossibly_20251009163_mp4",
+    "langfeed_claymation_stopmotion_style_202510090053_465_mp4",
+    "langfeed_character_middleaged_professional_20250914_mp4",
+    "langfeed_retro_90s_commercial_202510142345_d42co_mp4",
+    "langfeed_create_an_8second_202510120045_a6vmq_mp4",
+    "langfeed_moon_eating_cheese_202510091312_0ufej_mp4"
+  ],
+  "interactions": [],
+  "interests": {},
+  "seenThemes": {},
+  "knownWords": [],
+  "behaviorPatterns": {
+    "avgCompletionRate": 0.9965412354861796,
+    "avgWatchTime": 20,
+    "skipRate": 0.2,
+    "rewatchRate": 0.05
+  }
+}

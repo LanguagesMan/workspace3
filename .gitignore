@@ -1,0 +1,15 @@
+node_modules/
+
+# Environment variables with secrets
+.env
+.env.local
+.env.*.local
+
+# Visual testing screenshots (large files - 118MB)
+# Use: npx playwright test to regenerate
+# screenshots/complete-audit/*.png
+
+# Large video files (3.8GB - too large for Git)
+public/videos/
+test-results/
+playwright-report/

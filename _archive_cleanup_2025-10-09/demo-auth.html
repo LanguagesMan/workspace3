@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unified Database Demo - workspace3</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    h1 { margin-top: 0; }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    button {
+      background: #667eea;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+    button:hover {
+      background: #764ba2;
+      transform: translateY(-2px);
+    }
+    .auth-container, .app-container {
+      display: none;
+    }
+    .word-item {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 10px;
+    }
+    .source-tag {
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 20px;
+      font-size: 12px;
+      margin-left: 10px;
+    }
+    .success {
+      background: #10b981;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 10px 0;
+      animation: slideIn 0.3s ease;
+    }
+    @keyframes slideIn {
+      from { transform: translateX(-100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .stats {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+    .stats h3 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎯 Unified Database Demo</h1>
+    <p>workspace3 - Save words that appear in ALL apps!</p>
+
+    <!-- Authentication -->
+    <div class="auth-container" id="authContainer">
+      <h2>Sign In / Sign Up</h2>
+      <input type="email" id="email" placeholder="Email" value="test@example.com">
+      <input type="password" id="password" placeholder="Password" value="password123">
+      <input type="text" id="displayName" placeholder="Display Name" value="Test User">
+      <button onclick="signUp()">Sign Up</button>
+      <button onclick="signIn()">Sign In</button>
+    </div>
+
+    <!-- Main App -->
+    <div class="app-container" id="appContainer">
+      <div class="stats">
+        <h3>👤 <span id="userName">User</span></h3>
+        <p>📚 Total Words: <strong id="wordCount">0</strong></p>
+        <p>🔥 Current Streak: <strong id="streak">0</strong> days</p>
+        <p>⭐ Level: <strong id="level">beginner</strong></p>
+      </div>
+
+      <h2>💾 Save a Word</h2>
+      <input type="text" id="wordInput" placeholder="Spanish word (e.g., hola)">
+      <input type="text" id="translationInput" placeholder="English translation (e.g., hello)">
+      <input type="text" id="contextInput" placeholder="Context sentence (optional)">
+      <button onclick="saveWord()">Save Word</button>
+
+      <div id="message"></div>
+
+      <h2>📚 Your Vocabulary</h2>
+      <p>Words saved from ALL apps (workspace3, chatbot, langame, rpg-claude):</p>
+      <div id="wordList"></div>
+
+      <button onclick="signOut()" style="background: #ef4444; margin-top: 20px;">Sign Out</button>
+    </div>
+  </div>
+
+  <script>
+    // Initialize Supabase
+    const SUPABASE_URL = 'https://uejiwteujraxczrxbqff.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVlaml3dGV1anJheGN6cnhicWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk5NDMxMzksImV4cCI6MjA3NTUxOTEzOX0.iva8q5bMcLHfqd6niXqB_i-i-VrPmKLNGr9eiiPwZHQ';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Check auth state
+    checkAuth();
+
+    async function checkAuth() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        showApp(user);
+      } else {
+        document.getElementById('authContainer').style.display = 'block';
+      }
+    }
+
+    async function signUp() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const displayName = document.getElementById('displayName').value;
+
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { display_name: displayName }
+        }
+      });
+
+      if (error) {
+        alert('Sign up failed: ' + error.message);
+        return;
+      }
+
+      // Create user profile
+      const { error: profileError } = await supabase
+        .from('users')
+        .insert({
+          id: data.user.id,
+          email,
+          display_name: displayName
+        });
+
+      if (profileError) {
+        console.error('Profile creation error:', profileError);
+      }
+
+      showApp(data.user);
+    }
+
+    async function signIn() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) {
+        alert('Sign in failed: ' + error.message);
+        return;
+      }
+
+      showApp(data.user);
+    }
+
+    async function signOut() {
+      await supabase.auth.signOut();
+      document.getElementById('authContainer').style.display = 'block';
+      document.getElementById('appContainer').style.display = 'none';
+    }
+
+    async function showApp(user) {
+      document.getElementById('authContainer').style.display = 'none';
+      document.getElementById('appContainer').style.display = 'block';
+
+      // Load user stats
+      const { data: profile } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+
+      if (profile) {
+        document.getElementById('userName').textContent = profile.display_name || profile.email;
+        document.getElementById('wordCount').textContent = profile.total_words_learned || 0;
+        document.getElementById('streak').textContent = profile.current_streak || 0;
+        document.getElementById('level').textContent = profile.level || 'beginner';
+      }
+
+      // Load vocabulary
+      loadVocabulary();
+    }
+
+    async function loadVocabulary() {
+      const { data: words, error } = await supabase
+        .from('vocabulary')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error loading vocabulary:', error);
+        return;
+      }
+
+      const wordList = document.getElementById('wordList');
+      if (words.length === 0) {
+        wordList.innerHTML = '<p>No words saved yet. Try saving "hola" above!</p>';
+        return;
+      }
+
+      wordList.innerHTML = words.map(word => `
+        <div class="word-item">
+          <strong>${word.word}</strong> = ${word.translation}
+          <span class="source-tag">from ${word.source_app}</span>
+          ${word.context_sentence ? `<br><small>${word.context_sentence}</small>` : ''}
+        </div>
+      `).join('');
+    }
+
+    async function saveWord() {
+      const word = document.getElementById('wordInput').value.trim();
+      const translation = document.getElementById('translationInput').value.trim();
+      const context = document.getElementById('contextInput').value.trim();
+
+      if (!word || !translation) {
+        alert('Please enter both word and translation!');
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('vocabulary')
+        .upsert({
+          word,
+          translation,
+          language: 'spanish',
+          source_app: 'workspace3',
+          context_sentence: context || null
+        }, {
+          onConflict: 'user_id,word,language'
+        })
+        .select()
+        .single();
+
+      if (error) {
+        alert('Failed to save word: ' + error.message);
+        console.error(error);
+        return;
+      }
+
+      // Update word count
+      const { data: { user } } = await supabase.auth.getUser();
+      await supabase.rpc('increment', {
+        row_id: user.id,
+        table_name: 'users',
+        column_name: 'total_words_learned'
+      }).catch(() => {
+        // Fallback: manually update
+        supabase.from('users')
+          .update({ total_words_learned: supabase.raw('total_words_learned + 1') })
+          .eq('id', user.id);
+      });
+
+      // Show success message
+      const message = document.getElementById('message');
+      message.innerHTML = `<div class="success">✅ "${word}" saved! Now open chatbot, langame, or rpg-claude to see it there!</div>`;
+      setTimeout(() => message.innerHTML = '', 3000);
+
+      // Clear inputs
+      document.getElementById('wordInput').value = '';
+      document.getElementById('translationInput').value = '';
+      document.getElementById('contextInput').value = '';
+
+      // Reload vocabulary list
+      loadVocabulary();
+
+      // Refresh stats
+      const { data: profile } = await supabase
+        .from('users')
+        .select('total_words_learned')
+        .eq('id', user.id)
+        .single();
+
+      if (profile) {
+        document.getElementById('wordCount').textContent = profile.total_words_learned;
+      }
+    }
+  </script>
+</body>
+</html>

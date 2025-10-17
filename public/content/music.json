@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "type": "music",
+    "title": "Despacito - Luis Fonsi ft. Daddy Yankee",
+    "artist": "Luis Fonsi",
+    "albumArt": "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=400",
+    "lyrics": [
+      {"spanish": "Despacito", "english": "Slowly"},
+      {"spanish": "Quiero respirar tu cuello despacito", "english": "I want to breathe on your neck slowly"},
+      {"spanish": "Deja que te diga cosas al oído", "english": "Let me whisper things in your ear"},
+      {"spanish": "Para que te acuerdes si no estás conmigo", "english": "So you remember if you're not with me"}
+    ],
+    "difficulty": "intermediate",
+    "genre": "Reggaeton"
+  },
+  {
+    "id": 2,
+    "type": "music",
+    "title": "Vivir Mi Vida - Marc Anthony",
+    "artist": "Marc Anthony",
+    "albumArt": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400",
+    "lyrics": [
+      {"spanish": "Voy a reír, voy a bailar", "english": "I'm going to laugh, I'm going to dance"},
+      {"spanish": "Vivir mi vida, la la la la", "english": "Live my life, la la la la"},
+      {"spanish": "Voy a reír, voy a gozar", "english": "I'm going to laugh, I'm going to enjoy"},
+      {"spanish": "Vivir mi vida, la la la la", "english": "Live my life, la la la la"}
+    ],
+    "difficulty": "beginner",
+    "genre": "Salsa"
+  },
+  {
+    "id": 3,
+    "type": "music",
+    "title": "Bailando - Enrique Iglesias",
+    "artist": "Enrique Iglesias",
+    "albumArt": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400",
+    "lyrics": [
+      {"spanish": "Yo te miro, se me corta la respiración", "english": "I look at you, my breath is taken away"},
+      {"spanish": "Cuando tú me miras, se me sube el corazón", "english": "When you look at me, my heart races"},
+      {"spanish": "Y en silencio, tu mirada dice mil palabras", "english": "And in silence, your gaze says a thousand words"},
+      {"spanish": "La noche en la que te suplico que no salga el sol", "english": "The night I beg you that the sun doesn't come out"}
+    ],
+    "difficulty": "intermediate",
+    "genre": "Pop Latino"
+  }
+]

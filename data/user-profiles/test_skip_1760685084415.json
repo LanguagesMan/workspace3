@@ -1,0 +1,37 @@
+{
+  "userId": "test_skip_1760685084415",
+  "level": "A2",
+  "watchedVideos": [
+    "langfeed_3yearold_harshly_reviewing_202510091554_eka_mp4",
+    "langfeed_character_magical_creature_202509141720_3kw_mp4",
+    "langfeed_oil_painting_style_202510140000_ltke8_mp4"
+  ],
+  "interactions": [
+    {
+      "videoId": "langfeed_3yearold_harshly_reviewing_202510091554_eka_mp4",
+      "type": "skip",
+      "timestamp": "2025-10-17T07:11:24.422Z"
+    },
+    {
+      "videoId": "langfeed_character_magical_creature_202509141720_3kw_mp4",
+      "type": "skip",
+      "timestamp": "2025-10-17T07:11:24.423Z"
+    },
+    {
+      "videoId": "langfeed_oil_painting_style_202510140000_ltke8_mp4",
+      "type": "skip",
+      "timestamp": "2025-10-17T07:11:24.426Z"
+    }
+  ],
+  "interests": {},
+  "seenThemes": {
+    "general": 3
+  },
+  "knownWords": [],
+  "behaviorPatterns": {
+    "avgCompletionRate": 0.38280000000000003,
+    "avgWatchTime": 20,
+    "skipRate": 0.2,
+    "rewatchRate": 0.05
+  }
+}

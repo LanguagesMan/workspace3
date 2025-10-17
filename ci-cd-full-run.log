@@ -1,0 +1,8 @@
+🚀 COMPLETE CI/CD PIPELINE
+================================
+
+📍 Current branch: main
+
+📥 STEP 1: Updating branch from main...
+remote: Invalid username or token. Password authentication is not supported for Git operations.
+fatal: Authentication failed for 'https://github.com/LanguagesMan/workspace3.git/'

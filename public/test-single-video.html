@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single Video Test</title>
+</head>
+<body style="background: #000; color: #fff; padding: 20px;">
+    <h1>Single Video Playback Test</h1>
+    <p id="status">Loading...</p>
+
+    <video
+        id="testVideo"
+        width="720"
+        height="1280"
+        controls
+        preload="auto"
+        style="max-width: 100%; background: #111;"
+    >
+        <source src="/videos/reels/Andheld_camera_footage_202509112217_yzrzq.mp4" type="video/mp4">
+    </video>
+
+    <div id="info" style="margin-top: 20px; font-family: monospace; font-size: 14px;"></div>
+
+    <script>
+        const video = document.getElementById('testVideo');
+        const status = document.getElementById('status');
+        const info = document.getElementById('info');
+
+        video.addEventListener('loadedmetadata', () => {
+            status.textContent = '✅ Video metadata loaded successfully!';
+            info.innerHTML = `
+                <strong>Video Details:</strong><br>
+                Duration: ${video.duration.toFixed(2)}s<br>
+                Width: ${video.videoWidth}px<br>
+                Height: ${video.videoHeight}px<br>
+                Ready State: ${video.readyState}<br>
+                Network State: ${video.networkState}<br>
+            `;
+        });
+
+        video.addEventListener('loadeddata', () => {
+            status.textContent = '✅ Video data loaded - ready to play!';
+        });
+
+        video.addEventListener('canplay', () => {
+            status.textContent = '🎉 Video can play!';
+        });
+
+        video.addEventListener('error', (e) => {
+            const error = video.error;
+            status.textContent = `❌ ERROR: ${error.code} - ${error.message}`;
+            info.innerHTML = `
+                <strong>Error Details:</strong><br>
+                Error Code: ${error.code}<br>
+                Error Message: ${error.message}<br>
+                Video src: ${video.currentSrc}<br>
+            `;
+            console.error('Video error:', error);
+        });
+
+        // Log current state
+        setInterval(() => {
+            console.log(`ReadyState: ${video.readyState}, NetworkState: ${video.networkState}, Error: ${video.error?.code || 'none'}`);
+        }, 1000);
+    </script>
+</body>
+</html>

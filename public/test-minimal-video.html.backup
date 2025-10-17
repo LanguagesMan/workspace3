@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Minimal Video Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        video {
+            width: 100%;
+            max-width: 600px;
+            display: block;
+            margin: 20px auto;
+            background: #222;
+        }
+        .status {
+            text-align: center;
+            margin: 10px;
+            padding: 10px;
+            background: #222;
+            border-radius: 8px;
+        }
+        .success { color: #4CAF50; }
+        .error { color: #f44336; }
+        .warning { color: #ff9800; }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Video Loading Test</h1>
+    <div id="status" class="status">Loading...</div>
+
+    <!-- Test 1: Muted autoplay (should work) -->
+    <h2>Test 1: Muted Autoplay (Expected: ✅)</h2>
+    <video id="video1" muted autoplay playsinline controls>
+        <source src="/videos/reels/Andheld_camera_footage_202509112217_yzrzq.mp4" type="video/mp4">
+    </video>
+    <div id="status1" class="status">Waiting...</div>
+
+    <!-- Test 2: Direct src assignment with manual play -->
+    <h2>Test 2: Manual Play (Expected: ✅)</h2>
+    <video id="video2" muted playsinline controls></video>
+    <button onclick="playVideo2()" style="display: block; margin: 10px auto; padding: 10px 20px; font-size: 16px;">
+        Click to Play Video 2
+    </button>
+    <div id="status2" class="status">Waiting...</div>
+
+    <!-- Test 3: Unmuted autoplay (Expected: ❌ Blocked) -->
+    <h2>Test 3: Unmuted Autoplay (Expected: ❌ Blocked by Browser)</h2>
+    <video id="video3" autoplay playsinline controls>
+        <source src="/videos/reels/Back_to_what_202509101756_fhb2f.mp4" type="video/mp4">
+    </video>
+    <div id="status3" class="status">Waiting...</div>
+
+    <script>
+        const tests = {
+            video1: { name: 'Muted Autoplay', expected: 'pass' },
+            video2: { name: 'Manual Play', expected: 'pass' },
+            video3: { name: 'Unmuted Autoplay', expected: 'blocked' }
+        };
+
+        let results = {};
+
+        // Setup video 1
+        const video1 = document.getElementById('video1');
+        video1.addEventListener('loadstart', () => {
+            document.getElementById('status1').textContent = '▶️ Loading...';
+        });
+        video1.addEventListener('loadeddata', () => {
+            document.getElementById('status1').textContent = '✅ Data loaded';
+            document.getElementById('status1').className = 'status success';
+        });
+        video1.addEventListener('canplay', () => {
+            document.getElementById('status1').textContent = '✅ Can play - Autoplay working!';
+            results.video1 = 'pass';
+            updateSummary();
+        });
+        video1.addEventListener('error', (e) => {
+            document.getElementById('status1').textContent = `❌ Error: ${video1.error?.message || 'Unknown'}`;
+            document.getElementById('status1').className = 'status error';
+            results.video1 = 'fail';
+            updateSummary();
+        });
+
+        // Setup video 2
+        const video2 = document.getElementById('video2');
+        video2.src = '/videos/reels/Back_to_what_202509101758_ab6bz.mp4';
+        video2.addEventListener('loadstart', () => {
+            document.getElementById('status2').textContent = '▶️ Loading...';
+        });
+        video2.addEventListener('loadeddata', () => {
+            document.getElementById('status2').textContent = '✅ Data loaded - Click button to play';
+            document.getElementById('status2').className = 'status success';
+        });
+        video2.addEventListener('canplay', () => {
+            results.video2 = 'pass';
+            updateSummary();
+        });
+        video2.addEventListener('error', (e) => {
+            document.getElementById('status2').textContent = `❌ Error: ${video2.error?.message || 'Unknown'}`;
+            document.getElementById('status2').className = 'status error';
+            results.video2 = 'fail';
+            updateSummary();
+        });
+
+        window.playVideo2 = async function() {
+            try {
+                await video2.play();
+                document.getElementById('status2').textContent = '✅ Playing successfully!';
+                document.getElementById('status2').className = 'status success';
+            } catch (e) {
+                document.getElementById('status2').textContent = `❌ Play failed: ${e.message}`;
+                document.getElementById('status2').className = 'status error';
+            }
+        };
+
+        // Setup video 3
+        const video3 = document.getElementById('video3');
+        video3.addEventListener('loadstart', () => {
+            document.getElementById('status3').textContent = '▶️ Loading...';
+        });
+        video3.addEventListener('loadeddata', () => {
+            document.getElementById('status3').textContent = '⚠️ Data loaded but autoplay likely blocked';
+            document.getElementById('status3').className = 'status warning';
+        });
+        video3.addEventListener('canplay', () => {
+            // Check if actually playing
+            if (video3.paused) {
+                document.getElementById('status3').textContent = '⚠️ Autoplay blocked (as expected)';
+                document.getElementById('status3').className = 'status warning';
+                results.video3 = 'blocked';
+            } else {
+                document.getElementById('status3').textContent = '✅ Autoplay worked (unexpected!)';
+                document.getElementById('status3').className = 'status success';
+                results.video3 = 'pass';
+            }
+            updateSummary();
+        });
+        video3.addEventListener('error', (e) => {
+            document.getElementById('status3').textContent = `❌ Error: ${video3.error?.message || 'Unknown'}`;
+            document.getElementById('status3').className = 'status error';
+            results.video3 = 'error';
+            updateSummary();
+        });
+
+        function updateSummary() {
+            const passed = Object.values(results).filter(r => r === 'pass').length;
+            const failed = Object.values(results).filter(r => r === 'fail').length;
+            const blocked = Object.values(results).filter(r => r === 'blocked').length;
+
+            document.getElementById('status').innerHTML = `
+                <strong>Test Results:</strong><br>
+                ✅ Passed: ${passed}<br>
+                ❌ Failed: ${failed}<br>
+                ⚠️ Blocked: ${blocked}<br>
+                <br>
+                ${passed >= 2 ? '✅ Videos are loading correctly!' : '❌ Video loading has issues'}
+            `;
+            document.getElementById('status').className = passed >= 2 ? 'status success' : 'status error';
+        }
+
+        // Check after 3 seconds
+        setTimeout(() => {
+            console.log('Test results:', results);
+            if (Object.keys(results).length === 0) {
+                document.getElementById('status').textContent = '❌ No videos loaded - server may be down';
+                document.getElementById('status').className = 'status error';
+            }
+        }, 3000);
+    </script>
+</body>
+</html>

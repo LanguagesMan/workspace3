@@ -1,0 +1,34 @@
+
+> unified-feed-server@1.0.0 start
+> node server.js
+
+📹 Loading video catalog from MULTIPLE sources...
+✅ Loaded 687 videos from Langfeed
+✅ Loaded 138 videos from public/videos/reels/
+🎬 TOTAL: 825 videos loaded
+🎯 Spanish Frequency Database loaded - 10K+ words organized by CEFR bands
+🎯 Spanish Frequency System loaded - TOP 20 words with viral contexts!
+🔥 Spanish Gossip Feed loaded - 8 celebrity drama items ready!
+🎯 Spanish Frequency Database loaded - 10K+ words organized by CEFR bands
+🔥 Smart Feed System initialized with frequency targeting
+🧠 Personalized SRS Feed System initialized
+✅ VideoDifficultyScorer initialized with 10k Spanish words
+node:internal/modules/esm/resolve:1000
+    throw error;
+    ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package '@supabase/supabase-js' imported from /Users/mindful/_projects/shared/supabase-client.js
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:256:9)
+    at packageResolve (node:internal/modules/esm/resolve:768:81)
+    at moduleResolve (node:internal/modules/esm/resolve:854:18)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:739:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:762:52)
+    at #cachedResolveSync (node:internal/modules/esm/loader:723:25)
+    at ModuleLoader.getModuleJobForRequire (node:internal/modules/esm/loader:451:50) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+
+Node.js v22.17.1

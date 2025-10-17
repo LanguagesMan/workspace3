@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Video Feed Test</title>
+    <style>
+        body { margin: 0; padding: 0; background: #000; color: #fff; font-family: sans-serif; }
+        .video-container { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; }
+        .video-card { height: 100vh; scroll-snap-align: start; display: flex; align-items: center; justify-content: center; position: relative; }
+        .video-card video { width: 100%; height: 100%; object-fit: cover; }
+        .video-overlay { position: absolute; bottom: 20px; left: 20px; }
+        .loading { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">Loading...</div>
+    <div class="video-container" id="videoContainer"></div>
+
+    <script>
+        (async () => {
+            console.log('🧪 Starting minimal test...');
+
+            try {
+                // Fetch videos
+                const response = await fetch('/api/videos?includeTranscript=true&limit=10');
+                const data = await response.json();
+
+                console.log('✅ API Response:', {
+                    success: data.success,
+                    count: data.count,
+                    videosLength: data.videos?.length
+                });
+
+                const videos = data.videos || [];
+
+                if (videos.length === 0) {
+                    document.getElementById('loading').innerHTML = '❌ No videos found!';
+                    return;
+                }
+
+                // Hide loading
+                document.getElementById('loading').style.display = 'none';
+
+                // Render videos
+                const container = document.getElementById('videoContainer');
+                videos.forEach(video => {
+                    const card = document.createElement('div');
+                    card.className = 'video-card';
+                    card.innerHTML = `
+                        <video src="${video.videoUrl}" playsinline loop muted></video>
+                        <div class="video-overlay">
+                            <div>${video.level || 'A1'} - ${video.title || 'Video'}</div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+
+                console.log(`✅ Rendered ${videos.length} videos`);
+
+                // Auto-play first video
+                const firstVideo = container.querySelector('video');
+                if (firstVideo) {
+                    firstVideo.play().catch(e => console.log('Autoplay blocked:', e));
+                }
+
+            } catch (error) {
+                console.error('❌ Error:', error);
+                document.getElementById('loading').innerHTML = `❌ Error: ${error.message}`;
+            }
+        })();
+    </script>
+</body>
+</html>

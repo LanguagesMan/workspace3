@@ -1,0 +1,18 @@
+{
+  "passed": 1,
+  "failed": 0,
+  "screenshots": [],
+  "performance": {},
+  "accessibility": {},
+  "coverage": {
+    "totalTests": 1,
+    "passed": 1,
+    "failed": 0,
+    "passRate": "100.0%",
+    "screenshots": 0,
+    "duration": "25.0s"
+  },
+  "startTime": 1760586473198,
+  "endTime": 1760586498236,
+  "duration": 25038
+}

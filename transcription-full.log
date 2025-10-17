@@ -1,0 +1,156 @@
+
+======================================================================
+🎙️  BATCH VIDEO TRANSCRIPTION SERVICE
+======================================================================
+🚀 Initializing Batch Transcription Service...
+📊 Loaded progress: 0 videos already completed
+✅ Service initialized
+
+📂 Scanning for videos without transcriptions...
+📊 Found 805 videos without .srt files
+📊 Videos to process: 805 (0 already processed)
+
+💰 COST ESTIMATE:
+   Videos to process: 805
+   Estimated duration: 403 minutes
+   Estimated cost: $2.42
+   Batch size: 10 concurrent
+
+⏳ Starting in 3 seconds... (Ctrl+C to cancel)
+
+======================================================================
+📦 BATCH 1/81 (10 videos)
+======================================================================
+
+🎙️  [1/805] Processing: Character_elderly_wise_202509141717_kw55m.mp4
+
+🎙️  [2/805] Processing: Character_magical_creature_202509141720_3kw.mp4
+
+🎙️  [3/805] Processing: Character_middleaged_professional_20250914.mp4
+
+🎙️  [4/805] Processing: Character_ordinary_person_202509141718_hf08e.mp4
+
+🎙️  [5/805] Processing: Character_ordinary_person_202509141718_mofhu.mp4
+
+🎙️  [6/805] Processing: Character_talking_animal_202509141707_5h4lx.mp4
+
+🎙️  [7/805] Processing: Character_talking_animal_202509141709_livdm.mp4
+
+🎙️  [8/805] Processing: Character_young_energetic_202509141715_w38yo.mp4
+
+🎙️  [9/805] Processing: Character_young_energetic_202509141716_o0uqa.mp4
+
+🎙️  [10/805] Processing: Charcoal_style_8second_202510121930_esige.mp4
+   📊 Size: 2.1MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 2.6MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 4.0MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 3.5MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 2.5MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 3.0MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 3.9MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 3.2MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 4.0MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 3.1MB
+   🇪🇸 Transcribing Spanish...
+   💾 Creating SRT file...
+   ✅ Complete! Progress: 1/805 (0.1%) | ETA: 6h 16m
+   💾 Creating SRT file...
+   ✅ Complete! Progress: 2/805 (0.2%) | ETA: 3h 20m
+   💾 Creating SRT file...
+   ✅ Complete! Progress: 3/805 (0.4%) | ETA: 2h 32m
+   💾 Creating SRT file...
+   ✅ Complete! Progress: 4/805 (0.5%) | ETA: 2h 3m
+   💾 Creating SRT file...
+   ✅ Complete! Progress: 5/805 (0.6%) | ETA: 1h 43m
+   💾 Creating SRT file...
+   ✅ Complete! Progress: 6/805 (0.7%) | ETA: 1h 28m
+   💾 Creating SRT file...
+   ✅ Complete! Progress: 7/805 (0.9%) | ETA: 1h 25m
+   💾 Creating SRT file...
+   ✅ Complete! Progress: 8/805 (1.0%) | ETA: 1h 16m
+   💾 Creating SRT file...
+   ✅ Complete! Progress: 9/805 (1.1%) | ETA: 1h 8m
+   💾 Creating SRT file...
+   ✅ Complete! Progress: 10/805 (1.2%) | ETA: 1h 2m
+
+⏸️  Pausing 3 seconds between batches (rate limiting)...
+
+======================================================================
+📦 BATCH 2/81 (10 videos)
+======================================================================
+
+🎙️  [11/805] Processing: City_skyline_aerial_202510091257_yn7xq.mp4
+
+🎙️  [12/805] Processing: Claymation_stopmotion__202510091738_s6r6c.mp4
+
+🎙️  [13/805] Processing: Claymation_stopmotion__202510091811_ugxzc.mp4
+
+🎙️  [14/805] Processing: Claymation_stopmotion_grumpy_202510091756_ed.mp4
+
+🎙️  [15/805] Processing: Claymation_stopmotion_style_202510090053_465.mp4
+
+🎙️  [16/805] Processing: Claymation_stopmotion_style_202510090057_1jr.mp4
+
+🎙️  [17/805] Processing: Claymation_stopmotion_style_202510090102_17l.mp4
+
+🎙️  [18/805] Processing: Claymation_stopmotion_style_202510091213_dm3.mp4
+
+🎙️  [19/805] Processing: Claymation_stopmotion_style_202510091214_sua.mp4
+
+🎙️  [20/805] Processing: Claymation_style_8second_202510132046_pimb9.mp4
+   📊 Size: 2.8MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 1.3MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 2.5MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 1.5MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 1.2MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 1.9MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 1.2MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 1.7MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 1.7MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 4.6MB
+   🇪🇸 Transcribing Spanish...
+   💾 Creating SRT file...
+   ✅ Complete! Progress: 11/805 (1.4%) | ETA: 1h 21m
+   💾 Creating SRT file...
+   ✅ Complete! Progress: 12/805 (1.5%) | ETA: 1h 19m
+   💾 Creating SRT file...
+   ✅ Complete! Progress: 13/805 (1.6%) | ETA: 1h 13m
+   💾 Creating SRT file...
+   ✅ Complete! Progress: 14/805 (1.7%) | ETA: 1h 13m
+   💾 Creating SRT file...
+   ✅ Complete! Progress: 15/805 (1.9%) | ETA: 1h 9m
+   💾 Creating SRT file...
+   ✅ Complete! Progress: 16/805 (2.0%) | ETA: 1h 5m
+   💾 Creating SRT file...
+   ✅ Complete! Progress: 17/805 (2.1%) | ETA: 1h 1m
+   💾 Creating SRT file...
+   ✅ Complete! Progress: 18/805 (2.2%) | ETA: 1h 0m
+   💾 Creating SRT file...
+   ✅ Complete! Progress: 19/805 (2.4%) | ETA: 58m
+   💾 Creating SRT file...
+   ✅ Complete! Progress: 20/805 (2.5%) | ETA: 1h 2m
+
+⏸️  Pausing 3 seconds between batches (rate limiting)...
+
+
+⚠️  Terminated! Progress has been saved.
+💡 Run again to resume from where you left off.
+

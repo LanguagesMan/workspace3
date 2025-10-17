@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 Discover - AI-Powered News Feed</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            color: #1a1a1a;
+        }
+
+        /* Header with audio player */
+        .header {
+            background: #121212; border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: #000000;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            background: #f1f3f5;
+        }
+
+        /* Audio Player (Sticky) */
+        .audio-player {
+            background: #000000;
+            color: white;
+            padding: 16px 20px;
+            position: sticky;
+            top: 60px;
+            z-index: 99;
+            display: none;
+        }
+
+        .audio-player.active {
+            display: block;
+        }
+
+        .audio-controls {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .audio-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .audio-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .audio-info {
+            flex: 1;
+        }
+
+        .audio-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .audio-progress {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .audio-progress-fill {
+            height: 100%;
+            background: #121212; border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        /* Personalization Badge */
+        .personalization-info {
+            background: #000000;
+            color: white;
+            padding: 16px 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .personalization-info strong {
+            font-weight: 700;
+        }
+
+        /* Filters */
+        .filters {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .filter-btn {
+            background: #121212; border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid #e9ecef;
+            padding: 10px 20px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            border-color: #00F5FF;
+        }
+
+        .filter-btn.active {
+            background: #000000;
+            color: white;
+            border-color: transparent;
+        }
+
+        /* Feed Container */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+
+        /* Article Card with Audio */
+        .article-card {
+            background: #121212; border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .article-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .article-card.playing {
+            border: 2px solid #00F5FF;
+        }
+
+        .article-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .article-source {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 8px;
+        }
+
+        .badge {
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .badge.level {
+            background: #00F5FF;
+            color: white;
+        }
+
+        .badge.audio {
+            background: #10b981;
+            color: white;
+        }
+
+        .badge.personalized {
+            background: #f093fb;
+            color: white;
+        }
+
+        .article-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            color: #1a1a1a;
+        }
+
+        .article-description {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .article-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .article-actions {
+            display: flex;
+            gap: 16px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 4px 8px;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .article-time {
+            font-size: 13px;
+            color: #999;
+        }
+
+        /* Recommendation Reason */
+        .recommendation-reason {
+            font-size: 12px;
+            color: #00F5FF;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #00F5FF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+        
+        /* Article Modal */
+        .article-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .article-modal-content {
+            background: #121212; border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .article-modal-header {
+            padding: 24px 24px 16px;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            background: #121212; border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 10;
+        }
+        
+        .modal-close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: #f0f0f0;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .article-modal-title {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 8px;
+            padding-right: 50px;
+        }
+        
+        .article-modal-meta {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .article-modal-body {
+            padding: 24px;
+            font-size: 18px;
+            line-height: 1.7;
+            color: #333;
+        }
+        
+        .article-modal-body p {
+            margin-bottom: 16px;
+        }
+        
+        .article-modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #eee;
+            text-align: center;
+        }
+        
+        .modal-btn {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        /* Clickable Words */
+        .clickable-word {
+            cursor: pointer;
+            border-bottom: 2px dotted #007AFF;
+            transition: all 0.2s ease;
+            padding: 2px 0;
+        }
+        
+        .clickable-word:hover {
+            background: #E3F2FD;
+            border-bottom-color: #0051D5;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes popupIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">🤖 AI Discover</div>
+            <div class="header-actions">
+                <button class="icon-btn" onclick="goBack()" title="Back">←</button>
+                <button class="icon-btn" onclick="refreshFeed()" title="Refresh">🔄</button>
+                <button class="icon-btn" onclick="openSettings()" title="Settings">⚙️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Player (appears when playing) -->
+    <div class="audio-player" id="audioPlayer">
+        <div class="audio-controls">
+            <button class="audio-btn" onclick="toggleAudio()">
+                <span id="audioPlayIcon">▶️</span>
+            </button>
+            <div class="audio-info">
+                <div class="audio-title" id="audioTitle">Article Title</div>
+                <div class="audio-progress" onclick="seekAudio(event)">
+                    <div class="audio-progress-fill" id="audioProgress"></div>
+                </div>
+            </div>
+            <button class="audio-btn" onclick="changeSpeed()">
+                <span id="audioSpeed">1x</span>
+            </button>
+            <button class="audio-btn" onclick="stopAudio()">⏹️</button>
+        </div>
+    </div>
+
+    <!-- Personalization Info -->
+    <div class="personalization-info" id="personalizationInfo">
+        🎯 <strong>Personalized for you</strong> based on your learning level and interests
+    </div>
+
+    <!-- Filters -->
+    <div class="filters" id="filters">
+        <button class="filter-btn active" onclick="filterContent('all')">🔥 For You</button>
+        <button class="filter-btn" onclick="filterContent('technology')">💻 Technology</button>
+        <button class="filter-btn" onclick="filterContent('sports')">⚽ Sports</button>
+        <button class="filter-btn" onclick="filterContent('culture')">🎭 Culture</button>
+        <button class="filter-btn" onclick="filterContent('science')">🔬 Science</button>
+        <button class="filter-btn" onclick="filterContent('business')">💼 Business</button>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+        <p>Loading Spanish news from 7 sources...</p>
+        <p style="font-size: 14px; opacity: 0.7; margin-top: 8px;">This may take 10-15 seconds</p>
+    </div>
+
+    <!-- Feed Container -->
+    <div class="container" id="feedContainer" style="display: none;"></div>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="emptyState" style="display: none;">
+        <div class="empty-icon">📭</div>
+        <h3>No articles found</h3>
+        <p>Try adjusting your filters or check back later</p>
+    </div>
+
+    <script>
+        // Inline UserProfiler to avoid loading issues
+        class UserProfiler {
+            constructor() {
+                this.profiles = new Map();
+            }
+            
+            loadProfile(userId) {
+                if (typeof localStorage !== 'undefined') {
+                    const stored = localStorage.getItem(`userProfile_${userId}`);
+                    if (stored) {
+                        return JSON.parse(stored);
+                    }
+                }
+                return this.createDefaultProfile(userId);
+            }
+            
+            createDefaultProfile(userId) {
+                return {
+                    userId,
+                    cefrLevel: 'B1',
+                    interests: {},
+                    knownWords: [],
+                    videosWatched: [],
+                    articlesRead: [],
+                    optimalDifficulty: 50
+                };
+            }
+            
+            buildProfile(userId, signals) {
+                let profile = this.loadProfile(userId);
+                // Simple update logic
+                if (signals.articleRead) {
+                    profile.articlesRead.push(signals.articleRead);
+                }
+                if (typeof localStorage !== 'undefined') {
+                    localStorage.setItem(`userProfile_${userId}`, JSON.stringify(profile));
+                }
+                return profile;
+            }
+        }
+        
+        // Inline PersonalizationEngine
+        class PersonalizationEngine {
+            constructor(userProfiler) {
+                this.userProfiler = userProfiler;
+            }
+            
+            personalizeContent(userId, articles) {
+                return articles.map(article => ({
+                    ...article,
+                    personalizedScore: Math.random() * 0.5 + 0.5
+                }));
+            }
+            
+            getRecommendations(userId, articles, limit) {
+                const personalized = this.personalizeContent(userId, articles);
+                return personalized.slice(0, limit);
+            }
+            
+            explainRecommendation(article) {
+                const reasons = ['Perfect difficulty level for you', 'Matches your interests', 'Fresh content'];
+                return [reasons[Math.floor(Math.random() * reasons.length)]];
+            }
+        }
+    </script>
+    <script>
+        // Initialize systems
+        const userProfiler = new UserProfiler();
+        const personalizationEngine = new PersonalizationEngine(userProfiler);
+        const userId = 'default_user'; // Would come from auth
+        
+        let currentArticles = [];
+        let currentFilter = 'all';
+        let audioContext = null;
+        let currentAudioArticle = null;
+        let speechUtterance = null;
+        let audioSpeed = 1.0;
+
+        // Load personalized feed on page load
+        async function loadPersonalizedFeed() {
+            try {
+                console.log('🔄 Starting to load personalized feed...');
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('feedContainer').style.display = 'none';
+                document.getElementById('emptyState').style.display = 'none';
+
+                // Wait for user state to initialize
+                if (window.userState && !window.userState.userId) {
+                    await window.userState.init();
+                }
+                
+                const userId = window.userState?.userId || localStorage.getItem('userId');
+                
+                // Try smart recommendations API first
+                console.log('📡 Fetching personalized recommendations...');
+                let data;
+                
+                try {
+                    const recResponse = await fetch(`/api/recommendations/articles?userId=${userId}&limit=50`);
+                    if (recResponse.ok) {
+                        data = await recResponse.json();
+                        console.log(`✅ Got ${data.count || 0} smart recommendations`);
+                    }
+                } catch (err) {
+                    console.warn('Smart recommendations unavailable, using fallback');
+                }
+                
+                // Fallback to regular API if needed
+                if (!data || !data.success || !data.articles || data.articles.length === 0) {
+                    console.log('📡 Fetching from discover API...');
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 30000);
+                    
+                    const response = await fetch('/api/discover/personalized', {
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeoutId);
+                    
+                    if (!response.ok) {
+                        throw new Error(`API error: ${response.status}`);
+                    }
+                    
+                    data = await response.json();
+                }
+                
+                console.log(`✅ Received ${data.articles?.length || 0} articles`);
+
+                console.log(`✅ API Response:`, {
+                    success: data.success,
+                    articleCount: data.articles?.length,
+                    hasArticles: !!data.articles
+                });
+
+                if (data.success && data.articles && data.articles.length > 0) {
+                    currentArticles = data.articles;
+                    console.log(`📰 Loaded ${currentArticles.length} articles from API`);
+                    
+                    try {
+                        console.log('🎯 Applying personalization...');
+                        // Apply personalization
+                        const personalized = personalizationEngine.getRecommendations(
+                            userId,
+                            currentArticles,
+                            50
+                        );
+                        console.log(`✨ Personalized ${personalized.length} articles`);
+
+                        console.log('📝 Displaying articles...');
+                        displayArticles(personalized);
+                        console.log(`✅ Displayed ${personalized.length} article cards`);
+                        
+                        // Update personalization info
+                        updatePersonalizationInfo(personalized);
+                        
+                        console.log('✅ Feed loaded successfully!');
+                    } catch (err) {
+                        console.error('❌ Error in personalization/display:', err);
+                        // Fallback: display without personalization
+                        displayArticles(currentArticles);
+                    }
+                } else {
+                    console.warn('⚠️  No articles received from API');
+                    console.warn('Response:', data);
+                    showEmptyState();
+                }
+            } catch (error) {
+                console.error('❌ Error loading feed:', error);
+                document.getElementById('feedContainer').innerHTML = `
+                    <div style="padding: 40px; text-align: center; color: #999;">
+                        <h3>⚠️ Error Loading Feed</h3>
+                        <p>${error.message}</p>
+                        <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #00F5FF; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                            🔄 Retry
+                        </button>
+                    </div>
+                `;
+                document.getElementById('feedContainer').style.display = 'block';
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        function displayArticles(articles) {
+            const container = document.getElementById('feedContainer');
+            container.style.display = 'block';
+            container.innerHTML = '';
+
+            articles.forEach((article, index) => {
+                const card = createArticleCard(article, index);
+                container.appendChild(card);
+            });
+        }
+
+        function createArticleCard(article, index) {
+            const card = document.createElement('div');
+            card.className = 'article-card';
+            card.dataset.articleId = article.id;
+
+            // Get recommendation reasons
+            const reasons = personalizationEngine.explainRecommendation(article);
+            const reason = reasons[0] || 'Recommended for you';
+
+            card.innerHTML = `
+                <div class="recommendation-reason">✨ ${reason}</div>
+                <div class="article-header">
+                    <div>
+                        <div class="article-source">${article.sourceName || 'Spanish News'}</div>
+                        <div class="article-meta">
+                            <span class="badge level">${article.cefrLevel || 'B1'}</span>
+                            ${article.hasAudio ? '<span class="badge audio">🎧 Audio</span>' : ''}
+                            ${article.personalizedScore > 0.7 ? '<span class="badge personalized">🎯 Match</span>' : ''}
+                        </div>
+                    </div>
+                </div>
+                <div class="article-title">${article.title}</div>
+                <div class="article-description">${article.description}</div>
+                <div class="article-footer">
+                    <div class="article-actions">
+                        ${article.hasAudio ? `
+                            <button class="action-btn" onclick="playArticleAudio(event, '${article.id}')" title="Listen">
+                                🎧
+                            </button>
+                        ` : ''}
+                        <button class="action-btn" onclick="saveArticle(event, '${article.id}')" title="Save">
+                            💾
+                        </button>
+                        <button class="action-btn" onclick="shareArticle(event, '${article.id}')" title="Share">
+                            📤
+                        </button>
+                    </div>
+                    <div class="article-time">
+                        ${formatTimeAgo(article.publishedAt)} • ${article.readingTime || 5} min read
+                    </div>
+                </div>
+            `;
+
+            // Click to open article
+            card.addEventListener('click', (e) => {
+                if (!e.target.closest('button')) {
+                    openArticle(article);
+                }
+            });
+
+            return card;
+        }
+
+        function playArticleAudio(event, articleId) {
+            event.stopPropagation();
+            
+            const article = currentArticles.find(a => a.id === articleId);
+            if (!article) return;
+
+            // Stop current audio if playing
+            if (speechUtterance) {
+                window.speechSynthesis.cancel();
+            }
+
+            // Create new speech utterance
+            const text = `${article.title}. ${article.description}`;
+            speechUtterance = new SpeechSynthesisUtterance(text);
+            
+            // Set Spanish voice
+            const voices = window.speechSynthesis.getVoices();
+            const spanishVoice = voices.find(v => v.lang.startsWith('es')) || voices[0];
+            speechUtterance.voice = spanishVoice;
+            speechUtterance.lang = 'es-ES';
+            speechUtterance.rate = audioSpeed;
+
+            // Show audio player
+            const audioPlayer = document.getElementById('audioPlayer');
+            audioPlayer.classList.add('active');
+            document.getElementById('audioTitle').textContent = article.title;
+            document.getElementById('audioPlayIcon').textContent = '⏸️';
+
+            // Mark card as playing
+            document.querySelectorAll('.article-card').forEach(card => {
+                card.classList.remove('playing');
+            });
+            document.querySelector(`[data-article-id="${articleId}"]`).classList.add('playing');
+
+            // Play audio
+            currentAudioArticle = article;
+            window.speechSynthesis.speak(speechUtterance);
+
+            // Handle end
+            speechUtterance.onend = () => {
+                document.getElementById('audioPlayIcon').textContent = '▶️';
+                document.querySelector(`[data-article-id="${articleId}"]`)?.classList.remove('playing');
+                
+                // Track completion
+                trackArticleListened(article);
+            };
+
+            // Track audio play
+            trackArticleAudioPlay(article);
+        }
+
+        function toggleAudio() {
+            if (window.speechSynthesis.speaking) {
+                if (window.speechSynthesis.paused) {
+                    window.speechSynthesis.resume();
+                    document.getElementById('audioPlayIcon').textContent = '⏸️';
+                } else {
+                    window.speechSynthesis.pause();
+                    document.getElementById('audioPlayIcon').textContent = '▶️';
+                }
+            }
+        }
+
+        function stopAudio() {
+            window.speechSynthesis.cancel();
+            document.getElementById('audioPlayer').classList.remove('active');
+            document.querySelectorAll('.article-card').forEach(card => {
+                card.classList.remove('playing');
+            });
+        }
+
+        function changeSpeed() {
+            const speeds = [0.75, 1.0, 1.25, 1.5, 2.0];
+            const currentIndex = speeds.indexOf(audioSpeed);
+            audioSpeed = speeds[(currentIndex + 1) % speeds.length];
+            document.getElementById('audioSpeed').textContent = audioSpeed + 'x';
+            
+            if (speechUtterance && window.speechSynthesis.speaking) {
+                speechUtterance.rate = audioSpeed;
+            }
+        }
+
+        function saveArticle(event, articleId) {
+            event.stopPropagation();
+            
+            const article = currentArticles.find(a => a.id === articleId);
+            if (!article) return;
+
+            // Save to localStorage
+            const saved = JSON.parse(localStorage.getItem('savedArticles') || '[]');
+            if (!saved.find(a => a.id === articleId)) {
+                saved.push(article);
+                localStorage.setItem('savedArticles', JSON.stringify(saved));
+                
+                // Visual feedback
+                event.target.textContent = '✅';
+                setTimeout(() => {
+                    event.target.textContent = '💾';
+                }, 1000);
+            }
+        }
+
+        function shareArticle(event, articleId) {
+            event.stopPropagation();
+            
+            const article = currentArticles.find(a => a.id === articleId);
+            if (!article) return;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: article.title,
+                    text: article.description,
+                    url: article.url
+                });
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(article.url);
+                alert('Link copied to clipboard!');
+            }
+        }
+
+        function openArticle(article) {
+            // Track article read
+            trackArticleRead(article);
+
+            // Create article modal
+            const modal = document.createElement('div');
+            modal.className = 'article-modal';
+            modal.innerHTML = `
+                <div class="article-modal-content">
+                    <div class="article-modal-header">
+                        <button class="modal-close-btn" onclick="this.closest('.article-modal').remove()">✕</button>
+                        <h1 class="article-modal-title">${article.title}</h1>
+                        <div class="article-modal-meta">
+                            ${article.source} • ${article.readingTime || 5} min read
+                        </div>
+                    </div>
+                    <div class="article-modal-body" id="articleContent">
+                        <p>${article.description || ''}</p>
+                        <p style="color: #666; font-style: italic; margin-top: 20px;">
+                            Loading full article content...
+                        </p>
+                    </div>
+                    <div class="article-modal-footer">
+                        <button class="modal-btn" onclick="window.open('${article.url}', '_blank')">
+                            Read Full Article 🔗
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Make words clickable
+            setTimeout(() => {
+                makeArticleWordsClickable(modal.querySelector('#articleContent'));
+            }, 100);
+        }
+        
+        // Make every Spanish word clickable
+        function makeArticleWordsClickable(contentElement) {
+            if (!contentElement) return;
+            
+            const paragraphs = contentElement.querySelectorAll('p');
+            paragraphs.forEach(p => {
+                const text = p.textContent;
+                const words = text.split(/(\s+|[.,!?;:()])/);
+                
+                p.innerHTML = words.map(word => {
+                    // Check if it's a Spanish word
+                    if (/[a-záéíóúñü]{2,}/i.test(word)) {
+                        return `<span class="clickable-word" data-word="${word.toLowerCase().replace(/[.,!?;:()]/g, '')}">${word}</span>`;
+                    }
+                    return word;
+                }).join('');
+            });
+            
+            // Add click handlers
+            contentElement.querySelectorAll('.clickable-word').forEach(span => {
+                span.addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    const word = span.dataset.word;
+                    await showWordTranslation(word, span);
+                });
+            });
+        }
+        
+        // Show word translation popup
+        async function showWordTranslation(word, element) {
+            // Create popup
+            const popup = document.createElement('div');
+            popup.className = 'word-translation-popup';
+            popup.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: #121212; border: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 24px;
+                border-radius: 16px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+                z-index: 100000;
+                min-width: 300px;
+                max-width: 400px;
+                animation: popupIn 0.2s ease;
+            `;
+            
+            popup.innerHTML = `
+                <div style="font-size: 28px; font-weight: 700; margin-bottom: 12px; color: #007AFF;">${word}</div>
+                <div style="color: #888; margin-bottom: 16px;">Translating...</div>
+            `;
+            
+            document.body.appendChild(popup);
+            
+            // Get translation (you can replace this with actual translation API)
+            const translation = await translateWord(word);
+            
+            popup.innerHTML = `
+                <div style="font-size: 28px; font-weight: 700; margin-bottom: 12px; color: #007AFF;">${word}</div>
+                <div style="font-size: 20px; margin-bottom: 20px; color: #333;">${translation}</div>
+                <div style="display: flex; gap: 8px;">
+                    <button onclick="saveWordToVocabulary('${word}', '${translation}'); showNotification('Saved ✅'); this.closest('.word-translation-popup').remove();" 
+                            style="flex: 1; background: #34C759; color: white; border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-weight: 600;">
+                        💾 Save Word
+                    </button>
+                    <button onclick="this.closest('.word-translation-popup').remove();" 
+                            style="flex: 1; background: #f0f0f0; color: #333; border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-weight: 600;">
+                        Got it
+                    </button>
+                </div>
+            `;
+            
+            // Close on background click
+            setTimeout(() => {
+                const closeHandler = (e) => {
+                    if (!popup.contains(e.target) && e.target !== element) {
+                        popup.remove();
+                        document.removeEventListener('click', closeHandler);
+                    }
+                };
+                document.addEventListener('click', closeHandler);
+            }, 100);
+        }
+        
+        // Simple translation function (replace with actual API)
+        async function translateWord(word) {
+            // For now, return placeholder
+            // In production, call translation API
+            const commonWords = {
+                'hola': 'hello',
+                'gracias': 'thank you',
+                'por': 'for',
+                'favor': 'please',
+                'adiós': 'goodbye',
+                'sí': 'yes',
+                'no': 'no',
+                'buenos': 'good',
+                'días': 'days',
+                'noches': 'nights',
+                'tarde': 'afternoon',
+                'mañana': 'morning / tomorrow',
+                'casa': 'house',
+                'comida': 'food',
+                'agua': 'water',
+                'tiempo': 'time / weather',
+                'año': 'year',
+                'día': 'day',
+                'persona': 'person',
+                'mundo': 'world',
+                'vida': 'life',
+                'hora': 'hour',
+                'cosa': 'thing',
+                'parte': 'part',
+                'lugar': 'place',
+                'forma': 'form / way',
+                'ejemplo': 'example',
+                'problema': 'problem'
+            };
+            
+            return commonWords[word.toLowerCase()] || `[Translation of "${word}"]`;
+        }
+        
+        // Save word to vocabulary
+        async function saveWordToVocabulary(word, translation) {
+            const API_BASE = 'http://localhost:3001/api';
+            const userId = getCurrentUserId();
+            
+            try {
+                // First, click the word (to ensure it exists in DB)
+                await fetch(`${API_BASE}/vocabulary/click`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId,
+                        word,
+                        translation,
+                        source: 'article',
+                        level: 'A2'
+                    })
+                });
+                
+                // Then save it for review
+                const response = await fetch(`${API_BASE}/vocabulary/save`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, word })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    console.log(`✅ Word saved to database: ${word}`);
+                    
+                    // Track in profile
+                    if (typeof userProfiler !== 'undefined') {
+                        userProfiler.buildProfile(userId, {
+                            wordLearned: { word, translation }
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error('Error saving word:', error);
+                // Fallback to localStorage
+                let vocabulary = JSON.parse(localStorage.getItem('vocabulary') || '[]');
+                if (!vocabulary.find(w => w.word === word)) {
+                    vocabulary.push({
+                        word,
+                        translation,
+                        savedAt: Date.now(),
+                        source: 'article'
+                    });
+                    localStorage.setItem('vocabulary', JSON.stringify(vocabulary));
+                }
+            }
+        }
+        
+        function getCurrentUserId() {
+            let userId = localStorage.getItem('userId');
+            if (!userId) {
+                userId = 'user_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('userId', userId);
+            }
+            return userId;
+        }
+        
+        // Show notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #34C759;
+                color: white;
+                padding: 16px 24px;
+                border-radius: 12px;
+                font-weight: 600;
+                z-index: 100001;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+        }
+
+        function filterContent(topic) {
+            currentFilter = topic;
+            
+            // Update active filter button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Filter and re-display articles
+            let filtered = currentArticles;
+            if (topic !== 'all') {
+                filtered = currentArticles.filter(article => 
+                    article.topics && article.topics.includes(topic)
+                );
+            }
+
+            displayArticles(filtered);
+        }
+
+        function updatePersonalizationInfo(articles) {
+            const profile = userProfiler.loadProfile(userId);
+            const info = document.getElementById('personalizationInfo');
+            
+            info.innerHTML = `
+                🎯 <strong>Personalized for ${profile.cefrLevel} level</strong> • 
+                ${articles.filter(a => a.personalizedScore > 0.7).length} highly relevant articles
+            `;
+        }
+
+        function trackArticleRead(article) {
+            userProfiler.buildProfile(userId, {
+                articleRead: {
+                    id: article.id,
+                    timeSpent: 60, // Would track actual time
+                    completionRate: 1.0,
+                    difficulty: article.difficulty,
+                    topics: article.topics
+                }
+            });
+        }
+
+        function trackArticleAudioPlay(article) {
+            // Track that user listened to audio
+            console.log('Audio played:', article.id);
+        }
+
+        function trackArticleListened(article) {
+            // Track completion
+            userProfiler.buildProfile(userId, {
+                articleRead: {
+                    id: article.id,
+                    timeSpent: article.readingTime * 60,
+                    completionRate: 1.0,
+                    difficulty: article.difficulty,
+                    topics: article.topics
+                }
+            });
+        }
+
+        function formatTimeAgo(timestamp) {
+            const now = Date.now();
+            const diff = now - timestamp;
+            
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+            
+            if (minutes < 60) return `${minutes}m ago`;
+            if (hours < 24) return `${hours}h ago`;
+            if (days === 1) return 'Yesterday';
+            return `${days}d ago`;
+        }
+
+        function showEmptyState() {
+            document.getElementById('feedContainer').style.display = 'none';
+            document.getElementById('emptyState').style.display = 'block';
+        }
+
+        function refreshFeed() {
+            loadPersonalizedFeed();
+        }
+
+        function openSettings() {
+            // Navigate to profile/settings page
+            window.location.href = '/profile.html';
+        }
+
+        function goBack() {
+            window.location.href = '/tiktok-video-feed.html';
+        }
+
+        // Load voices when ready
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = () => {
+                console.log('✅ Voices loaded');
+            };
+        }
+
+        // Initialize
+        loadPersonalizedFeed();
+    </script>
+    
+    <!-- 🧭 UNIFIED BOTTOM NAVIGATION -->
+    <script src="/components/bottom-nav.html" async></script>
+
+    <!-- User State Management -->
+    <script src="/js/user-state.js"></script>
+
+    <script type="module">
+        // BEGINNER MODE: Bottom navigation
+        // ... rest of the code remains the same ...
+    </script>
+    
+    <style>
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .bottom-nav .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #666;
+            text-decoration: none;
+        }
+
+        .bottom-nav .nav-item:hover {
+            color: #007AFF;
+            transform: translateY(-2px);
+        }
+
+        .bottom-nav .nav-item.active {
+            color: #007AFF;
+        }
+
+        .bottom-nav .nav-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .bottom-nav .nav-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke-width: 2;
+        }
+
+        .bottom-nav .nav-label {
+            font-size: 11px;
+            font-weight: 500;
+        }
+    </style>
+
+    <nav class="bottom-nav" id="bottomNav">
+        <a href="/tiktok-video-feed.html" class="nav-item" data-page="home">
+            <div class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+            </div>
+            <div class="nav-label">Home</div>
+        </a>
+        
+        <a href="/discover-ai.html" class="nav-item active" data-page="discover">
+            <div class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.35-4.35"/>
+                </svg>
+            </div>
+            <div class="nav-label">Discover</div>
+        </a>
+        
+        <a href="/vocabulary-review.html" class="nav-item" data-page="review">
+            <div class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+            </div>
+            <div class="nav-label">Review</div>
+        </a>
+        
+        <a href="/games.html" class="nav-item" data-page="games">
+            <div class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+            </div>
+            <div class="nav-label">Games</div>
+        </a>
+        
+        <a href="/refer-a-friend.html" class="nav-item" data-page="refer">
+            <div class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <line x1="19" y1="8" x2="19" y2="14"></line>
+                    <line x1="22" y1="11" x2="16" y2="11"></line>
+                </svg>
+            </div>
+            <div class="nav-label">Refer</div>
+        </a>
+    </nav>
+</body>
+</html>

@@ -1,0 +1,124 @@
+
+======================================================================
+🎙️  BATCH VIDEO TRANSCRIPTION SERVICE
+======================================================================
+🚀 Initializing Batch Transcription Service...
+📝 Starting fresh - no previous progress found
+✅ Service initialized
+
+📂 Scanning for videos without transcriptions...
+📊 Found 825 videos without .srt files
+📊 Videos to process: 825 (0 already processed)
+
+💰 COST ESTIMATE:
+   Videos to process: 825
+   Estimated duration: 413 minutes
+   Estimated cost: $2.48
+   Batch size: 10 concurrent
+
+⏳ Starting in 3 seconds... (Ctrl+C to cancel)
+
+======================================================================
+📦 BATCH 1/83 (10 videos)
+======================================================================
+
+🎙️  [1/825] Processing: Art_museum_of_202510091621_ykotv.mp4
+
+🎙️  [2/825] Processing: Ascii_art_keyboard_202510091916_qxymp.mp4
+
+🎙️  [3/825] Processing: Athletic_cartoon_spoon_202509160818_w4frw.mp4
+
+🎙️  [4/825] Processing: Baby_animal_attempting_202510091639_w7cyb.mp4
+
+🎙️  [5/825] Processing: Barista_creating_insanely_202510091538_5u3rg.mp4
+
+🎙️  [6/825] Processing: Batik_wax_resist_202510091734_0i761.mp4
+
+🎙️  [7/825] Processing: Black_and_white_202510121822_5z67w.mp4
+
+🎙️  [8/825] Processing: Book_watching_reader_202510091312_v5kwg.mp4
+
+🎙️  [9/825] Processing: Building_exterior_comic_202510091205_730b0.mp4
+
+🎙️  [10/825] Processing: Butter_panicking_saying_202509161514_11lph.mp4
+   📊 Size: 1.5MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 1.9MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 3.7MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 7.6MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 1.9MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 3.3MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 5.7MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 2.5MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 4.8MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 1.6MB
+   🇪🇸 Transcribing Spanish...
+   ❌ Error: Transcription failed: Incorrect API key provided: sk-proj-********************************************************************************************************************************************************qQvF. You can find your API key at https://platform.openai.com/account/api-keys.
+   ❌ Error: Transcription failed: Incorrect API key provided: sk-proj-********************************************************************************************************************************************************qQvF. You can find your API key at https://platform.openai.com/account/api-keys.
+   ❌ Error: Transcription failed: Incorrect API key provided: sk-proj-********************************************************************************************************************************************************qQvF. You can find your API key at https://platform.openai.com/account/api-keys.
+   ❌ Error: Transcription failed: Incorrect API key provided: sk-proj-********************************************************************************************************************************************************qQvF. You can find your API key at https://platform.openai.com/account/api-keys.
+   ❌ Error: Transcription failed: Incorrect API key provided: sk-proj-********************************************************************************************************************************************************qQvF. You can find your API key at https://platform.openai.com/account/api-keys.
+   ❌ Error: Transcription failed: Incorrect API key provided: sk-proj-********************************************************************************************************************************************************qQvF. You can find your API key at https://platform.openai.com/account/api-keys.
+   ❌ Error: Transcription failed: Incorrect API key provided: sk-proj-********************************************************************************************************************************************************qQvF. You can find your API key at https://platform.openai.com/account/api-keys.
+   ❌ Error: Transcription failed: Incorrect API key provided: sk-proj-********************************************************************************************************************************************************qQvF. You can find your API key at https://platform.openai.com/account/api-keys.
+   ❌ Error: Transcription failed: Incorrect API key provided: sk-proj-********************************************************************************************************************************************************qQvF. You can find your API key at https://platform.openai.com/account/api-keys.
+   ❌ Error: Transcription failed: Incorrect API key provided: sk-proj-********************************************************************************************************************************************************qQvF. You can find your API key at https://platform.openai.com/account/api-keys.
+
+⏸️  Pausing 3 seconds between batches (rate limiting)...
+
+======================================================================
+📦 BATCH 2/83 (10 videos)
+======================================================================
+
+🎙️  [11/825] Processing: Call_center_worker_202509140307_ys415.mp4
+
+🎙️  [12/825] Processing: Cardboard_craft_art_202510091751_ufnjn.mp4
+
+🎙️  [13/825] Processing: Cardboard_craft_rough_202510091733_ti9he.mp4
+
+🎙️  [14/825] Processing: Chalk_animation_style_202510141745_teynm.mp4
+
+🎙️  [15/825] Processing: Chalk_animation_style_202510142044_vjwlh.mp4
+
+🎙️  [16/825] Processing: Chalk_animation_style_202510142059_9ezmb.mp4
+
+🎙️  [17/825] Processing: Chalk_animation_style_202510142207_j31ta.mp4
+
+🎙️  [18/825] Processing: Chalk_art_chalkboard_202510091720_8n7k7.mp4
+
+🎙️  [19/825] Processing: Character_child_prodigy_202509141716_blv7f.mp4
+
+🎙️  [20/825] Processing: Character_child_prodigy_202509141720_ihpg6.mp4
+   📊 Size: 2.0MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 2.6MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 2.1MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 2.0MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 2.8MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 4.1MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 1.7MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 3.1MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 3.0MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 2.7MB
+   🇪🇸 Transcribing Spanish...
+   ❌ Error: Transcription failed: Incorrect API key provided: sk-proj-********************************************************************************************************************************************************qQvF. You can find your API key at https://platform.openai.com/account/api-keys.
+   ❌ Error: Transcription failed: Incorrect API key provided: sk-proj-********************************************************************************************************************************************************qQvF. You can find your API key at https://platform.openai.com/account/api-keys.
+   ❌ Error: Transcription failed: Incorrect API key provided: sk-proj-********************************************************************************************************************************************************qQvF. You can find your API key at https://platform.openai.com/account/api-keys.
+   ❌ Error: Transcription failed: Incorrect API key provided: sk-proj-********************************************************************************************************************************************************qQvF. You can find your API key at https://platform.openai.com/account/api-keys.
+   ❌ Error: Transcription failed: Incorrect API key provided: sk-proj-********************************************************************************************************************************************************qQvF. You can find your API key at https://platform.openai.com/account/api-keys.

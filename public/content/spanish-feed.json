@@ -1,0 +1,80 @@
+[
+  {
+    "id": "globe_dancing_fridge",
+    "type": "video_concept",
+    "title": "GLOBO's Magic Salsa Dancing Refrigerator",
+    "spanish": "¡La nevera baila salsa! Los alimentos bailan también.",
+    "english": "The fridge dances salsa! The food dances too.",
+    "description": "GLOBO opens fridge for midnight snack - refrigerator shelves start salsa dancing with food items twirling - milk carton leads salsa while cheese does the cha-cha-cha",
+    "surprise_ending": "Fridge reveals it's been taking dance classes with the microwave at night!",
+    "difficulty": "beginner",
+    "words": ["nevera", "baila", "salsa", "alimentos"],
+    "image_prompt": "Cartoon refrigerator doing salsa dance, food items with faces dancing inside, colorful animated style",
+    "created": "2025-10-01T03:06:00Z"
+  },
+  {
+    "id": "invisible_teacher",
+    "type": "video_concept",
+    "title": "GLOBO's Invisible Spanish Teacher Chaos",
+    "spanish": "¡El profesor es invisible! ¿Dónde está el profesor?",
+    "english": "The teacher is invisible! Where is the teacher?",
+    "description": "GLOBO sits down for Spanish lesson - invisible teacher throws books and chalk everywhere - books fly open to random pages, chalk writes Spanish words on walls",
+    "surprise_ending": "Teacher becomes visible - it's a tiny hamster wearing GLOBO's globe sunglasses!",
+    "difficulty": "beginner",
+    "words": ["profesor", "invisible", "dónde", "está"],
+    "image_prompt": "Floating books and chalk writing on walls, tiny hamster with globe-shaped sunglasses, magical classroom scene",
+    "created": "2025-10-01T03:06:01Z"
+  },
+  {
+    "id": "flying_taco_truck",
+    "type": "video_concept",
+    "title": "GLOBO's Flying Taco Food Truck",
+    "spanish": "¡El camión de tacos vuela! ¡Los tacos caen del cielo!",
+    "english": "The taco truck flies! The tacos fall from the sky!",
+    "description": "Marco orders from normal taco truck - truck sprouts wings and starts flying - tacos rain from the sky while GLOBO tries to catch them",
+    "surprise_ending": "Truck lands on cloud made of tortillas - it's the taco afterlife!",
+    "difficulty": "beginner",
+    "words": ["camión", "tacos", "vuela", "cielo"],
+    "image_prompt": "Flying food truck with wings, tacos raining down, cloud made of tortillas, vibrant Mexican colors",
+    "created": "2025-10-01T03:06:02Z"
+  },
+  {
+    "id": "spanish_dictionary_revolt",
+    "type": "video_concept",
+    "title": "GLOBO's Sentient Spanish Dictionary Revolt",
+    "spanish": "¡Las palabras están discutiendo! ¿Quién tiene razón?",
+    "english": "The words are arguing! Who is right?",
+    "description": "Dictionary pages come alive, Spanish words floating and arguing about pronunciation - word bubbles flying around, pages flipping frantically",
+    "surprise_ending": "Words form a union and demand better pronunciation from learners",
+    "difficulty": "intermediate",
+    "words": ["palabras", "discutiendo", "quién", "razón"],
+    "image_prompt": "Animated dictionary with floating word bubbles arguing, letters rearranging themselves, magical learning vibes",
+    "created": "2025-10-01T03:06:03Z"
+  },
+  {
+    "id": "sentient_coffee_mug",
+    "type": "video_concept",
+    "title": "Self-Stirring Coffee Catastrophe",
+    "spanish": "¡La taza tiene brazos! ¡Mezcla todo en la cocina!",
+    "english": "The cup has arms! It mixes everything in the kitchen!",
+    "description": "Coffee mug grows tiny arms and starts stirring everything - stirring soup, salad, GLOBO's hair, everything spinning and splashing",
+    "surprise_ending": "Mug realizes it's been stirring the wrong coffee - GLOBO's been drinking hot chocolate!",
+    "difficulty": "beginner",
+    "words": ["taza", "brazos", "mezcla", "cocina"],
+    "image_prompt": "Coffee mug with cute little arms stirring everything, kitchen chaos, animated breakfast scene",
+    "created": "2025-10-01T03:06:04Z"
+  },
+  {
+    "id": "upside_down_city",
+    "type": "video_concept",
+    "title": "Upside-Down City Car Drive",
+    "spanish": "¡El mundo está al revés! ¡Los carros vuelan en el cielo!",
+    "english": "The world is upside down! The cars fly in the sky!",
+    "description": "Normal car drive suddenly the city flips upside down - cars driving on clouds, buildings hanging from sky, GLOBO hanging onto steering wheel",
+    "surprise_ending": "GLOBO realizes he's been holding the map upside down the whole time!",
+    "difficulty": "intermediate",
+    "words": ["mundo", "revés", "carros", "cielo"],
+    "image_prompt": "Upside-down city with cars on clouds, buildings hanging down, surreal gravity-defying scene",
+    "created": "2025-10-01T03:06:05Z"
+  }
+]

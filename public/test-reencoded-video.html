@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <title>Test Re-encoded Video</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #000;
+            color: #fff;
+            font-family: monospace;
+        }
+        video {
+            width: 100%;
+            max-width: 600px;
+            display: block;
+            margin: 20px auto;
+        }
+        .status {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #222;
+            border-radius: 8px;
+        }
+        .success { color: #0f0; }
+        .error { color: #f00; }
+    </style>
+</head>
+<body>
+    <div class="status">
+        <h1>Video Loading Test</h1>
+        <p id="status">⏳ Loading...</p>
+        <p id="details"></p>
+    </div>
+
+    <video id="reencoded" controls muted autoplay>
+        <source src="/videos/reels/test-reencoded.mp4" type="video/mp4">
+    </video>
+
+    <div class="status">
+        <h2>Original Video (Broken)</h2>
+    </div>
+
+    <video id="original" controls muted>
+        <source src="/videos/reels/Andheld_camera_footage_202509112217_yzrzq.mp4" type="video/mp4">
+    </video>
+
+    <script>
+        const reencodedVideo = document.getElementById('reencoded');
+        const originalVideo = document.getElementById('original');
+        const status = document.getElementById('status');
+        const details = document.getElementById('details');
+
+        reencodedVideo.addEventListener('loadeddata', () => {
+            status.innerHTML = '✅ <span class="success">RE-ENCODED VIDEO WORKS!</span>';
+            details.innerHTML = `Duration: ${reencodedVideo.duration}s<br>Ready to play!`;
+            console.log('✅ Re-encoded video loaded successfully');
+        });
+
+        reencodedVideo.addEventListener('error', (e) => {
+            status.innerHTML = '❌ <span class="error">RE-ENCODED VIDEO FAILED</span>';
+            details.innerHTML = `Error code: ${reencodedVideo.error?.code}<br>Message: ${reencodedVideo.error?.message}`;
+            console.error('❌ Re-encoded video error:', reencodedVideo.error);
+        });
+
+        originalVideo.addEventListener('error', (e) => {
+            console.error('❌ Original video error:', originalVideo.error);
+        });
+
+        originalVideo.addEventListener('loadeddata', () => {
+            console.log('✅ Original video loaded (unexpected!)');
+        });
+    </script>
+</body>
+</html>

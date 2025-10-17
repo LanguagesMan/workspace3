@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>📝 Personalized Quiz - Langflix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: white;
+        }
+
+        .quiz-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 32px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 32px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .question-container {
+            margin-bottom: 24px;
+        }
+
+        .difficulty-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+        }
+
+        .question-text {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .spanish-word {
+            font-size: 28px;
+            font-weight: 700;
+            color: #FFD700;
+            margin: 16px 0;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 16px 20px;
+            font-size: 16px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .option-btn:hover:not(.correct):not(.incorrect):not(:disabled) {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateX(5px);
+        }
+
+        .option-btn.selected {
+            background: rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+
+        .option-btn.correct {
+            background: rgba(16, 185, 129, 0.3);
+            border-color: #10b981;
+            animation: correctPulse 0.5s;
+        }
+
+        .option-btn.incorrect {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: #ef4444;
+            animation: shake 0.5s;
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .feedback {
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: rgba(16, 185, 129, 0.2);
+            border: 2px solid #10b981;
+            color: #10b981;
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background: rgba(239, 68, 68, 0.2);
+            border: 2px solid #ef4444;
+            color: #ef4444;
+            display: block;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .results {
+            display: none;
+            text-align: center;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .results-emoji {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .results-score {
+            font-size: 48px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 20px 0;
+        }
+
+        .results-message {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+        }
+
+        .mastery-update {
+            background: rgba(16, 185, 129, 0.2);
+            border: 2px solid #10b981;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 20px 0;
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="header">
+            <h1>📝 Personalized Quiz</h1>
+            <p class="subtitle" id="subtitle">Testing your Spanish knowledge from videos you've watched</p>
+        </div>
+
+        <div id="loadingSection" class="loading">
+            <div class="spinner"></div>
+            <p>Generating personalized quiz...</p>
+        </div>
+
+        <div id="quizSection" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="stats-bar">
+                <div class="stat">
+                    <div class="stat-label">Question</div>
+                    <div class="stat-value" id="questionNumber">1/10</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Score</div>
+                    <div class="stat-value" id="scoreDisplay">0</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Accuracy</div>
+                    <div class="stat-value" id="accuracyDisplay">0%</div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="difficulty-tag" id="difficultyTag">Intermediate</div>
+                <div class="question-text" id="questionText">What does this word mean?</div>
+                <div class="spanish-word" id="spanishWord">palabra</div>
+            </div>
+
+            <div class="feedback" id="feedback"></div>
+
+            <div class="options-container" id="optionsContainer"></div>
+
+            <div class="buttons">
+                <button class="btn-primary" id="nextBtn" onclick="nextQuestion()" style="display: none;">
+                    Next Question →
+                </button>
+                <button class="btn-secondary" onclick="goHome()">
+                    🏠 Home
+                </button>
+            </div>
+        </div>
+
+        <div id="resultsSection" class="results">
+            <div class="results-emoji">🎉</div>
+            <div class="results-score" id="finalScore">8 / 10</div>
+            <div class="results-message" id="resultsMessage">Great job!</div>
+            <div class="mastery-update" id="masteryUpdate" style="display: none;">
+                🎯 You've mastered 3 new words!
+            </div>
+            <div class="buttons">
+                <button class="btn-primary" onclick="playAgain()">
+                    🔄 New Quiz
+                </button>
+                <button class="btn-secondary" onclick="goHome()">
+                    🏠 Back to Home
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/lib/quiz-generator.js"></script>
+    <script>
+        let quizGen;
+        let questions = [];
+        let currentQuestion = 0;
+        let score = 0;
+        let answers = [];
+        let startTime = Date.now();
+
+        async function initQuiz() {
+            try {
+                quizGen = new QuizGenerator();
+                
+                // Generate personalized quiz
+                questions = await quizGen.generateQuiz({
+                    count: 10,
+                    difficulty: 'mixed',
+                    questionTypes: ['multiple_choice', 'fill_blank', 'true_false'],
+                    prioritizeWeak: true
+                });
+
+                if (questions.length === 0) {
+                    document.getElementById('subtitle').textContent = '⚠️ No questions generated. Please save some vocabulary first!';
+                    return;
+                }
+
+                console.log(`✅ Generated ${questions.length} questions`);
+
+                document.getElementById('loadingSection').style.display = 'none';
+                document.getElementById('quizSection').style.display = 'block';
+
+                loadQuestion();
+
+            } catch (error) {
+                console.error('Error initializing quiz:', error);
+                document.getElementById('loadingSection').innerHTML = 
+                    '<p style="color: #ef4444;">❌ Failed to load quiz. Please try again.</p>';
+            }
+        }
+
+        function loadQuestion() {
+            if (currentQuestion >= questions.length) {
+                endQuiz();
+                return;
+            }
+
+            const question = questions[currentQuestion];
+
+            // Update progress
+            const progress = (currentQuestion / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('questionNumber').textContent = `${currentQuestion + 1}/${questions.length}`;
+
+            // Update question display
+            document.getElementById('difficultyTag').textContent = question.difficulty || 'Intermediate';
+            document.getElementById('questionText').textContent = question.question;
+            document.getElementById('spanishWord').textContent = question.spanish || '';
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('nextBtn').style.display = 'none';
+
+            // Render options based on question type
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+
+            if (question.type === 'multiple_choice') {
+                question.options.forEach((option, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.textContent = option;
+                    btn.onclick = () => selectAnswer(option, question.correctAnswer, btn);
+                    optionsContainer.appendChild(btn);
+                });
+            } else if (question.type === 'true_false') {
+                document.getElementById('spanishWord').textContent = question.statement;
+                ['True', 'False'].forEach(option => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.textContent = option;
+                    btn.onclick = () => selectAnswer(option === 'True', question.correctAnswer, btn);
+                    optionsContainer.appendChild(btn);
+                });
+            } else if (question.type === 'fill_blank') {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'option-btn';
+                input.placeholder = 'Type your answer...';
+                input.style.cursor = 'text';
+                input.onkeypress = (e) => {
+                    if (e.key === 'Enter') {
+                        const answer = e.target.value.trim().toLowerCase();
+                        checkFillBlank(answer, question.acceptableAnswers || [question.correctAnswer.toLowerCase()]);
+                    }
+                };
+                optionsContainer.appendChild(input);
+                input.focus();
+
+                const submitBtn = document.createElement('button');
+                submitBtn.className = 'option-btn btn-primary';
+                submitBtn.textContent = '✓ Check Answer';
+                submitBtn.onclick = () => {
+                    const answer = input.value.trim().toLowerCase();
+                    checkFillBlank(answer, question.acceptableAnswers || [question.correctAnswer.toLowerCase()]);
+                };
+                optionsContainer.appendChild(submitBtn);
+            }
+        }
+
+        function selectAnswer(selected, correct, btnElement) {
+            const isCorrect = selected === correct;
+            answers.push(selected);
+
+            // Disable all options
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.disabled = true;
+            });
+
+            // Show feedback
+            btnElement.classList.add(isCorrect ? 'correct' : 'incorrect');
+            
+            const feedback = document.getElementById('feedback');
+            if (isCorrect) {
+                score++;
+                feedback.className = 'feedback correct';
+                feedback.textContent = '✓ Correct! Well done!';
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedback.textContent = `✗ Incorrect. The answer was: ${correct}`;
+            }
+
+            updateStats();
+            document.getElementById('nextBtn').style.display = 'block';
+        }
+
+        function checkFillBlank(answer, acceptableAnswers) {
+            const isCorrect = acceptableAnswers.some(a => a === answer);
+            answers.push(answer);
+
+            // Disable input
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.disabled = true;
+            });
+
+            const feedback = document.getElementById('feedback');
+            if (isCorrect) {
+                score++;
+                feedback.className = 'feedback correct';
+                feedback.textContent = '✓ Correct!';
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedback.textContent = `✗ Incorrect. The answer was: ${acceptableAnswers[0]}`;
+            }
+
+            updateStats();
+            document.getElementById('nextBtn').style.display = 'block';
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            loadQuestion();
+        }
+
+        function updateStats() {
+            document.getElementById('scoreDisplay').textContent = score;
+            const accuracy = answers.length > 0 ? Math.round((score / answers.length) * 100) : 0;
+            document.getElementById('accuracyDisplay').textContent = accuracy + '%';
+        }
+
+        async function endQuiz() {
+            const timeSpent = Math.round((Date.now() - startTime) / 1000);
+            const accuracy = Math.round((score / questions.length) * 100);
+
+            // Hide quiz, show results
+            document.getElementById('quizSection').style.display = 'none';
+            document.getElementById('resultsSection').classList.add('active');
+
+            // Update results display
+            document.getElementById('finalScore').textContent = `${score} / ${questions.length}`;
+            
+            let message = '';
+            if (accuracy === 100) {
+                message = '🏆 Perfect score! You\'re amazing!';
+            } else if (accuracy >= 80) {
+                message = `🌟 Excellent! ${accuracy}% accuracy!`;
+            } else if (accuracy >= 60) {
+                message = `👍 Good job! ${accuracy}% correct!`;
+            } else {
+                message = `💪 Keep practicing! ${accuracy}% correct.`;
+            }
+            document.getElementById('resultsMessage').textContent = message;
+
+            // Submit results
+            try {
+                const results = await quizGen.submitQuizResults({
+                    questions: questions,
+                    answers: answers,
+                    score: score,
+                    totalQuestions: questions.length,
+                    timeSpent: timeSpent
+                });
+
+                if (results && results.newWordsMastered > 0) {
+                    const masteryUpdate = document.getElementById('masteryUpdate');
+                    masteryUpdate.textContent = `🎯 You've mastered ${results.newWordsMastered} new word${results.newWordsMastered > 1 ? 's' : ''}!`;
+                    masteryUpdate.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error submitting results:', error);
+            }
+
+            // Update stats
+            quizGen.updateQuizStats(score, questions.length);
+        }
+
+        function playAgain() {
+            currentQuestion = 0;
+            score = 0;
+            answers = [];
+            startTime = Date.now();
+            
+            document.getElementById('resultsSection').classList.remove('active');
+            document.getElementById('loadingSection').style.display = 'block';
+            
+            initQuiz();
+        }
+
+        function goHome() {
+            window.location.href = '/tiktok-video-feed.html';
+        }
+
+        // Initialize quiz on load
+        initQuiz();
+        console.log('📝 Personalized Quiz - Active');
+    </script>
+</body>
+</html>
+

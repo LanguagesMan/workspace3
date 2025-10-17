@@ -1,0 +1,429 @@
+<!-- 🎮 QUIZ & GAMIFICATION UI COMPONENTS -->
+<!-- Add this to your main index.html before closing </body> -->
+
+<style>
+/* 🏆 GAMIFICATION STATS BAR (Top of screen) */
+.gamification-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    z-index: 999;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.stat-icon {
+    font-size: 18px;
+}
+
+.stat-value {
+    color: #fff;
+}
+
+.level-badge {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    color: #000;
+}
+
+.streak-flame {
+    animation: flicker 1.5s infinite;
+}
+
+@keyframes flicker {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.xp-progress {
+    flex: 1;
+    max-width: 200px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.xp-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #FFD700, #FFA500);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+/* 🎓 QUIZ MODAL */
+.quiz-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+.quiz-modal.active {
+    display: flex;
+}
+
+.quiz-container {
+    background: linear-gradient(135deg, #1a1a1a, #2a1a3a);
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.quiz-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.quiz-title {
+    font-size: 24px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+}
+
+.quiz-progress {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.question-container {
+    margin-bottom: 30px;
+}
+
+.question-text {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.question-spanish {
+    font-size: 20px;
+    color: #FFD700;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.quiz-option {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 15px 20px;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.quiz-option:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateX(5px);
+}
+
+.quiz-option.correct {
+    background: rgba(76, 175, 80, 0.2);
+    border-color: #4CAF50;
+    animation: pulse 0.5s;
+}
+
+.quiz-option.incorrect {
+    background: rgba(244, 67, 54, 0.2);
+    border-color: #F44336;
+    animation: shake 0.5s;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.quiz-input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 15px 20px;
+    font-size: 18px;
+    color: #fff;
+    width: 100%;
+    font-weight: 600;
+}
+
+.quiz-input:focus {
+    outline: none;
+    border-color: #667eea;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.quiz-hint {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 10px;
+    font-style: italic;
+}
+
+.quiz-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.quiz-btn {
+    flex: 1;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.quiz-btn-primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+}
+
+.quiz-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+.quiz-btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.quiz-results {
+    text-align: center;
+}
+
+.results-score {
+    font-size: 48px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 20px 0;
+}
+
+.results-message {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 20px;
+}
+
+.results-xp {
+    background: rgba(255, 215, 0, 0.1);
+    border: 2px solid #FFD700;
+    border-radius: 12px;
+    padding: 15px;
+    margin: 20px 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* 🏆 ACHIEVEMENT TOAST */
+.achievement-toast {
+    position: fixed;
+    top: 80px;
+    right: -400px;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+    z-index: 10001;
+    transition: right 0.3s ease;
+}
+
+.achievement-toast.show {
+    right: 20px;
+}
+
+.achievement-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.achievement-icon {
+    font-size: 40px;
+    animation: bounce 0.5s ease;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.achievement-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 4px;
+}
+
+.achievement-description {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* XP GAIN NOTIFICATION */
+.xp-gain {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95));
+    border-radius: 20px;
+    padding: 30px 50px;
+    font-size: 32px;
+    font-weight: 700;
+    color: #fff;
+    z-index: 10002;
+    animation: xpPop 1s ease forwards;
+    pointer-events: none;
+}
+
+@keyframes xpPop {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0; }
+}
+
+/* Adjust main container for stats bar */
+.app-container {
+    top: 60px !important;
+    bottom: 70px !important;
+}
+</style>
+
+<!-- GAMIFICATION STATS BAR -->
+<div class="gamification-bar">
+    <div class="stat-item">
+        <span class="stat-icon level-badge">Lv <span id="player-level">1</span></span>
+    </div>
+    
+    <div class="stat-item">
+        <span class="stat-icon">🔥</span>
+        <span class="stat-value streak-flame" id="player-streak">0</span>
+    </div>
+    
+    <div class="xp-progress">
+        <div class="xp-progress-fill" id="xp-progress-fill" style="width: 0%"></div>
+    </div>
+    
+    <div class="stat-item">
+        <span class="stat-icon">⭐</span>
+        <span class="stat-value" id="player-xp">0 XP</span>
+    </div>
+</div>
+
+<!-- QUIZ MODAL -->
+<div class="quiz-modal" id="quiz-modal">
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <div class="quiz-title">📝 Quiz Time!</div>
+            <div class="quiz-progress">
+                Question <span id="current-question">1</span> of <span id="total-questions">5</span>
+            </div>
+        </div>
+
+        <div id="quiz-content">
+            <!-- Questions loaded here -->
+        </div>
+    </div>
+</div>
+
+<script src="/lib/quiz-generator.js"></script>
+<script src="/lib/gamification-system.js"></script>
+
+<script>
+// Initialize systems
+const quizGen = new QuizGenerator();
+const gamification = new GamificationSystem();
+
+// Update UI with current stats
+function updateGamificationUI() {
+    const stats = gamification.getStats();
+    
+    document.getElementById('player-level').textContent = stats.level;
+    document.getElementById('player-streak').textContent = stats.streak;
+    document.getElementById('player-xp').textContent = `${stats.xp} XP`;
+    
+    const progressPercent = Math.min(100, stats.levelProgress.percentage);
+    document.getElementById('xp-progress-fill').style.width = `${progressPercent}%`;
+}
+
+// Listen for gamification updates
+window.addEventListener('gamification-update', updateGamificationUI);
+
+// Initialize UI
+updateGamificationUI();
+
+// Show XP gain animation
+function showXPGain(amount) {
+    const xpElement = document.createElement('div');
+    xpElement.className = 'xp-gain';
+    xpElement.textContent = `+${amount} XP`;
+    document.body.appendChild(xpElement);
+    
+    setTimeout(() => xpElement.remove(), 1000);
+}
+
+console.log('🎮 Quiz & Gamification system loaded!');
+console.log('✅ XP, Levels, Streaks, Achievements ready');
+</script>
+

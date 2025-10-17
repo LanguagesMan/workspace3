@@ -1,0 +1,13 @@
+fastapi==0.104.1
+uvicorn==0.24.0
+spacy==3.7.2
+pydantic==2.5.0
+python-multipart==0.0.6
+
+# Install spaCy models after installing requirements:
+# python -m spacy download en_core_web_sm
+# python -m spacy download es_core_news_sm
+# python -m spacy download fr_core_news_sm
+# python -m spacy download de_core_news_sm
+
+

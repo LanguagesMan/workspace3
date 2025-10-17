@@ -1,0 +1,19 @@
+{
+  "userId": "user_1759396674694_n9ivmm",
+  "week": 1,
+  "knownWords": [],
+  "videosWatched": 0,
+  "xpEarned": 10,
+  "createdAt": "2025-10-16T03:08:52.405Z",
+  "microWins": [
+    {
+      "type": "learned_first_word",
+      "xp": 10,
+      "timestamp": "2025-10-16T03:08:52.405Z",
+      "data": {
+        "word": "hola"
+      }
+    }
+  ],
+  "lastUpdated": "2025-10-16T03:08:52.405Z"
+}

@@ -1,0 +1,91 @@
+{
+  "completed": 2,
+  "failed": 14,
+  "skipped": 11,
+  "total": 27,
+  "successRate": "7.4",
+  "duration": "6.2 minutes",
+  "errors": [
+    {
+      "video": "0903 (4).mov",
+      "error": "File exceeds 25MB API limit"
+    },
+    {
+      "video": "Cold hot.mov",
+      "error": "File exceeds 25MB API limit"
+    },
+    {
+      "video": "LAngag.mov",
+      "error": "File exceeds 25MB API limit"
+    },
+    {
+      "video": "Food no.mov",
+      "error": "File exceeds 25MB API limit"
+    },
+    {
+      "video": "0904.mov",
+      "error": "Transcription failed: Invalid file format. Supported formats: ['flac', 'm4a', 'mp3', 'mp4', 'mpeg', 'mpga', 'oga', 'ogg', 'wav', 'webm']"
+    },
+    {
+      "video": "0904 (2).mov",
+      "error": "Transcription failed: timeout of 120000ms exceeded"
+    },
+    {
+      "video": "0904 (4)(1).mov",
+      "error": "Transcription failed: timeout of 120000ms exceeded"
+    },
+    {
+      "video": "0904 (4)(2).mov",
+      "error": "Transcription failed: timeout of 120000ms exceeded"
+    },
+    {
+      "video": "Die.mov",
+      "error": "Transcription failed: timeout of 120000ms exceeded"
+    },
+    {
+      "video": "Jesus!.mov",
+      "error": "Transcription failed: timeout of 120000ms exceeded"
+    },
+    {
+      "video": "Money.mov",
+      "error": "File exceeds 25MB API limit"
+    },
+    {
+      "video": "0903 (4).mov",
+      "error": "File exceeds 25MB API limit"
+    },
+    {
+      "video": "Cold hot.mov",
+      "error": "File exceeds 25MB API limit"
+    },
+    {
+      "video": "LAngag.mov",
+      "error": "File exceeds 25MB API limit"
+    },
+    {
+      "video": "0904.mov",
+      "error": "Transcription failed: Invalid file format. Supported formats: ['flac', 'm4a', 'mp3', 'mp4', 'mpeg', 'mpga', 'oga', 'ogg', 'wav', 'webm']"
+    },
+    {
+      "video": "0904 (4).mov",
+      "error": "Transcription failed: Invalid file format. Supported formats: ['flac', 'm4a', 'mp3', 'mp4', 'mpeg', 'mpga', 'oga', 'ogg', 'wav', 'webm']"
+    },
+    {
+      "video": "0904 (2).mov",
+      "error": "Transcription failed: timeout of 120000ms exceeded"
+    },
+    {
+      "video": "0904 (3).mov",
+      "error": "Transcription failed: timeout of 120000ms exceeded"
+    },
+    {
+      "video": "0904 (4)(1).mov",
+      "error": "Transcription failed: timeout of 120000ms exceeded"
+    },
+    {
+      "video": "0904 (4)(2).mov",
+      "error": "Transcription failed: timeout of 120000ms exceeded"
+    }
+  ],
+  "timestamp": "2025-10-16T22:14:34.674Z"
+}

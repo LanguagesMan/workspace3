@@ -1,0 +1,2022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Spanish Learning Games - VIDA</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header Section */
+        .games-header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 24px 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: #fff;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            color: #667eea;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .back-button:hover {
+            background: #667eea;
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        .back-button:active {
+            transform: scale(0.95);
+        }
+
+        .back-button svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .header-subtitle {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .user-stats {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        /* Games Grid */
+        .games-container {
+            max-width: 1200px;
+            margin: 32px auto;
+            padding: 0 20px;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .game-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .game-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        .game-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .game-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .game-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .game-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .game-stats {
+            display: flex;
+            gap: 16px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #eee;
+        }
+
+        .game-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .game-stat-value {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .play-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 12px;
+            transition: all 0.2s;
+        }
+
+        .play-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Game Modal */
+        .game-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+            animation: fadeIn 0.3s;
+        }
+
+        .game-modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 24px 24px 0 0;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .close-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 28px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .close-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            padding: 32px 24px;
+        }
+
+        /* Game Timer & Score */
+        .game-hud {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .timer, .score-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .timer {
+            color: #e74c3c;
+        }
+
+        .score-display {
+            color: #667eea;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s;
+        }
+
+        /* Matching Game Styles */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .memory-card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 12px;
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+        .memory-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .memory-card.matched {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .card-back {
+            background: white;
+            color: #333;
+            transform: rotateY(180deg);
+            border: 2px solid #667eea;
+        }
+
+        /* Speed Round Styles */
+        .question-card {
+            background: #f8f9fa;
+            padding: 32px;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .question-text {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 24px;
+        }
+
+        .answer-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .answer-button {
+            padding: 20px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .answer-button:hover {
+            border-color: #667eea;
+            transform: scale(1.05);
+        }
+
+        .answer-button.correct {
+            background: #2ecc71;
+            color: white;
+            border-color: #27ae60;
+        }
+
+        .answer-button.incorrect {
+            background: #e74c3c;
+            color: white;
+            border-color: #c0392b;
+        }
+
+        .answer-button:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Fill-in-Blank Story Styles */
+        .story-container {
+            background: #f8f9fa;
+            padding: 32px;
+            border-radius: 16px;
+            font-size: 18px;
+            line-height: 2;
+        }
+
+        .story-blank {
+            display: inline-block;
+            min-width: 120px;
+            padding: 4px 12px;
+            border-bottom: 2px dashed #667eea;
+            margin: 0 4px;
+            cursor: pointer;
+            background: white;
+            border-radius: 4px;
+        }
+
+        .story-blank.filled {
+            background: #667eea;
+            color: white;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 24px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .word-chip {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 24px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .word-chip:hover {
+            transform: scale(1.1);
+        }
+
+        .word-chip.used {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Listening Game Styles */
+        .audio-player {
+            text-align: center;
+            padding: 40px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            margin-bottom: 24px;
+        }
+
+        .play-audio-button {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            font-size: 48px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+            transition: all 0.2s;
+        }
+
+        .play-audio-button:hover {
+            transform: scale(1.1);
+        }
+
+        .audio-input {
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            margin-top: 24px;
+        }
+
+        .audio-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Word Builder Styles */
+        .word-to-build {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 24px;
+        }
+
+        .letter-slots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+
+        .letter-slot {
+            width: 50px;
+            height: 60px;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            background: white;
+        }
+
+        .letter-slot.filled {
+            border: 2px solid #667eea;
+            background: #f0f4ff;
+        }
+
+        .letter-tiles {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .letter-tile {
+            width: 50px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .letter-tile:hover {
+            transform: translateY(-4px);
+        }
+
+        .letter-tile.used {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Results Screen */
+        .results-screen {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .results-emoji {
+            font-size: 80px;
+            margin-bottom: 16px;
+        }
+
+        .results-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .results-score {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 16px 0;
+        }
+
+        .results-message {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 32px;
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .action-button {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-button.primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .action-button.secondary {
+            background: white;
+            border: 2px solid #667eea;
+            color: #667eea;
+        }
+
+        .action-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Leaderboard */
+        .leaderboard-section {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 32px;
+        }
+
+        .leaderboard-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 16px;
+        }
+
+        .leaderboard-list {
+            list-style: none;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            background: #f8f9fa;
+        }
+
+        .leaderboard-rank {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin-right: 16px;
+            min-width: 40px;
+        }
+
+        .leaderboard-name {
+            flex: 1;
+            font-weight: 600;
+        }
+
+        .leaderboard-score {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        /* Achievements */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .achievement-badge {
+            text-align: center;
+            padding: 16px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .achievement-icon {
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+
+        .achievement-badge.locked {
+            opacity: 0.3;
+        }
+
+        .achievement-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .pulse {
+            animation: pulse 0.5s;
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        /* Feedback Toast */
+        .feedback-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(400px); }
+            to { transform: translateX(0); }
+        }
+
+        .feedback-toast.success {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .feedback-toast.error {
+            background: #e74c3c;
+            color: white;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cards-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .answer-options {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .modal-content {
+                max-width: 100%;
+                max-height: 100vh;
+                border-radius: 0;
+            }
+
+            .modal-header {
+                border-radius: 0;
+            }
+        }
+    </style>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <!-- Header -->
+    <div class="games-header">
+        <button class="back-button" onclick="window.location.href='/tiktok-video-feed.html'" aria-label="Back to Videos">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            <span>Back</span>
+        </button>
+        <div class="header-content">
+            <h1>🎮 Spanish Learning Games</h1>
+            <p class="header-subtitle">Practice makes perfect! Play games to reinforce your vocabulary.</p>
+            <div class="user-stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalXP">0</div>
+                    <div class="stat-label">Total XP</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="gamesPlayed">0</div>
+                    <div class="stat-label">Games Played</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="currentStreak">0</div>
+                    <div class="stat-label">Day Streak 🔥</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="savedWords">0</div>
+                    <div class="stat-label">Saved Words</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Games Grid -->
+    <div class="games-container">
+        <div class="games-grid">
+            <!-- Matching Game -->
+            <div class="game-card" onclick="startGame('matching')">
+                <div class="game-icon">🃏</div>
+                <div class="game-title">Matching Game</div>
+                <div class="game-description">
+                    Flip cards to match Spanish words with their English translations. Memory + concentration!
+                </div>
+                <div class="game-stats">
+                    <div class="game-stat">
+                        <span>⭐</span>
+                        <span class="game-stat-value" id="matchingBestScore">0</span>
+                    </div>
+                    <div class="game-stat">
+                        <span>🏆</span>
+                        <span class="game-stat-value" id="matchingPlayed">0</span> played
+                    </div>
+                </div>
+                <button class="play-button">Play Now</button>
+            </div>
+
+            <!-- Speed Round -->
+            <div class="game-card" onclick="startGame('speedRound')">
+                <div class="game-icon">⚡</div>
+                <div class="game-title">Speed Round</div>
+                <div class="game-description">
+                    60 seconds to answer as many translations as possible. How fast can you go?
+                </div>
+                <div class="game-stats">
+                    <div class="game-stat">
+                        <span>⭐</span>
+                        <span class="game-stat-value" id="speedBestScore">0</span>
+                    </div>
+                    <div class="game-stat">
+                        <span>🏆</span>
+                        <span class="game-stat-value" id="speedPlayed">0</span> played
+                    </div>
+                </div>
+                <button class="play-button">Play Now</button>
+            </div>
+
+            <!-- Fill-in-Blank Story -->
+            <div class="game-card" onclick="startGame('fillBlank')">
+                <div class="game-icon">📖</div>
+                <div class="game-title">Story Builder</div>
+                <div class="game-description">
+                    Complete the Spanish story by filling in missing words. Mad Libs style learning!
+                </div>
+                <div class="game-stats">
+                    <div class="game-stat">
+                        <span>⭐</span>
+                        <span class="game-stat-value" id="storyBestScore">0</span>
+                    </div>
+                    <div class="game-stat">
+                        <span>🏆</span>
+                        <span class="game-stat-value" id="storyPlayed">0</span> played
+                    </div>
+                </div>
+                <button class="play-button">Play Now</button>
+            </div>
+
+            <!-- Listening Game -->
+            <div class="game-card" onclick="startGame('listening')">
+                <div class="game-icon">🎧</div>
+                <div class="game-title">Listening Challenge</div>
+                <div class="game-description">
+                    Listen to Spanish audio and type what you hear. Train your ear!
+                </div>
+                <div class="game-stats">
+                    <div class="game-stat">
+                        <span>⭐</span>
+                        <span class="game-stat-value" id="listeningBestScore">0</span>
+                    </div>
+                    <div class="game-stat">
+                        <span>🏆</span>
+                        <span class="game-stat-value" id="listeningPlayed">0</span> played
+                    </div>
+                </div>
+                <button class="play-button">Play Now</button>
+            </div>
+
+            <!-- Word Builder -->
+            <div class="game-card" onclick="startGame('wordBuilder')">
+                <div class="game-icon">🔤</div>
+                <div class="game-title">Word Builder</div>
+                <div class="game-description">
+                    Unscramble letters to build Spanish words. Test your spelling skills!
+                </div>
+                <div class="game-stats">
+                    <div class="game-stat">
+                        <span>⭐</span>
+                        <span class="game-stat-value" id="builderBestScore">0</span>
+                    </div>
+                    <div class="game-stat">
+                        <span>🏆</span>
+                        <span class="game-stat-value" id="builderPlayed">0</span> played
+                    </div>
+                </div>
+                <button class="play-button">Play Now</button>
+            </div>
+        </div>
+
+        <!-- Leaderboard Section -->
+        <div class="leaderboard-section">
+            <div class="leaderboard-title">🏆 Today's Leaderboard</div>
+            <ul class="leaderboard-list" id="leaderboardList">
+                <!-- Dynamically populated -->
+            </ul>
+        </div>
+
+        <!-- Achievements Section -->
+        <div class="leaderboard-section">
+            <div class="leaderboard-title">🎖️ Achievements</div>
+            <div class="achievements-grid" id="achievementsList">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Modal -->
+    <div class="game-modal" id="gameModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">Game</div>
+                <button class="close-button" onclick="closeGame()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Game content dynamically inserted -->
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Supabase Configuration
+        const SUPABASE_URL = 'https://lppwqsvwfwwcpdrzfutj.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxwcHdxc3Z3Znd3Y3BkcnpmdXRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc3NTczNzMsImV4cCI6MjA0MzMzMzM3M30.6n6EHSvPOdyXUzkuWjnQNCOuFgTNWHp3DZTmOPFGLI4';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Game State Management
+        class GameStateManager {
+            constructor() {
+                this.currentGame = null;
+                this.gameData = {
+                    score: 0,
+                    timeRemaining: 0,
+                    level: 1,
+                    vocabulary: []
+                };
+                this.timerInterval = null;
+                this.achievements = this.loadAchievements();
+                this.loadUserStats();
+            }
+
+            async loadUserStats() {
+                try {
+                    const stats = JSON.parse(localStorage.getItem('gameStats')) || {
+                        totalXP: 0,
+                        gamesPlayed: 0,
+                        currentStreak: 0,
+                        savedWords: 0,
+                        matchingBestScore: 0,
+                        speedBestScore: 0,
+                        storyBestScore: 0,
+                        listeningBestScore: 0,
+                        builderBestScore: 0,
+                        matchingPlayed: 0,
+                        speedPlayed: 0,
+                        storyPlayed: 0,
+                        listeningPlayed: 0,
+                        builderPlayed: 0
+                    };
+
+                    // Update UI
+                    document.getElementById('totalXP').textContent = stats.totalXP;
+                    document.getElementById('gamesPlayed').textContent = stats.gamesPlayed;
+                    document.getElementById('currentStreak').textContent = stats.currentStreak;
+                    document.getElementById('savedWords').textContent = stats.savedWords;
+
+                    // Update individual game stats
+                    document.getElementById('matchingBestScore').textContent = stats.matchingBestScore;
+                    document.getElementById('speedBestScore').textContent = stats.speedBestScore;
+                    document.getElementById('storyBestScore').textContent = stats.storyBestScore;
+                    document.getElementById('listeningBestScore').textContent = stats.listeningBestScore;
+                    document.getElementById('builderBestScore').textContent = stats.builderBestScore;
+
+                    document.getElementById('matchingPlayed').textContent = stats.matchingPlayed;
+                    document.getElementById('speedPlayed').textContent = stats.speedPlayed;
+                    document.getElementById('storyPlayed').textContent = stats.storyPlayed;
+                    document.getElementById('listeningPlayed').textContent = stats.listeningPlayed;
+                    document.getElementById('builderPlayed').textContent = stats.builderPlayed;
+                } catch (error) {
+                    console.error('Error loading stats:', error);
+                }
+            }
+
+            async loadVocabulary() {
+                try {
+                    // Load from localStorage (saved words)
+                    const savedWords = JSON.parse(localStorage.getItem('savedWords')) || [];
+
+                    if (savedWords.length === 0) {
+                        // Default vocabulary if no saved words
+                        this.gameData.vocabulary = this.getDefaultVocabulary();
+                    } else {
+                        this.gameData.vocabulary = savedWords.map(w => ({
+                            spanish: w.spanish || w.word,
+                            english: w.english || w.translation,
+                            difficulty: w.difficulty || 'A2'
+                        }));
+                    }
+
+                    // Update saved words count
+                    const stats = JSON.parse(localStorage.getItem('gameStats')) || {};
+                    stats.savedWords = this.gameData.vocabulary.length;
+                    localStorage.setItem('gameStats', JSON.stringify(stats));
+                    this.loadUserStats();
+                } catch (error) {
+                    console.error('Error loading vocabulary:', error);
+                    this.gameData.vocabulary = this.getDefaultVocabulary();
+                }
+            }
+
+            getDefaultVocabulary() {
+                return [
+                    { spanish: 'hola', english: 'hello', difficulty: 'A1' },
+                    { spanish: 'adiós', english: 'goodbye', difficulty: 'A1' },
+                    { spanish: 'gracias', english: 'thank you', difficulty: 'A1' },
+                    { spanish: 'por favor', english: 'please', difficulty: 'A1' },
+                    { spanish: 'agua', english: 'water', difficulty: 'A1' },
+                    { spanish: 'comida', english: 'food', difficulty: 'A1' },
+                    { spanish: 'casa', english: 'house', difficulty: 'A1' },
+                    { spanish: 'escuela', english: 'school', difficulty: 'A1' },
+                    { spanish: 'familia', english: 'family', difficulty: 'A1' },
+                    { spanish: 'amigo', english: 'friend', difficulty: 'A1' },
+                    { spanish: 'libro', english: 'book', difficulty: 'A1' },
+                    { spanish: 'tiempo', english: 'time', difficulty: 'A2' },
+                    { spanish: 'trabajo', english: 'work', difficulty: 'A2' },
+                    { spanish: 'ciudad', english: 'city', difficulty: 'A2' },
+                    { spanish: 'país', english: 'country', difficulty: 'A2' },
+                    { spanish: 'vida', english: 'life', difficulty: 'A2' },
+                    { spanish: 'mundo', english: 'world', difficulty: 'A2' },
+                    { spanish: 'día', english: 'day', difficulty: 'A1' },
+                    { spanish: 'noche', english: 'night', difficulty: 'A1' },
+                    { spanish: 'mañana', english: 'morning', difficulty: 'A1' }
+                ];
+            }
+
+            loadAchievements() {
+                const defaults = {
+                    firstGame: false,
+                    perfectScore: false,
+                    speedDemon: false,
+                    polyglot: false,
+                    weekStreak: false,
+                    centurion: false
+                };
+                return JSON.parse(localStorage.getItem('achievements')) || defaults;
+            }
+
+            saveAchievements() {
+                localStorage.setItem('achievements', JSON.stringify(this.achievements));
+                this.renderAchievements();
+            }
+
+            async saveGameScore(gameType, score) {
+                try {
+                    const stats = JSON.parse(localStorage.getItem('gameStats')) || {};
+
+                    // Update best scores
+                    const bestScoreKey = `${gameType}BestScore`;
+                    const playedKey = `${gameType}Played`;
+
+                    if (!stats[bestScoreKey] || score > stats[bestScoreKey]) {
+                        stats[bestScoreKey] = score;
+                    }
+
+                    stats[playedKey] = (stats[playedKey] || 0) + 1;
+                    stats.gamesPlayed = (stats.gamesPlayed || 0) + 1;
+                    stats.totalXP = (stats.totalXP || 0) + (score * 10);
+
+                    // Check achievements
+                    if (!this.achievements.firstGame && stats.gamesPlayed >= 1) {
+                        this.achievements.firstGame = true;
+                        this.showAchievementUnlocked('firstGame', 'First Game!', '🎮');
+                    }
+
+                    if (!this.achievements.perfectScore && score >= 100) {
+                        this.achievements.perfectScore = true;
+                        this.showAchievementUnlocked('perfectScore', 'Perfect Score!', '💯');
+                    }
+
+                    if (!this.achievements.centurion && stats.gamesPlayed >= 100) {
+                        this.achievements.centurion = true;
+                        this.showAchievementUnlocked('centurion', '100 Games!', '🏆');
+                    }
+
+                    localStorage.setItem('gameStats', JSON.stringify(stats));
+                    this.saveAchievements();
+                    this.loadUserStats();
+
+                    // Save to Supabase (if user is logged in)
+                    const { data: { user } } = await supabase.auth.getUser();
+                    if (user) {
+                        await supabase.from('game_scores').insert({
+                            user_id: user.id,
+                            game_type: gameType,
+                            score: score,
+                            level: this.gameData.level,
+                            played_at: new Date().toISOString()
+                        });
+
+                        // Update leaderboard
+                        await this.loadLeaderboard();
+                    }
+                } catch (error) {
+                    console.error('Error saving score:', error);
+                }
+            }
+
+            async loadLeaderboard() {
+                try {
+                    const today = new Date().toISOString().split('T')[0];
+                    const { data, error } = await supabase
+                        .from('game_scores')
+                        .select('user_id, score, created_at')
+                        .gte('played_at', today)
+                        .order('score', { ascending: false })
+                        .limit(10);
+
+                    if (error) throw error;
+
+                    const leaderboardList = document.getElementById('leaderboardList');
+                    leaderboardList.innerHTML = data.map((entry, index) => `
+                        <li class="leaderboard-item">
+                            <div class="leaderboard-rank">${index + 1}</div>
+                            <div class="leaderboard-name">Player ${entry.user_id.substring(0, 8)}</div>
+                            <div class="leaderboard-score">${entry.score} pts</div>
+                        </li>
+                    `).join('');
+                } catch (error) {
+                    console.error('Error loading leaderboard:', error);
+                    document.getElementById('leaderboardList').innerHTML = '<li class="leaderboard-item">Play games to see leaderboard!</li>';
+                }
+            }
+
+            renderAchievements() {
+                const achievementsList = document.getElementById('achievementsList');
+                const allAchievements = [
+                    { id: 'firstGame', name: 'First Game', icon: '🎮' },
+                    { id: 'perfectScore', name: 'Perfect Score', icon: '💯' },
+                    { id: 'speedDemon', name: 'Speed Demon', icon: '⚡' },
+                    { id: 'polyglot', name: 'Polyglot', icon: '🌍' },
+                    { id: 'weekStreak', name: '7 Day Streak', icon: '🔥' },
+                    { id: 'centurion', name: '100 Games', icon: '🏆' }
+                ];
+
+                achievementsList.innerHTML = allAchievements.map(achievement => `
+                    <div class="achievement-badge ${this.achievements[achievement.id] ? '' : 'locked'}">
+                        <div class="achievement-icon">${achievement.icon}</div>
+                        <div class="achievement-name">${achievement.name}</div>
+                    </div>
+                `).join('');
+            }
+
+            showAchievementUnlocked(id, name, icon) {
+                this.showFeedback(`${icon} Achievement Unlocked: ${name}!`, 'success');
+            }
+
+            showFeedback(message, type = 'success') {
+                const toast = document.createElement('div');
+                toast.className = `feedback-toast ${type}`;
+                toast.textContent = message;
+                document.body.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.remove();
+                }, 3000);
+            }
+
+            startTimer(duration, callback) {
+                this.gameData.timeRemaining = duration;
+                this.updateTimerDisplay();
+
+                this.timerInterval = setInterval(() => {
+                    this.gameData.timeRemaining--;
+                    this.updateTimerDisplay();
+
+                    if (this.gameData.timeRemaining <= 0) {
+                        clearInterval(this.timerInterval);
+                        callback();
+                    }
+                }, 1000);
+            }
+
+            updateTimerDisplay() {
+                const timerEl = document.getElementById('gameTimer');
+                if (timerEl) {
+                    const minutes = Math.floor(this.gameData.timeRemaining / 60);
+                    const seconds = this.gameData.timeRemaining % 60;
+                    timerEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                }
+            }
+
+            stopTimer() {
+                if (this.timerInterval) {
+                    clearInterval(this.timerInterval);
+                    this.timerInterval = null;
+                }
+            }
+
+            updateScore(points) {
+                this.gameData.score += points;
+                const scoreEl = document.getElementById('gameScore');
+                if (scoreEl) {
+                    scoreEl.textContent = this.gameData.score;
+                }
+            }
+        }
+
+        // Global game state
+        const gameState = new GameStateManager();
+
+        // Game Implementations
+
+        // 1. MATCHING GAME
+        class MatchingGame {
+            constructor() {
+                this.cards = [];
+                this.flippedCards = [];
+                this.matchedPairs = 0;
+                this.moves = 0;
+                this.startTime = Date.now();
+            }
+
+            async start() {
+                await gameState.loadVocabulary();
+                const vocab = gameState.gameData.vocabulary;
+
+                // Select 8 random words for 16 cards
+                const selectedWords = this.shuffle(vocab).slice(0, 8);
+
+                // Create pairs
+                this.cards = [];
+                selectedWords.forEach(word => {
+                    this.cards.push({ text: word.spanish, type: 'spanish', match: word.english });
+                    this.cards.push({ text: word.english, type: 'english', match: word.spanish });
+                });
+
+                this.cards = this.shuffle(this.cards);
+                this.render();
+            }
+
+            shuffle(array) {
+                return array.sort(() => Math.random() - 0.5);
+            }
+
+            render() {
+                const modalBody = document.getElementById('modalBody');
+                modalBody.innerHTML = `
+                    <div class="game-hud">
+                        <div class="score-display">
+                            <span>🎯</span>
+                            <span>Moves: <span id="gameScore">${this.moves}</span></span>
+                        </div>
+                        <div class="timer">
+                            <span>⏱️</span>
+                            <span id="gameTimer">0:00</span>
+                        </div>
+                    </div>
+                    <div class="cards-grid">
+                        ${this.cards.map((card, index) => `
+                            <div class="memory-card" data-index="${index}" onclick="matchingGame.flipCard(${index})">
+                                <div class="card-front">?</div>
+                                <div class="card-back">${card.text}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+
+                gameState.startTimer(300, () => this.endGame());
+            }
+
+            flipCard(index) {
+                const cardEl = document.querySelector(`[data-index="${index}"]`);
+
+                if (cardEl.classList.contains('flipped') || cardEl.classList.contains('matched')) {
+                    return;
+                }
+
+                if (this.flippedCards.length >= 2) {
+                    return;
+                }
+
+                cardEl.classList.add('flipped');
+                this.flippedCards.push({ index, card: this.cards[index], element: cardEl });
+
+                if (this.flippedCards.length === 2) {
+                    this.moves++;
+                    document.getElementById('gameScore').textContent = this.moves;
+                    this.checkMatch();
+                }
+            }
+
+            checkMatch() {
+                setTimeout(() => {
+                    const [first, second] = this.flippedCards;
+
+                    if (first.card.match === second.card.text || second.card.match === first.card.text) {
+                        // Match found!
+                        first.element.classList.add('matched', 'pulse');
+                        second.element.classList.add('matched', 'pulse');
+                        this.matchedPairs++;
+                        gameState.showFeedback('Match! 🎉', 'success');
+
+                        if (this.matchedPairs === 8) {
+                            setTimeout(() => this.endGame(true), 500);
+                        }
+                    } else {
+                        // No match
+                        first.element.classList.remove('flipped');
+                        second.element.classList.remove('flipped');
+                        first.element.classList.add('shake');
+                        second.element.classList.add('shake');
+
+                        setTimeout(() => {
+                            first.element.classList.remove('shake');
+                            second.element.classList.remove('shake');
+                        }, 500);
+                    }
+
+                    this.flippedCards = [];
+                }, 600);
+            }
+
+            endGame(completed = false) {
+                gameState.stopTimer();
+                const timeElapsed = Math.floor((Date.now() - this.startTime) / 1000);
+                const score = completed ? Math.max(100 - this.moves, 0) : 0;
+
+                gameState.saveGameScore('matching', score);
+                this.showResults(completed, score, timeElapsed);
+            }
+
+            showResults(completed, score, time) {
+                const modalBody = document.getElementById('modalBody');
+                modalBody.innerHTML = `
+                    <div class="results-screen">
+                        <div class="results-emoji">${completed ? '🏆' : '⏰'}</div>
+                        <div class="results-title">${completed ? 'Congratulations!' : 'Time\'s Up!'}</div>
+                        <div class="results-score">${score} points</div>
+                        <div class="results-message">
+                            ${completed ? `You matched all pairs in ${this.moves} moves!` : 'Keep practicing!'}
+                            <br>Time: ${Math.floor(time / 60)}:${(time % 60).toString().padStart(2, '0')}
+                        </div>
+                        <div class="results-actions">
+                            <button class="action-button primary" onclick="startGame('matching')">Play Again</button>
+                            <button class="action-button secondary" onclick="closeGame()">Close</button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // 2. SPEED ROUND GAME
+        class SpeedRoundGame {
+            constructor() {
+                this.questions = [];
+                this.currentQuestion = 0;
+                this.score = 0;
+                this.totalQuestions = 0;
+            }
+
+            async start() {
+                await gameState.loadVocabulary();
+                const vocab = gameState.gameData.vocabulary;
+
+                // Generate questions
+                this.questions = vocab.map(word => ({
+                    spanish: word.spanish,
+                    correct: word.english,
+                    options: this.generateOptions(word.english, vocab)
+                }));
+
+                this.questions = this.shuffle(this.questions);
+                this.totalQuestions = this.questions.length;
+                this.score = 0;
+                this.currentQuestion = 0;
+
+                this.render();
+                gameState.startTimer(60, () => this.endGame());
+            }
+
+            shuffle(array) {
+                return array.sort(() => Math.random() - 0.5);
+            }
+
+            generateOptions(correct, vocab) {
+                const options = [correct];
+                const otherWords = vocab.filter(w => w.english !== correct);
+
+                while (options.length < 4 && otherWords.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * otherWords.length);
+                    const word = otherWords.splice(randomIndex, 1)[0];
+                    options.push(word.english);
+                }
+
+                return this.shuffle(options);
+            }
+
+            render() {
+                if (this.currentQuestion >= this.questions.length) {
+                    this.endGame();
+                    return;
+                }
+
+                const question = this.questions[this.currentQuestion];
+                const modalBody = document.getElementById('modalBody');
+
+                modalBody.innerHTML = `
+                    <div class="game-hud">
+                        <div class="score-display">
+                            <span>⭐</span>
+                            <span>Score: <span id="gameScore">${this.score}</span></span>
+                        </div>
+                        <div class="timer">
+                            <span>⏱️</span>
+                            <span id="gameTimer">1:00</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${(this.currentQuestion / this.totalQuestions) * 100}%"></div>
+                    </div>
+                    <div class="question-card">
+                        <div class="question-text">${question.spanish}</div>
+                        <div class="answer-options">
+                            ${question.options.map(option => `
+                                <button class="answer-button" onclick="speedRoundGame.selectAnswer('${option.replace(/'/g, "\\'")}', '${question.correct.replace(/'/g, "\\'")}')">
+                                    ${option}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            selectAnswer(selected, correct) {
+                const buttons = document.querySelectorAll('.answer-button');
+                buttons.forEach(btn => btn.disabled = true);
+
+                const selectedBtn = Array.from(buttons).find(btn => btn.textContent.trim() === selected);
+
+                if (selected === correct) {
+                    selectedBtn.classList.add('correct');
+                    this.score++;
+                    gameState.showFeedback('Correct! ✓', 'success');
+                } else {
+                    selectedBtn.classList.add('incorrect');
+                    const correctBtn = Array.from(buttons).find(btn => btn.textContent.trim() === correct);
+                    if (correctBtn) correctBtn.classList.add('correct');
+                    gameState.showFeedback(`Wrong! Correct: ${correct}`, 'error');
+                }
+
+                setTimeout(() => {
+                    this.currentQuestion++;
+                    this.render();
+                }, 1000);
+            }
+
+            endGame() {
+                gameState.stopTimer();
+                gameState.saveGameScore('speedRound', this.score);
+                this.showResults();
+            }
+
+            showResults() {
+                const modalBody = document.getElementById('modalBody');
+                const percentage = Math.round((this.score / this.currentQuestion) * 100);
+
+                modalBody.innerHTML = `
+                    <div class="results-screen">
+                        <div class="results-emoji">⚡</div>
+                        <div class="results-title">Speed Round Complete!</div>
+                        <div class="results-score">${this.score} / ${this.currentQuestion}</div>
+                        <div class="results-message">
+                            ${percentage}% correct in 60 seconds!
+                            ${this.score >= 15 ? 'Amazing speed! 🔥' : 'Keep practicing!'}
+                        </div>
+                        <div class="results-actions">
+                            <button class="action-button primary" onclick="startGame('speedRound')">Play Again</button>
+                            <button class="action-button secondary" onclick="closeGame()">Close</button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // 3. FILL-IN-BLANK STORY GAME
+        class FillBlankGame {
+            constructor() {
+                this.story = '';
+                this.blanks = [];
+                this.filledBlanks = new Set();
+                this.currentBlank = null;
+            }
+
+            async start() {
+                await gameState.loadVocabulary();
+                const vocab = gameState.gameData.vocabulary;
+
+                // Generate story with blanks
+                this.generateStory(vocab);
+                this.render();
+            }
+
+            generateStory(vocab) {
+                const selectedWords = this.shuffle(vocab).slice(0, 6);
+
+                const stories = [
+                    `Hoy es un {0} especial. Me despierto temprano y voy a la {1}. En el camino, veo a mi {2} y decimos "{3}". Después, necesito comprar {4} en la tienda. Al final del {5}, me siento feliz.`,
+                    `En mi {0}, tengo muchos libros. Mi {1} favorita es leer. Cada {2}, leo algo nuevo. A veces invito a mi {3} para leer juntos. Siempre decimos "{4}" cuando terminamos. Es mi {5} perfecta.`,
+                    `Voy a la {0} todos los días. Allí aprendo mucho. Mi {1} es muy amable. En el recreo, juego con mi {2}. Cuando llego a {3}, digo "{4}". Me gusta mi {5} mucho.`
+                ];
+
+                const storyTemplate = stories[Math.floor(Math.random() * stories.length)];
+
+                this.blanks = selectedWords.map(w => ({
+                    word: w.spanish,
+                    translation: w.english
+                }));
+
+                // Create story with blanks
+                this.story = storyTemplate;
+                for (let i = 0; i < this.blanks.length; i++) {
+                    this.story = this.story.replace(`{${i}}`, `<span class="story-blank" data-blank="${i}" onclick="fillBlankGame.selectBlank(${i})">___</span>`);
+                }
+            }
+
+            shuffle(array) {
+                return array.sort(() => Math.random() - 0.5);
+            }
+
+            render() {
+                const modalBody = document.getElementById('modalBody');
+
+                modalBody.innerHTML = `
+                    <div class="game-hud">
+                        <div class="score-display">
+                            <span>📝</span>
+                            <span>Progress: <span id="gameScore">${this.filledBlanks.size}/${this.blanks.length}</span></span>
+                        </div>
+                    </div>
+                    <div class="story-container">
+                        ${this.story}
+                    </div>
+                    <div class="word-bank">
+                        ${this.blanks.map((blank, index) => `
+                            <div class="word-chip ${this.filledBlanks.has(index) ? 'used' : ''}"
+                                 onclick="fillBlankGame.selectWord(${index})">
+                                ${blank.word}
+                                <small style="display:block; font-size:10px; opacity:0.8;">(${blank.translation})</small>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+
+                this.updateBlanks();
+            }
+
+            selectBlank(index) {
+                this.currentBlank = index;
+                document.querySelectorAll('.story-blank').forEach(el => {
+                    el.style.background = '';
+                });
+                const blankEl = document.querySelector(`[data-blank="${index}"]`);
+                if (blankEl && !this.filledBlanks.has(index)) {
+                    blankEl.style.background = '#fff3cd';
+                }
+            }
+
+            selectWord(index) {
+                if (this.filledBlanks.has(index)) return;
+
+                if (this.currentBlank !== null) {
+                    const blankEl = document.querySelector(`[data-blank="${this.currentBlank}"]`);
+                    if (blankEl) {
+                        blankEl.textContent = this.blanks[index].word;
+                        blankEl.classList.add('filled');
+                        this.filledBlanks.add(index);
+                        this.currentBlank = null;
+                        this.render();
+
+                        if (this.filledBlanks.size === this.blanks.length) {
+                            setTimeout(() => this.endGame(), 500);
+                        }
+                    }
+                }
+            }
+
+            updateBlanks() {
+                // Update filled blanks in the DOM
+                this.filledBlanks.forEach(index => {
+                    const blankEl = document.querySelector(`[data-blank="${index}"]`);
+                    if (blankEl) {
+                        blankEl.classList.add('filled');
+                    }
+                });
+            }
+
+            endGame() {
+                const score = this.blanks.length * 10;
+                gameState.saveGameScore('fillBlank', score);
+                this.showResults(score);
+            }
+
+            showResults(score) {
+                const modalBody = document.getElementById('modalBody');
+
+                modalBody.innerHTML = `
+                    <div class="results-screen">
+                        <div class="results-emoji">📖</div>
+                        <div class="results-title">Story Complete!</div>
+                        <div class="results-score">${score} points</div>
+                        <div class="results-message">
+                            Great job completing the story! 🎉
+                        </div>
+                        <div class="results-actions">
+                            <button class="action-button primary" onclick="startGame('fillBlank')">New Story</button>
+                            <button class="action-button secondary" onclick="closeGame()">Close</button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // 4. LISTENING GAME
+        class ListeningGame {
+            constructor() {
+                this.questions = [];
+                this.currentQuestion = 0;
+                this.score = 0;
+            }
+
+            async start() {
+                await gameState.loadVocabulary();
+                const vocab = gameState.gameData.vocabulary;
+
+                this.questions = this.shuffle(vocab).slice(0, 10);
+                this.score = 0;
+                this.currentQuestion = 0;
+
+                this.render();
+            }
+
+            shuffle(array) {
+                return array.sort(() => Math.random() - 0.5);
+            }
+
+            render() {
+                if (this.currentQuestion >= this.questions.length) {
+                    this.endGame();
+                    return;
+                }
+
+                const question = this.questions[this.currentQuestion];
+                const modalBody = document.getElementById('modalBody');
+
+                modalBody.innerHTML = `
+                    <div class="game-hud">
+                        <div class="score-display">
+                            <span>🎧</span>
+                            <span>Score: <span id="gameScore">${this.score}/${this.questions.length}</span></span>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${(this.currentQuestion / this.questions.length) * 100}%"></div>
+                    </div>
+                    <div class="audio-player">
+                        <button class="play-audio-button" onclick="listeningGame.playAudio('${question.spanish}')">
+                            ▶️
+                        </button>
+                        <p style="margin-top: 16px; color: #666;">Click to hear the word</p>
+                    </div>
+                    <input type="text" class="audio-input" id="audioInput"
+                           placeholder="Type what you hear in Spanish..."
+                           onkeypress="if(event.key==='Enter') listeningGame.checkAnswer()">
+                    <button class="action-button primary" style="margin-top: 16px; width: 100%;"
+                            onclick="listeningGame.checkAnswer()">Check Answer</button>
+                `;
+            }
+
+            playAudio(text) {
+                // Use Web Speech API for text-to-speech
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'es-ES';
+                utterance.rate = 0.8;
+                window.speechSynthesis.speak(utterance);
+            }
+
+            checkAnswer() {
+                const input = document.getElementById('audioInput').value.toLowerCase().trim();
+                const correct = this.questions[this.currentQuestion].spanish.toLowerCase();
+
+                if (input === correct) {
+                    this.score++;
+                    gameState.showFeedback('Correct! 🎉', 'success');
+                } else {
+                    gameState.showFeedback(`Correct answer: ${correct}`, 'error');
+                }
+
+                setTimeout(() => {
+                    this.currentQuestion++;
+                    this.render();
+                }, 1500);
+            }
+
+            endGame() {
+                gameState.saveGameScore('listening', this.score * 10);
+                this.showResults();
+            }
+
+            showResults() {
+                const modalBody = document.getElementById('modalBody');
+                const percentage = Math.round((this.score / this.questions.length) * 100);
+
+                modalBody.innerHTML = `
+                    <div class="results-screen">
+                        <div class="results-emoji">🎧</div>
+                        <div class="results-title">Listening Challenge Complete!</div>
+                        <div class="results-score">${this.score} / ${this.questions.length}</div>
+                        <div class="results-message">
+                            ${percentage}% correct!
+                            ${percentage >= 80 ? 'Excellent listening skills! 👂' : 'Keep practicing!'}
+                        </div>
+                        <div class="results-actions">
+                            <button class="action-button primary" onclick="startGame('listening')">Play Again</button>
+                            <button class="action-button secondary" onclick="closeGame()">Close</button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // 5. WORD BUILDER GAME
+        class WordBuilderGame {
+            constructor() {
+                this.words = [];
+                this.currentWord = 0;
+                this.score = 0;
+                this.currentAnswer = [];
+            }
+
+            async start() {
+                await gameState.loadVocabulary();
+                const vocab = gameState.gameData.vocabulary;
+
+                this.words = this.shuffle(vocab).slice(0, 10);
+                this.score = 0;
+                this.currentWord = 0;
+
+                this.render();
+            }
+
+            shuffle(array) {
+                return array.sort(() => Math.random() - 0.5);
+            }
+
+            render() {
+                if (this.currentWord >= this.words.length) {
+                    this.endGame();
+                    return;
+                }
+
+                const word = this.words[this.currentWord];
+                const scrambled = this.scrambleWord(word.spanish);
+                this.currentAnswer = [];
+
+                const modalBody = document.getElementById('modalBody');
+
+                modalBody.innerHTML = `
+                    <div class="game-hud">
+                        <div class="score-display">
+                            <span>🔤</span>
+                            <span>Score: <span id="gameScore">${this.score}/${this.words.length}</span></span>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${(this.currentWord / this.words.length) * 100}%"></div>
+                    </div>
+                    <div class="question-card">
+                        <div class="word-to-build">English: ${word.english}</div>
+                        <div class="letter-slots" id="letterSlots">
+                            ${word.spanish.split('').map((_, i) => `
+                                <div class="letter-slot" data-position="${i}"></div>
+                            `).join('')}
+                        </div>
+                        <div class="letter-tiles" id="letterTiles">
+                            ${scrambled.map((letter, i) => `
+                                <button class="letter-tile" data-letter="${letter}" data-index="${i}"
+                                        onclick="wordBuilderGame.selectLetter('${letter}', ${i})">
+                                    ${letter}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button class="action-button secondary" style="flex: 1;" onclick="wordBuilderGame.clearAnswer()">
+                            Clear
+                        </button>
+                        <button class="action-button primary" style="flex: 1;" onclick="wordBuilderGame.checkAnswer()">
+                            Check
+                        </button>
+                    </div>
+                `;
+            }
+
+            scrambleWord(word) {
+                return word.split('').sort(() => Math.random() - 0.5);
+            }
+
+            selectLetter(letter, index) {
+                const tile = document.querySelector(`[data-index="${index}"]`);
+                if (tile.classList.contains('used')) return;
+
+                this.currentAnswer.push({ letter, index });
+                tile.classList.add('used');
+
+                // Update slot
+                const slot = document.querySelector(`[data-position="${this.currentAnswer.length - 1}"]`);
+                slot.textContent = letter;
+                slot.classList.add('filled');
+            }
+
+            clearAnswer() {
+                this.currentAnswer = [];
+                document.querySelectorAll('.letter-tile').forEach(tile => {
+                    tile.classList.remove('used');
+                });
+                document.querySelectorAll('.letter-slot').forEach(slot => {
+                    slot.textContent = '';
+                    slot.classList.remove('filled');
+                });
+            }
+
+            checkAnswer() {
+                const answer = this.currentAnswer.map(a => a.letter).join('');
+                const correct = this.words[this.currentWord].spanish;
+
+                if (answer === correct) {
+                    this.score++;
+                    gameState.showFeedback('Correct! 🎉', 'success');
+                    setTimeout(() => {
+                        this.currentWord++;
+                        this.render();
+                    }, 1000);
+                } else {
+                    gameState.showFeedback(`Try again! Correct: ${correct}`, 'error');
+                    document.querySelector('.letter-slots').classList.add('shake');
+                    setTimeout(() => {
+                        document.querySelector('.letter-slots').classList.remove('shake');
+                    }, 500);
+                }
+            }
+
+            endGame() {
+                gameState.saveGameScore('wordBuilder', this.score * 10);
+                this.showResults();
+            }
+
+            showResults() {
+                const modalBody = document.getElementById('modalBody');
+                const percentage = Math.round((this.score / this.words.length) * 100);
+
+                modalBody.innerHTML = `
+                    <div class="results-screen">
+                        <div class="results-emoji">🔤</div>
+                        <div class="results-title">Word Builder Complete!</div>
+                        <div class="results-score">${this.score} / ${this.words.length}</div>
+                        <div class="results-message">
+                            ${percentage}% correct!
+                            ${percentage >= 80 ? 'Excellent spelling! ✨' : 'Keep practicing!'}
+                        </div>
+                        <div class="results-actions">
+                            <button class="action-button primary" onclick="startGame('wordBuilder')">Play Again</button>
+                            <button class="action-button secondary" onclick="closeGame()">Close</button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Global game instances
+        let matchingGame, speedRoundGame, fillBlankGame, listeningGame, wordBuilderGame;
+
+        // Global functions
+        window.startGame = async function(gameType) {
+            const modal = document.getElementById('gameModal');
+            const modalTitle = document.getElementById('modalTitle');
+
+            gameState.currentGame = gameType;
+            gameState.gameData.score = 0;
+
+            modal.classList.add('active');
+
+            switch(gameType) {
+                case 'matching':
+                    modalTitle.textContent = '🃏 Matching Game';
+                    matchingGame = new MatchingGame();
+                    await matchingGame.start();
+                    break;
+                case 'speedRound':
+                    modalTitle.textContent = '⚡ Speed Round';
+                    speedRoundGame = new SpeedRoundGame();
+                    await speedRoundGame.start();
+                    break;
+                case 'fillBlank':
+                    modalTitle.textContent = '📖 Story Builder';
+                    fillBlankGame = new FillBlankGame();
+                    await fillBlankGame.start();
+                    break;
+                case 'listening':
+                    modalTitle.textContent = '🎧 Listening Challenge';
+                    listeningGame = new ListeningGame();
+                    await listeningGame.start();
+                    break;
+                case 'wordBuilder':
+                    modalTitle.textContent = '🔤 Word Builder';
+                    wordBuilderGame = new WordBuilderGame();
+                    await wordBuilderGame.start();
+                    break;
+            }
+        };
+
+        window.closeGame = function() {
+            const modal = document.getElementById('gameModal');
+            modal.classList.remove('active');
+            gameState.stopTimer();
+            gameState.currentGame = null;
+        };
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            gameState.renderAchievements();
+            gameState.loadLeaderboard();
+        });
+
+        // Close modal on background click
+        document.getElementById('gameModal').addEventListener('click', (e) => {
+            if (e.target.id === 'gameModal') {
+                closeGame();
+            }
+        });
+    </script>
+</body>
+</html>

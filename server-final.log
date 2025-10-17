@@ -1,0 +1,68 @@
+
+> unified-feed-server@1.0.0 start
+> node server.js
+
+📹 Loading video catalog from MULTIPLE sources...
+✅ Loaded 506 MP4 videos from Langfeed
+✅ Loaded 142 videos from public/videos/reels/
+🎬 TOTAL: 648 videos loaded
+🎯 Spanish Frequency Database loaded - 10K+ words organized by CEFR bands
+🎯 Spanish Frequency System loaded - TOP 20 words with viral contexts!
+🔥 Spanish Gossip Feed loaded - 8 celebrity drama items ready!
+🧠 SRS Prisma Adapter initialized - persistent spaced repetition
+🎯 Spanish Frequency Database loaded - 10K+ words organized by CEFR bands
+🔥 Smart Feed System initialized with frequency targeting
+🧠 Personalized SRS Feed System initialized
+🎯 Extended Spanish Frequency System loaded - 1000+ words organized by CEFR levels!
+✅ VideoDifficultyScorer initialized with 10k Spanish words
+⚠️ Supabase credentials not found in environment variables. Database features will be limited.
+   Please set SUPABASE_URL and SUPABASE_ANON_KEY in your .env file.
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+🌐 Fast Translation Service initialized
+   Providers: Google Translate → DeepL → OpenAI
+✅ Personalization engine loaded
+🚀 Unified Feed Algorithm initialized with TikTok mechanics
+🎯 Frequency Lookup loaded: 9997 words indexed
+⚠️  Mixpanel not configured (MIXPANEL_TOKEN not set)
+🤖 AI Content Adapter initialized with 90/10 theory
+🎯 Level Detection System initialized
+🌐 Translation Service initialized
+   API URL: https://libretranslate.com
+   Rate limit: 5 req/s
+🎰 Dopamine Engine initialized
+🧪 A/B Testing Engine initialized with 7 experiments
+✅ VideoDifficultyScorer initialized with 10k Spanish words
+🎥 Video Feed API endpoints loaded
+🧠 Adaptive Learning API endpoints loaded
+⚠️  SENTRY_DSN not configured. Error tracking disabled.
+📦 Cache system initialized (in-memory)
+📊 Monitoring & Analytics endpoints loaded
+🎓 Beginner Mode API endpoints loaded
+🤖 AI Systems loaded: Content Adapter + Level Detector
+🧠 SRS System loaded with SM-2 algorithm
+🏆 Gamification System loaded: Streaks, XP, Achievements
+📊 Engagement Tracker loaded: Watch time, Saves, Completions
+📊 Analytics API loaded: Track, Daily, Weekly, Progress, Interests, Insights
+🎯 Spanish Frequency Database loaded - 10K+ words organized by CEFR bands
+📰 Adaptive News Curator loaded: ChatGPT Pulse + Perplexity style
+🤖 AI Discover Feed API loaded - ChatGPT Pulse style
+node:events:496
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use 0.0.0.0:3001
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at node:net:2206:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+Emitted 'error' event on Server instance at:
+    at emitErrorNT (node:net:1976:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  code: 'EADDRINUSE',
+  errno: -48,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 3001
+}
+
+Node.js v22.17.1

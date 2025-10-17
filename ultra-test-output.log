@@ -1,0 +1,28 @@
+🔍 ULTRA-COMPREHENSIVE SPAM DETECTOR
+
+⚠️ ❌ Video #0 error: Event
+⚠️    Error code: 4
+⚠️    Error message: DEMUXER_ERROR_NO_SUPPORTED_STREAMS: FFmpegDemuxer: no supported streams
+⚠️ ❌ Video #3 error: Event
+⚠️    Error code: 4
+⚠️    Error message: DEMUXER_ERROR_NO_SUPPORTED_STREAMS: FFmpegDemuxer: no supported streams
+⚠️ ❌ Video #1 error: Event
+⚠️    Error code: 4
+⚠️    Error message: DEMUXER_ERROR_NO_SUPPORTED_STREAMS: FFmpegDemuxer: no supported streams
+⚠️ ❌ Video #2 error: Event
+⚠️    Error code: 4
+⚠️    Error message: DEMUXER_ERROR_NO_SUPPORTED_STREAMS: FFmpegDemuxer: no supported streams
+📸 1: Initial load
+node:internal/process/promises:394
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+page.evaluate: TypeError: el.className.includes is not a function
+    at eval (eval at evaluate (:291:30), <anonymous>:50:30)
+    at NodeList.forEach (<anonymous>)
+    at eval (eval at evaluate (:291:30), <anonymous>:14:40)
+    at UtilityScript.evaluate (<anonymous>:293:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/mindful/_projects/workspace3/ultra-comprehensive-test.js:29:36
+
+Node.js v22.17.1

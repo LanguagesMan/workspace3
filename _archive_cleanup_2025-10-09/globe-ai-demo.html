@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌍 Globe AI Character - Duolingo 2025 Pattern</title>
+    <script src="/js/globe-ai-character.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #000000;
+            --bg-card: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --primary: #ff0050;
+            --secondary: #667eea;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-size: 14px;
+        }
+
+        .demo-section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .demo-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--secondary);
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .demo-button {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .demo-button:active {
+            transform: translateY(0);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-box {
+            background: rgba(255, 0, 80, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 16px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        .info-box h3 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .info-box p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .character-showcase {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .character-card {
+            text-align: center;
+        }
+
+        .character-card h4 {
+            margin-top: 12px;
+            color: var(--secondary);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌍 Globe AI Character System</h1>
+        <p class="subtitle">Duolingo 2025 Mascot Pattern - Variable Ratio Reinforcement (30% Trigger Rate)</p>
+
+        <!-- Character Moods Showcase -->
+        <div class="demo-section">
+            <div class="demo-title">Character Expressions</div>
+            <div class="character-showcase" id="characterShowcase"></div>
+        </div>
+
+        <!-- Interactive Demo -->
+        <div class="demo-section">
+            <div class="demo-title">Celebration Triggers</div>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                Click buttons to trigger Globe AI celebrations. Notice the 30% variable ratio - not every action triggers a celebration, creating addictive unpredictability!
+            </p>
+            <div class="button-grid">
+                <button class="demo-button" onclick="triggerWordLearned()">
+                    📚 Learn Word
+                </button>
+                <button class="demo-button" onclick="triggerStreakMilestone()">
+                    🔥 Streak Milestone
+                </button>
+                <button class="demo-button" onclick="triggerLevelUp()">
+                    ⭐ Level Up
+                </button>
+                <button class="demo-button" onclick="triggerAchievement()">
+                    🏆 Achievement
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="demo-section">
+            <div class="demo-title">Live Statistics</div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalInteractions">0</div>
+                    <div class="stat-label">Total Actions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="celebrationCount">0</div>
+                    <div class="stat-label">Celebrations</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="triggerRate">0%</div>
+                    <div class="stat-label">Actual Rate</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Research Info -->
+        <div class="demo-section">
+            <div class="info-box">
+                <h3>🔬 Competitive Research - Duolingo 2025</h3>
+                <p>
+                    <strong>Duo Owl Impact:</strong> 5% increase in DAU when mascot added to push notifications<br>
+                    <strong>Celebration Timing:</strong> 300-500ms optimal (we use 400ms)<br>
+                    <strong>Variable Ratio:</strong> 30% trigger rate creates strongest addiction<br>
+                    <strong>Streak Power:</strong> Users with 7+ day streaks are 5x more likely to continue
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Globe AI
+        const globeAI = new GlobeAICharacter();
+
+        // Show character widget
+        globeAI.showCharacterWidget();
+
+        // Stats tracking
+        let totalInteractions = 0;
+        let celebrationCount = 0;
+
+        function updateStats() {
+            document.getElementById('totalInteractions').textContent = totalInteractions;
+            document.getElementById('celebrationCount').textContent = celebrationCount;
+            const rate = totalInteractions > 0
+                ? ((celebrationCount / totalInteractions) * 100).toFixed(1)
+                : 0;
+            document.getElementById('triggerRate').textContent = rate + '%';
+        }
+
+        function triggerWordLearned() {
+            totalInteractions++;
+            if (globeAI.shouldCelebrate()) {
+                celebrationCount++;
+                globeAI.celebrate('word_learned');
+            }
+            updateStats();
+        }
+
+        function triggerStreakMilestone() {
+            totalInteractions++;
+            if (globeAI.shouldCelebrate()) {
+                celebrationCount++;
+                globeAI.celebrate('streak_milestone');
+            }
+            updateStats();
+        }
+
+        function triggerLevelUp() {
+            totalInteractions++;
+            // Level ups always celebrate (special events)
+            celebrationCount++;
+            globeAI.celebrate('level_up');
+            updateStats();
+        }
+
+        function triggerAchievement() {
+            totalInteractions++;
+            if (globeAI.shouldCelebrate()) {
+                celebrationCount++;
+                globeAI.celebrate('achievement');
+            }
+            updateStats();
+        }
+
+        // Show character mood variations
+        const showcase = document.getElementById('characterShowcase');
+        const moods = ['happy', 'excited', 'celebrating'];
+        moods.forEach(mood => {
+            const card = document.createElement('div');
+            card.className = 'character-card';
+            card.innerHTML = `
+                ${globeAI.getCharacterSVG(mood, 100)}
+                <h4>${mood.charAt(0).toUpperCase() + mood.slice(1)}</h4>
+            `;
+            showcase.appendChild(card);
+        });
+
+        console.log('🌍 Globe AI Demo loaded!');
+        console.log('📊 Try clicking buttons 10+ times to see 30% trigger rate in action');
+    </script>
+</body>
+</html>

@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📖 My Stories - Personalized Spanish Content</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 32px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Generate Story Button */
+        .generate-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            max-width: 500px;
+            margin: 0 auto 32px;
+            padding: 20px 40px;
+            background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+            border: none;
+            border-radius: 16px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+        }
+
+        .generate-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Stats Panel */
+        .stats-panel {
+            max-width: 800px;
+            margin: 0 auto 32px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 24px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: #ffd93d;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* Stories Grid */
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .story-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .story-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .story-header {
+            padding: 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+        }
+
+        .story-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .story-meta {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .story-content {
+            padding: 24px;
+        }
+
+        .story-text {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .learned-word {
+            background: linear-gradient(135deg, #a8e6cf, #dcedc1);
+            color: #333;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            border-bottom: 2px solid #4caf50;
+        }
+
+        .word-count {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 20px;
+            font-size: 14px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .story-actions {
+            display: flex;
+            gap: 12px;
+            padding-top: 16px;
+            border-top: 1px solid #eee;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-read {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+        }
+
+        .btn-share {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 18px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .empty-state {
+            max-width: 500px;
+            margin: 60px auto;
+            text-align: center;
+            padding: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 24px;
+        }
+
+        .empty-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .empty-title {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .empty-text {
+            font-size: 16px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 24px;
+        }
+    </style>
+</head>
+<body>
+    <h1>📖 My Stories</h1>
+    <p class="subtitle">Personalized content using YOUR learned words</p>
+
+    <button class="generate-btn" onclick="myStories.generateStory()">
+        ✨ Generate New Story
+    </button>
+
+    <div class="stats-panel" id="statsPanel">
+        <div class="stat-item">
+            <div class="stat-number" id="wordsLearned">0</div>
+            <div class="stat-label">Words Learned</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" id="storiesGenerated">0</div>
+            <div class="stat-label">Stories Generated</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" id="wordsReviewed">0</div>
+            <div class="stat-label">Words Reviewed</div>
+        </div>
+    </div>
+
+    <div class="stories-grid" id="storiesContainer">
+        <!-- Stories will be loaded here -->
+    </div>
+
+    <script>
+        class MyStories {
+            constructor() {
+                this.container = document.getElementById('storiesContainer');
+                this.savedWords = JSON.parse(localStorage.getItem('savedWords') || '[]');
+                this.generatedStories = JSON.parse(localStorage.getItem('generatedStories') || '[]');
+
+                this.updateStats();
+                this.loadStories();
+
+                // Show empty state if no words learned
+                if (this.savedWords.length === 0) {
+                    this.showEmptyState();
+                }
+            }
+
+            updateStats() {
+                document.getElementById('wordsLearned').textContent = this.savedWords.length;
+                document.getElementById('storiesGenerated').textContent = this.generatedStories.length;
+
+                // Calculate words reviewed from story views
+                const wordsReviewed = this.generatedStories.reduce((sum, story) => sum + (story.wordCount || 0), 0);
+                document.getElementById('wordsReviewed').textContent = wordsReviewed;
+            }
+
+            showEmptyState() {
+                this.container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📚</div>
+                        <div class="empty-title">No Words Learned Yet</div>
+                        <div class="empty-text">
+                            Start learning by clicking words in articles and videos!<br>
+                            Once you learn 5+ words, you can generate personalized stories.
+                        </div>
+                        <button class="generate-btn" onclick="window.location.href='articles-feed.html'">
+                            Start Learning
+                        </button>
+                    </div>
+                `;
+            }
+
+            loadStories() {
+                if (this.generatedStories.length === 0 && this.savedWords.length > 0) {
+                    // Auto-generate first story
+                    this.generateStory();
+                    return;
+                }
+
+                this.generatedStories.forEach(story => this.createStoryCard(story));
+            }
+
+            generateStory() {
+                if (this.savedWords.length < 5) {
+                    alert('⚠️ You need at least 5 learned words to generate a story!\n\nGo to Articles or Videos feed and click words to learn them.');
+                    return;
+                }
+
+                // Show loading
+                const loading = document.createElement('div');
+                loading.className = 'loading';
+                loading.textContent = '✨ Creating your personalized story...';
+                this.container.prepend(loading);
+
+                // Generate story after short delay (simulating API call)
+                setTimeout(() => {
+                    const story = this.createPersonalizedStory();
+                    this.generatedStories.unshift(story);
+                    localStorage.setItem('generatedStories', JSON.stringify(this.generatedStories));
+
+                    loading.remove();
+                    this.container.innerHTML = '';
+                    this.loadStories();
+                    this.updateStats();
+
+                    // Scroll to top
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 1500);
+            }
+
+            createPersonalizedStory() {
+                // Pick 5-10 random learned words
+                const numWords = Math.min(10, Math.max(5, this.savedWords.length));
+                const selectedWords = this.shuffleArray([...this.savedWords]).slice(0, numWords);
+
+                // Generate story using those words
+                const storyTemplates = [
+                    {
+                        title: 'Un Día en la Ciudad',
+                        generator: (words) => {
+                            const wordsList = words.map(w => w.word).join(', ');
+                            return `Hoy fue un día especial. Por la mañana, yo ${words[0]?.word || 'caminé'} por la ciudad.
+                            Vi muchas cosas ${words[1]?.word || 'hermosas'}. Los ${words[2]?.word || 'edificios'} eran muy
+                            ${words[3]?.word || 'altos'}. Después, fui a un ${words[4]?.word || 'restaurante'} para comer.
+                            La comida estaba ${words[5]?.word || 'deliciosa'}. Me sentí muy ${words[6]?.word || 'feliz'}
+                            todo el día.`;
+                        }
+                    },
+                    {
+                        title: 'Mi Aventura de Viaje',
+                        generator: (words) => {
+                            return `El mes pasado, viajé a España. Fue una experiencia ${words[0]?.word || 'increíble'}.
+                            Conocí a muchas ${words[1]?.word || 'personas'} ${words[2]?.word || 'interesantes'}.
+                            Visitamos ${words[3]?.word || 'lugares'} ${words[4]?.word || 'históricos'} y comimos
+                            ${words[5]?.word || 'comida'} ${words[6]?.word || 'tradicional'}. Quiero volver pronto.`;
+                        }
+                    },
+                    {
+                        title: 'Una Historia de Amor',
+                        generator: (words) => {
+                            return `Había una vez una ${words[0]?.word || 'persona'} muy ${words[1]?.word || 'especial'}.
+                            Ella ${words[2]?.word || 'vivía'} en una ${words[3]?.word || 'casa'} ${words[4]?.word || 'pequeña'}.
+                            Todos los días, ella ${words[5]?.word || 'trabajaba'} en la ${words[6]?.word || 'ciudad'}.
+                            Un día, conoció a alguien ${words[7]?.word || 'maravilloso'} y su vida cambió para siempre.`;
+                        }
+                    }
+                ];
+
+                const template = storyTemplates[Math.floor(Math.random() * storyTemplates.length)];
+                const storyText = template.generator(selectedWords);
+
+                // Highlight learned words in the story
+                let highlightedText = storyText;
+                selectedWords.forEach(wordObj => {
+                    const regex = new RegExp(`\\b${wordObj.word}\\b`, 'gi');
+                    highlightedText = highlightedText.replace(regex, match =>
+                        `<span class="learned-word" title="${wordObj.translation}">${match}</span>`
+                    );
+                });
+
+                return {
+                    id: `story_${Date.now()}`,
+                    title: template.title,
+                    text: highlightedText,
+                    originalWords: selectedWords,
+                    wordCount: selectedWords.length,
+                    createdAt: new Date().toISOString()
+                };
+            }
+
+            createStoryCard(story) {
+                const card = document.createElement('div');
+                card.className = 'story-card';
+
+                const date = new Date(story.createdAt);
+                const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+                card.innerHTML = `
+                    <div class="story-header">
+                        <div class="story-title">${story.title}</div>
+                        <div class="story-meta">Generated ${dateStr} • ${story.wordCount} learned words</div>
+                    </div>
+                    <div class="story-content">
+                        <p class="story-text">${story.text}</p>
+                        <div class="word-count">
+                            ✨ <strong>${story.wordCount}</strong> of your words used
+                        </div>
+                        <div class="story-actions">
+                            <button class="action-btn btn-read" onclick="myStories.readStory('${story.id}')">
+                                📖 Read Aloud
+                            </button>
+                            <button class="action-btn btn-share" onclick="myStories.shareStory('${story.id}')">
+                                📤 Share
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                this.container.appendChild(card);
+            }
+
+            readStory(storyId) {
+                const story = this.generatedStories.find(s => s.id === storyId);
+                if (!story) return;
+
+                // Use Web Speech API to read the story
+                const text = story.text.replace(/<[^>]*>/g, ''); // Remove HTML tags
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'es-ES';
+                utterance.rate = 0.8; // Slower for learners
+
+                speechSynthesis.speak(utterance);
+                alert('🔊 Reading story aloud... (Spanish voice)');
+            }
+
+            shareStory(storyId) {
+                const story = this.generatedStories.find(s => s.id === storyId);
+                if (!story) return;
+
+                const shareText = `I just generated a personalized Spanish story using ${story.wordCount} words I learned! 📖✨\n\n"${story.title}"\n\nLearn Spanish with VIDA!`;
+
+                if (navigator.share) {
+                    navigator.share({
+                        title: story.title,
+                        text: shareText
+                    });
+                } else {
+                    navigator.clipboard.writeText(shareText);
+                    alert('📋 Story copied to clipboard!');
+                }
+            }
+
+            shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+        }
+
+        const myStories = new MyStories();
+    </script>
+</body>
+</html>

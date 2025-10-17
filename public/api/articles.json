@@ -1,0 +1,64 @@
+{
+  "articles": [
+    {
+      "id": "article-1",
+      "title": "La cultura española moderna",
+      "level": "A2",
+      "content": "España es un país con una rica historia cultural. Hoy en día, la cultura española moderna combina tradiciones antiguas con influencias contemporáneas. La música, el arte y la gastronomía española son famosos en todo el mundo.",
+      "vocabulary": ["cultura", "moderna", "tradiciones", "gastronomía", "famosos"],
+      "tags": ["culture", "spain", "modern life"],
+      "publishedDate": "2025-10-15",
+      "readingTime": 180,
+      "thumbnail": "/assets/articles/spanish-culture.jpg",
+      "source": "Spanish Learning Today"
+    },
+    {
+      "id": "article-2",
+      "title": "Cómo cocinar paella auténtica",
+      "level": "B1",
+      "content": "La paella es uno de los platos más emblemáticos de España. Originaria de Valencia, esta delicia culinaria requiere ingredientes frescos y técnica precisa. El arroz, el azafrán y los mariscos son elementos esenciales. La preparación comienza con un sofrito de tomate y pimiento...",
+      "vocabulary": ["cocinar", "paella", "emblemático", "culinaria", "azafrán", "mariscos", "sofrito"],
+      "tags": ["food", "cooking", "spanish cuisine", "valencia"],
+      "publishedDate": "2025-10-14",
+      "readingTime": 300,
+      "thumbnail": "/assets/articles/paella.jpg",
+      "source": "Cocina Española"
+    },
+    {
+      "id": "article-3",
+      "title": "Las noticias de hoy: economía y política",
+      "level": "B2",
+      "content": "El gobierno español anunció nuevas medidas económicas para combatir la inflación. Los expertos económicos debaten sobre el impacto de estas políticas en el mercado laboral. Mientras tanto, los sindicatos expresan preocupación por las condiciones de trabajo.",
+      "vocabulary": ["gobierno", "medidas", "inflación", "expertos", "políticas", "sindicatos"],
+      "tags": ["news", "politics", "economy"],
+      "publishedDate": "2025-10-16",
+      "readingTime": 240,
+      "thumbnail": "/assets/articles/news-economy.jpg",
+      "source": "El Diario Español"
+    },
+    {
+      "id": "article-4",
+      "title": "Viajando por Latinoamérica",
+      "level": "A2",
+      "content": "Latinoamérica ofrece destinos increíbles para los viajeros. Desde las playas de México hasta las montañas de Perú, cada país tiene su propia belleza única. Los turistas pueden disfrutar de la comida local, la música vibrante y la hospitalidad de la gente.",
+      "vocabulary": ["viajando", "destinos", "playas", "montañas", "turistas", "hospitalidad"],
+      "tags": ["travel", "latin america", "tourism", "culture"],
+      "publishedDate": "2025-10-13",
+      "readingTime": 200,
+      "thumbnail": "/assets/articles/latin-america-travel.jpg",
+      "source": "Viajes y Aventuras"
+    },
+    {
+      "id": "article-5",
+      "title": "El futuro de la tecnología en español",
+      "level": "C1",
+      "content": "La inteligencia artificial está transformando radicalmente el panorama tecnológico hispanohablante. Las empresas tecnológicas latinoamericanas están desarrollando soluciones innovadoras que compiten a nivel global. La democratización del acceso a la tecnología representa tanto oportunidades como desafíos para las economías emergentes.",
+      "vocabulary": ["inteligencia artificial", "panorama", "hispanohablante", "innovadoras", "democratización", "emergentes"],
+      "tags": ["technology", "AI", "innovation", "future"],
+      "publishedDate": "2025-10-15",
+      "readingTime": 420,
+      "thumbnail": "/assets/articles/tech-future.jpg",
+      "source": "Tech en Español"
+    }
+  ]
+}

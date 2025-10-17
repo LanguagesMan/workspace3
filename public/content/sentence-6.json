@@ -1,0 +1,12 @@
+{
+  "spanish": "¡Las palabras discuten! ¿Quién tiene razón?",
+  "english": "The words argue! Who is right?",
+  "words": [
+    "palabras",
+    "discuten",
+    "quién",
+    "razón"
+  ],
+  "difficulty": "intermediate",
+  "imagePrompt": "Floating word bubbles arguing, dictionary pages alive, letters rearranging"
+}

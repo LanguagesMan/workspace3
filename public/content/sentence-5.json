@@ -1,0 +1,12 @@
+{
+  "spanish": "¡El mundo está al revés! ¡Los carros vuelan!",
+  "english": "The world is upside down! Cars are flying!",
+  "words": [
+    "mundo",
+    "revés",
+    "carros",
+    "vuelan"
+  ],
+  "difficulty": "intermediate",
+  "imagePrompt": "Upside-down city, cars on clouds, buildings hanging from sky, surreal"
+}

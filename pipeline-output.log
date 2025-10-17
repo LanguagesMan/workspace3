@@ -1,0 +1,82 @@
+🚀 Starting Complete Beginner Mode Pipeline...
+================================================
+
+[1;33mStep 1: Installing dependencies...[0m
+
+up to date, audited 692 packages in 8s
+
+70 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+[0;32m✅ Dependencies installed[0m
+
+[1;33mStep 2: Starting server...[0m
+Server PID: 39636
+Waiting for server to be ready...
+.[0;32m✅ Server started successfully[0m
+
+[1;33mStep 3: Running beginner mode smoke tests...[0m
+
+Running 8 tests using 4 workers
+
+(node:39745) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39743) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39742) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39744) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39743) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39744) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39742) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39745) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [functional] › tests/beginner-mode-smoke-test.spec.js:17:5 › Beginner Mode System › Beginner API endpoints respond (91ms)
+  ✓  2 [functional] › tests/beginner-mode-smoke-test.spec.js:11:5 › Beginner Mode System › Beginner dashboard loads successfully (796ms)
+  ✓  6 [functional] › tests/beginner-mode-smoke-test.spec.js:59:5 › Beginner Mode Engine › Engine detects absolute beginners correctly (28ms)
+  ✓  7 [functional] › tests/beginner-mode-smoke-test.spec.js:68:5 › Beginner Mode Engine › First 20 words curriculum is available (41ms)
+  ✓  8 [functional] › tests/beginner-mode-smoke-test.spec.js:78:5 › Beginner Mode Engine › Graduation check works (16ms)
+  ✓  3 [functional] › tests/beginner-mode-smoke-test.spec.js:5:5 › Beginner Mode System › Onboarding page loads successfully (1.0s)
+  ✓  5 [functional] › tests/beginner-mode-smoke-test.spec.js:49:5 › Beginner Mode System › Main feed includes beginner mode script (2.9s)
+  ✓  4 [functional] › tests/beginner-mode-smoke-test.spec.js:39:5 › Beginner Mode System › Beginner mode integration script loads (4.5s)
+
+  8 passed (31.9s)
+[0;32m✅ Tests completed[0m
+
+[1;33mStep 4: Verifying main video feed...[0m
+[0;32m✅ Video feed accessible[0m
+
+[1;33mStep 5: Verifying beginner API endpoints...[0m
+[0;32m✅ Curriculum API working[0m
+[0;32m✅ Content API working[0m
+[0;32m✅ Progress API working[0m
+
+[1;33mStep 6: Checking for console errors...[0m
+[0;32m✅ No critical console errors[0m
+
+[1;33mStep 7: Quick performance check...[0m
+Page load time: 0.001114s
+[0;32m✅ Load time acceptable[0m
+
+[1;33mCleaning up...[0m
+[0;32m✅ Server stopped[0m
+
+================================================
+[0;32m🎉 ALL TESTS PASSED![0m
+
+Beginner Mode Status:
+  ✅ Dependencies installed
+  ✅ Server running
+  ✅ Smoke tests passed
+  ✅ Video feed working
+  ✅ All API endpoints responding
+  ✅ No critical errors
+  ✅ Performance acceptable
+
+Ready to merge to main!
+================================================

@@ -1,0 +1,10 @@
+🧪 Starting Placement Test E2E Tests...
+
+
+❌ Test Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3001/
+Call log:
+  - navigating to "http://localhost:3001/", waiting until "load"
+
+    at testPlacementTest (/Users/mindful/_projects/workspace3/test-placement-test.js:18:20) {
+  name: 'Error'
+}

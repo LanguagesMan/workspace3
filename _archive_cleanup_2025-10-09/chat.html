@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Chat - AI Spanish Tutor | VIDA</title>
+    <link rel="stylesheet" href="/css/top-app-design.css">
+    <style>
+        /* ==================== CHAT SPECIFIC STYLES ==================== */
+
+        body {
+            padding-bottom: 60px; /* Bottom nav height */
+        }
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--bg-primary);
+        }
+
+        /* Header */
+        .chat-header {
+            position: sticky;
+            top: 0;
+            z-index: var(--z-sticky);
+            background: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: var(--space-4);
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .chat-info h1 {
+            font-size: var(--text-lg);
+            font-weight: var(--weight-semibold);
+            margin: 0;
+        }
+
+        .chat-status {
+            font-size: var(--text-sm);
+            color: var(--text-tertiary);
+        }
+
+        .status-online {
+            color: var(--accent-green);
+        }
+
+        /* Messages Area */
+        .messages-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--space-4);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+        }
+
+        .message {
+            display: flex;
+            gap: var(--space-3);
+            max-width: 85%;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message.ai {
+            align-self: flex-start;
+        }
+
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .message.user .message-avatar {
+            background: var(--gradient-primary);
+        }
+
+        .message.ai .message-avatar {
+            background: var(--bg-elevated);
+        }
+
+        .message-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-1);
+        }
+
+        .message-bubble {
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius-lg);
+            word-wrap: break-word;
+        }
+
+        .message.user .message-bubble {
+            background: var(--gradient-primary);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.ai .message-bubble {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-meta {
+            font-size: var(--text-xs);
+            color: var(--text-tertiary);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .message.user .message-meta {
+            justify-content: flex-end;
+        }
+
+        .edited-badge {
+            font-size: var(--text-xs);
+            color: var(--text-tertiary);
+            opacity: 0.7;
+        }
+
+        /* Input Area */
+        .input-area {
+            position: fixed;
+            bottom: 60px; /* Above bottom nav */
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--glass-border);
+            padding: var(--space-3) var(--space-4);
+            z-index: var(--z-sticky);
+        }
+
+        .input-container {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Edit Mode Indicator (Slack-style) */
+        .edit-mode-indicator {
+            display: none;
+            background: var(--accent-yellow);
+            color: var(--bg-primary);
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-md);
+            font-size: var(--text-sm);
+            font-weight: var(--weight-semibold);
+            margin-bottom: var(--space-2);
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .edit-mode-indicator.active {
+            display: flex;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .edit-cancel {
+            background: none;
+            border: none;
+            color: var(--bg-primary);
+            font-size: var(--text-lg);
+            cursor: pointer;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: var(--space-2);
+            align-items: flex-end;
+        }
+
+        #messageInput {
+            flex: 1;
+            background: var(--bg-elevated);
+            border: 2px solid transparent;
+            border-radius: var(--radius-xl);
+            padding: var(--space-3) var(--space-4);
+            color: var(--text-primary);
+            font-family: var(--font-text);
+            font-size: var(--text-base);
+            resize: none;
+            max-height: 120px;
+            min-height: 44px;
+            transition: all var(--transition-base);
+        }
+
+        #messageInput:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(255, 0, 80, 0.1);
+        }
+
+        #messageInput.edit-mode {
+            border-color: var(--accent-yellow);
+            box-shadow: 0 0 0 4px rgba(255, 214, 10, 0.1);
+        }
+
+        .send-button {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-base);
+            flex-shrink: 0;
+        }
+
+        .send-button:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .send-button:active {
+            transform: scale(0.95);
+        }
+
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Keyboard Shortcut Hint */
+        .keyboard-hint {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            margin-bottom: var(--space-2);
+            padding: var(--space-2) var(--space-3);
+            background: var(--bg-elevated);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            font-size: var(--text-xs);
+            color: var(--text-tertiary);
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--transition-base);
+        }
+
+        .keyboard-hint.show {
+            opacity: 1;
+        }
+
+        .kbd {
+            background: var(--bg-primary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: var(--z-fixed);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: var(--text-tertiary);
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 0 0 3px 3px;
+        }
+
+        .nav-icon {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .nav-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .nav-item.active .nav-icon svg {
+            stroke: #FF0050;
+        }
+
+        .nav-item.active .nav-icon {
+            transform: scale(1.1);
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+        }
+
+        /* Empty State */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-16);
+            text-align: center;
+            gap: var(--space-4);
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            opacity: 0.3;
+        }
+
+        .empty-state-title {
+            font-size: var(--text-2xl);
+            font-weight: var(--weight-bold);
+            color: var(--text-primary);
+        }
+
+        .empty-state-text {
+            font-size: var(--text-base);
+            color: var(--text-tertiary);
+            max-width: 300px;
+        }
+
+        .suggestion-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-2);
+            justify-content: center;
+            margin-top: var(--space-4);
+        }
+
+        .suggestion-chip {
+            padding: var(--space-2) var(--space-4);
+            background: var(--bg-elevated);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-full);
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .suggestion-chip:hover {
+            background: var(--bg-card);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <!-- Chat Header -->
+        <div class="chat-header">
+            <div class="chat-avatar">🤖</div>
+            <div class="chat-info">
+                <h1>Spanish Tutor AI</h1>
+                <div class="chat-status status-online">● Active now</div>
+            </div>
+        </div>
+
+        <!-- Messages Area -->
+        <div class="messages-area" id="messagesArea">
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState">
+                <div class="empty-state-icon">💬</div>
+                <div class="empty-state-title">Start Learning Spanish</div>
+                <div class="empty-state-text">Ask me anything about Spanish, practice conversation, or get help with words you've learned!</div>
+
+                <div class="suggestion-chips">
+                    <div class="suggestion-chip" onclick="sendSuggestion('¿Cómo se dice &quot;hello&quot; en español?')">
+                        How do I say "hello"?
+                    </div>
+                    <div class="suggestion-chip" onclick="sendSuggestion('Ayúdame a practicar conversación')">
+                        Practice conversation
+                    </div>
+                    <div class="suggestion-chip" onclick="sendSuggestion('¿Cuál es la diferencia entre ser y estar?')">
+                        Ser vs Estar?
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages will be added here -->
+        </div>
+
+        <!-- Input Area -->
+        <div class="input-area">
+            <div class="input-container">
+                <!-- Edit Mode Indicator -->
+                <div class="edit-mode-indicator" id="editIndicator">
+                    <span>✏️ Editing message</span>
+                    <button class="edit-cancel" onclick="cancelEdit()">×</button>
+                </div>
+
+                <!-- Keyboard Hint -->
+                <div class="keyboard-hint" id="keyboardHint">
+                    Press <span class="kbd">↑</span> to edit last message
+                </div>
+
+                <div class="input-wrapper">
+                    <textarea
+                        id="messageInput"
+                        placeholder="Type a message..."
+                        rows="1"
+                        autocomplete="off"
+                        autocorrect="off"
+                        autocapitalize="off"
+                        spellcheck="false"
+                    ></textarea>
+                    <button class="send-button" id="sendButton" onclick="sendMessage()">
+                        ➤
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📱 BOTTOM NAVIGATION - TikTok-Style SVG Icons (CONSISTENT ACROSS ALL PAGES) -->
+    <nav class="bottom-nav">
+        <a href="/tiktok-videos.html" class="nav-item">
+            <div class="nav-icon">
+                <svg viewBox="0 0 24 24">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+            </div>
+            <div class="nav-label">Reels</div>
+        </a>
+        <a href="/unified-infinite-feed.html" class="nav-item">
+            <div class="nav-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M4 11a9 9 0 0 1 9 9"></path>
+                    <path d="M4 4a16 16 0 0 1 16 16"></path>
+                    <circle cx="5" cy="19" r="1"></circle>
+                </svg>
+            </div>
+            <div class="nav-label">News</div>
+        </a>
+        <a href="/chat.html" class="nav-item active">
+            <div class="nav-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+            </div>
+            <div class="nav-label">Chat</div>
+        </a>
+        <a href="/" class="nav-item">
+            <div class="nav-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            <div class="nav-label">Profile</div>
+        </a>
+    </nav>
+
+    <script>
+        // ==================== MESSAGE QUEUE & EDITING ====================
+
+        let messageQueue = JSON.parse(localStorage.getItem('chatMessageQueue') || '[]');
+        let currentEditIndex = -1; // -1 means not editing, 0 means last message, 1 means second-to-last, etc.
+
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const messagesArea = document.getElementById('messagesArea');
+        const emptyState = document.getElementById('emptyState');
+        const editIndicator = document.getElementById('editIndicator');
+        const keyboardHint = document.getElementById('keyboardHint');
+
+        // ==================== KEYBOARD SHORTCUTS ====================
+
+        messageInput.addEventListener('keydown', (e) => {
+            // ArrowUp: Edit last message (Slack/Discord/Telegram pattern)
+            if (e.key === 'ArrowUp' && messageInput.value === '' && messageQueue.length > 0) {
+                e.preventDefault();
+                enterEditMode(0); // Edit most recent message
+                return;
+            }
+
+            // Ctrl/Cmd + ArrowUp: Navigate to older messages while editing
+            if ((e.ctrlKey || e.metaKey) && e.key === 'ArrowUp' && currentEditIndex >= 0) {
+                e.preventDefault();
+                const nextIndex = currentEditIndex + 1;
+                if (nextIndex < getUserMessages().length) {
+                    enterEditMode(nextIndex);
+                }
+                return;
+            }
+
+            // Ctrl/Cmd + ArrowDown: Navigate to newer messages while editing
+            if ((e.ctrlKey || e.metaKey) && e.key === 'ArrowDown' && currentEditIndex > 0) {
+                e.preventDefault();
+                enterEditMode(currentEditIndex - 1);
+                return;
+            }
+
+            // Escape: Cancel edit mode
+            if (e.key === 'Escape' && currentEditIndex >= 0) {
+                e.preventDefault();
+                cancelEdit();
+                return;
+            }
+
+            // Enter: Send message (Shift+Enter for new line)
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+                return;
+            }
+
+            // Auto-resize textarea
+            autoResize();
+        });
+
+        // Show keyboard hint on focus
+        messageInput.addEventListener('focus', () => {
+            if (messageQueue.length > 0) {
+                setTimeout(() => {
+                    keyboardHint.classList.add('show');
+                    setTimeout(() => keyboardHint.classList.remove('show'), 3000);
+                }, 500);
+            }
+        });
+
+        // Auto-resize textarea
+        function autoResize() {
+            messageInput.style.height = 'auto';
+            messageInput.style.height = Math.min(messageInput.scrollHeight, 120) + 'px';
+        }
+
+        // ==================== EDIT MODE ====================
+
+        function getUserMessages() {
+            return messageQueue.filter(msg => msg.sender === 'user');
+        }
+
+        function enterEditMode(index) {
+            const userMessages = getUserMessages();
+            if (index >= userMessages.length) return;
+
+            currentEditIndex = index;
+            const messageToEdit = userMessages[userMessages.length - 1 - index];
+
+            // Populate input with message content
+            messageInput.value = messageToEdit.text;
+            messageInput.classList.add('edit-mode');
+            editIndicator.classList.add('active');
+
+            // Update indicator text
+            if (index === 0) {
+                editIndicator.querySelector('span').textContent = '✏️ Editing last message';
+            } else {
+                editIndicator.querySelector('span').textContent = `✏️ Editing message ${index + 1} back`;
+            }
+
+            // Focus and select all
+            messageInput.focus();
+            messageInput.setSelectionRange(messageInput.value.length, messageInput.value.length);
+            autoResize();
+        }
+
+        function cancelEdit() {
+            currentEditIndex = -1;
+            messageInput.value = '';
+            messageInput.classList.remove('edit-mode');
+            editIndicator.classList.remove('active');
+            messageInput.style.height = 'auto';
+            messageInput.focus();
+        }
+
+        // ==================== MESSAGE SENDING ====================
+
+        function sendMessage() {
+            const text = messageInput.value.trim();
+            if (!text) return;
+
+            if (currentEditIndex >= 0) {
+                // Edit existing message
+                updateMessage(currentEditIndex, text);
+                cancelEdit();
+            } else {
+                // Send new message
+                addMessage('user', text);
+
+                // Simulate AI response (in production: call API)
+                setTimeout(() => {
+                    const aiResponse = generateAIResponse(text);
+                    addMessage('ai', aiResponse);
+                }, 1000);
+            }
+
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+        }
+
+        function updateMessage(editIndex, newText) {
+            const userMessages = getUserMessages();
+            const messageToEdit = userMessages[userMessages.length - 1 - editIndex];
+
+            // Find in main queue
+            const mainIndex = messageQueue.indexOf(messageToEdit);
+            if (mainIndex !== -1) {
+                messageQueue[mainIndex].text = newText;
+                messageQueue[mainIndex].edited = true;
+                messageQueue[mainIndex].editedAt = Date.now();
+
+                // Save to localStorage
+                localStorage.setItem('chatMessageQueue', JSON.stringify(messageQueue));
+
+                // Re-render
+                renderMessages();
+            }
+        }
+
+        function addMessage(sender, text) {
+            const message = {
+                id: Date.now() + '-' + Math.random().toString(36).substr(2, 9),
+                sender,
+                text,
+                timestamp: Date.now(),
+                edited: false
+            };
+
+            messageQueue.push(message);
+            localStorage.setItem('chatMessageQueue', JSON.stringify(messageQueue));
+
+            renderMessages();
+            scrollToBottom();
+        }
+
+        function sendSuggestion(text) {
+            messageInput.value = text;
+            sendMessage();
+        }
+
+        // ==================== AI RESPONSES (MOCK) ====================
+
+        function generateAIResponse(userMessage) {
+            const responses = {
+                'hello': '¡Hola! 👋 I\'m your Spanish tutor. How can I help you today?',
+                'hola': '¡Hola! 😊 Great! You already know how to say hello in Spanish!',
+                'help': 'I can help you with:\n• Spanish vocabulary\n• Grammar explanations\n• Conversation practice\n• Translations\n\nWhat would you like to learn?',
+                'ser': 'Great question! **Ser** is used for permanent characteristics (nationality, profession, personality), while **estar** is for temporary states (location, emotions, conditions).\n\nExamples:\n• Soy español (I am Spanish) - permanent\n• Estoy cansado (I am tired) - temporary',
+                'estar': 'Great question! **Ser** is used for permanent characteristics (nationality, profession, personality), while **estar** is for temporary states (location, emotions, conditions).\n\nExamples:\n• Soy español (I am Spanish) - permanent\n• Estoy cansado (I am tired) - temporary'
+            };
+
+            const lowerMessage = userMessage.toLowerCase();
+
+            for (const [keyword, response] of Object.entries(responses)) {
+                if (lowerMessage.includes(keyword)) {
+                    return response;
+                }
+            }
+
+            return 'Interesting question! 🤔 In a production version, I would use AI to give you a personalized response. For now, try asking about:\n\n• "How do I say hello?"\n• "Difference between ser and estar"\n• "Help me practice"';
+        }
+
+        // ==================== RENDERING ====================
+
+        function renderMessages() {
+            // Hide empty state if messages exist
+            if (messageQueue.length > 0) {
+                emptyState.style.display = 'none';
+            } else {
+                emptyState.style.display = 'flex';
+                return;
+            }
+
+            // Clear existing messages (keep empty state)
+            const existingMessages = messagesArea.querySelectorAll('.message');
+            existingMessages.forEach(msg => msg.remove());
+
+            // Render all messages
+            messageQueue.forEach(msg => {
+                const messageEl = createMessageElement(msg);
+                messagesArea.appendChild(messageEl);
+            });
+        }
+
+        function createMessageElement(msg) {
+            const div = document.createElement('div');
+            div.className = `message ${msg.sender}`;
+            div.dataset.id = msg.id;
+
+            const avatar = msg.sender === 'user' ? '👤' : '🤖';
+            const time = new Date(msg.timestamp).toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            div.innerHTML = `
+                <div class="message-avatar">${avatar}</div>
+                <div class="message-content">
+                    <div class="message-bubble">${escapeHtml(msg.text)}</div>
+                    <div class="message-meta">
+                        <span>${time}</span>
+                        ${msg.edited ? '<span class="edited-badge">(edited)</span>' : ''}
+                    </div>
+                </div>
+            `;
+
+            return div;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML.replace(/\n/g, '<br>');
+        }
+
+        function scrollToBottom() {
+            setTimeout(() => {
+                messagesArea.scrollTop = messagesArea.scrollHeight;
+            }, 100);
+        }
+
+        // ==================== INITIALIZATION ====================
+
+        // Load messages from localStorage
+        renderMessages();
+        scrollToBottom();
+
+        // Focus input on load
+        messageInput.focus();
+    </script>
+</body>
+</html>

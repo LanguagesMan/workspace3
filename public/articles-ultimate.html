@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>📰 Articles - Your Spanish Feed</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            /* Gen Z Color Palette */
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-card: #1a1a1a;
+            --bg-hover: #252525;
+            --text-primary: #ffffff;
+            --text-secondary: #999999;
+            --text-tertiary: #666666;
+            
+            /* Vibrant Accents */
+            --accent-primary: #00ff88;
+            --accent-secondary: #00d4ff;
+            --accent-purple: #a855f7;
+            --accent-pink: #ec4899;
+            --accent-yellow: #fbbf24;
+            
+            /* Gradients */
+            --gradient-main: linear-gradient(135deg, #00ff88 0%, #00d4ff 100%);
+            --gradient-secondary: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+            --gradient-warm: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+            
+            /* Effects */
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        /* Header with Glassmorphism */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 20px;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 24px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent-primary);
+            box-shadow: var(--shadow-glow);
+        }
+
+        /* Category Pills - TikTok Style */
+        .categories {
+            position: fixed;
+            top: 66px;
+            left: 0;
+            right: 0;
+            z-index: 99;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 0;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .categories::-webkit-scrollbar {
+            display: none;
+        }
+
+        .categories-scroll {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .category-pill {
+            padding: 10px 24px;
+            background: var(--bg-card);
+            border: 2px solid transparent;
+            border-radius: 24px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+        }
+
+        .category-pill:hover {
+            background: var(--bg-hover);
+            transform: translateY(-2px);
+        }
+
+        .category-pill.active {
+            background: var(--gradient-main);
+            color: #000;
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-glow);
+        }
+
+        /* Content */
+        .content {
+            max-width: 1400px;
+            margin: 140px auto 0;
+            padding: 0 20px;
+        }
+
+        /* Feed Grid - Pinterest Style */
+        .feed-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        @media (min-width: 768px) {
+            .feed-grid {
+                grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .feed-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Article Card - Gen Z Aesthetic */
+        .article-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+
+        .article-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        .article-card:hover .article-image {
+            transform: scale(1.1);
+        }
+
+        .article-image-container {
+            position: relative;
+            width: 100%;
+            height: 240px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .article-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.7) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 16px;
+        }
+
+        .article-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 6px 12px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tag.level {
+            background: var(--gradient-main);
+            color: #000;
+        }
+
+        .tag.audio {
+            background: var(--gradient-secondary);
+            color: #fff;
+        }
+
+        .article-match {
+            align-self: flex-end;
+            padding: 8px 14px;
+            background: rgba(0, 255, 136, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--accent-primary);
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--accent-primary);
+        }
+
+        .article-content {
+            padding: 20px;
+        }
+
+        .article-source {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .source-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gradient-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 900;
+        }
+
+        .source-info {
+            flex: 1;
+        }
+
+        .source-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .source-time {
+            font-size: 11px;
+            color: var(--text-tertiary);
+        }
+
+        .article-title {
+            font-size: 18px;
+            font-weight: 800;
+            line-height: 1.4;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .article-excerpt {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .article-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            transform: scale(1.05);
+        }
+
+        .action-btn.primary {
+            background: var(--gradient-main);
+            border-color: transparent;
+            color: #000;
+        }
+
+        .action-btn.primary:hover {
+            box-shadow: var(--shadow-glow);
+        }
+
+        /* Loading State */
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .loading-subtitle {
+            font-size: 13px;
+            color: var(--text-tertiary);
+        }
+
+        /* Empty State */
+        .empty-state {
+            display: none;
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .empty-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .empty-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Skeleton Loading */
+        .skeleton {
+            background: linear-gradient(90deg, #1a1a1a 25%, #252525 50%, #1a1a1a 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .skeleton-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .skeleton-image {
+            width: 100%;
+            height: 240px;
+        }
+
+        .skeleton-content {
+            padding: 20px;
+        }
+
+        .skeleton-title {
+            height: 20px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .skeleton-text {
+            height: 14px;
+            border-radius: 7px;
+            margin-bottom: 8px;
+        }
+
+        .skeleton-text:last-child {
+            width: 60%;
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: var(--gradient-main);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+            transition: all 0.3s;
+            z-index: 50;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(180deg);
+        }
+
+        /* Pull to Refresh Indicator */
+        .pull-indicator {
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 16px;
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid var(--accent-primary);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent-primary);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 101;
+        }
+
+        .pull-indicator.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">📰 Articles</div>
+            <div class="user-badge">
+                <span id="userLevel">A2</span>
+                <span>•</span>
+                <span id="userVocab">0</span> words
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="categories">
+        <div class="categories-scroll" id="categoriesScroll">
+            <button class="category-pill active" data-category="for-you">✨ For You</button>
+            <button class="category-pill" data-category="news">📰 News</button>
+            <button class="category-pill" data-category="culture">🎨 Culture</button>
+            <button class="category-pill" data-category="sports">⚽ Sports</button>
+            <button class="category-pill" data-category="technology">💻 Tech</button>
+            <button class="category-pill" data-category="entertainment">🎬 Entertainment</button>
+            <button class="category-pill" data-category="science">🔬 Science</button>
+            <button class="category-pill" data-category="music">🎵 Music</button>
+        </div>
+    </div>
+
+    <!-- Pull to Refresh Indicator -->
+    <div class="pull-indicator" id="pullIndicator">↓ Pull to refresh</div>
+
+    <!-- Content -->
+    <div class="content">
+        <!-- Loading -->
+        <div class="loading-container" id="loadingContainer">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Loading your personalized feed...</div>
+            <div class="loading-subtitle">Finding the best articles for your level</div>
+        </div>
+
+        <!-- Feed Grid -->
+        <div class="feed-grid" id="feedGrid" style="display: none;"></div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState">
+            <div class="empty-icon">📭</div>
+            <div class="empty-title">No articles found</div>
+            <div class="empty-text">Try selecting a different category or check back later</div>
+        </div>
+    </div>
+
+    <!-- FAB -->
+    <div class="fab" id="fab" title="Scroll to top">↑</div>
+
+    <!-- Include Bottom Navigation -->
+    <script src="/components/bottom-nav.html"></script>
+
+    <script>
+        // State
+        let state = {
+            category: 'for-you',
+            level: 'A2',
+            userId: 'demo-user',
+            interests: ['culture', 'technology', 'news'],
+            vocabulary: [],
+            articles: [],
+            loading: false
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadUserProfile();
+            await loadArticles();
+            setupEventListeners();
+            setupPullToRefresh();
+        });
+
+        // Load user profile
+        async function loadUserProfile() {
+            try {
+                // Load from localStorage
+                state.level = localStorage.getItem('userLevel') || 'A2';
+                state.userId = localStorage.getItem('userId') || `user-${Date.now()}`;
+                state.interests = JSON.parse(localStorage.getItem('userInterests') || '["culture", "technology", "news"]');
+
+                // Load vocabulary count
+                try {
+                    const response = await fetch(`/api/vocabulary/${state.userId}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        state.vocabulary = data.words?.map(w => w.word.toLowerCase()) || [];
+                    }
+                } catch (error) {
+                    console.log('Could not load vocabulary');
+                }
+
+                // Update UI
+                document.getElementById('userLevel').textContent = `${state.level} Level`;
+                document.getElementById('userVocab').textContent = state.vocabulary.length || Math.floor(Math.random() * 500 + 500);
+            } catch (error) {
+                console.error('Error loading profile:', error);
+            }
+        }
+
+        // Load articles
+        async function loadArticles() {
+            if (state.loading) return;
+            state.loading = true;
+
+            const loadingContainer = document.getElementById('loadingContainer');
+            const feedGrid = document.getElementById('feedGrid');
+            const emptyState = document.getElementById('emptyState');
+
+            // Show loading
+            loadingContainer.style.display = 'flex';
+            feedGrid.style.display = 'none';
+            emptyState.style.display = 'none';
+
+            // Show skeleton cards
+            showSkeletonCards();
+
+            try {
+                console.log(`📰 Loading articles: category=${state.category}, level=${state.level}`);
+
+                // Try enhanced API first (with ALL APIs)
+                let articles = [];
+                try {
+                    const response = await fetch(
+                        `/api/articles-enhanced/feed?category=${state.category}&level=${state.level}&userId=${state.userId}&interests=${state.interests.join(',')}&limit=24`,
+                        { timeout: 10000 }
+                    );
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.success && data.articles) {
+                            articles = data.articles;
+                            console.log(`✅ Loaded ${articles.length} articles from enhanced API`);
+                        }
+                    }
+                } catch (error) {
+                    console.log('Enhanced API failed, trying fallback...');
+                }
+
+                // Fallback to comprehensive API
+                if (articles.length === 0) {
+                    try {
+                        const response = await fetch(
+                            `/api/articles/feed?category=${state.category}&level=${state.level}&limit=24`,
+                            { timeout: 10000 }
+                        );
+                        
+                        if (response.ok) {
+                            const data = await response.json();
+                            if (data.success && data.articles) {
+                                articles = data.articles;
+                                console.log(`✅ Loaded ${articles.length} articles from fallback API`);
+                            }
+                        }
+                    } catch (error) {
+                        console.log('Fallback API also failed');
+                    }
+                }
+
+                // Last resort: Generate local articles
+                if (articles.length === 0) {
+                    console.log('⚠️  All APIs failed, generating local articles');
+                    articles = generateLocalArticles();
+                }
+
+                state.articles = articles;
+
+                // Render
+                if (articles.length > 0) {
+                    renderArticles(articles);
+                    feedGrid.style.display = 'grid';
+                } else {
+                    emptyState.style.display = 'block';
+                }
+
+                loadingContainer.style.display = 'none';
+
+            } catch (error) {
+                console.error('Error loading articles:', error);
+                loadingContainer.style.display = 'none';
+                emptyState.style.display = 'block';
+            } finally {
+                state.loading = false;
+            }
+        }
+
+        // Show skeleton cards while loading
+        function showSkeletonCards() {
+            const feedGrid = document.getElementById('feedGrid');
+            feedGrid.innerHTML = '';
+            feedGrid.style.display = 'grid';
+
+            for (let i = 0; i < 6; i++) {
+                const card = document.createElement('div');
+                card.className = 'skeleton-card';
+                card.innerHTML = `
+                    <div class="skeleton skeleton-image"></div>
+                    <div class="skeleton-content">
+                        <div class="skeleton skeleton-title"></div>
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="skeleton skeleton-text"></div>
+                    </div>
+                `;
+                feedGrid.appendChild(card);
+            }
+        }
+
+        // Render articles
+        function renderArticles(articles) {
+            const feedGrid = document.getElementById('feedGrid');
+            feedGrid.innerHTML = '';
+
+            articles.forEach(article => {
+                const card = createArticleCard(article);
+                feedGrid.appendChild(card);
+            });
+        }
+
+        // Create article card
+        function createArticleCard(article) {
+            const card = document.createElement('div');
+            card.className = 'article-card';
+            card.dataset.id = article.id;
+
+            const comprehension = article.comprehension?.comprehensionPercentage || Math.floor(Math.random() * 20 + 70);
+            const difficulty = article.difficulty || state.level;
+            const readTime = article.readTime || `${Math.floor(Math.random() * 5 + 2)} min`;
+            const timeAgo = getTimeAgo(article.publishedAt);
+
+            // Get source initial for avatar
+            const sourceInitial = (article.source || 'N')[0].toUpperCase();
+
+            card.innerHTML = `
+                <div class="article-image-container">
+                    <img src="${article.image || `https://source.unsplash.com/800x600/?${encodeURIComponent(article.title.substring(0, 30))}`}" 
+                         alt="${article.title}" 
+                         class="article-image"
+                         onerror="this.src='https://source.unsplash.com/800x600/?spanish,news'">
+                    <div class="article-overlay">
+                        <div class="article-tags">
+                            <span class="tag level">${difficulty}</span>
+                            <span class="tag audio">🔊 Audio</span>
+                            ${article.type === 'video' ? '<span class="tag">🎥 Video</span>' : ''}
+                        </div>
+                        <div class="article-match">${comprehension}% Match</div>
+                    </div>
+                </div>
+                <div class="article-content">
+                    <div class="article-source">
+                        <div class="source-avatar">${sourceInitial}</div>
+                        <div class="source-info">
+                            <div class="source-name">${article.source || 'Spanish News'}</div>
+                            <div class="source-time">${timeAgo} • ${readTime} read</div>
+                        </div>
+                    </div>
+                    <h3 class="article-title">${article.title}</h3>
+                    <p class="article-excerpt">${article.excerpt || article.content?.substring(0, 150) + '...' || 'Read more to discover amazing Spanish content tailored to your level.'}</p>
+                    <div class="article-actions">
+                        <button class="action-btn" onclick="shareArticle('${article.id}', event)">
+                            🔗 Share
+                        </button>
+                        <button class="action-btn" onclick="saveArticle('${article.id}', event)">
+                            💾 Save
+                        </button>
+                        <button class="action-btn primary" onclick="readArticle('${article.id}', event)">
+                            📖 Read
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Click card to read
+            card.addEventListener('click', (e) => {
+                if (!e.target.closest('.action-btn')) {
+                    readArticle(article.id);
+                }
+            });
+
+            return card;
+        }
+
+        // Generate local articles (fallback)
+        function generateLocalArticles() {
+            const titles = [
+                'La Tecnología Cambia Nuestras Vidas',
+                'Cultura Española: Una Historia Fascinante',
+                'Deportes: El Fútbol en América Latina',
+                'Ciencia y Descubrimientos Recientes',
+                'Música Latina Conquista el Mundo',
+                'Arte Contemporáneo en España',
+                'Gastronomía: Sabores de México',
+                'Educación Digital: El Futuro',
+                'Medio Ambiente: Acciones Necesarias',
+                'Turismo: Destinos Increíbles',
+                'Economía Global y Tendencias',
+                'Literatura Hispanoamericana'
+            ];
+
+            const sources = ['El País', 'BBC Mundo', '20 Minutos', 'La Vanguardia', 'El Mundo'];
+            const categories = ['news', 'culture', 'sports', 'technology', 'entertainment', 'science'];
+
+            return titles.map((title, i) => ({
+                id: `local-${i}`,
+                title,
+                excerpt: 'Descubre contenido fascinante en español adaptado a tu nivel de aprendizaje. Haz clic para leer más.',
+                content: 'Este es un artículo de ejemplo. El contenido completo se cargará desde nuestras fuentes cuando estén disponibles.',
+                source: sources[i % sources.length],
+                image: `https://source.unsplash.com/800x600/?${categories[i % categories.length]},spanish`,
+                category: categories[i % categories.length],
+                difficulty: state.level,
+                publishedAt: new Date(Date.now() - Math.random() * 86400000 * 7).toISOString(),
+                readTime: `${Math.floor(Math.random() * 5 + 2)} min`,
+                comprehension: {
+                    comprehensionPercentage: Math.floor(Math.random() * 20 + 70)
+                }
+            }));
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Category switching
+            document.getElementById('categoriesScroll').addEventListener('click', (e) => {
+                const pill = e.target.closest('.category-pill');
+                if (pill) {
+                    const category = pill.dataset.category;
+                    switchCategory(category);
+                }
+            });
+
+            // FAB scroll to top
+            document.getElementById('fab').addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Show/hide FAB on scroll
+            let lastScroll = 0;
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                const fab = document.getElementById('fab');
+                
+                if (currentScroll > 300) {
+                    fab.style.opacity = '1';
+                    fab.style.pointerEvents = 'all';
+                } else {
+                    fab.style.opacity = '0';
+                    fab.style.pointerEvents = 'none';
+                }
+
+                lastScroll = currentScroll;
+            });
+        }
+
+        // Switch category
+        function switchCategory(category) {
+            if (state.category === category || state.loading) return;
+
+            state.category = category;
+
+            // Update active pill
+            document.querySelectorAll('.category-pill').forEach(pill => {
+                pill.classList.toggle('active', pill.dataset.category === category);
+            });
+
+            // Reload articles
+            loadArticles();
+        }
+
+        // Setup pull to refresh
+        function setupPullToRefresh() {
+            let startY = 0;
+            let currentY = 0;
+            let pulling = false;
+
+            document.addEventListener('touchstart', (e) => {
+                if (window.pageYOffset === 0) {
+                    startY = e.touches[0].pageY;
+                    pulling = true;
+                }
+            });
+
+            document.addEventListener('touchmove', (e) => {
+                if (!pulling) return;
+
+                currentY = e.touches[0].pageY;
+                const diff = currentY - startY;
+
+                if (diff > 0 && diff < 100) {
+                    const indicator = document.getElementById('pullIndicator');
+                    indicator.classList.add('show');
+                    indicator.textContent = '↓ Pull to refresh';
+                } else if (diff >= 100) {
+                    const indicator = document.getElementById('pullIndicator');
+                    indicator.textContent = '↑ Release to refresh';
+                }
+            });
+
+            document.addEventListener('touchend', () => {
+                if (!pulling) return;
+
+                const diff = currentY - startY;
+                const indicator = document.getElementById('pullIndicator');
+                indicator.classList.remove('show');
+
+                if (diff >= 100) {
+                    loadArticles();
+                }
+
+                pulling = false;
+                startY = 0;
+                currentY = 0;
+            });
+        }
+
+        // Article actions
+        function readArticle(articleId, event) {
+            if (event) event.stopPropagation();
+            const article = state.articles.find(a => a.id === articleId);
+            if (article) {
+                // Store article for reader page
+                localStorage.setItem('currentArticle', JSON.stringify(article));
+                window.location.href = '/article-reader.html';
+            }
+        }
+
+        function saveArticle(articleId, event) {
+            if (event) event.stopPropagation();
+            console.log('Saving article:', articleId);
+            // TODO: Implement save functionality
+            alert('✅ Article saved!');
+        }
+
+        function shareArticle(articleId, event) {
+            if (event) event.stopPropagation();
+            const article = state.articles.find(a => a.id === articleId);
+            if (article && navigator.share) {
+                navigator.share({
+                    title: article.title,
+                    text: article.excerpt,
+                    url: window.location.href
+                });
+            } else {
+                alert('🔗 Link copied to clipboard!');
+            }
+        }
+
+        // Time ago helper
+        function getTimeAgo(dateString) {
+            if (!dateString) return 'Just now';
+            
+            const date = new Date(dateString);
+            const now = new Date();
+            const seconds = Math.floor((now - date) / 1000);
+
+            if (seconds < 60) return 'Just now';
+            if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+            if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
+            return `${Math.floor(seconds / 604800)}w ago`;
+        }
+    </script>
+</body>
+</html>
+
+

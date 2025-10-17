@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🎮 Games Hub - Langflix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000000;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 100;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .game-card {
+            background: #121212; border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 32px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .game-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .game-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+
+        .game-description {
+            font-size: 16px;
+            color: #B3B3B3;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 16px;
+            border-top: 1px solid #f0f0f0;
+            font-size: 14px;
+            color: #999;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge {
+            background: #000000;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .badge.new {
+            background: #10b981;
+        }
+
+        .badge.popular {
+            background: #f59e0b;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-btn" onclick="goBack()">← Back to Learn</button>
+
+    <div class="container">
+        <div class="header">
+            <h1>🎮 Games Hub</h1>
+            <p class="subtitle">Practice Spanish through fun, interactive games</p>
+        </div>
+
+        <div class="games-grid">
+            <div class="game-card" onclick="playGame('word-match')">
+                <div class="game-icon">🎯</div>
+                <div class="game-title">Word Match</div>
+                <div class="game-description">
+                    Match Spanish words with their English translations. Beat the clock to earn bonus points!
+                </div>
+                <div class="game-stats">
+                    <div class="stat-item">
+                        <span>⏱️</span>
+                        <span>2-3 min</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>🎓</span>
+                        <span>Beginner</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-card" onclick="playGame('sentence-builder')">
+                <div class="game-icon">🔤</div>
+                <div class="game-title">Sentence Builder</div>
+                <div class="game-description">
+                    Arrange words to form correct Spanish sentences. Perfect for learning grammar naturally!
+                </div>
+                <div class="game-stats">
+                    <div class="stat-item">
+                        <span>⏱️</span>
+                        <span>5-7 min</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>🎓</span>
+                        <span>Intermediate</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-card" onclick="playGame('flashcards')">
+                <div class="game-icon">🃏</div>
+                <div class="game-title">Flashcards</div>
+                <div class="game-description">
+                    Review your saved words with spaced repetition. The most effective way to memorize vocabulary!
+                </div>
+                <div class="game-stats">
+                    <div class="stat-item">
+                        <span>⏱️</span>
+                        <span>5-10 min</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="badge">SRS</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-card" onclick="playGame('quiz')">
+                <div class="game-icon">📝</div>
+                <div class="game-title">Quick Quiz</div>
+                <div class="game-description">
+                    Test your knowledge with adaptive quizzes. Questions adjust to your level in real-time!
+                </div>
+                <div class="game-stats">
+                    <div class="stat-item">
+                        <span>⏱️</span>
+                        <span>3-5 min</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="badge popular">Popular</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-card" onclick="playGame('listening')">
+                <div class="game-icon">🎧</div>
+                <div class="game-title">Listening Challenge</div>
+                <div class="game-description">
+                    Listen to Spanish audio and type what you hear. Train your ear for native pronunciation!
+                </div>
+                <div class="game-stats">
+                    <div class="stat-item">
+                        <span>⏱️</span>
+                        <span>5-8 min</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>🎓</span>
+                        <span>Advanced</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-card" onclick="playGame('speed-translate')">
+                <div class="game-icon">⚡</div>
+                <div class="game-title">Speed Translate</div>
+                <div class="game-description">
+                    Translate as many words as you can in 60 seconds. Challenge your friends for high scores!
+                </div>
+                <div class="game-stats">
+                    <div class="stat-item">
+                        <span>⏱️</span>
+                        <span>1 min</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="badge new">New</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; color: white; opacity: 0.8; padding: 40px 0;">
+            <p style="font-size: 14px;">Your progress is saved automatically ✓</p>
+        </div>
+    </div>
+
+    <script>
+        function playGame(gameType) {
+            const gameUrls = {
+                'word-match': '/word-match-game.html',
+                'sentence-builder': '/sentence-builder-game.html',
+                'flashcards': '/srs-review.html',
+                'quiz': '/components/vocab-assessment.html',
+                'listening': '/listening-challenge.html',
+                'speed-translate': '/word-match-game.html' // Can be customized later
+            };
+
+            const url = gameUrls[gameType];
+            if (url) {
+                window.location.href = url;
+            } else {
+                alert('Coming soon! 🚀');
+            }
+        }
+
+        function goBack() {
+            window.location.href = '/tiktok-video-feed.html';
+        }
+
+        // Track page view
+        if (localStorage.getItem('gamesHubVisits')) {
+            const visits = parseInt(localStorage.getItem('gamesHubVisits')) + 1;
+            localStorage.setItem('gamesHubVisits', visits);
+        } else {
+            localStorage.setItem('gamesHubVisits', '1');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Discover - Spanish Articles Feed | Langflix</title>
+    
+    <meta name="description" content="Discover Spanish articles with line-by-line translations and clickable words. Perfect for language learners!">
+    <meta name="theme-color" content="#0a0a0a">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ========================================
+           MODERN ARTICLE FEED DESIGN
+           Inspired by: Medium, Flipboard, Apple News
+           ========================================= */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-card: #1a1a1a;
+            --bg-hover: #222222;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-tertiary: #666666;
+            --accent-primary: #10a37f;
+            --accent-blue: #1a7ff5;
+            --accent-purple: #8b5cf6;
+            --accent-orange: #ff6b35;
+            --border: rgba(255, 255, 255, 0.1);
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        /* ========================================
+           HEADER
+           ========================================= */
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            font-size: 24px;
+        }
+
+        .level-badge {
+            padding: 6px 12px;
+            background: var(--accent-primary);
+            color: #000;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* ========================================
+           CATEGORY TABS
+           ========================================= */
+
+        .tabs {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 99;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 12px 20px;
+            display: flex;
+            gap: 12px;
+            scrollbar-width: none;
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab {
+            padding: 8px 20px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .tab:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .tab.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: #000;
+        }
+
+        /* ========================================
+           MAIN CONTENT
+           ========================================= */
+
+        .main {
+            padding: 140px 20px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feed-header {
+            margin-bottom: 24px;
+        }
+
+        .feed-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .feed-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        /* ========================================
+           ARTICLE CARDS
+           ========================================= */
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .article-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .article-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent-primary);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+        }
+
+        .article-content {
+            padding: 20px;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .article-category {
+            padding: 4px 12px;
+            background: var(--bg-hover);
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--accent-primary);
+        }
+
+        .article-level {
+            padding: 4px 12px;
+            background: var(--accent-blue);
+            color: #fff;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .article-read-time {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .article-title {
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .article-excerpt {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .article-source {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        /* ========================================
+           ARTICLE READER MODAL
+           ========================================= */
+
+        .reader-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            overflow-y: auto;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .reader-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .reader-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px 20px 40px;
+            animation: slideUpFade 0.4s ease;
+        }
+
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .reader-header {
+            margin-bottom: 32px;
+        }
+
+        .reader-close {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .reader-close:hover {
+            background: var(--bg-hover);
+            transform: scale(1.1);
+        }
+
+        .reader-tools {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .tool-btn {
+            padding: 10px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tool-btn:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-primary);
+        }
+
+        .tool-btn.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: #000;
+        }
+
+        .reader-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 32px;
+        }
+
+        .reader-title {
+            font-size: 36px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .reader-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        /* ========================================
+           TRANSLATION DISPLAY
+           Line-by-line Spanish & English
+           ========================================= */
+
+        .translation-container {
+            margin-bottom: 32px;
+        }
+
+        .translation-line {
+            margin-bottom: 24px;
+            padding: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .spanish-text {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .english-text {
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .english-text.hidden {
+            display: none;
+        }
+
+        /* ========================================
+           CLICKABLE WORDS
+           ========================================= */
+
+        .clickable-word {
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            position: relative;
+            display: inline-block;
+        }
+
+        .clickable-word:hover {
+            background: rgba(16, 163, 127, 0.2);
+            color: var(--accent-primary);
+        }
+
+        .clickable-word.clicked {
+            background: var(--accent-primary);
+            color: #000;
+            font-weight: 600;
+        }
+
+        /* Word translation tooltip */
+        .word-tooltip {
+            position: fixed;
+            background: var(--bg-card);
+            border: 2px solid var(--accent-primary);
+            border-radius: 12px;
+            padding: 12px 16px;
+            box-shadow: var(--shadow);
+            z-index: 2000;
+            animation: popIn 0.2s ease;
+            max-width: 250px;
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .tooltip-word {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 4px;
+        }
+
+        .tooltip-translation {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        /* ========================================
+           LOADING STATES
+           ========================================= */
+
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 20px;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--bg-hover);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .skeleton-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .skeleton-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(90deg, var(--bg-hover) 0%, var(--bg-card) 50%, var(--bg-hover) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .skeleton-content {
+            padding: 20px;
+        }
+
+        .skeleton-text {
+            height: 12px;
+            background: var(--bg-hover);
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        /* ========================================
+           BOTTOM NAVIGATION
+           ========================================= */
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-btn.active {
+            color: var(--accent-primary);
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* ========================================
+           TOAST NOTIFICATIONS
+           ========================================= */
+
+        .toast {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-card);
+            border: 1px solid var(--accent-primary);
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 10000;
+            box-shadow: var(--shadow);
+            animation: slideUp 0.3s ease;
+            pointer-events: none;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, 20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        /* ========================================
+           RESPONSIVE
+           ========================================= */
+
+        @media (max-width: 768px) {
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .reader-title {
+                font-size: 28px;
+            }
+
+            .reader-image {
+                height: 250px;
+            }
+
+            .spanish-text {
+                font-size: 16px;
+            }
+
+            .english-text {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 0 12px;
+            }
+
+            .tabs {
+                padding: 12px 12px;
+                gap: 8px;
+            }
+
+            .main {
+                padding: 140px 12px 20px;
+            }
+
+            .feed-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">
+            <span class="logo-icon">📰</span>
+            <span>Discover</span>
+        </div>
+        <div class="level-badge" id="userLevel">B1</div>
+    </header>
+
+    <!-- CATEGORY TABS -->
+    <div class="tabs" id="categoryTabs">
+        <button class="tab active" data-category="all">🌟 All</button>
+        <button class="tab" data-category="news">📰 News</button>
+        <button class="tab" data-category="sports">⚽ Sports</button>
+        <button class="tab" data-category="technology">💻 Tech</button>
+        <button class="tab" data-category="culture">🎨 Culture</button>
+        <button class="tab" data-category="entertainment">🎬 Entertainment</button>
+        <button class="tab" data-category="travel">✈️ Travel</button>
+        <button class="tab" data-category="food">🍽️ Food</button>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+        <div class="feed-header">
+            <h1 class="feed-title">Spanish Articles Feed</h1>
+            <p class="feed-subtitle">Read, learn, and master Spanish with real articles</p>
+        </div>
+
+        <div class="articles-grid" id="articlesGrid">
+            <!-- Loading skeletons -->
+            <div class="skeleton-card">
+                <div class="skeleton-image"></div>
+                <div class="skeleton-content">
+                    <div class="skeleton-text" style="width: 60%;"></div>
+                    <div class="skeleton-text" style="width: 100%;"></div>
+                    <div class="skeleton-text" style="width: 80%;"></div>
+                </div>
+            </div>
+            <div class="skeleton-card">
+                <div class="skeleton-image"></div>
+                <div class="skeleton-content">
+                    <div class="skeleton-text" style="width: 70%;"></div>
+                    <div class="skeleton-text" style="width: 100%;"></div>
+                    <div class="skeleton-text" style="width: 90%;"></div>
+                </div>
+            </div>
+            <div class="skeleton-card">
+                <div class="skeleton-image"></div>
+                <div class="skeleton-content">
+                    <div class="skeleton-text" style="width: 50%;"></div>
+                    <div class="skeleton-text" style="width: 100%;"></div>
+                    <div class="skeleton-text" style="width: 85%;"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ARTICLE READER MODAL -->
+    <div class="reader-modal" id="readerModal">
+        <div class="reader-close" onclick="closeReader()">×</div>
+        <div class="reader-content" id="readerContent">
+            <!-- Article content will be inserted here -->
+        </div>
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
+    <nav class="bottom-nav">
+        <a href="/tiktok-video-feed.html" class="nav-btn">
+            <span>🎬</span>
+            <span class="nav-label">Videos</span>
+        </a>
+        <a href="/discover-feed.html" class="nav-btn active">
+            <span>📰</span>
+            <span class="nav-label">Discover</span>
+        </a>
+        <a href="/premium.html" class="nav-btn">
+            <span>👑</span>
+            <span class="nav-label">Premium</span>
+        </a>
+        <a href="/profile.html" class="nav-btn">
+            <span>👤</span>
+            <span class="nav-label">Profile</span>
+        </a>
+    </nav>
+
+    <script>
+        // ========================================
+        //  STATE MANAGEMENT
+        // ========================================
+
+        let articles = [];
+        let currentArticle = null;
+        let currentCategory = 'all';
+        let translationsVisible = true;
+        let userId = 'guest';
+
+        // ========================================
+        //  INITIALIZATION
+        // ========================================
+
+        async function init() {
+            await loadArticles();
+            setupEventListeners();
+            console.log('✅ Discover feed initialized');
+        }
+
+        // ========================================
+        //  LOAD ARTICLES FROM API
+        // ========================================
+
+        async function loadArticles(category = 'all') {
+            try {
+                console.log(`📰 Loading articles for category: ${category}`);
+
+                const response = await fetch(`/api/articles/feed?userId=${userId}&category=${category}&limit=20`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (data.success && data.articles) {
+                    articles = data.articles;
+                    renderArticles();
+                    console.log(`✅ Loaded ${articles.length} articles`);
+                } else {
+                    throw new Error('Invalid response format');
+                }
+
+            } catch (error) {
+                console.error('❌ Error loading articles:', error);
+                showToast('Failed to load articles. Showing fallback content.');
+                
+                // Still render whatever articles we have (fallback)
+                if (articles.length > 0) {
+                    renderArticles();
+                }
+            }
+        }
+
+        // ========================================
+        //  RENDER ARTICLES GRID
+        // ========================================
+
+        function renderArticles() {
+            const grid = document.getElementById('articlesGrid');
+            grid.innerHTML = '';
+
+            if (articles.length === 0) {
+                grid.innerHTML = `
+                    <div class="loading-container">
+                        <p style="color: var(--text-secondary);">No articles found. Try a different category!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            articles.forEach((article, index) => {
+                const card = createArticleCard(article, index);
+                grid.appendChild(card);
+            });
+        }
+
+        // ========================================
+        //  CREATE ARTICLE CARD
+        // ========================================
+
+        function createArticleCard(article, index) {
+            const card = document.createElement('div');
+            card.className = 'article-card';
+            card.onclick = () => openArticle(article);
+            
+            const difficultyColor = getDifficultyColor(article.difficulty);
+            
+            card.innerHTML = `
+                <img class="article-image" 
+                     src="${article.image}" 
+                     alt="${article.title}"
+                     onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&auto=format&fit=crop'">
+                
+                <div class="article-content">
+                <div class="article-meta">
+                        <span class="article-category">${article.category}</span>
+                        <span class="article-level" style="background: ${difficultyColor};">${article.difficulty}</span>
+                        <span class="article-read-time">📖 ${article.readTime}</span>
+                    </div>
+                    
+                    <h3 class="article-title">${article.title}</h3>
+                    
+                    <p class="article-excerpt">${article.excerpt || article.content}</p>
+                    
+                    <div class="article-source">
+                        <span>📌 ${article.source}</span>
+                        <span>•</span>
+                        <span>${formatDate(article.publishedAt)}</span>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // ========================================
+        //  OPEN ARTICLE IN READER
+        // ========================================
+
+        function openArticle(article) {
+            currentArticle = article;
+            
+            const modal = document.getElementById('readerModal');
+            const content = document.getElementById('readerContent');
+
+            // Split content into sentences for line-by-line display
+            const spanishSentences = splitIntoSentences(article.content);
+            const englishSentences = article.contentEnglish 
+                ? splitIntoSentences(article.contentEnglish) 
+                : spanishSentences; // Fallback
+
+            // Generate translation lines
+            const translationLines = spanishSentences.map((spanish, index) => {
+                const english = englishSentences[index] || '';
+                return createTranslationLine(spanish, english, index);
+            }).join('');
+
+            content.innerHTML = `
+                <div class="reader-header">
+                    <div class="reader-tools">
+                        <button class="tool-btn active" onclick="toggleTranslations()" id="toggleBtn">
+                            <span>🔄</span>
+                            <span>Toggle Translations</span>
+                        </button>
+                        <button class="tool-btn" onclick="playAudio()">
+                            <span>🔊</span>
+                            <span>Listen</span>
+                        </button>
+                        <button class="tool-btn" onclick="saveArticle()">
+                            <span>💾</span>
+                            <span>Save</span>
+                        </button>
+                    </div>
+
+                    <img class="reader-image" src="${article.image}" alt="${article.title}">
+
+                    <h1 class="reader-title">${article.title}</h1>
+                    
+                    <div class="reader-meta">
+                        <span class="article-category">${article.category}</span>
+                        <span class="article-level" style="background: ${getDifficultyColor(article.difficulty)}; color: #fff; padding: 4px 12px; border-radius: 12px;">${article.difficulty}</span>
+                        <span>📖 ${article.readTime}</span>
+                        <span>•</span>
+                        <span>By ${article.author}</span>
+                        <span>•</span>
+                        <span>${formatDate(article.publishedAt)}</span>
+                    </div>
+                </div>
+
+                <div class="translation-container">
+                    ${translationLines}
+                </div>
+            `;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Track reading
+            trackReading(article.id);
+        }
+
+        // ========================================
+        //  CREATE TRANSLATION LINE
+        //  (Spanish sentence + English translation)
+        // ========================================
+
+        function createTranslationLine(spanish, english, index) {
+            // Make each Spanish word clickable
+            const clickableSpanish = makeWordsClickable(spanish);
+
+            return `
+                <div class="translation-line">
+                    <div class="spanish-text">${clickableSpanish}</div>
+                    <div class="english-text ${translationsVisible ? '' : 'hidden'}" id="english-${index}">
+                        ${english}
+                    </div>
+                </div>
+            `;
+        }
+
+        // ========================================
+        //  MAKE WORDS CLICKABLE
+        // ========================================
+
+        function makeWordsClickable(text) {
+            // Split into words while preserving punctuation
+            const words = text.split(/(\s+|[.,;:!?¿¡()"""''-])/);
+            
+            return words.map(word => {
+                // Check if it's a Spanish word (has letters)
+                if (/[a-záéíóúñü]{2,}/i.test(word)) {
+                    return `<span class="clickable-word" onclick="translateWord(event, '${escapeHtml(word)}')">${word}</span>`;
+                }
+                return word;
+            }).join('');
+        }
+
+        // ========================================
+        //  TRANSLATE WORD
+        // ========================================
+
+        async function translateWord(event, word) {
+            event.stopPropagation();
+            
+            const element = event.target;
+            element.classList.add('clicked');
+
+            // Remove existing tooltip
+            const existingTooltip = document.querySelector('.word-tooltip');
+            if (existingTooltip) {
+                existingTooltip.remove();
+            }
+
+            try {
+                const response = await fetch('/api/articles/translate-word', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ word })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showWordTooltip(element, word, data.translation);
+                }
+
+            } catch (error) {
+                console.error('❌ Translation error:', error);
+                showWordTooltip(element, word, '(translation unavailable)');
+            }
+
+            // Remove clicked state after 2 seconds
+            setTimeout(() => {
+                element.classList.remove('clicked');
+            }, 2000);
+        }
+
+        // ========================================
+        //  SHOW WORD TOOLTIP
+        // ========================================
+
+        function showWordTooltip(element, word, translation) {
+            const tooltip = document.createElement('div');
+            tooltip.className = 'word-tooltip';
+            tooltip.innerHTML = `
+                <div class="tooltip-word">${word}</div>
+                <div class="tooltip-translation">${translation}</div>
+            `;
+
+            document.body.appendChild(tooltip);
+
+            // Position tooltip near the word
+            const rect = element.getBoundingClientRect();
+            const tooltipRect = tooltip.getBoundingClientRect();
+            
+            let top = rect.bottom + window.scrollY + 10;
+            let left = rect.left + window.scrollX;
+
+            // Adjust if tooltip goes off screen
+            if (left + tooltipRect.width > window.innerWidth) {
+                left = window.innerWidth - tooltipRect.width - 20;
+            }
+
+            tooltip.style.top = `${top}px`;
+            tooltip.style.left = `${left}px`;
+
+            // Remove tooltip after 3 seconds or on click
+            setTimeout(() => tooltip.remove(), 3000);
+            tooltip.onclick = () => tooltip.remove();
+        }
+
+        // ========================================
+        //  TOGGLE TRANSLATIONS
+        // ========================================
+
+        function toggleTranslations() {
+            translationsVisible = !translationsVisible;
+            
+            const englishTexts = document.querySelectorAll('.english-text');
+            englishTexts.forEach(text => {
+                text.classList.toggle('hidden');
+            });
+
+            const btn = document.getElementById('toggleBtn');
+            btn.classList.toggle('active');
+
+            showToast(translationsVisible ? '✅ Translations visible' : '❌ Translations hidden');
+        }
+
+        // ========================================
+        //  CLOSE READER
+        // ========================================
+
+        function closeReader() {
+            const modal = document.getElementById('readerModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            currentArticle = null;
+        }
+
+        // ========================================
+        //  CATEGORY TABS
+        // ========================================
+
+        function setupEventListeners() {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Update active state
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    // Load new category
+                    const category = tab.dataset.category;
+                    currentCategory = category;
+                    loadArticles(category);
+                });
+            });
+
+            // Close modal on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeReader();
+                }
+            });
+        }
+
+        // ========================================
+        //  AUDIO PLAYBACK
+        // ========================================
+
+        function playAudio() {
+            if (!currentArticle) return;
+            
+            showToast('🔊 Audio playback coming soon!');
+            // TODO: Implement TTS audio playback
+        }
+
+        // ========================================
+        //  SAVE ARTICLE
+        // ========================================
+
+        function saveArticle() {
+            if (!currentArticle) return;
+            
+            showToast('💾 Article saved!');
+            // TODO: Save to user's saved articles
+        }
+
+        // ========================================
+        //  TRACK READING
+        // ========================================
+
+        function trackReading(articleId) {
+            const startTime = Date.now();
+
+            // Track when user closes the article
+            const modal = document.getElementById('readerModal');
+            const observer = new MutationObserver((mutations) => {
+                if (!modal.classList.contains('active')) {
+                    const timeSpent = Math.floor((Date.now() - startTime) / 1000);
+                    
+                    fetch('/api/articles/track-reading', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            userId,
+                            articleId,
+                            timeSpent,
+                            wordsClicked: 0, // TODO: Track
+                            percentageRead: 100 // TODO: Calculate
+                        })
+                    }).catch(err => console.error('Tracking error:', err));
+
+                    observer.disconnect();
+                }
+            });
+
+            observer.observe(modal, { attributes: true, attributeFilter: ['class'] });
+        }
+
+        // ========================================
+        //  UTILITY FUNCTIONS
+        // ========================================
+
+        function splitIntoSentences(text) {
+            if (!text) return [];
+            
+            // Split by sentence-ending punctuation
+            const sentences = text.match(/[^.!?¿¡]+[.!?¿¡]+/g) || [text];
+            return sentences.map(s => s.trim()).filter(s => s.length > 0);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function getDifficultyColor(level) {
+            const colors = {
+                'A1': '#10a37f',
+                'A2': '#1a7ff5',
+                'B1': '#8b5cf6',
+                'B2': '#ff6b35',
+                'C1': '#f59e0b',
+                'C2': '#ef4444'
+            };
+            return colors[level] || colors['B1'];
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffDays = Math.floor(diffHours / 24);
+
+            if (diffHours < 1) return 'Just now';
+            if (diffHours < 24) return `${diffHours}h ago`;
+            if (diffDays < 7) return `${diffDays}d ago`;
+            
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideUp 0.3s ease reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        // ========================================
+        //  START THE APP
+        // ========================================
+
+        init();
+    </script>
+</body>
+</html>

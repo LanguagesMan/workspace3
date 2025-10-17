@@ -1,0 +1,17 @@
+{
+  "userId": "test_rewatch_1760684782782",
+  "level": "A2",
+  "watchedVideos": [
+    "langfeed_chalk_animation_style_202510142207_j31ta_mp4"
+  ],
+  "interactions": [],
+  "interests": {},
+  "seenThemes": {},
+  "knownWords": [],
+  "behaviorPatterns": {
+    "avgCompletionRate": 0.76,
+    "avgWatchTime": 20,
+    "skipRate": 0.2,
+    "rewatchRate": 0.05
+  }
+}

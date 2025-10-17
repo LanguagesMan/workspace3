@@ -1,0 +1,23 @@
+{
+  "userId": "test_rewatch_1760684970145",
+  "level": "B1",
+  "watchedVideos": [
+    "reels__originals_slapstick_comedy_es_202509122344_bikhw_mp4"
+  ],
+  "interactions": [
+    {
+      "videoId": "reels__originals_slapstick_comedy_es_202509122344_bikhw_mp4",
+      "type": "rewatch",
+      "timestamp": "2025-10-17T07:09:30.149Z"
+    }
+  ],
+  "interests": {},
+  "seenThemes": {},
+  "knownWords": [],
+  "behaviorPatterns": {
+    "avgCompletionRate": 0.76,
+    "avgWatchTime": 20,
+    "skipRate": 0.2,
+    "rewatchRate": 0.05
+  }
+}

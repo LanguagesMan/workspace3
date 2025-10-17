@@ -1,0 +1,122 @@
+✅ Accessibility test PASSED
+✅ Interactivity test PASSED
+🎤 Pronunciation Recording Tests - HEADLESS ONLY - NEVER OPEN BROWSER!
+🔥 SESSION 5 FEED VALIDATION - EXTENDED WAIT TIMES FOR DYNAMIC CONTENT
+🔥 SESSION 6 SPANISH SYSTEMS - Revolutionary frequency + gossip learning!
+🔍 Testing Spanish content generation...
+✅ Valid Spanish content: cultural_immersion - "Cultura: empanada - ¡No me digas!"
+✅ Valid Spanish content: cultural_immersion - "Cultura: flamenco - ¡Increíble!"
+✅ Valid Spanish content: phrase_practice - "Frase útil: "¿Qué tal?""
+✅ Valid Spanish content: vocabulary_drill - "Palabra del día: "mejorar""
+✅ Valid Spanish content: vocabulary_drill - "Palabra del día: "específicamente""
+✅ Spanish content validation PASSED
+📊 Generated 5 valid Spanish recommendations
+🎯 Average viral potential: 100%
+🏆 Average feed priority: 89
+📰 Testing Articles Section - P0 Vision.md Requirement
+
+
+============================================================
+🎯 REAL-TIME TRANSCRIPTION TEST SUITE
+============================================================
+
+🌐 Unified Feed Integration Tests - COMPREHENSIVE SYSTEM VALIDATION - HEADLESS ONLY!
+✅ Viral potential test PASSED - Avg: 100%
+
+Running 1418 tests using 4 workers
+
+🔍 Testing clickable word translations feature...
+
+✅ Page loaded
+
+📚 Comprehensibility Check (90/10 Theory):
+   Comprehensible: ❌
+   Optimal: ⚠️
+   Known: 75.0%
+   Unknown: 25.0%
+   ⚠️ Too difficult - needs simplification
+
+🎯 Level Detection Result:
+   Level: C1 (Advanced)
+   Confidence: 8%
+   Total words learned: 6
+   Progress in level: 100%
+   Next level: C2
+   Words to next level: 1
+  ✓     1 [chromium] › tests/ai-features.spec.js:69:5 › 🤖 AI Features - Content Adaptation & Level Detection › should validate 90/10 comprehensibility theory (418ms)
+🤖 Content Adaptation Result:
+   Original length: 75 chars
+   Adapted length: 159 chars
+   Type: simplified
+   Known words: 30.0%
+   Unknown words: 70.0%
+   Complexity: 100/100
+   Recommended level: C2
+
+🎓 Beginner Level Adaptation:
+   Complexity score: 100/100
+   Should be LOW complexity for A1
+  ✘     4 [chromium] › tests/ai-features.spec.js:119:5 › 🤖 AI Features - Content Adaptation & Level Detection › should handle beginner level content adaptation (113ms)
+  ✓     3 [chromium] › tests/ai-features.spec.js:37:5 › 🤖 AI Features - Content Adaptation & Level Detection › should detect user Spanish level accurately (316ms)
+  ✓     2 [chromium] › tests/ai-features.spec.js:10:5 › 🤖 AI Features - Content Adaptation & Level Detection › should adapt Spanish content to user level (310ms)
+
+💡 Learning Recommendations:
+   1. [high] 📈 Increase daily learning: Aim for 10-15 new words per day
+   2. [high] 🔄 Improve retention: Review words more frequently with spaced repetition
+   3. [medium] ⏰ Build a streak: Try to learn every day for at least 7 days
+   4. [low] 🎯 Focus on: Advanced structures, cultural references, professional vocabulary
+  ✓     6 [chromium] › tests/ai-features.spec.js:159:5 › 🤖 AI Features - Content Adaptation & Level Detection › should provide learning recommendations based on patterns (46ms)
+
+📖 New Vocabulary Discovery:
+   Total new words: 5
+   Words to learn: gato, negro, duerme, silla, roja
+  ✓     7 [chromium] › tests/ai-features.spec.js:192:5 › 🤖 AI Features - Content Adaptation & Level Detection › should calculate new vocabulary from content (25ms)
+
+📝 Personalized Article Generation:
+   Title: Spanish Football - Personalized for B1
+   Level: B1
+   Structure: Multiple paragraphs. All common tenses. 150-250 words.
+   Vocabulary: Top 3000 most common words
+   Interests: sports, culture, news
+  ✓     5 [chromium] › tests/ai-features.spec.js:93:5 › 🤖 AI Features - Content Adaptation & Level Detection › should generate personalized article for user level (247ms)
+  ✘    10 [chromium] › tests/ai-story.spec.js:9:5 › AI Story Arc Generator - Golden Flows › GF-1: Server health check passes (45ms)
+
+🖱️ Clicking Articles tab...
+🤖 Testing AI punctuation rules...
+📹 Testing AI-punctuated transcriptions with dual-language display...
+
+🎓 Advanced Level Adaptation:
+   Complexity score: 100/100
+   Should be HIGH complexity
+  ✓    11 [chromium] › tests/ai-features.spec.js:139:5 › 🤖 AI Features - Content Adaptation & Level Detection › should handle advanced level content adaptation (70ms)
+  ✘    12 [chromium] › tests/ai-story.spec.js:42:5 › AI Story Arc Generator - Golden Flows › GF-5: Hamster sidekick appears in story (21ms)
+  ✘    13 [chromium] › tests/ai-story.spec.js:18:5 › AI Story Arc Generator - Golden Flows › GF-2: Story starts with one clear overarching quest (76ms)
+  ✘    14 [chromium] › tests/ai-story.spec.js:59:5 › AI Story Arc Generator - Golden Flows › GF-3: Scene follows setup → choice → consequence (32ms)
+  ✘    15 [chromium] › tests/ai-story.spec.js:89:5 › AI Story Arc Generator - Golden Flows › GF-4: Wrong choice spawns funny consequence (39ms)
+  ✘    16 [chromium] › tests/ai-story.spec.js:114:5 › AI Story Arc Generator - Golden Flows › GF-7: Level progression scaffolds difficulty (48ms)
+  ✓    17 [chromium] › tests/ai-story.spec.js:133:5 › AI Story Arc Generator - Golden Flows › Unified Feed: Videos integration (389ms)
+  ✘     8 [chromium] › tests/ai-punctuation-transcription.spec.js:138:5 › AI Punctuation + Real-Time Transcription › AI punctuation rules verification (392ms)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎯 COMPREHENSIVE APP TESTING - ALL PAGES, ALL FEATURES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💻 DESKTOP TESTING
+
+1️⃣ Testing Video Feed (TikTok-style)...
+   ✅ Videos: 19
+   ✅ Subtitles: 0
+   ✅ Gamification bar: NO
+node:internal/process/promises:394
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+page.waitForSelector: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('.reel') to be visible[22m
+
+    at /Users/mindful/_projects/workspace3/tests/test-word-translations.spec.js:10:14 {
+  name: 'TimeoutError'
+}
+
+Node.js v22.17.1

@@ -1,0 +1,72 @@
+{
+  "id": "journey_1760395315682",
+  "profile": {
+    "name": "Journey Test User",
+    "email": null,
+    "level": "A1",
+    "targetLevel": "B2",
+    "interests": [
+      "general"
+    ],
+    "nativeLanguage": "English",
+    "learningLanguage": "Spanish"
+  },
+  "progress": {
+    "xp": 30,
+    "level": "A1",
+    "levelProgress": 6,
+    "totalVideosWatched": 1,
+    "totalWordsLearned": 1,
+    "currentStreak": 0,
+    "longestStreak": 0,
+    "lastActiveDate": "2025-10-13"
+  },
+  "wordBank": {
+    "saved": [
+      {
+        "word": "Me",
+        "translation": "test translation",
+        "context": "",
+        "videoId": "Back_to_what_202509101756_fhb2f",
+        "level": "A1",
+        "savedAt": "2025-10-13T22:41:55.700Z",
+        "reviewCount": 0,
+        "lastReviewed": null,
+        "strength": 0,
+        "nextReview": "2025-10-14T22:41:55.700Z"
+      }
+    ],
+    "mastered": [],
+    "learning": [
+      "Me"
+    ],
+    "weak": []
+  },
+  "engagement": {
+    "videosCompleted": [
+      "Back_to_what_202509101756_fhb2f"
+    ],
+    "videosLiked": [],
+    "videosSaved": [],
+    "quizzesCompleted": [],
+    "gamesPlayed": [],
+    "articlesRead": []
+  },
+  "achievements": [],
+  "settings": {
+    "notifications": true,
+    "autoplay": true,
+    "subtitles": "both",
+    "playbackSpeed": 1
+  },
+  "stats": {
+    "totalTimeSpent": 0,
+    "avgSessionTime": 0,
+    "bestStreak": 0,
+    "totalXPEarned": 30,
+    "dailyGoal": 50,
+    "dailyGoalStreak": 0
+  },
+  "createdAt": "2025-10-13T22:41:55.682Z",
+  "updatedAt": "2025-10-13T22:41:55.704Z"
+}

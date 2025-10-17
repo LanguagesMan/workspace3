@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Feed - Spanish Learning</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: 100vh;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .feed-container {
+            width: 100%;
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        .video-card {
+            position: relative;
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+
+        video {
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
+            background: #000;
+        }
+
+        .transcription {
+            position: absolute;
+            bottom: 180px;
+            left: 20px;
+            right: 90px;
+            z-index: 10;
+        }
+
+        .spanish {
+            font-size: 22px;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 12px rgba(0,0,0,0.9);
+        }
+
+        .word {
+            display: inline-block;
+            padding: 2px 4px;
+            margin: 0 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 4px;
+        }
+
+        .word:hover {
+            background: rgba(255,255,255,0.25);
+            transform: scale(1.05);
+        }
+
+        .english {
+            font-size: 17px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            text-shadow: 2px 2px 12px rgba(0,0,0,0.9);
+            margin-top: 4px;
+        }
+
+        .english.show { opacity: 0.95; }
+
+        /* TikTok-style action buttons */
+        .action-buttons {
+            position: absolute;
+            right: 16px;
+            bottom: 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            z-index: 20;
+            align-items: center;
+        }
+
+        .action-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border: none;
+            color: #fff;
+            font-size: 22px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .action-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.15);
+        }
+
+        .action-btn.active {
+            background: #FE2C55;
+            color: #fff;
+        }
+
+        .action-btn .count {
+            position: absolute;
+            bottom: -20px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 90px;
+            z-index: 15;
+        }
+
+        .username {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .follow-btn {
+            background: #FE2C55;
+            border: none;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .description {
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 8px rgba(0,0,0,0.9);
+        }
+
+        .meta {
+            display: flex;
+            gap: 12px;
+            font-size: 13px;
+            opacity: 0.9;
+            flex-wrap: wrap;
+        }
+
+        .level-badge {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10B981;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid #10B981;
+        }
+
+        /* TikTok-grade loading screen */
+        .loading {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .loading-spinner {
+            width: 56px;
+            height: 56px;
+            border: 4px solid rgba(254, 44, 85, 0.1);
+            border-top-color: #FE2C55;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        .loading-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .loading-dot {
+            width: 8px;
+            height: 8px;
+            background: #FE2C55;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .loading-dot:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .error {
+            color: #ef4444;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Progress bar at top */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: #FE2C55;
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .spanish { font-size: 20px; }
+            .english { font-size: 16px; }
+            .action-buttons { right: 12px; bottom: 80px; gap: 20px; }
+            .action-btn { width: 44px; height: 44px; font-size: 20px; }
+            .transcription { bottom: 140px; right: 70px; }
+        }
+    </style>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading your feed</div>
+        <div class="loading-dots">
+            <div class="loading-dot"></div>
+            <div class="loading-dot"></div>
+            <div class="loading-dot"></div>
+        </div>
+    </div>
+
+    <div class="feed-container" id="feedContainer">
+        <!-- Videos will be dynamically loaded here -->
+    </div>
+
+    <script>
+        const userId = 'user-' + Math.random().toString(36).substring(7);
+        let currentVideoIndex = 0;
+        let videos = [];
+        let loadedVideos = new Set();
+
+        async function loadVideos() {
+            try {
+                const response = await fetch(`/api/feed/videos?userId=${userId}&limit=10`);
+                const data = await response.json();
+
+                if (data.videos && data.videos.length > 0) {
+                    videos = data.videos;
+                    renderVideos(videos.slice(0, 3)); // Load first 3 videos
+                    document.getElementById('loading').style.display = 'none';
+                } else {
+                    throw new Error('No videos available');
+                }
+            } catch (error) {
+                console.error('Error loading videos:', error);
+                document.getElementById('loading').innerHTML =
+                    '<div class="error">Failed to load videos. Please refresh.</div>';
+            }
+        }
+
+        function renderVideos(videosToRender) {
+            const container = document.getElementById('feedContainer');
+
+            videosToRender.forEach((video, index) => {
+                if (loadedVideos.has(video.id)) return;
+                loadedVideos.add(video.id);
+
+                const videoCard = document.createElement('div');
+                videoCard.className = 'video-card';
+                videoCard.dataset.index = index;
+
+                const videoSrc = video.videoUrl || `/videos/reels/${video.filename}`;
+
+                videoCard.innerHTML = `
+                    <video
+                        id="video-${index}"
+                        src="${videoSrc}"
+                        playsinline
+                        loop
+                        ${index === 0 ? 'autoplay' : ''}
+                        preload="metadata"
+                    ></video>
+
+                    <div class="transcription">
+                        <div class="spanish">
+                            ${video.transcription_es || 'Spanish transcription loading...'}
+                        </div>
+                        <div class="english" id="translation-${index}">
+                            ${video.transcription_en || 'English translation...'}
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="action-btn" onclick="toggleLike(${index})" aria-label="like">
+                            ❤️
+                            <span class="count">${video.likes || 0}</span>
+                        </button>
+                        <button class="action-btn" onclick="toggleSave(${index})" aria-label="save">
+                            🔖
+                            <span class="count">${video.saves || 0}</span>
+                        </button>
+                        <button class="action-btn" onclick="shareVideo(${index})" aria-label="share">
+                            ↗️
+                            <span class="count">${video.shares || 0}</span>
+                        </button>
+                        <button class="action-btn" onclick="toggleTranslation(${index})" aria-label="translate">
+                            🌐
+                        </button>
+                    </div>
+
+                    <div class="info">
+                        <div class="username">
+                            @langai_spanish
+                            <button class="follow-btn">Follow</button>
+                        </div>
+                        <div class="description">${video.description || 'Learn Spanish naturally 🇪🇸'}</div>
+                        <div class="meta">
+                            <span class="level-badge">${video.level || 'A2'}</span>
+                            <span>📹 ${video.duration || '8'}s</span>
+                            <span>👁️ ${video.views || '1.2k'}</span>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(videoCard);
+
+                // Add video event listeners
+                const videoElement = videoCard.querySelector('video');
+                videoElement.addEventListener('error', (e) => {
+                    console.error(`Video ${index} error:`, e);
+                });
+            });
+        }
+
+        function toggleTranslation(index) {
+            const translation = document.getElementById(`translation-${index}`);
+            translation.classList.toggle('show');
+        }
+
+        function toggleLike(index) {
+            const btn = event.target.closest('.action-btn');
+            btn.classList.toggle('active');
+            // Track interaction
+            trackInteraction('like', videos[index].id);
+        }
+
+        function toggleSave(index) {
+            const btn = event.target.closest('.action-btn');
+            btn.classList.toggle('active');
+            // Track interaction & save word
+            trackInteraction('save', videos[index].id);
+        }
+
+        function shareVideo(index) {
+            // Share functionality
+            alert('Share functionality coming soon!');
+        }
+
+        async function trackInteraction(type, videoId) {
+            try {
+                await fetch('/api/analytics', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId,
+                        eventType: type,
+                        videoId,
+                        timestamp: new Date().toISOString()
+                    })
+                });
+            } catch (error) {
+                console.error('Analytics error:', error);
+            }
+        }
+
+        // Intersection Observer for auto-play
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.75
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const video = entry.target.querySelector('video');
+                if (entry.isIntersecting) {
+                    video.play().catch(e => console.log('Autoplay prevented:', e));
+                    currentVideoIndex = parseInt(entry.target.dataset.index);
+                    updateProgressBar();
+
+                    // Load more videos when near end
+                    if (currentVideoIndex >= videos.length - 2 && currentVideoIndex < videos.length) {
+                        loadMoreVideos();
+                    }
+                } else {
+                    video.pause();
+                }
+            });
+        }, observerOptions);
+
+        function updateProgressBar() {
+            const progress = ((currentVideoIndex + 1) / videos.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function loadMoreVideos() {
+            const nextVideos = videos.slice(loadedVideos.size, loadedVideos.size + 3);
+            if (nextVideos.length > 0) {
+                renderVideos(nextVideos);
+                observeVideos();
+            }
+        }
+
+        function observeVideos() {
+            document.querySelectorAll('.video-card').forEach(card => {
+                observer.observe(card);
+            });
+        }
+
+        // Initialize
+        loadVideos().then(() => {
+            observeVideos();
+        });
+    </script>
+</body>
+</html>

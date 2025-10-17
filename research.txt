@@ -1,0 +1,38 @@
+⏺ FIRECRAWL RESEARCH: Instagram Reels (2025-10-05)
+
+Source: https://www.instagram.com/reels/
+Timestamp: 2025-10-05 15:25
+
+FINDINGS:
+
+Navigation & Layout:
+- Bottom navigation bar height: 50px (--revamp-nav-bottom-toolbar-height)
+- Feed card minimum width: 390px (--revamp-feed-card-media-min-width)
+- Dense padding between feed items: 16px (--revamp-feed-card-dense-padding)
+- Spacing between feed items: 20px (--revamp-feed-item-spacing)
+
+Content Presentation:
+- Responsive design with multiple screen breakpoints
+- Dark and light mode color schemes
+- Adaptive color palette for different content types
+- Smooth animation transitions (cubic-bezier curves)
+
+Interactive Elements:
+- Consistent button and input styling
+- Hover and press overlay effects
+- Accessibility-focused design with focus states
+- Gradient backgrounds for visual depth
+
+Key Design Principles:
+- Clean, modern interface
+- Flexible, user-centric layout
+- Content consumption prioritized
+- Smooth interaction patterns
+
+IMPLEMENTATION STATUS:
+✅ Bottom nav (60px) implemented on all entertainment pages
+✅ 5-tab structure: Videos | Articles | Music | Stories | Profile
+✅ Responsive design with backdrop blur effects
+✅ Active tab highlighting (white vs 0.7 opacity)
+✅ TikTok-style vertical scroll on videos page
+✅ Real-time transcription with AI punctuation + translation

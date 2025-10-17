@@ -1,0 +1,63 @@
+
+======================================================================
+🎙️  BATCH VIDEO TRANSCRIPTION SERVICE
+======================================================================
+🚀 Initializing Batch Transcription Service...
+📊 Loaded progress: 0 videos already completed
+✅ Service initialized
+
+📂 Scanning for videos without transcriptions...
+📊 Found 786 videos without .srt files
+📊 Videos to process: 786 (0 already processed)
+
+💰 COST ESTIMATE:
+   Videos to process: 786
+   Estimated duration: 393 minutes
+   Estimated cost: $2.36
+   Batch size: 10 concurrent
+
+⏳ Starting in 3 seconds... (Ctrl+C to cancel)
+
+======================================================================
+📦 BATCH 1/79 (10 videos)
+======================================================================
+
+🎙️  [1/786] Processing: Claymation_style_8second_202510132046_pimb9.mp4
+
+🎙️  [2/786] Processing: Claymation_style_8second_202510132259_mr4jk.mp4
+
+🎙️  [3/786] Processing: Claymation_style_8second_202510132325_3r3r5.mp4
+
+🎙️  [4/786] Processing: Claymation_style_8second_202510132333_bin58.mp4
+
+🎙️  [5/786] Processing: Claymation_style_8second_202510132358_0oj3z.mp4
+
+🎙️  [6/786] Processing: Claymation_style_8second_202510141710_ddf9g.mp4
+
+🎙️  [7/786] Processing: Claymation_style_8second_202510141714_ybnir.mp4
+
+🎙️  [8/786] Processing: Claymation_style_8second_202510142042_14qht.mp4
+
+🎙️  [9/786] Processing: Claymation_style_8second_202510142054_nqgbl.mp4
+
+🎙️  [10/786] Processing: Claymation_style_8second_202510142110_1a5ny.mp4
+   📊 Size: 4.6MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 2.6MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 1.8MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 2.6MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 1.7MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 2.8MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 1.1MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 3.2MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 1.8MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 3.3MB
+   🇪🇸 Transcribing Spanish...

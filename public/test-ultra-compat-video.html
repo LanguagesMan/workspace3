@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultra-Compat Video Test</title>
+</head>
+<body style="background: #000; color: #fff; padding: 20px; font-family: monospace;">
+    <h1>Ultra-Compatible Video Test</h1>
+    <p id="status" style="font-size: 18px; margin: 20px 0;">Loading...</p>
+
+    <video
+        id="testVideo"
+        width="720"
+        height="1280"
+        controls
+        autoplay
+        muted
+        preload="auto"
+        style="max-width: 100%; background: #111; margin: 20px 0;"
+    >
+        <source src="/videos/reels/test-ultra-compat.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div id="info" style="margin-top: 20px; font-size: 14px;"></div>
+
+    <script>
+        const video = document.getElementById('testVideo');
+        const status = document.getElementById('status');
+        const info = document.getElementById('info');
+
+        let eventLog = [];
+
+        function logEvent(event) {
+            const timestamp = new Date().toISOString().split('T')[1];
+            eventLog.push(`[${timestamp}] ${event}`);
+            info.innerHTML = eventLog.slice(-15).join('<br>');
+        }
+
+        video.addEventListener('loadstart', () => {
+            logEvent('🔵 loadstart');
+            status.textContent = 'Loading video...';
+        });
+
+        video.addEventListener('loadedmetadata', () => {
+            logEvent(`✅ loadedmetadata: ${video.videoWidth}x${video.videoHeight}, ${video.duration.toFixed(2)}s`);
+            status.textContent = '✅ Video metadata loaded successfully!';
+        });
+
+        video.addEventListener('loadeddata', () => {
+            logEvent('✅ loadeddata');
+            status.textContent = '✅ Video data loaded - ready to play!';
+        });
+
+        video.addEventListener('canplay', () => {
+            logEvent(`🎉 canplay (readyState: ${video.readyState})`);
+            status.textContent = '🎉 Video can play!';
+        });
+
+        video.addEventListener('canplaythrough', () => {
+            logEvent('🎉 canplaythrough');
+            status.textContent = '🎉 Video can play through!';
+        });
+
+        video.addEventListener('playing', () => {
+            logEvent('▶️ playing');
+            status.textContent = '▶️ Video is playing!';
+        });
+
+        video.addEventListener('error', (e) => {
+            const error = video.error;
+            logEvent(`❌ ERROR: Code ${error.code} - ${error.message}`);
+            status.textContent = `❌ ERROR: ${error.code} - ${error.message}`;
+            console.error('Video error:', error);
+        });
+
+        video.addEventListener('stalled', () => {
+            logEvent('⏸️ stalled');
+        });
+
+        video.addEventListener('waiting', () => {
+            logEvent('⏳ waiting');
+        });
+
+        video.addEventListener('progress', () => {
+            if (video.buffered.length > 0) {
+                const buffered = video.buffered.end(0);
+                logEvent(`📊 progress: ${buffered.toFixed(1)}s buffered`);
+            }
+        });
+
+        // Log current state every second
+        setInterval(() => {
+            console.log(`State: ready=${video.readyState}, network=${video.networkState}, error=${video.error?.code || 'none'}, time=${video.currentTime.toFixed(2)}`);
+        }, 1000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Welcome to Spanish! 👋</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .onboarding-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .step {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: bounce 1s ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .word-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px 0;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .word-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .word-spanish {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .word-english {
+            font-size: 1.5em;
+            opacity: 0.8;
+            display: block;
+        }
+
+        .word-hint {
+            font-size: 4em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .btn-primary {
+            background: #fff;
+            color: #667eea;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.3em;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin: 10px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            padding: 15px 40px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .audio-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            font-size: 2.5em;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .audio-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #fff;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .progress-text {
+            font-size: 0.9em;
+            opacity: 0.7;
+            margin-bottom: 10px;
+        }
+
+        .word-carousel {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 20px 0;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .word-carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .word-carousel-item {
+            min-width: 250px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            scroll-snap-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .word-carousel-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            top: -10px;
+            animation: confetti-fall 3s ease-out forwards;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .celebration {
+            animation: celebrate 0.6s ease-in-out;
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .xp-badge {
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.3);
+            border: 2px solid gold;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 20px 0;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .tip-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #fff;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            text-align: left;
+            font-size: 1em;
+        }
+
+        .skip-link {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.9em;
+            margin-top: 20px;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+
+        .skip-link:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+    </style>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <div class="onboarding-container">
+        <!-- Step 1: Welcome -->
+        <div class="step active" id="step1">
+            <h1>¡Hola! 👋</h1>
+            <p>Let's learn Spanish together!</p>
+            <p style="font-size: 1em; opacity: 0.7;">(No pressure, just fun)</p>
+            <button class="btn-primary" onclick="nextStep()">Start Learning!</button>
+        </div>
+
+        <!-- Step 2: First Word -->
+        <div class="step" id="step2">
+            <h2>Your First Word</h2>
+            <div class="word-card" onclick="playAudio('hola')">
+                <span class="word-hint">👋</span>
+                <span class="word-spanish">Hola</span>
+                <span class="word-english">Hello</span>
+            </div>
+            <button class="audio-btn" onclick="playAudio('hola')">🔊</button>
+            <p style="font-size: 0.9em;">Tap the card or speaker to hear it again</p>
+            <button class="btn-primary" onclick="celebrateFirstWord()">Got it!</button>
+        </div>
+
+        <!-- Step 3: Celebration -->
+        <div class="step" id="step3">
+            <h1 class="celebration">🎉</h1>
+            <h2>You know your first word!</h2>
+            <div class="xp-badge">+10 XP</div>
+            <p>That was easy, right?</p>
+            <button class="btn-primary" onclick="nextStep()">Learn More Words →</button>
+        </div>
+
+        <!-- Step 4: Next 4 Words -->
+        <div class="step" id="step4">
+            <div class="progress-text">Your Progress: 1/5 words</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 20%"></div>
+            </div>
+            
+            <h2>Learn 4 More Words</h2>
+            <p>Swipe to see each word</p>
+            
+            <div class="word-carousel" id="wordCarousel">
+                <div class="word-carousel-item" onclick="playAudio('adiós')">
+                    <span class="word-hint">👋</span>
+                    <span class="word-spanish" style="font-size: 2em; display: block; margin: 15px 0;">Adiós</span>
+                    <span class="word-english" style="font-size: 1.2em; display: block;">Goodbye</span>
+                </div>
+                <div class="word-carousel-item" onclick="playAudio('sí')">
+                    <span class="word-hint">✓</span>
+                    <span class="word-spanish" style="font-size: 2em; display: block; margin: 15px 0;">Sí</span>
+                    <span class="word-english" style="font-size: 1.2em; display: block;">Yes</span>
+                </div>
+                <div class="word-carousel-item" onclick="playAudio('no')">
+                    <span class="word-hint">✗</span>
+                    <span class="word-spanish" style="font-size: 2em; display: block; margin: 15px 0;">No</span>
+                    <span class="word-english" style="font-size: 1.2em; display: block;">No</span>
+                </div>
+                <div class="word-carousel-item" onclick="playAudio('gracias')">
+                    <span class="word-hint">🙏</span>
+                    <span class="word-spanish" style="font-size: 2em; display: block; margin: 15px 0;">Gracias</span>
+                    <span class="word-english" style="font-size: 1.2em; display: block;">Thank You</span>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                💡 <strong>Tip:</strong> Tap each card to hear the pronunciation
+            </div>
+            
+            <button class="btn-primary" onclick="completeFirstSession()">I'm Ready!</button>
+        </div>
+
+        <!-- Step 5: Final Celebration -->
+        <div class="step" id="step5">
+            <h1 class="celebration">🌟</h1>
+            <h2>Amazing Progress!</h2>
+            <p style="font-size: 1.5em; font-weight: bold;">You now know 5 Spanish words!</p>
+            <div class="xp-badge">+50 XP Total</div>
+            
+            <div class="tip-box" style="text-align: center;">
+                <div style="font-size: 1.5em; margin-bottom: 10px;">✅ You learned:</div>
+                <div style="font-size: 1.1em; line-height: 1.8;">
+                    Hola • Adiós • Sí • No • Gracias
+                </div>
+            </div>
+            
+            <p>Ready to see these words in action?</p>
+            <button class="btn-primary" onclick="goToApp()">Watch Your First Video! 🎥</button>
+            <br>
+            <a href="#" class="skip-link" onclick="continueOnboarding()">Or learn 15 more words first</a>
+        </div>
+
+        <!-- Step 6: Continue Onboarding (Optional) -->
+        <div class="step" id="step6">
+            <h2>Keep Going? 💪</h2>
+            <p>You can learn 15 more essential words now, or start watching videos.</p>
+            <p style="font-size: 0.9em; opacity: 0.7;">Most beginners prefer to watch videos after 5 words</p>
+            
+            <button class="btn-primary" onclick="goToApp()">Watch Videos Now</button>
+            <button class="btn-secondary" onclick="learnMoreWords()">Learn 15 More Words</button>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let wordsLearned = 0;
+        const totalXP = 50;
+
+        // Initialize speech synthesis
+        const synth = window.speechSynthesis;
+        let spanishVoice;
+
+        // Load Spanish voice
+        window.speechSynthesis.onvoiceschanged = () => {
+            const voices = synth.getVoices();
+            spanishVoice = voices.find(v => v.lang.startsWith('es')) || voices[0];
+        };
+
+        function nextStep() {
+            document.querySelector('.step.active').classList.remove('active');
+            currentStep++;
+            document.getElementById('step' + currentStep).classList.add('active');
+        }
+
+        function playAudio(word) {
+            if (synth) {
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'es-ES';
+                utterance.rate = 0.8; // Slower for beginners
+                if (spanishVoice) utterance.voice = spanishVoice;
+                synth.speak(utterance);
+            }
+            
+            // Visual feedback
+            event.target.style.transform = 'scale(1.05)';
+            setTimeout(() => {
+                event.target.style.transform = 'scale(1)';
+            }, 200);
+        }
+
+        function celebrateFirstWord() {
+            // Show confetti
+            showConfetti();
+            
+            // Track achievement
+            trackMicroWin('learned_first_word', { word: 'hola' });
+            
+            wordsLearned = 1;
+            
+            // Move to next step
+            setTimeout(nextStep, 1000);
+        }
+
+        function completeFirstSession() {
+            wordsLearned = 5;
+            
+            // Update progress
+            updateProgress();
+            
+            // Track achievement
+            trackMicroWin('completed_first_session', { wordsCount: 5 });
+            
+            // Show celebration
+            showConfetti();
+            
+            setTimeout(nextStep, 500);
+        }
+
+        function goToApp() {
+            // Save beginner mode status
+            localStorage.setItem('beginnerMode', 'true');
+            localStorage.setItem('beginnerOnboardingComplete', 'true');
+            localStorage.setItem('wordsLearned', wordsLearned);
+            localStorage.setItem('knownWords', JSON.stringify(['hola', 'adiós', 'sí', 'no', 'gracias']));
+            
+            // Track achievement
+            trackMicroWin('completed_onboarding', { wordsCount: wordsLearned });
+            
+            // Redirect to main app
+            window.location.href = '/tiktok-video-feed.html?beginnerMode=true&firstTime=true';
+        }
+
+        function continueOnboarding() {
+            nextStep();
+        }
+
+        function learnMoreWords() {
+            // Redirect to extended onboarding
+            window.location.href = '/beginner-dashboard.html?session=2';
+        }
+
+        function updateProgress() {
+            const progress = (wordsLearned / 5) * 100;
+            const progressBar = document.getElementById('progressBar');
+            if (progressBar) {
+                progressBar.style.width = progress + '%';
+            }
+        }
+
+        function showConfetti() {
+            const container = document.createElement('div');
+            container.className = 'confetti';
+            document.body.appendChild(container);
+            
+            const colors = ['#ff0', '#f0f', '#0ff', '#f00', '#0f0', '#00f'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-piece';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                container.appendChild(confetti);
+            }
+            
+            setTimeout(() => container.remove(), 4000);
+        }
+
+        function trackMicroWin(type, data) {
+            // Send to backend
+            fetch('/api/beginner/micro-win', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: getUserId(),
+                    type: type,
+                    data: data,
+                    timestamp: new Date().toISOString()
+                })
+            }).catch(err => console.log('Track micro-win:', err));
+            
+            // Store locally
+            const wins = JSON.parse(localStorage.getItem('microWins') || '[]');
+            wins.push({ type, data, timestamp: new Date().toISOString() });
+            localStorage.setItem('microWins', JSON.stringify(wins));
+        }
+
+        function getUserId() {
+            let userId = localStorage.getItem('userId');
+            if (!userId) {
+                userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('userId', userId);
+            }
+            return userId;
+        }
+
+        // Auto-play first word audio on step 2
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.target.id === 'step2' && mutation.target.classList.contains('active')) {
+                    setTimeout(() => playAudio('hola'), 500);
+                }
+            });
+        });
+
+        // Observe all steps for activation
+        document.querySelectorAll('.step').forEach(step => {
+            observer.observe(step, { attributes: true, attributeFilter: ['class'] });
+        });
+
+        // Track onboarding start
+        trackMicroWin('started_onboarding', { timestamp: new Date().toISOString() });
+    </script>
+</body>
+</html>
+

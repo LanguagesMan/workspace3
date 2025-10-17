@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Learning Journey 🌟</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 3em;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.8;
+        }
+
+        .progress-section {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .progress-title {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .progress-percentage {
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50, #8bc34a);
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .milestone-text {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        .word-of-day {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .word-of-day h3 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .word-display {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 20px 0;
+            display: block;
+        }
+
+        .word-translation {
+            font-size: 1.5em;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .next-words-section {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .words-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .word-mini-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .word-mini-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .word-mini-spanish {
+            font-size: 1.5em;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .word-mini-english {
+            font-size: 0.9em;
+            opacity: 0.7;
+        }
+
+        .btn {
+            background: #fff;
+            color: #667eea;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .survival-phrases {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .phrase-list {
+            margin-top: 20px;
+        }
+
+        .phrase-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .phrase-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+        }
+
+        .phrase-spanish {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .phrase-english {
+            opacity: 0.7;
+            font-size: 0.95em;
+        }
+
+        .play-icon {
+            font-size: 1.5em;
+        }
+
+        .action-buttons {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .streak-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin: 10px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .words-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+        }
+    </style>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header>
+            <h1>Your Learning Journey 🌟</h1>
+            <p class="subtitle" id="greetingText">Keep up the amazing work!</p>
+            <div id="streakBadge"></div>
+        </header>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-value" id="wordsKnown">0</span>
+                <span class="stat-label">Words Known</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value" id="videosWatched">0</span>
+                <span class="stat-label">Videos Watched</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value" id="totalXP">0</span>
+                <span class="stat-label">Total XP</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value" id="currentStreak">0</span>
+                <span class="stat-label">Day Streak 🔥</span>
+            </div>
+        </div>
+
+        <!-- Progress to Next Level -->
+        <div class="progress-section">
+            <div class="progress-header">
+                <span class="progress-title">Progress to A2</span>
+                <span class="progress-percentage" id="progressPercentage">75%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 75%"></div>
+            </div>
+            <p class="milestone-text" id="milestoneText">15 more words to reach A2 level!</p>
+        </div>
+
+        <!-- Word of the Day -->
+        <div class="word-of-day">
+            <h3>📚 Word of the Day</h3>
+            <span class="word-display" id="wordOfDay">Hola</span>
+            <p class="word-translation" id="wordTranslation">Hello</p>
+            <button class="btn" onclick="playWordOfDay()">🔊 Hear It</button>
+            <button class="btn btn-secondary" onclick="showExamples()">See Examples</button>
+        </div>
+
+        <!-- Next Words to Learn -->
+        <div class="next-words-section">
+            <h3 style="font-size: 1.5em; margin-bottom: 10px;">📖 Next Words to Learn</h3>
+            <p style="opacity: 0.8;">Tap any word to hear its pronunciation</p>
+            <div class="words-grid" id="nextWordsGrid"></div>
+        </div>
+
+        <!-- Survival Phrases -->
+        <div class="survival-phrases">
+            <h3 style="font-size: 1.5em; margin-bottom: 10px;">🆘 Essential Survival Phrases</h3>
+            <p style="opacity: 0.8; margin-bottom: 10px;">Useful phrases for real-life situations</p>
+            <div class="phrase-list" id="phraseList"></div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="btn" onclick="startLearning()">🎥 Watch Videos</button>
+            <button class="btn btn-secondary" onclick="reviewWords()">📝 Review Words</button>
+            <button class="btn btn-secondary" onclick="takeQuiz()">🎯 Take Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        // Initialize dashboard
+        let userProgress = loadUserProgress();
+        let nextWords = [];
+        const survivalPhrases = [
+            { spanish: '¿Hablas inglés?', english: 'Do you speak English?' },
+            { spanish: '¿Dónde está el baño?', english: 'Where is the bathroom?' },
+            { spanish: '¿Cuánto cuesta?', english: 'How much does it cost?' },
+            { spanish: 'No entiendo', english: 'I don\'t understand' },
+            { spanish: '¿Puede ayudarme?', english: 'Can you help me?' },
+            { spanish: 'Necesito un médico', english: 'I need a doctor' },
+            { spanish: '¿Dónde está...?', english: 'Where is...?' },
+            { spanish: 'Una mesa para dos', english: 'A table for two' }
+        ];
+
+        function loadUserProgress() {
+            // Try to load from API
+            const userId = getUserId();
+            fetch(`/api/beginner/progress/${userId}`)
+                .then(res => res.json())
+                .then(data => {
+                    updateDashboard(data);
+                })
+                .catch(() => {
+                    // Fallback to localStorage
+                    const progress = {
+                        wordsKnown: parseInt(localStorage.getItem('wordsLearned') || '5'),
+                        videosWatched: parseInt(localStorage.getItem('videosWatched') || '0'),
+                        totalXP: parseInt(localStorage.getItem('totalXP') || '50'),
+                        currentStreak: parseInt(localStorage.getItem('streak') || '1'),
+                        knownWords: JSON.parse(localStorage.getItem('knownWords') || '[]')
+                    };
+                    updateDashboard(progress);
+                });
+        }
+
+        function updateDashboard(progress) {
+            // Update stats
+            document.getElementById('wordsKnown').textContent = progress.wordsKnown || 0;
+            document.getElementById('videosWatched').textContent = progress.videosWatched || 0;
+            document.getElementById('totalXP').textContent = progress.totalXP || 0;
+            document.getElementById('currentStreak').textContent = progress.currentStreak || 0;
+
+            // Update progress bar (100 words to reach A2)
+            const targetWords = 100;
+            const percentage = Math.min((progress.wordsKnown / targetWords) * 100, 100);
+            document.getElementById('progressPercentage').textContent = Math.round(percentage) + '%';
+            document.getElementById('progressFill').style.width = percentage + '%';
+            
+            const wordsToGo = Math.max(targetWords - progress.wordsKnown, 0);
+            document.getElementById('milestoneText').textContent = 
+                wordsToGo > 0 ? `${wordsToGo} more words to reach A2 level!` : 'You\'ve reached A2! 🎉';
+
+            // Update greeting
+            const greetings = [
+                "You're doing amazing!",
+                "Keep up the great work!",
+                "You're learning so fast!",
+                "Fantastic progress!",
+                "You're on fire! 🔥"
+            ];
+            document.getElementById('greetingText').textContent = 
+                greetings[Math.floor(Math.random() * greetings.length)];
+
+            // Streak badge
+            if (progress.currentStreak >= 3) {
+                document.getElementById('streakBadge').innerHTML = 
+                    `<span class="streak-badge">🔥 ${progress.currentStreak}-Day Streak!</span>`;
+            }
+
+            // Load next words
+            loadNextWords(progress.knownWords || []);
+        }
+
+        function loadNextWords(knownWords) {
+            fetch(`/api/beginner/next-words?count=9`)
+                .then(res => res.json())
+                .then(data => {
+                    nextWords = data.words || [];
+                    displayNextWords();
+                })
+                .catch(() => {
+                    // Fallback words
+                    nextWords = [
+                        { spanish: 'por favor', english: 'please', imageHint: '🙏' },
+                        { spanish: 'perdón', english: 'sorry', imageHint: '😊' },
+                        { spanish: 'agua', english: 'water', imageHint: '💧' },
+                        { spanish: 'comida', english: 'food', imageHint: '🍽️' },
+                        { spanish: 'baño', english: 'bathroom', imageHint: '🚽' },
+                        { spanish: 'ayuda', english: 'help', imageHint: '🆘' },
+                        { spanish: 'amigo', english: 'friend', imageHint: '👫' },
+                        { spanish: 'casa', english: 'house', imageHint: '🏠' },
+                        { spanish: 'bueno', english: 'good', imageHint: '👍' }
+                    ];
+                    displayNextWords();
+                });
+        }
+
+        function displayNextWords() {
+            const grid = document.getElementById('nextWordsGrid');
+            grid.innerHTML = nextWords.map(word => `
+                <div class="word-mini-card" onclick="playWord('${word.spanish}')">
+                    <div style="font-size: 2em;">${word.imageHint || '📝'}</div>
+                    <span class="word-mini-spanish">${word.spanish}</span>
+                    <span class="word-mini-english">${word.english}</span>
+                </div>
+            `).join('');
+        }
+
+        function displaySurvivalPhrases() {
+            const list = document.getElementById('phraseList');
+            list.innerHTML = survivalPhrases.map(phrase => `
+                <div class="phrase-item" onclick="playWord('${phrase.spanish}')">
+                    <div>
+                        <div class="phrase-spanish">${phrase.spanish}</div>
+                        <div class="phrase-english">${phrase.english}</div>
+                    </div>
+                    <span class="play-icon">🔊</span>
+                </div>
+            `).join('');
+        }
+
+        function playWord(word) {
+            if (window.speechSynthesis) {
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'es-ES';
+                utterance.rate = 0.8;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function playWordOfDay() {
+            const word = document.getElementById('wordOfDay').textContent;
+            playWord(word);
+        }
+
+        function showExamples() {
+            alert('Feature coming soon! You\'ll see example sentences with this word.');
+        }
+
+        function startLearning() {
+            window.location.href = '/tiktok-video-feed.html?beginnerMode=true';
+        }
+
+        function reviewWords() {
+            window.location.href = '/vocabulary-review.html?beginnerMode=true';
+        }
+
+        function takeQuiz() {
+            window.location.href = '/tiktok-video-feed.html?beginnerMode=true&showQuiz=true';
+        }
+
+        function getUserId() {
+            let userId = localStorage.getItem('userId');
+            if (!userId) {
+                userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('userId', userId);
+            }
+            return userId;
+        }
+
+        // Initialize
+        displaySurvivalPhrases();
+        
+        // Update last visit
+        localStorage.setItem('lastVisitDate', new Date().toDateString());
+    </script>
+</body>
+</html>
+

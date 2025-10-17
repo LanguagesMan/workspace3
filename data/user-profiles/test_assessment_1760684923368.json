@@ -1,0 +1,19 @@
+{
+  "userId": "test_assessment_1760684923368",
+  "level": "A2",
+  "watchedVideos": [
+    "assessment_a1",
+    "assessment_a2",
+    "assessment_b1"
+  ],
+  "interactions": [],
+  "interests": {},
+  "seenThemes": {},
+  "knownWords": [],
+  "behaviorPatterns": {
+    "avgCompletionRate": 0.7124000000000001,
+    "avgWatchTime": 20,
+    "skipRate": 0.2,
+    "rewatchRate": 0.05
+  }
+}

@@ -1,0 +1,354 @@
+<!-- 🔥 STREAK WIDGET COMPONENT -->
+<!-- Beautiful streak display with celebration animations -->
+
+<style>
+.streak-container {
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+    border-radius: 16px;
+    padding: 20px;
+    color: white;
+    margin: 16px 0;
+    box-shadow: 0 4px 20px rgba(255, 107, 107, 0.3);
+}
+
+.streak-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.streak-icon {
+    font-size: 32px;
+    animation: flicker 1.5s infinite;
+}
+
+.streak-count {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.streak-label {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.streak-progress-bar {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    height: 8px;
+    margin: 12px 0;
+    overflow: hidden;
+}
+
+.streak-progress-fill {
+    background: white;
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+.streak-milestone {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.streak-warning {
+    background: linear-gradient(135deg, #FFA500 0%, #FF6347 100%);
+    padding: 12px;
+    border-radius: 12px;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    animation: pulse 2s infinite;
+}
+
+.streak-warning-icon {
+    font-size: 20px;
+}
+
+.streak-celebration {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 40px;
+    border-radius: 24px;
+    text-align: center;
+    z-index: 10001;
+    display: none;
+    animation: zoomIn 0.5s ease-out;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.streak-celebration.active {
+    display: block;
+}
+
+.streak-celebration-icon {
+    font-size: 80px;
+    margin-bottom: 16px;
+    animation: bounce 1s infinite;
+}
+
+.streak-celebration-title {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.streak-celebration-message {
+    font-size: 18px;
+    opacity: 0.9;
+}
+
+@keyframes flicker {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.1); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+@keyframes zoomIn {
+    from { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+    to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: #f0f;
+    position: absolute;
+    animation: confetti-fall 3s linear infinite;
+}
+
+@keyframes confetti-fall {
+    to {
+        transform: translateY(100vh) rotate(360deg);
+    }
+}
+</style>
+
+<!-- Streak Widget -->
+<div class="streak-container" id="streakWidget">
+    <div class="streak-header">
+        <div>
+            <div class="streak-icon">🔥</div>
+        </div>
+        <div style="text-align: right;">
+            <div class="streak-count" id="streakCount">0</div>
+            <div class="streak-label">Day Streak</div>
+        </div>
+    </div>
+
+    <div class="streak-progress-bar">
+        <div class="streak-progress-fill" id="streakProgress" style="width: 0%"></div>
+    </div>
+
+    <div class="streak-milestone">
+        <span>Next milestone:</span>
+        <span><strong id="nextMilestone">7 days 🔥🔥</strong></span>
+    </div>
+
+    <div class="streak-warning" id="streakWarning" style="display: none;">
+        <span class="streak-warning-icon">⚠️</span>
+        <span id="streakWarningText">Your streak is about to break!</span>
+    </div>
+</div>
+
+<!-- Streak Celebration Modal -->
+<div class="streak-celebration" id="streakCelebration">
+    <div class="streak-celebration-icon" id="celebrationIcon">🔥</div>
+    <div class="streak-celebration-title" id="celebrationTitle">Amazing!</div>
+    <div class="streak-celebration-message" id="celebrationMessage">You've maintained a 7-day streak!</div>
+</div>
+
+<script>
+let currentStreak = 0;
+let longestStreak = 0;
+
+// Initialize streak widget
+async function initStreakWidget(userId) {
+    try {
+        const response = await fetch(`/api/retention/progress/${userId}`);
+        const data = await response.json();
+
+        if (data.success) {
+            currentStreak = data.progress.streak;
+            longestStreak = data.progress.longestStreak;
+            updateStreakDisplay();
+            checkStreakWarning(userId);
+        }
+    } catch (error) {
+        console.error('Error initializing streak widget:', error);
+    }
+}
+
+// Update streak display
+function updateStreakDisplay() {
+    document.getElementById('streakCount').textContent = currentStreak;
+
+    // Calculate progress to next milestone
+    const milestones = [3, 7, 14, 30, 50, 100, 365];
+    const nextMilestone = milestones.find(m => m > currentStreak) || milestones[milestones.length - 1];
+    const prevMilestone = milestones.filter(m => m < nextMilestone).pop() || 0;
+
+    const progress = ((currentStreak - prevMilestone) / (nextMilestone - prevMilestone)) * 100;
+    document.getElementById('streakProgress').style.width = Math.min(100, progress) + '%';
+
+    // Update next milestone text
+    const milestoneIcons = {
+        3: '🔥',
+        7: '🔥🔥',
+        14: '🔥🔥',
+        30: '🔥🔥🔥',
+        50: '💎',
+        100: '👑',
+        365: '🌟'
+    };
+
+    document.getElementById('nextMilestone').textContent = 
+        `${nextMilestone} days ${milestoneIcons[nextMilestone] || '🔥'}`;
+}
+
+// Check if streak warning needed
+async function checkStreakWarning(userId) {
+    try {
+        const response = await fetch(`/api/retention/streak/check-warning/${userId}`);
+        const data = await response.json();
+
+        if (data.needsWarning) {
+            showStreakWarning(data.hoursRemaining);
+        }
+    } catch (error) {
+        console.error('Error checking streak warning:', error);
+    }
+}
+
+// Show streak warning
+function showStreakWarning(hoursRemaining) {
+    const warning = document.getElementById('streakWarning');
+    const warningText = document.getElementById('streakWarningText');
+
+    warningText.textContent = 
+        `⏰ Only ${hoursRemaining} hours left to maintain your ${currentStreak}-day streak!`;
+    warning.style.display = 'flex';
+}
+
+// Update streak when activity completed
+async function updateStreakOnActivity(userId, activityType = 'general') {
+    try {
+        const response = await fetch('/api/retention/streak/update', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, activityType })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            const previousStreak = currentStreak;
+            currentStreak = data.streak;
+            
+            updateStreakDisplay();
+
+            // Show celebration for milestone streaks
+            if (data.streakChanged && [3, 7, 14, 30, 50, 100, 365].includes(currentStreak)) {
+                showStreakCelebration(currentStreak);
+            }
+
+            // Hide warning if shown
+            if (data.streakMaintained) {
+                document.getElementById('streakWarning').style.display = 'none';
+            }
+        }
+    } catch (error) {
+        console.error('Error updating streak:', error);
+    }
+}
+
+// Show streak celebration
+function showStreakCelebration(streak) {
+    const celebrations = {
+        3: { icon: '🔥', title: '3-Day Streak!', message: "You're on fire! Keep it going!" },
+        7: { icon: '🔥🔥', title: '1-Week Streak!', message: "Amazing! You've learned for 7 days straight!" },
+        14: { icon: '🔥🔥', title: '2-Week Streak!', message: 'Two weeks of consistent learning!' },
+        30: { icon: '🔥🔥🔥', title: '30-Day Streak!', message: "You're a learning machine! One month down!" },
+        50: { icon: '💎', title: '50-Day Streak!', message: 'Halfway to 100! You're unstoppable!' },
+        100: { icon: '👑', title: '100-Day Streak!', message: 'LEGENDARY! 100 days of dedication!' },
+        365: { icon: '🌟', title: '365-Day Streak!', message: 'A FULL YEAR! You are absolutely amazing!' }
+    };
+
+    const celebration = celebrations[streak];
+    if (celebration) {
+        document.getElementById('celebrationIcon').textContent = celebration.icon;
+        document.getElementById('celebrationTitle').textContent = celebration.title;
+        document.getElementById('celebrationMessage').textContent = celebration.message;
+
+        const modal = document.getElementById('streakCelebration');
+        modal.classList.add('active');
+
+        // Add confetti
+        createConfetti();
+
+        // Auto-hide after 3 seconds
+        setTimeout(() => {
+            modal.classList.remove('active');
+        }, 3000);
+    }
+}
+
+// Create confetti effect
+function createConfetti() {
+    const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F'];
+    
+    for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * window.innerWidth + 'px';
+            confetti.style.top = '-10px';
+            confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+            confetti.style.animationDelay = (Math.random() * 0.5) + 's';
+            
+            document.body.appendChild(confetti);
+
+            setTimeout(() => confetti.remove(), 4000);
+        }, i * 30);
+    }
+}
+
+// Get current user ID
+function getCurrentUserId() {
+    return localStorage.getItem('userId') || 'guest';
+}
+
+// Auto-initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const userId = getCurrentUserId();
+    if (userId !== 'guest') {
+        initStreakWidget(userId);
+
+        // Check for streak warning every hour
+        setInterval(() => checkStreakWarning(userId), 3600000);
+    }
+});
+</script>
+

@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spanish Level Assessment - Langflix</title>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .assessment-container {
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 32px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+            border-radius: 12px;
+        }
+
+        .question-number {
+            color: #666;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .question-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 24px;
+            line-height: 1.4;
+        }
+
+        .question-prompt {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 18px 24px;
+            background: #f5f5f5;
+            border: 3px solid transparent;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
+            text-align: left;
+        }
+
+        .option:hover {
+            background: #ececec;
+            transform: translateX(4px);
+        }
+
+        .option:active {
+            transform: scale(0.98);
+        }
+
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            animation: correctPulse 0.5s ease;
+        }
+
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .intro-screen {
+            text-align: center;
+        }
+
+        .intro-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 16px;
+        }
+
+        .intro-subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .start-btn {
+            padding: 18px 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.5);
+        }
+
+        .start-btn:active {
+            transform: translateY(0);
+        }
+
+        .results-screen {
+            text-align: center;
+            display: none;
+        }
+
+        .level-badge {
+            display: inline-block;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+            font-size: 48px;
+            font-weight: 800;
+            margin: 24px 0;
+        }
+
+        .level-description {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .frequency-info {
+            background: #f5f5f5;
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+        }
+
+        .frequency-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+        }
+
+        .frequency-text {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+            animation: fadeInSlide 0.4s ease;
+        }
+
+        @keyframes fadeInSlide {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <div class="assessment-container">
+        <!-- Intro Screen -->
+        <div class="intro-screen" id="introScreen">
+            <div class="intro-title">📚 Quick Spanish Assessment</div>
+            <div class="intro-subtitle">
+                We'll determine your level in just 10 questions.<br>
+                Answer as best as you can - each question adapts to your skill!
+            </div>
+            <button class="start-btn" onclick="startAssessment()">Start Assessment</button>
+        </div>
+
+        <!-- Question Screen -->
+        <div class="question-container" id="questionContainer">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="question-number" id="questionNumber">Question 1 of 10</div>
+            <div class="question-text" id="questionText"></div>
+            <div class="question-prompt" id="questionPrompt"></div>
+            <div class="options" id="optionsContainer"></div>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="results-screen" id="resultsScreen">
+            <div class="intro-title">🎉 Assessment Complete!</div>
+            <div class="level-badge" id="levelBadge">A1</div>
+            <div class="level-description" id="levelDescription"></div>
+            <div class="frequency-info">
+                <div class="frequency-title">Your Frequency List Placement</div>
+                <div class="frequency-text" id="frequencyText"></div>
+            </div>
+            <button class="start-btn" onclick="finishAssessment()">Start Learning!</button>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Supabase
+        const SUPABASE_URL = 'https://uejiwteujraxczrxbqff.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVlaml3dGV1anJheGN6cnhicWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk5NDMxMzksImV4cCI6MjA3NTUxOTEzOX0.iva8q5bMcLHfqd6niXqB_i-i-VrPmKLNGr9eiiPwZHQ';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Adaptive Assessment Questions - Organized by CEFR level
+        const questionBank = {
+            A1: [ // Beginner
+                {
+                    spanish: "Hola",
+                    prompt: "What does this mean?",
+                    options: ["Hello", "Goodbye", "Thank you", "Please"],
+                    correct: 0,
+                    frequency: 1
+                },
+                {
+                    spanish: "¿Cómo estás?",
+                    prompt: "What does this mean?",
+                    options: ["How are you?", "Where are you?", "What is this?", "Who are you?"],
+                    correct: 0,
+                    frequency: 5
+                },
+                {
+                    spanish: "Gracias",
+                    prompt: "What does this mean?",
+                    options: ["Please", "Sorry", "Thank you", "Excuse me"],
+                    correct: 2,
+                    frequency: 3
+                }
+            ],
+            A2: [ // Elementary
+                {
+                    spanish: "Necesito ayuda",
+                    prompt: "What does this mean?",
+                    options: ["I need help", "I want food", "I'm tired", "I'm happy"],
+                    correct: 0,
+                    frequency: 150
+                },
+                {
+                    spanish: "¿Dónde está el baño?",
+                    prompt: "What does this mean?",
+                    options: ["Where is the bathroom?", "Where is the restaurant?", "Where is the hotel?", "Where is the station?"],
+                    correct: 0,
+                    frequency: 200
+                },
+                {
+                    spanish: "Me gusta mucho",
+                    prompt: "What does this mean?",
+                    options: ["I like it a lot", "I don't like it", "I want more", "I'm full"],
+                    correct: 0,
+                    frequency: 180
+                }
+            ],
+            B1: [ // Intermediate
+                {
+                    spanish: "Aunque llueva, vamos a salir",
+                    prompt: "What does this mean?",
+                    options: ["Even though it rains, we're going out", "If it rains, we'll stay", "It's raining outside", "We want to leave"],
+                    correct: 0,
+                    frequency: 500
+                },
+                {
+                    spanish: "Acabo de llegar",
+                    prompt: "What does this mean?",
+                    options: ["I'm about to leave", "I just arrived", "I'm leaving", "I want to arrive"],
+                    correct: 1,
+                    frequency: 450
+                },
+                {
+                    spanish: "No me di cuenta",
+                    prompt: "What does this mean?",
+                    options: ["I didn't realize", "I don't understand", "I'm not sure", "I didn't hear"],
+                    correct: 0,
+                    frequency: 600
+                }
+            ],
+            B2: [ // Upper Intermediate
+                {
+                    spanish: "Ojalá pudiera ir contigo",
+                    prompt: "What does this mean?",
+                    options: ["I wish I could go with you", "I want to go with you", "I will go with you", "I can't go with you"],
+                    correct: 0,
+                    frequency: 1200
+                },
+                {
+                    spanish: "Es imprescindible que lo hagas",
+                    prompt: "What does this mean?",
+                    options: ["It's impossible to do", "It's essential that you do it", "It's easy to do", "It's optional to do"],
+                    correct: 1,
+                    frequency: 1500
+                },
+                {
+                    spanish: "Me han recomendado este sitio",
+                    prompt: "What does this mean?",
+                    options: ["They've recommended this place to me", "I recommend this place", "This place is recommended", "I've been here before"],
+                    correct: 0,
+                    frequency: 1100
+                }
+            ],
+            C1: [ // Advanced
+                {
+                    spanish: "No cabe duda de que es culpable",
+                    prompt: "What does this mean?",
+                    options: ["There's no doubt he's guilty", "He might be guilty", "He's probably innocent", "We doubt he's guilty"],
+                    correct: 0,
+                    frequency: 2500
+                },
+                {
+                    spanish: "A pesar de los pesares, seguimos adelante",
+                    prompt: "What does this mean?",
+                    options: ["Despite everything, we move forward", "We're giving up", "It's too hard", "We'll try later"],
+                    correct: 0,
+                    frequency: 3000
+                },
+                {
+                    spanish: "Dicho de otro modo, es inviable",
+                    prompt: "What does this mean?",
+                    options: ["In other words, it's unfeasible", "It's possible to do", "It's easy to say", "It's worth trying"],
+                    correct: 0,
+                    frequency: 2800
+                }
+            ]
+        };
+
+        let currentQuestionIndex = 0;
+        let currentLevel = 'A1';
+        let score = { correct: 0, total: 0 };
+        let answeredQuestions = [];
+        let adaptiveScore = 0; // Running adaptive score
+
+        function startAssessment() {
+            document.getElementById('introScreen').classList.add('hidden');
+            document.getElementById('questionContainer').classList.add('active');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (currentQuestionIndex >= 10) {
+                showResults();
+                return;
+            }
+
+            // Select question from current level
+            const levelQuestions = questionBank[currentLevel];
+            const questionIndex = Math.min(currentQuestionIndex % levelQuestions.length, levelQuestions.length - 1);
+            const question = levelQuestions[questionIndex];
+
+            // Update UI
+            const progress = ((currentQuestionIndex + 1) / 10) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+            document.getElementById('questionNumber').textContent = `Question ${currentQuestionIndex + 1} of 10`;
+            document.getElementById('questionText').textContent = question.spanish;
+            document.getElementById('questionPrompt').textContent = question.prompt;
+
+            // Render options
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            question.options.forEach((option, index) => {
+                const optionEl = document.createElement('div');
+                optionEl.className = 'option';
+                optionEl.textContent = option;
+                optionEl.onclick = () => selectAnswer(index, question.correct, question.frequency);
+                optionsContainer.appendChild(optionEl);
+            });
+        }
+
+        function selectAnswer(selected, correct, frequency) {
+            score.total++;
+            const isCorrect = selected === correct;
+
+            if (isCorrect) {
+                score.correct++;
+                adaptiveScore += frequency; // Add frequency value for correct answers
+            }
+
+            // Visual feedback
+            const options = document.querySelectorAll('.option');
+            options[selected].classList.add(isCorrect ? 'correct' : 'incorrect');
+            if (!isCorrect) {
+                options[correct].classList.add('correct');
+            }
+
+            // Disable all options
+            options.forEach(opt => opt.style.pointerEvents = 'none');
+
+            // Adapt difficulty based on performance
+            if (currentQuestionIndex % 3 === 2) { // Every 3 questions, adjust level
+                const accuracy = score.correct / score.total;
+                if (accuracy > 0.75 && currentLevel !== 'C1') {
+                    // Move up a level
+                    currentLevel = {
+                        'A1': 'A2',
+                        'A2': 'B1',
+                        'B1': 'B2',
+                        'B2': 'C1'
+                    }[currentLevel];
+                } else if (accuracy < 0.4 && currentLevel !== 'A1') {
+                    // Move down a level
+                    currentLevel = {
+                        'A2': 'A1',
+                        'B1': 'A2',
+                        'B2': 'B1',
+                        'C1': 'B2'
+                    }[currentLevel];
+                }
+            }
+
+            // Auto-advance after 1 second (Duolingo style)
+            setTimeout(() => {
+                currentQuestionIndex++;
+                loadQuestion();
+            }, 1000);
+        }
+
+        async function showResults() {
+            document.getElementById('questionContainer').classList.remove('active');
+            document.getElementById('resultsScreen').style.display = 'block';
+
+            // Determine final level based on adaptive score
+            let finalLevel, frequencyRange, description;
+            if (adaptiveScore < 200) {
+                finalLevel = 'A1';
+                frequencyRange = '1-500';
+                description = 'You're at the beginning of your Spanish journey! Focus on the most common everyday words.';
+            } else if (adaptiveScore < 800) {
+                finalLevel = 'A2';
+                frequencyRange = '500-1,500';
+                description = 'You understand basic Spanish! You're building your foundation with common phrases.';
+            } else if (adaptiveScore < 2000) {
+                finalLevel = 'B1';
+                frequencyRange = '1,500-3,000';
+                description = 'You're comfortable with intermediate Spanish! You can handle most everyday situations.';
+            } else if (adaptiveScore < 5000) {
+                finalLevel = 'B2';
+                frequencyRange = '3,000-6,000';
+                description = 'You're fluent in everyday Spanish! You understand complex topics and nuances.';
+            } else {
+                finalLevel = 'C1';
+                frequencyRange = '6,000+';
+                description = 'You're advanced! You understand sophisticated Spanish and rare vocabulary.';
+            }
+
+            document.getElementById('levelBadge').textContent = finalLevel;
+            document.getElementById('levelDescription').textContent = description;
+            document.getElementById('frequencyText').textContent =
+                `You're starting at the top ${frequencyRange} most common Spanish words. We'll show you videos matching your level and gradually introduce new vocabulary!`;
+
+            // Save level to localStorage
+            localStorage.setItem('userLevel', finalLevel);
+            localStorage.setItem('frequencyRange', frequencyRange);
+
+            // Save to Supabase if user is logged in
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+
+                if (user) {
+                    console.log('📊 Saving assessment results to Supabase for user:', user.id);
+
+                    // Update user metadata
+                    const { error: metadataError } = await supabase.auth.updateUser({
+                        data: {
+                            level: finalLevel,
+                            frequency_range: frequencyRange,
+                            assessment_completed: true,
+                            assessment_date: new Date().toISOString(),
+                            adaptive_score: adaptiveScore
+                        }
+                    });
+
+                    if (metadataError) {
+                        console.error('Error updating user metadata:', metadataError);
+                    } else {
+                        console.log('✅ User metadata updated successfully');
+                    }
+
+                    // Update or create user_profiles record
+                    const { error: profileError } = await supabase
+                        .from('user_profiles')
+                        .upsert({
+                            user_id: user.id,
+                            email: user.email,
+                            level: finalLevel,
+                            frequency_range: frequencyRange,
+                            assessment_completed: true,
+                            updated_at: new Date().toISOString()
+                        }, { onConflict: 'user_id' });
+
+                    if (profileError) {
+                        console.warn('Profile update warning (table may not exist):', profileError.message);
+                    } else {
+                        console.log('✅ User profile updated successfully');
+                    }
+                } else {
+                    console.log('ℹ️ No user logged in - saving to localStorage only');
+                }
+            } catch (error) {
+                console.error('Error saving assessment results:', error);
+            }
+        }
+
+        function finishAssessment() {
+            // Redirect to main app
+            window.location.href = '/tiktok-video-feed.html';
+        }
+    </script>
+</body>
+</html>

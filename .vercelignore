@@ -1,0 +1,106 @@
+# Dependencies
+node_modules
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Development files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+test/
+tests/
+*.test.js
+*.spec.js
+test-*.js
+playwright-report/
+test-results/
+screenshots/
+
+# Development scripts
+debug-*.js
+check-*.js
+quick-*.js
+screenshot-*.js
+inspect-*.js
+verify-*.js
+
+# Documentation & Reports (keep essential ones)
+*.md
+!README.md
+!DEPLOYMENT_GUIDE.md
+
+# Archives
+archive/
+_archive_cleanup_2025-10-09/
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+*.pid
+server.pid
+
+# Cache
+cache/
+.cache/
+
+# User data (local development only)
+user-data/
+
+# Playwright browser binaries
+.playwright/
+
+# MCP examples (not needed in production)
+mcp-examples/
+
+# Design files
+design/
+*.png
+!public/**/*.png
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.cursor/
+
+# Build artifacts
+dist/
+build/
+
+# Scripts (development only)
+scripts/transcribe-*.js
+scripts/start-auto-watcher.js
+scripts/test-*.js
+
+# Logs
+*.log
+auto-push.log
+transcription-*.log
+server-*.log
+
+# Database (local only)
+prisma/dev.db
+prisma/dev.db-journal
+
+# Config files
+.prettierrc
+.eslintrc
+playwright.config.ts
+
+# Shell scripts (development only)
+*.sh
+
+# Vercel
+.vercel

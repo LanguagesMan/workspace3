@@ -1,0 +1,110 @@
+# ==========================================
+# LANGFLIX ENVIRONMENT VARIABLES
+# ==========================================
+# Copy this file to .env and fill in your actual values
+# Never commit .env to git - it's in .gitignore
+
+# ==========================================
+# DATABASE (PostgreSQL/Neon) - REQUIRED
+# ==========================================
+# Get from: https://console.neon.tech/
+# Format: postgresql://USER:PASSWORD@HOST/DATABASE?sslmode=require
+DATABASE_URL="postgresql://user:password@host.region.neon.tech/langflix?sslmode=require"
+
+# ==========================================
+# SUPABASE - REQUIRED
+# ==========================================
+SUPABASE_URL="https://your-project.supabase.co"
+SUPABASE_ANON_KEY="your-anon-key-here"
+SUPABASE_SERVICE_ROLE_KEY="your-service-role-key-here"
+
+# ==========================================
+# OPENAI API - REQUIRED
+# ==========================================
+OPENAI_API_KEY="sk-proj-your-key-here"
+
+# ==========================================
+# PERPLEXITY API - AI RESEARCH
+# ==========================================
+PERPLEXITY_API_KEY="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"
+
+# ==========================================
+# TRANSLATION SERVICES
+# ==========================================
+DEEPL_API_KEY="your-deepl-key-here"
+GOOGLE_TRANSLATE_API_KEY="your-google-translate-key-here"
+LIBRETRANSLATE_API_URL="https://libretranslate.com/translate"
+
+# ==========================================
+# WEB SCRAPING & CONTENT
+# ==========================================
+FIRECRAWL_API_KEY="fc-your-key-here"
+
+# ==========================================
+# TEXT-TO-SPEECH
+# ==========================================
+GOOGLE_TTS_API_KEY="your-google-tts-key-here"
+ELEVENLABS_API_KEY="your-elevenlabs-key-here"
+
+# ==========================================
+# PAYMENT PROCESSING
+# ==========================================
+STRIPE_SECRET_KEY="sk_test_your-key-here"
+STRIPE_PUBLISHABLE_KEY="pk_test_your-key-here"
+STRIPE_WEBHOOK_SECRET="whsec_your-webhook-secret-here"
+
+# ==========================================
+# ERROR TRACKING & MONITORING
+# ==========================================
+SENTRY_DSN="https://your-dsn@sentry.io/project-id"
+SENTRY_ENVIRONMENT="development"
+
+# ==========================================
+# ANALYTICS
+# ==========================================
+GA_TRACKING_ID="G-XXXXXXXXXX"
+MIXPANEL_TOKEN="your-mixpanel-token"
+
+# ==========================================
+# EMAIL SERVICE
+# ==========================================
+SENDGRID_API_KEY="SG.your-key-here"
+FROM_EMAIL="noreply@langflix.app"
+
+# ==========================================
+# MUSIC & PODCASTS
+# ==========================================
+SPOTIFY_CLIENT_ID="your-spotify-client-id"
+SPOTIFY_CLIENT_SECRET="your-spotify-client-secret"
+GENIUS_API_KEY="your-genius-key-here"
+
+# ==========================================
+# SERVER CONFIGURATION
+# ==========================================
+NODE_ENV="development"
+PORT=3001
+FRONTEND_URL="http://localhost:3001"
+SESSION_SECRET="your-random-secret-here"
+JWT_SECRET="your-jwt-secret-here"
+
+# ==========================================
+# FEATURE FLAGS
+# ==========================================
+ENABLE_AI_GENERATION="true"
+ENABLE_PREMIUM_FEATURES="true"
+ENABLE_OFFLINE_MODE="false"
+ENABLE_ANALYTICS="true"
+
+# ==========================================
+# RATE LIMITING
+# ==========================================
+RATE_LIMIT_WINDOW_MS="900000"
+RATE_LIMIT_MAX_REQUESTS="100"
+
+# ==========================================
+# A1 TRANSLATION CONSTRAINTS
+# ==========================================
+A1_MAX_NEW_WORDS="1"
+A1_MIN_KNOWN_PERCENTAGE="90"
+A1_TARGET_WORDS_PER_TRANSLATION="3-5"
+

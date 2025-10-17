@@ -1,0 +1,144 @@
+<!-- 🎯 UNIFIED BOTTOM NAVIGATION COMPONENT -->
+<!-- Include this in all pages for consistent navigation -->
+
+<style>
+    .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: rgba(0, 0, 0, 0.95);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border-top: 0.5px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        z-index: 1000;
+        padding: 0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+
+    .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        padding: 8px 12px;
+        min-width: 60px;
+        min-height: 44px; /* iOS/Android minimum touch target */
+        flex: 1;
+        justify-content: center;
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .nav-item:active {
+        transform: scale(0.95);
+    }
+
+    .nav-item.active {
+        color: rgba(255, 255, 255, 1);
+    }
+
+    .nav-icon {
+        font-size: 24px;
+        transition: all 0.2s ease;
+    }
+
+    .nav-item:not(.active) .nav-icon {
+        opacity: 0.6;
+        filter: grayscale(20%);
+    }
+
+    .nav-item.active .nav-icon {
+        opacity: 1;
+        transform: scale(1.15);
+        filter: none;
+    }
+
+    .nav-label {
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+    }
+
+    /* Ensure content doesn't hide behind nav */
+    body {
+        padding-bottom: 70px;
+    }
+
+    @media (max-width: 600px) {
+        .nav-label {
+            font-size: 9px;
+        }
+        
+        .nav-icon {
+            font-size: 22px;
+        }
+    }
+</style>
+
+<nav class="bottom-nav" id="bottomNav">
+    <a href="/tiktok-video-feed.html" class="nav-item" id="nav-videos">
+        <div class="nav-icon">🎬</div>
+        <div class="nav-label">Videos</div>
+    </a>
+    <a href="/discover-ai.html" class="nav-item" id="nav-discover">
+        <div class="nav-icon">📰</div>
+        <div class="nav-label">Discover</div>
+    </a>
+<<<<<<< HEAD
+    <a href="/leaderboard.html" class="nav-item" id="nav-leaderboard">
+        <div class="nav-icon">🏆</div>
+        <div class="nav-label">Rank</div>
+=======
+    <a href="/music-player.html" class="nav-item" id="nav-music">
+        <div class="nav-icon">🎵</div>
+        <div class="nav-label">Music</div>
+>>>>>>> agent-6-deployment
+    </a>
+    <a href="/stories.html" class="nav-item" id="nav-stories">
+        <div class="nav-icon">📖</div>
+        <div class="nav-label">Stories</div>
+    </a>
+    <a href="/profile.html" class="nav-item" id="nav-profile">
+        <div class="nav-icon">👤</div>
+        <div class="nav-label">Profile</div>
+    </a>
+</nav>
+
+<script>
+    // Highlight active page based on current URL
+    (function() {
+        const currentPage = window.location.pathname;
+        const navItems = {
+            '/tiktok-video-feed.html': 'nav-videos',
+            '/': 'nav-videos', // Default home
+            '/discover-ai.html': 'nav-discover',
+            '/discover-feed.html': 'nav-discover',
+<<<<<<< HEAD
+            '/leaderboard.html': 'nav-leaderboard',
+=======
+            '/music-player.html': 'nav-music',
+>>>>>>> agent-6-deployment
+            '/stories.html': 'nav-stories',
+            '/profile.html': 'nav-profile',
+            '/dashboard.html': 'nav-profile',
+            '/games-hub.html': 'nav-profile', // Games accessible from profile
+            '/review-queue.html': 'nav-profile'
+        };
+
+        const activeNavId = navItems[currentPage] || navItems[Object.keys(navItems).find(key => currentPage.includes(key))];
+        
+        if (activeNavId) {
+            const activeItem = document.getElementById(activeNavId);
+            if (activeItem) {
+                activeItem.classList.add('active');
+            }
+        }
+    })();
+</script>

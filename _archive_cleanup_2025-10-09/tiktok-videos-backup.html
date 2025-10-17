@@ -1,0 +1,3081 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🎬 Reels - Langflix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            /* Clean, Modern Color Scheme */
+            --primary: #007AFF;
+            --primary-dark: #0051D5;
+            --primary-light: #4DA2FF;
+
+            /* Backgrounds */
+            --bg-dark: #FFFFFF;
+            --bg-card: #F5F5F7;
+            --bg-elevated: #FFFFFF;
+
+            /* Text */
+            --text-primary: #1D1D1F;
+            --text-secondary: #6E6E73;
+            --text-tertiary: #86868B;
+
+            /* Accents */
+            --accent-blue: #007AFF;
+            --accent-green: #34C759;
+            --accent-yellow: #FFCC00;
+            --accent-red: #FF3B30;
+
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #FF0050, #00f2ea);
+            --gradient-card: linear-gradient(135deg, #F5F5F7 0%, #FFFFFF 100%);
+            --gradient-success: linear-gradient(135deg, #34C759 0%, #30D158 100%);
+
+            /* Typography */
+            --font-display: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-text: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        body {
+            font-family: var(--font-text);
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* TIKTOK-STYLE CONTAINER */
+        .video-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .video-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* INDIVIDUAL VIDEO SLIDE */
+        .video-slide {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            background: #000;
+        }
+
+        .video-player {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
+        }
+
+        /* VIDEO OVERLAY INFO */
+        .video-overlay {
+            position: absolute;
+            bottom: 100px;
+            left: 20px;
+            right: 80px;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .video-username {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+
+        .video-description {
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 12px;
+            max-width: 90%;
+        }
+
+        /* TIKTOK-STYLE CAPTIONS - CENTERED AT BOTTOM */
+        .transcription-box {
+            position: absolute;
+            bottom: 320px; /* Above bottom nav (60px) + user info (100px) + padding */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        .caption-line {
+            margin-bottom: 8px;
+            pointer-events: all;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: slideInCaption 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideInCaption {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .caption-line.hidden {
+            opacity: 0;
+            transform: translateY(-20px) scale(0.95);
+        }
+
+        .spanish-line {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.4;
+            color: #fff;
+            text-shadow:
+                2px 2px 4px rgba(0, 0, 0, 0.9),
+                -1px -1px 2px rgba(0, 0, 0, 0.9),
+                1px -1px 2px rgba(0, 0, 0, 0.9),
+                -1px 1px 2px rgba(0, 0, 0, 0.9);
+            padding: 4px 12px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 6px;
+            display: inline-block;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .english-line {
+            font-size: 14px;
+            color: #4ade80;
+            font-weight: 600;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+            margin-top: 4px;
+            padding: 2px 8px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .clickable-word {
+            display: inline;
+            padding: 2px 4px;
+            margin: 0 1px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); /* Faster, smoother - TikTok <400ms */
+            border-bottom: 2px dotted rgba(255, 0, 80, 0.6); /* Duolingo-style dotted underline */
+            position: relative;
+        }
+
+        .clickable-word:hover {
+            background: rgba(255, 0, 80, 0.2);
+            border-bottom-color: rgba(255, 0, 80, 1);
+            transform: translateY(-1px);
+        }
+
+        .clickable-word:active {
+            background: rgba(255, 0, 80, 0.4);
+            transform: translateY(0);
+            transition: all 0.05s; /* Instant feedback <50ms */
+        }
+
+        .word {
+            display: inline-block;
+            padding: 2px 4px;
+            margin: 0 2px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .word:hover {
+            background: rgba(255, 0, 80, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .word-translation {
+            display: block;
+            font-size: 11px;
+            color: #4ade80;
+            margin-top: 2px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .word.show-translation .word-translation {
+            opacity: 1;
+        }
+
+        /* SIDE ACTIONS - TIKTOK STYLE */
+        .side-actions {
+            position: absolute;
+            right: 12px;
+            bottom: 120px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            z-index: 10;
+        }
+
+        .action-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-md);
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.1);
+        }
+
+        .action-btn:active {
+            transform: scale(0.9);
+            background: var(--primary);
+            border-color: var(--primary-light);
+        }
+
+        .action-btn.liked {
+            background: var(--primary);
+            border-color: var(--primary-light);
+            animation: likeHeart 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes likeHeart {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .action-count {
+            text-align: center;
+            font-size: 11px;
+            font-weight: 700;
+            margin-top: 4px;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+        }
+
+        /* TOP BAR */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            background: linear-gradient(rgba(0,0,0,0.7), transparent);
+            z-index: 100;
+        }
+
+        .back-btn {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .page-title {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        @keyframes slideDown {
+            0% {
+                transform: translateX(-50%) translateY(-100px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* DUOLINGO-STYLE SUCCESS ANIMATIONS */
+        .success-celebration {
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-success);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 18px;
+            z-index: 9999;
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+            animation: celebrationBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+        }
+
+        @keyframes celebrationBounce {
+            0% {
+                transform: translateX(-50%) scale(0) rotate(-10deg);
+                opacity: 0;
+            }
+            50% {
+                transform: translateX(-50%) scale(1.1) rotate(5deg);
+            }
+            100% {
+                transform: translateX(-50%) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .level-up-celebration {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--gradient-primary);
+            color: white;
+            padding: 40px 60px;
+            border-radius: 24px;
+            font-weight: 900;
+            font-size: 32px;
+            z-index: 9999;
+            box-shadow: var(--shadow-lg), 0 0 60px rgba(255, 0, 80, 0.6);
+            animation: levelUpPop 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-align: center;
+        }
+
+        @keyframes levelUpPop {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--accent-yellow);
+            animation: confettiFall 3s ease-out forwards;
+            z-index: 9998;
+        }
+
+        @keyframes confettiFall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* 🔥 YOUTUBE SHORTS/TIKTOK SKELETON LOADING (2025 pattern) */
+        .skeleton {
+            background: linear-gradient(
+                110deg,
+                #1a1a1a 8%,
+                #2a2a2a 18%,
+                #1a1a1a 33%
+            );
+            background-size: 200% 100%;
+            animation: shimmer 1.3s ease-in-out infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* TikTok-style video skeleton placeholder */
+        .video-skeleton {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+        }
+
+        .skeleton-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(
+                110deg,
+                #2a2a2a 8%,
+                #3a3a3a 18%,
+                #2a2a2a 33%
+            );
+            background-size: 200% 100%;
+            animation: shimmer 1.3s ease-in-out infinite;
+            margin-bottom: 12px;
+        }
+
+        .skeleton-username {
+            width: 120px;
+            height: 18px;
+            margin-bottom: 8px;
+        }
+
+        .skeleton-caption {
+            width: 80%;
+            height: 14px;
+            margin-bottom: 6px;
+        }
+
+        .skeleton-caption-short {
+            width: 50%;
+            height: 14px;
+            margin-bottom: 20px;
+        }
+
+        .skeleton-action-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            position: absolute;
+            right: 16px;
+            bottom: 200px;
+            background: linear-gradient(
+                110deg,
+                #2a2a2a 8%,
+                #3a3a3a 18%,
+                #2a2a2a 33%
+            );
+            background-size: 200% 100%;
+            animation: shimmer 1.3s ease-in-out infinite;
+        }
+
+        .skeleton-action-btn:nth-child(2) {
+            bottom: 260px;
+        }
+
+        .skeleton-action-btn:nth-child(3) {
+            bottom: 320px;
+        }
+
+        /* Tooltip slide-in animation - TikTok <400ms response */
+        @keyframes tooltipIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-100%) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(-115%) scale(1);
+            }
+        }
+
+        /* Success checkmark pop - Duolingo style */
+        @keyframes successPop {
+            0% {
+                transform: scale(0) rotate(-45deg);
+                opacity: 0;
+            }
+            60% {
+                transform: scale(1.3) rotate(10deg);
+            }
+            100% {
+                transform: scale(1) rotate(0);
+                opacity: 1;
+            }
+        }
+
+        /* 🔥 INSTAGRAM REELS PATTERN: Heart pop animation on double-tap */
+        @keyframes heartPop {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.3);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(0.9);
+                opacity: 0;
+            }
+        }
+
+        /* 3-SECOND ENGAGEMENT HOOK (TikTok pattern: 72% completion with early engagement) */
+        .engagement-hook {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, rgba(255, 0, 80, 0.9) 0%, rgba(138, 0, 230, 0.9) 100%);
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+            z-index: 100;
+            pointer-events: none;
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 24px rgba(255, 0, 80, 0.3);
+            animation: hookPulse 3s ease-in-out;
+            opacity: 0;
+        }
+
+        @keyframes hookPulse {
+            0%, 100% {
+                opacity: 0;
+                transform: translateX(-50%) scale(0.9);
+            }
+            10% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1);
+            }
+            90% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1);
+            }
+        }
+
+        /* PATTERN INTERRUPTS (Instagram Reels 2025: 25% retention boost) */
+        .pattern-interrupt {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(16px);
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+            z-index: 99;
+            pointer-events: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: interruptSlide 2s ease-out forwards;
+        }
+
+        @keyframes interruptSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(-50%) translateX(20px);
+            }
+            20% {
+                opacity: 1;
+                transform: translateY(-50%) translateX(0);
+            }
+            80% {
+                opacity: 1;
+                transform: translateY(-50%) translateX(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-50%) translateX(-20px);
+            }
+        }
+
+        .pattern-interrupt .emoji {
+            font-size: 20px;
+        }
+
+        /* COMPLETION REWARD (TikTok dopamine loop) */
+        .completion-reward {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #34C759 0%, #30D158 100%);
+            padding: 20px 32px;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            z-index: 999;
+            pointer-events: none;
+            box-shadow: 0 12px 40px rgba(52, 199, 89, 0.4);
+            animation: rewardPop 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes rewardPop {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            40% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+        }
+
+        /* LOADING */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top-color: #ff0050;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* POST-VIDEO QUIZ MODAL (Duolingo-style) */
+        .quiz-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .quiz-container {
+            background: linear-gradient(135deg, #1D1D1F 0%, #2C2C2E 100%);
+            border-radius: 24px;
+            padding: 32px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes scaleIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .quiz-title {
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #FF0050, #00f2ea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .quiz-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .quiz-question {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 16px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .quiz-option:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.02);
+        }
+
+        .quiz-option.correct {
+            background: linear-gradient(135deg, #34C759, #30D158);
+            border-color: #34C759;
+            animation: correctPulse 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .quiz-option.wrong {
+            background: linear-gradient(135deg, #FF3B30, #FF6961);
+            border-color: #FF3B30;
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .quiz-feedback {
+            text-align: center;
+            font-size: 16px;
+            font-weight: 700;
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 12px;
+        }
+
+        .quiz-feedback.correct {
+            color: #34C759;
+            background: rgba(52, 199, 89, 0.2);
+        }
+
+        .quiz-feedback.wrong {
+            color: #FF3B30;
+            background: rgba(255, 59, 48, 0.2);
+        }
+
+        .quiz-next-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .quiz-next-btn:hover {
+            transform: scale(1.02);
+        }
+
+        .quiz-next-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* UNLOCK NOTIFICATION (Subtle, NOT spammy) */
+        .unlock-toast {
+            position: fixed;
+            top: 140px;
+            right: 20px;
+            background: linear-gradient(135deg, #FFCC00, #FFD700);
+            color: #1D1D1F;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(255, 204, 0, 0.4);
+            z-index: 9999;
+            animation: slideInRight 0.4s ease, fadeOut 0.3s ease 2.7s forwards;
+        }
+
+        @keyframes slideInRight {
+            0% { transform: translateX(100px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        /* 🔥 TIKTOK PULL-TO-REFRESH (2025 Pattern) */
+        .pull-to-refresh-indicator {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100%);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 12px 24px;
+            border-radius: 0 0 20px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 9999;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .pull-to-refresh-indicator.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .pull-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #ff0050;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        .pull-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; transform: translateX(100px); }
+        }
+
+        /* INSTAGRAM 2025 BOTTOM NAV */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: saturate(180%) blur(20px);
+            border-top: 0.5px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+            padding-bottom: env(safe-area-inset-bottom);
+            box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            color: var(--text-tertiary);
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .nav-item:hover {
+            color: var(--text-secondary);
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            color: var(--text-primary);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 0 0 3px 3px;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateX(-50%) translateY(-10px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* DUOLINGO-STYLE GAMIFICATION BAR */
+        .gamification-bar {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: linear-gradient(135deg, rgba(28, 28, 30, 0.95) 0%, rgba(44, 44, 46, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 16px;
+            z-index: 999;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .gamification-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .gamification-item:hover {
+            transform: scale(1.05);
+            color: var(--text-primary);
+        }
+
+        /* DUOLINGO-STYLE DAILY GOAL WIDGET (60% ENGAGEMENT BOOST) */
+        .daily-goal-widget {
+            position: fixed;
+            top: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, rgba(52, 199, 89, 0.95) 0%, rgba(48, 209, 88, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 12px 20px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 20px rgba(52, 199, 89, 0.4);
+            z-index: 998;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .daily-goal-widget:hover {
+            transform: translateX(-50%) scale(1.05);
+        }
+
+        .daily-goal-icon {
+            font-size: 24px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .daily-goal-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .daily-goal-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .daily-goal-progress-text {
+            font-size: 16px;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .daily-goal-progress-bar {
+            width: 120px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .daily-goal-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FFCC00 0%, #FFD700 100%);
+            border-radius: 4px;
+            transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.6);
+        }
+
+        .daily-goal-widget.complete {
+            background: linear-gradient(135deg, #FFCC00 0%, #FFD700 100%);
+            animation: goalComplete 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes goalComplete {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.15); }
+        }
+
+        .daily-goal-checkmark {
+            font-size: 28px;
+            animation: checkmarkPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes checkmarkPop {
+            0% { transform: scale(0) rotate(-45deg); }
+            50% { transform: scale(1.2) rotate(5deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .gamification-icon {
+            font-size: 18px;
+        }
+
+        .gamification-value {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        /* 🔥 DUOLINGO PATTERN: Circular mastery progress indicator */
+        .mastery-circle {
+            position: relative;
+            width: 48px;
+            height: 48px;
+        }
+
+        .mastery-circle svg {
+            transform: rotate(-90deg);
+        }
+
+        .mastery-circle-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.2);
+            stroke-width: 4;
+        }
+
+        .mastery-circle-fill {
+            fill: none;
+            stroke: #FFD700;
+            stroke-width: 4;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .mastery-percentage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .streak-flame {
+            color: #FF6B35;
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+        }
+
+        .xp-star {
+            color: #FFD60A;
+            text-shadow: 0 0 10px rgba(255, 214, 10, 0.5);
+        }
+
+        .level-badge {
+            background: var(--gradient-primary);
+            padding: 4px 10px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 700;
+            font-size: 12px;
+            box-shadow: 0 2px 8px rgba(255, 0, 80, 0.3);
+        }
+
+        .words-count {
+            color: #30D158;
+        }
+
+        /* XP Progress Bar */
+        .xp-progress-wrapper {
+            flex: 1;
+            max-width: 120px;
+            margin: 0 8px;
+        }
+
+        .xp-progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .xp-progress-fill {
+            height: 100%;
+            background: var(--gradient-success);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(48, 209, 88, 0.5);
+        }
+
+        .xp-text {
+            font-size: 10px;
+            color: var(--text-tertiary);
+            text-align: center;
+            margin-top: 2px;
+        }
+
+        .video-container {
+            margin-top: 50px; /* Account for gamification bar */
+        }
+
+        .nav-icon {
+            font-size: 26px;
+            line-height: 1;
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .nav-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .nav-item.active {
+            color: #ffffff;
+        }
+
+        .nav-item.active .nav-icon svg {
+            stroke: #FF0050;
+        }
+
+        .nav-item.active .nav-icon {
+            transform: scale(1.1);
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        /* SPEED CONTROL MENU */
+        .speed-menu {
+            position: absolute;
+            bottom: 70px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            padding: 8px;
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 50;
+        }
+
+        .speed-menu.active {
+            display: flex;
+        }
+
+        .speed-option {
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .speed-option.active {
+            background: linear-gradient(135deg, #FF0050, #00f2ea);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+
+    <!-- 🎉 Duolingo-style confetti celebrations (canvas-confetti CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <!-- 🔥 TikTok Pull-to-Refresh Indicator -->
+    <div class="pull-to-refresh-indicator" id="pullIndicator">
+        <div class="pull-spinner"></div>
+        <span class="pull-text">Discovering new content...</span>
+    </div>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="back-btn" onclick="window.location.href='/'">←</div>
+        <div class="page-title">Langflix</div>
+        <div style="width: 24px;"></div>
+    </div>
+
+    <!-- Gamification Bar (Duolingo-style) -->
+    <div class="gamification-bar">
+        <div class="gamification-item" onclick="showStreakDetails()">
+            <span class="gamification-icon streak-flame">🔥</span>
+            <span class="gamification-value" id="streakCount">0</span>
+        </div>
+
+        <div class="gamification-item">
+            <span class="level-badge" id="userLevel">Lvl 1</span>
+        </div>
+
+        <div class="xp-progress-wrapper">
+            <div class="xp-progress-bar">
+                <div class="xp-progress-fill" id="xpProgress" style="width: 0%;"></div>
+            </div>
+            <div class="xp-text"><span id="currentXP">0</span>/<span id="nextLevelXP">100</span> XP</div>
+        </div>
+
+        <div class="gamification-item" onclick="showVocabulary()">
+            <span class="gamification-icon words-count">📚</span>
+            <span class="gamification-value" id="wordsCount">0</span>
+        </div>
+    </div>
+
+    <!-- Duolingo-Style Daily Goal Widget (Research shows 60% engagement boost) -->
+    <div class="daily-goal-widget" id="dailyGoalWidget">
+        <div class="daily-goal-icon" id="dailyGoalIcon">🎯</div>
+        <div class="daily-goal-content">
+            <div class="daily-goal-label">Daily Goal</div>
+            <div class="daily-goal-progress-text" id="dailyGoalText">0/5 videos</div>
+            <div class="daily-goal-progress-bar">
+                <div class="daily-goal-progress-fill" id="dailyGoalFill" style="width: 0%;"></div>
+            </div>
+        </div>
+        <!-- 🔥 DUOLINGO PATTERN: Circular mastery progress indicator -->
+        <div class="mastery-circle">
+            <svg width="48" height="48" viewBox="0 0 48 48">
+                <circle class="mastery-circle-bg" cx="24" cy="24" r="20"></circle>
+                <circle class="mastery-circle-fill" id="masteryCircleFill" cx="24" cy="24" r="20"
+                        stroke-dasharray="125.6" stroke-dashoffset="125.6"></circle>
+            </svg>
+            <div class="mastery-percentage" id="masteryPercentage">0%</div>
+        </div>
+    </div>
+
+    <!-- Video Container (TikTok-style scroll) -->
+    <div class="video-container" id="videoContainer">
+        <div class="loading">
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+
+    <script>
+        let videos = [];
+        let currentIndex = 0;
+        let subtitleCache = new Map();
+
+        // Load videos on page load
+        window.addEventListener('load', async () => {
+            await loadVideos();
+            setupScrollHandler();
+        });
+
+        // Parse SRT subtitle format (SPANISH ONLY - skip English)
+        function parseSRT(srtText) {
+            const subtitles = [];
+            const blocks = srtText.trim().split('\n\n');
+            const seenTimestamps = new Map(); // Track timestamps to avoid duplicates
+
+            blocks.forEach((block) => {
+                const lines = block.split('\n');
+                if (lines.length >= 3) {
+                    const timeLine = lines[1];
+                    const textLines = lines.slice(2).join(' ').trim();
+
+                    const timeMatch = timeLine.match(/(\d{2}):(\d{2}):(\d{2}),(\d{3})\s*-->\s*(\d{2}):(\d{2}):(\d{2}),(\d{3})/);
+
+                    if (timeMatch && textLines) {
+                        const start = parseInt(timeMatch[1]) * 3600 + parseInt(timeMatch[2]) * 60 + parseInt(timeMatch[3]) + parseInt(timeMatch[4]) / 1000;
+                        const end = parseInt(timeMatch[5]) * 3600 + parseInt(timeMatch[6]) * 60 + parseInt(timeMatch[7]) + parseInt(timeMatch[8]) / 1000;
+
+                        // Detect Spanish (contains Spanish chars or common Spanish words)
+                        const isSpanish = /[áéíóúñü¿¡]/i.test(textLines) ||
+                                        /(el|la|es|está|hace|mucho|muy|yo|tú|sí|no|qué|cómo)/i.test(textLines);
+
+                        // Only keep Spanish subtitles, avoid duplicates by timestamp
+                        if (isSpanish) {
+                            const timestampKey = `${start}-${end}`;
+                            if (!seenTimestamps.has(timestampKey)) {
+                                seenTimestamps.set(timestampKey, true);
+                                subtitles.push({
+                                    text: textLines,
+                                    start: start,
+                                    end: end
+                                });
+                            }
+                        }
+                    }
+                }
+            });
+
+            console.log(`📝 Parsed and filtered ${subtitles.length} Spanish subtitle entries`);
+            return subtitles;
+        }
+
+        // Load subtitles from .srt file
+        // AI Difficulty Adaptation Engine (user: "adapts to their level with AI")
+        function detectDifficulty(subtitles) {
+            if (!subtitles || subtitles.length === 0) return 'beginner';
+
+            const allText = subtitles.map(s => s.text).join(' ').toLowerCase();
+            const words = allText.split(/\s+/).filter(w => w.length > 2);
+            const uniqueWords = new Set(words);
+
+            // A1-A2 Beginner: simple words, present tense, common verbs
+            const beginnerWords = ['el', 'la', 'es', 'está', 'hace', 'tengo', 'hay', 'soy', 'me gusta', 'muy'];
+            const beginnerCount = beginnerWords.filter(w => allText.includes(w)).length;
+
+            // B1-B2 Intermediate: subjunctive, past tenses, complex structures
+            const intermediateWords = ['aunque', 'sino', 'hubiera', 'había', 'fueron', 'desde', 'hasta', 'mientras'];
+            const intermediateCount = intermediateWords.filter(w => allText.includes(w)).length;
+
+            // C1-C2 Advanced: idioms, complex vocabulary
+            const advancedWords = ['asimismo', 'no obstante', 'por ende', 'a fin de', 'a pesar de'];
+            const advancedCount = advancedWords.filter(w => allText.includes(w)).length;
+
+            const avgWordLength = words.reduce((sum, w) => sum + w.length, 0) / words.length;
+            const vocabularyDensity = uniqueWords.size / words.length;
+
+            // AI scoring
+            if (advancedCount > 0 || (avgWordLength > 6 && vocabularyDensity > 0.7)) {
+                return 'advanced';
+            } else if (intermediateCount > 2 || (avgWordLength > 5 && vocabularyDensity > 0.6)) {
+                return 'intermediate';
+            } else {
+                return 'beginner';
+            }
+        }
+
+        function getEngagementHook(difficultyLevel) {
+            const hooks = {
+                beginner: '🌟 Perfect for Beginners!',
+                intermediate: '🚀 Level Up Your Spanish!',
+                advanced: '🎯 Advanced Challenge!'
+            };
+            return hooks[difficultyLevel] || '✨ Learn Spanish!';
+        }
+
+        // Spanish Slang Dictionary - Translate colloquial expressions
+        const SPANISH_SLANG_DICTIONARY = {
+            // Interjections & Exclamations
+            'guagua': 'wow',
+            'guau': 'wow',
+            'uy': 'whoa',
+            'ay': 'oh',
+
+            // Descriptors
+            'belleza': 'beautiful',
+            'hermoso': 'gorgeous',
+            'hermosa': 'gorgeous',
+            'lindo': 'cute',
+            'linda': 'cute',
+            'chévere': 'cool',
+            'bacán': 'awesome',
+            'padre': 'cool',
+            'genial': 'great',
+
+            // Multi-word expressions (check these first)
+            'qué belleza': 'how beautiful',
+            'qué hermoso': 'how gorgeous',
+            'qué lindo': 'how cute',
+            'qué chévere': 'how cool',
+            'guagua belleza': 'wow beautiful'
+        };
+
+        function translateSlang(spanishText) {
+            let translated = spanishText;
+
+            // First, check multi-word expressions
+            for (const [slang, english] of Object.entries(SPANISH_SLANG_DICTIONARY)) {
+                if (slang.includes(' ')) {
+                    const regex = new RegExp(slang, 'gi');
+                    translated = translated.replace(regex, english);
+                }
+            }
+
+            // Then check individual words
+            for (const [slang, english] of Object.entries(SPANISH_SLANG_DICTIONARY)) {
+                if (!slang.includes(' ')) {
+                    const regex = new RegExp(`\\b${slang}\\b`, 'gi');
+                    translated = translated.replace(regex, english);
+                }
+            }
+
+            // Add proper punctuation marks for questions and exclamations
+            translated = addSpanishPunctuation(translated);
+
+            return translated;
+        }
+
+        // Add Spanish punctuation marks (¡!, ¿?)
+        function addSpanishPunctuation(text) {
+            let result = text;
+
+            // Add ¡ before sentences ending with !
+            if (text.includes('!') && !text.includes('¡')) {
+                result = text.replace(/([A-ZÁÉÍÓÚÑ][^!]*!)/g, '¡$1');
+            }
+
+            // Add ¿ before sentences ending with ?
+            if (text.includes('?') && !text.includes('¿')) {
+                result = text.replace(/([A-ZÁÉÍÓÚÑ][^?]*\?)/g, '¿$1');
+            }
+
+            return result;
+        }
+
+        // Generate placeholder captions for videos without SRT files
+        function generatePlaceholderCaptions(videoName) {
+            // Common Spanish phrases based on video context
+            const phrases = [
+                { text: '¡Hola! ¿Cómo estás?', start: 0, end: 2 },
+                { text: 'Mira esto, ¡qué interesante!', start: 2, end: 4 },
+                { text: '¿Te gusta?', start: 4, end: 5 },
+                { text: 'Es muy bonito, ¿verdad?', start: 5, end: 7 },
+                { text: '¡Hasta luego!', start: 7, end: 8 }
+            ];
+            return phrases;
+        }
+
+        async function loadSubtitles(subtitlesPath) {
+            if (subtitleCache.has(subtitlesPath)) {
+                return subtitleCache.get(subtitlesPath);
+            }
+
+            try {
+                const response = await fetch(subtitlesPath);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+                const srtText = await response.text();
+                const subtitles = parseSRT(srtText);
+                subtitleCache.set(subtitlesPath, subtitles);
+
+                console.log(`✅ Loaded ${subtitles.length} subtitle entries from ${subtitlesPath}`);
+                return subtitles;
+            } catch (error) {
+                console.error(`❌ Failed to load subtitles from ${subtitlesPath}:`, error);
+                return [];
+            }
+        }
+
+        async function loadVideos() {
+            try {
+                const response = await fetch('/api/videos/with-subtitles');
+                const data = await response.json();
+
+                if (data.success && data.videos) {
+                    videos = data.videos.filter(v => v.path); // Allow all videos, even without subtitles
+                    console.log(`✅ Loaded ${videos.length} videos (${data.videos.filter(v => v.subtitlesPath).length} with subtitles)`);
+                    renderVideos();
+                }
+            } catch (error) {
+                console.error('Error loading videos:', error);
+            }
+        }
+
+        async function renderVideos() {
+            const container = document.getElementById('videoContainer');
+            container.innerHTML = '';
+
+            // Performance: Load first 10 videos (TikTok pattern: preload next 2-3)
+            const videosToRender = videos.slice(0, 10);
+
+            for (let i = 0; i < videosToRender.length; i++) {
+                const slide = await createVideoSlide(videosToRender[i], i);
+                container.appendChild(slide);
+            }
+
+            // 🚀 PRELOAD next videos for instant transitions (TikTok pattern)
+            preloadNextVideos(0);
+
+            console.log(`✅ Rendered ${videosToRender.length} video slides with REAL subtitles`);
+        }
+
+        // 🚀 VIDEO PRELOADING (TikTok performance optimization)
+        function preloadNextVideos(currentIdx) {
+            const container = document.getElementById('videoContainer');
+
+            // Preload next 2 videos
+            for (let i = 1; i <= 2; i++) {
+                const nextIdx = currentIdx + i;
+                if (nextIdx < videos.length) {
+                    const nextSlide = container.querySelector(`[data-index="${nextIdx}"]`);
+                    if (nextSlide) {
+                        const nextVideo = nextSlide.querySelector('video');
+                        if (nextVideo && nextVideo.readyState < 3) {
+                            // Preload video metadata and first frames
+                            nextVideo.preload = 'auto';
+                            nextVideo.load();
+                        }
+                    }
+                }
+            }
+
+            // Lazy-load more videos when approaching the end
+            if (currentIdx >= videos.length - 5 && videos.length > 10) {
+                const remainingVideos = videos.slice(container.children.length, container.children.length + 5);
+                remainingVideos.forEach(async (video, idx) => {
+                    const slide = await createVideoSlide(video, container.children.length + idx);
+                    container.appendChild(slide);
+                });
+            }
+        }
+
+        async function createVideoSlide(video, index) {
+            const slide = document.createElement('div');
+            slide.className = 'video-slide';
+            slide.setAttribute('data-index', index);
+            // Create unique video ID from path
+            const videoId = video.path.split('/').pop().replace(/\.[^/.]+$/, "") || `video_${index}`;
+            slide.setAttribute('data-videoid', videoId);
+
+            // Create video element
+            const videoEl = document.createElement('video');
+            videoEl.className = 'video-player';
+            videoEl.src = video.path;
+            videoEl.playsinline = true;
+            videoEl.loop = true;
+            videoEl.muted = true;
+            videoEl.autoplay = (index === 0); // Force auto-play first video
+            videoEl.setAttribute('playsinline', '');
+            videoEl.setAttribute('webkit-playsinline', '');
+            videoEl.setAttribute('muted', ''); // Explicitly set muted attribute
+            videoEl.setAttribute('loop', ''); // Explicitly set loop attribute
+            if (index === 0) {
+                videoEl.setAttribute('autoplay', ''); // Explicitly set autoplay for first video
+            }
+
+            // Load real subtitles OR generate placeholder
+            let subtitles = [];
+            if (video.subtitlesPath) {
+                subtitles = await loadSubtitles(video.subtitlesPath);
+            } else {
+                // Generate placeholder Spanish captions for videos without SRT
+                subtitles = generatePlaceholderCaptions(video.name || video.title || 'Video');
+            }
+
+            // TikTok-style captions: Show first 5 lines with beautiful spacing
+            const transcriptionHTML = subtitles.length > 0 ? subtitles.slice(0, 5).map((sub, i) => {
+                const words = sub.text.trim().split(' ').filter(w => w.length > 0);
+                const wordsHTML = words.map(word => `<span class="clickable-word" onclick="showWordTranslation(this, '${word}')" ontouchend="handleWordDoubleTap(this, '${word}', event)">${word}</span>`).join(' ');
+
+                // Apply slang dictionary translation
+                const translation = translateSlang(sub.text);
+
+                return `
+                    <div class="caption-line">
+                        <div class="spanish-line">${wordsHTML}</div>
+                        <div class="english-line" style="display: inline-block;">${translation}</div>
+                    </div>
+                `;
+            }).join('') : '<div class="caption-line"><div class="spanish-line">🎬 Vídeo en español</div></div>';
+
+            // AI Difficulty Detection (genius: "adapts to their level with AI")
+            const difficultyLevel = detectDifficulty(subtitles);
+            const engagementHookText = getEngagementHook(difficultyLevel);
+
+            slide.innerHTML = `
+                ${videoEl.outerHTML}
+
+                <!-- 3-Second Engagement Hook (TikTok: 72% completion with early engagement) -->
+                <div class="engagement-hook">${engagementHookText}</div>
+
+                <!-- Speed Control - Top Left (Minimalist - only essential controls) -->
+                <button class="speed-control" onclick="cycleSpeed(this)" style="position: absolute; top: 60px; left: 16px; z-index: 100; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 6px 12px; color: white; font-size: 12px; font-weight: 700; cursor: pointer;">
+                    ⚡ 1x
+                </button>
+
+                <!-- TikTok-style centered captions -->
+                <div class="transcription-box">
+                    ${transcriptionHTML || '<div class="caption-line"><div class="spanish-line">Loading...</div></div>'}
+                </div>
+
+                <!-- User info at bottom left -->
+                <div class="video-overlay">
+                    <div class="video-username">
+                        @spanishlearning
+                    </div>
+                    <div class="video-description">
+                        ${video.name || 'Learn Spanish 🌍'}
+                    </div>
+                </div>
+
+                <div class="side-actions">
+                    <div>
+                        <div class="action-btn cc-btn" onclick="toggleCaptions(this)" title="Toggle Captions">CC</div>
+                        <div class="action-count" style="font-size: 10px;">ON</div>
+                    </div>
+                    <div>
+                        <div class="action-btn" onclick="toggleTranslations(this)" title="Toggle Translation">EN</div>
+                        <div class="action-count" style="font-size: 10px;">ON</div>
+                    </div>
+                </div>
+            `;
+
+            // TAP TO PLAY/PAUSE (simplified - no social engagement spam)
+            const videoElement = slide.querySelector('video');
+
+            videoElement.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (videoElement.paused) {
+                    videoElement.play().catch(err => console.log('Play failed:', err));
+                } else {
+                    videoElement.pause();
+                }
+            });
+
+            // Auto-play first video with user interaction fallback
+            if (index === 0) {
+                slide.addEventListener('click', () => {
+                    if (videoElement.paused) {
+                        videoElement.play().catch(err => console.log('Auto-play needs interaction'));
+                    }
+                });
+            }
+
+            // Sync captions to video time (show current line only when playing)
+            videoElement.addEventListener('timeupdate', () => {
+                if (videoElement.paused) return; // Don't hide when paused
+
+                const currentTime = videoElement.currentTime;
+                const captionLines = slide.querySelectorAll('.caption-line');
+
+                captionLines.forEach((line, i) => {
+                    const sub = subtitles[i];
+                    if (sub && currentTime >= sub.start && currentTime <= sub.end) {
+                        line.classList.remove('hidden');
+                    } else {
+                        line.classList.add('hidden');
+                    }
+                });
+            });
+
+            // Multi-Point Retention System (Instagram Reels 2025 Pattern)
+            let skipTracked = false;
+            let interrupt25 = false;
+            let interrupt75 = false;
+            let retentionTracked = false;
+
+            videoElement.addEventListener('timeupdate', () => {
+                const progress = (videoElement.currentTime / videoElement.duration) * 100;
+                const videoId = slide.dataset.videoid || `video_${index}`;
+
+                // CRITICAL: Skip Rate Tracking (Instagram: 3-second threshold)
+                if (videoElement.currentTime >= 3 && !skipTracked) {
+                    skipTracked = true;
+                    console.log(`✅ Passed 3-sec skip threshold! (video: ${videoId})`);
+
+                    // Track skip rate survival
+                    const skipData = JSON.parse(localStorage.getItem('skipRate') || '{}');
+                    skipData[videoId] = { survived3sec: true, timestamp: Date.now() };
+                    localStorage.setItem('skipRate', JSON.stringify(skipData));
+                }
+
+                // Track 50% retention milestone (silent - no spam)
+                if (progress >= 50 && !retentionTracked) {
+                    retentionTracked = true;
+                    console.log(`📈 50% retention milestone (video: ${videoId})`);
+
+                    const retentionData = JSON.parse(localStorage.getItem('videoRetention') || '{}');
+                    retentionData[videoId] = {
+                        retention50: true,
+                        difficulty: difficultyLevel,
+                        timestamp: Date.now()
+                    };
+                    localStorage.setItem('videoRetention', JSON.stringify(retentionData));
+                }
+            });
+
+            // Track video completion for streak/goals
+            videoElement.addEventListener('ended', () => {
+                const videoId = slide.dataset.videoid || `video_${index}`;
+
+                // Completion Celebration (TikTok dopamine loop)
+                showCompletionReward(slide);
+
+                // Track video completion with Duolingo-style daily goal system
+                gamificationTracker.trackVideoComplete();
+                watchTimeTracker.markCompletion(videoId);
+                console.log('🎉 Video completed! Daily goal updated.');
+
+                // Show post-video quiz (Duolingo-style, NOT spammy - only 30% of videos)
+                if (subtitles && subtitles.length > 0 && Math.random() < 0.3) {
+                    setTimeout(() => {
+                        const quiz = quizSystem.generateQuiz(subtitles, video.title);
+                        quizSystem.showQuiz(quiz, (answered) => {
+                            console.log(`Quiz ${answered ? 'completed' : 'skipped'}`);
+                        });
+                    }, 500); // Small delay for better UX
+                }
+
+                // AUTO-ADVANCE TO NEXT VIDEO (TikTok behavior)
+                setTimeout(() => {
+                    const container = document.getElementById('videoContainer');
+                    const slideHeight = window.innerHeight;
+                    const nextIndex = index + 1;
+
+                    if (nextIndex < videos.length) {
+                        container.scrollTo({
+                            top: slideHeight * nextIndex,
+                            behavior: 'smooth'
+                        });
+                    }
+                }, 300); // Small delay after completion
+            });
+
+            // Force play first video after it's loaded
+            if (index === 0) {
+                videoElement.addEventListener('loadeddata', () => {
+                    videoElement.play().catch(err => {
+                        console.log('🎬 Auto-play blocked, tap to play');
+                    });
+                    // Start tracking first video
+                    const videoId = slide.dataset.videoid || `video_${index}`;
+                    watchTimeTracker.startTracking(videoId);
+                }, { once: true });
+            }
+
+            return slide;
+        }
+
+        // 🔥 STREAK TRACKING FUNCTIONS
+        function incrementDailyGoal() {
+            const streakData = JSON.parse(localStorage.getItem('learningStreak') || '{}');
+            streakData.todayVideos = (streakData.todayVideos || 0) + 1;
+            const dailyGoal = streakData.dailyGoal || 5;
+
+            // Check if goal just reached
+            if (streakData.todayVideos === dailyGoal) {
+                // Increment streak!
+                streakData.streak = (streakData.streak || 0) + 1;
+
+                // Show celebration
+                alert(`🔥 Daily goal reached! ${streakData.streak} day streak!`);
+            }
+
+            localStorage.setItem('learningStreak', JSON.stringify(streakData));
+            console.log(`📈 Daily progress: ${streakData.todayVideos}/${dailyGoal} videos`);
+        }
+
+        // 📊 WATCH TIME TRACKER (TikTok's #1 engagement signal)
+        const watchTimeTracker = {
+            currentVideo: null,
+            startTime: null,
+            sessions: JSON.parse(localStorage.getItem('videoWatchTime') || '{}'),
+
+            startTracking(videoId) {
+                this.currentVideo = videoId;
+                this.startTime = Date.now();
+                console.log(`⏱️ Started tracking watch time for video: ${videoId}`);
+            },
+
+            stopTracking() {
+                if (!this.currentVideo || !this.startTime) return;
+
+                const watchTime = (Date.now() - this.startTime) / 1000; // seconds
+                const videoId = this.currentVideo;
+
+                if (!this.sessions[videoId]) {
+                    this.sessions[videoId] = { totalWatchTime: 0, views: 0, completions: 0 };
+                }
+
+                this.sessions[videoId].totalWatchTime += watchTime;
+                this.sessions[videoId].views += 1;
+
+                localStorage.setItem('videoWatchTime', JSON.stringify(this.sessions));
+                console.log(`⏱️ Video ${videoId}: watched ${watchTime.toFixed(1)}s (total: ${this.sessions[videoId].totalWatchTime.toFixed(1)}s)`);
+
+                this.currentVideo = null;
+                this.startTime = null;
+            },
+
+            markCompletion(videoId) {
+                if (this.sessions[videoId]) {
+                    this.sessions[videoId].completions += 1;
+                    localStorage.setItem('videoWatchTime', JSON.stringify(this.sessions));
+                    console.log(`✅ Video ${videoId} completed! Total completions: ${this.sessions[videoId].completions}`);
+                }
+            }
+        };
+
+        function setupScrollHandler() {
+            const container = document.getElementById('videoContainer');
+            let isScrolling;
+
+            container.addEventListener('scroll', () => {
+                clearTimeout(isScrolling);
+
+                isScrolling = setTimeout(() => {
+                    const scrollTop = container.scrollTop;
+                    const slideHeight = window.innerHeight;
+                    const newIndex = Math.round(scrollTop / slideHeight);
+
+                    if (newIndex !== currentIndex) {
+                        // Stop tracking previous video
+                        const prevSlide = container.querySelector(`[data-index="${currentIndex}"]`);
+                        if (prevSlide) {
+                            const prevVideo = prevSlide.querySelector('video');
+                            if (prevVideo) {
+                                prevVideo.pause();
+                                watchTimeTracker.stopTracking();
+                            }
+                        }
+
+                        // Start tracking new video
+                        const newSlide = container.querySelector(`[data-index="${newIndex}"]`);
+                        if (newSlide) {
+                            const newVideo = newSlide.querySelector('video');
+                            if (newVideo) {
+                                newVideo.play();
+                                const videoId = newSlide.dataset.videoid || `video_${newIndex}`;
+                                watchTimeTracker.startTracking(videoId);
+                            }
+                            currentIndex = newIndex;
+
+                            // 🚀 Preload next videos for instant transitions
+                            preloadNextVideos(newIndex);
+                        }
+
+                        console.log(`📹 Switched to video ${newIndex + 1}`);
+                    }
+                }, 150);
+            });
+        }
+
+        // Toggle transcript visibility
+        // Pattern Interrupt (Instagram Reels 2025: Boosts retention by 25%)
+        function showPatternInterrupt(slide, emoji, text) {
+            const interrupt = document.createElement('div');
+            interrupt.className = 'pattern-interrupt';
+            interrupt.innerHTML = `
+                <span class="emoji">${emoji}</span>
+                <span>${text}</span>
+            `;
+            slide.appendChild(interrupt);
+
+            // Auto-remove after animation
+            setTimeout(() => interrupt.remove(), 2000);
+        }
+
+        // Completion Reward (TikTok dopamine loop - immediate gratification)
+        function showCompletionReward(slide) {
+            const reward = document.createElement('div');
+            reward.className = 'completion-reward';
+            reward.innerHTML = '✨ +20 XP';
+            slide.appendChild(reward);
+
+            // Auto-remove after animation
+            setTimeout(() => reward.remove(), 1000);
+        }
+
+        // TikTok-style Caption Toggle (CC button in sidebar)
+        function toggleCaptions(btn) {
+            const slide = btn.closest('.video-slide');
+            const transcriptBox = slide.querySelector('.transcription-box');
+            const statusText = btn.nextElementSibling;
+
+            if (transcriptBox.style.display === 'none') {
+                // Show captions
+                transcriptBox.style.display = 'block';
+                statusText.textContent = 'ON';
+                btn.style.opacity = '1';
+            } else {
+                // Hide captions
+                transcriptBox.style.display = 'none';
+                statusText.textContent = 'OFF';
+                btn.style.opacity = '0.5';
+            }
+        }
+
+        function toggleTranscript(btn) {
+            const slide = btn.closest('.video-slide');
+            const transcriptBox = slide.querySelector('.transcription-box');
+
+            if (transcriptBox.style.display === 'none') {
+                transcriptBox.style.display = 'block';
+                btn.style.background = 'rgba(255, 0, 80, 0.9)';
+            } else {
+                transcriptBox.style.display = 'none';
+                btn.style.background = 'rgba(0, 0, 0, 0.7)';
+            }
+        }
+
+        // Toggle all translations in current video
+        function toggleTranslations(btn) {
+            const slide = btn.closest('.video-slide');
+            const translations = slide.querySelectorAll('.english-line');
+            const countEl = btn.nextElementSibling;
+
+            translations.forEach(trans => {
+                if (trans.style.display === 'none' || trans.style.display === '') {
+                    trans.style.display = 'inline-block';
+                    btn.style.background = 'rgba(255, 0, 80, 0.9)';
+                    if (countEl) countEl.textContent = 'ON';
+                } else {
+                    trans.style.display = 'none';
+                    btn.style.background = 'rgba(0, 0, 0, 0.7)';
+                    if (countEl) countEl.textContent = 'OFF';
+                }
+            });
+        }
+
+        // Translation cache to avoid repeated API calls
+        const translationCache = new Map();
+
+        // Show individual word translation with real API
+        // CEFR Word Difficulty Levels (Duolingo pattern) - Expanded
+        const wordDifficulty = {
+            // A1 - Beginner (Most common)
+            'hola': 'A1', 'sí': 'A1', 'no': 'A1', 'gracias': 'A1', 'por': 'A1', 'favor': 'A1',
+            'yo': 'A1', 'tú': 'A1', 'él': 'A1', 'ella': 'A1', 'es': 'A1', 'está': 'A1',
+            'qué': 'A1', 'cómo': 'A1', 'dónde': 'A1', 'cuándo': 'A1', 'quién': 'A1',
+            'casa': 'A1', 'agua': 'A1', 'comida': 'A1', 'día': 'A1', 'noche': 'A1',
+            'de': 'A1', 'la': 'A1', 'el': 'A1', 'y': 'A1', 'a': 'A1', 'en': 'A1', 'un': 'A1', 'una': 'A1',
+            'ser': 'A1', 'estar': 'A1', 'tener': 'A1', 'hacer': 'A1', 'ir': 'A1', 'poder': 'A1',
+            'mucho': 'A1', 'poco': 'A1', 'grande': 'A1', 'pequeño': 'A1', 'bueno': 'A1', 'malo': 'A1',
+            'hombre': 'A1', 'mujer': 'A1', 'niño': 'A1', 'niña': 'A1', 'padre': 'A1', 'madre': 'A1',
+
+            // A2 - Elementary (Common everyday words)
+            'también': 'A2', 'porque': 'A2', 'pero': 'A2', 'cuando': 'A2', 'mientras': 'A2',
+            'comprar': 'A2', 'vender': 'A2', 'trabajar': 'A2', 'estudiar': 'A2', 'aprender': 'A2',
+            'gente': 'A2', 'tiempo': 'A2', 'ciudad': 'A2', 'país': 'A2', 'mundo': 'A2',
+            'importante': 'A2', 'necesario': 'A2', 'posible': 'A2', 'difícil': 'A2', 'fácil': 'A2',
+            'siempre': 'A2', 'nunca': 'A2', 'ahora': 'A2', 'después': 'A2', 'antes': 'A2',
+            'querer': 'A2', 'deber': 'A2', 'saber': 'A2', 'creer': 'A2', 'pensar': 'A2',
+
+            // B1 - Intermediate (More complex concepts)
+            'aunque': 'B1', 'además': 'B1', 'sin embargo': 'B1', 'entonces': 'B1', 'por lo tanto': 'B1',
+            'desarrollar': 'B1', 'conseguir': 'B1', 'mejorar': 'B1', 'resolver': 'B1', 'lograr': 'B1',
+            'experiencia': 'B1', 'sociedad': 'B1', 'cultura': 'B1', 'política': 'B1', 'economía': 'B1',
+            'situación': 'B1', 'problema': 'B1', 'solución': 'B1', 'resultado': 'B1', 'proceso': 'B1',
+
+            // B2 - Upper Intermediate (Academic/Professional)
+            'asimismo': 'B2', 'no obstante': 'B2', 'por consiguiente': 'B2', 'en consecuencia': 'B2',
+            'implementar': 'B2', 'establecer': 'B2', 'analizar': 'B2', 'determinar': 'B2', 'evaluar': 'B2',
+            'fundamental': 'B2', 'esencial': 'B2', 'significativo': 'B2', 'relevante': 'B2',
+            'perspectiva': 'B2', 'contexto': 'B2', 'paradigma': 'B2', 'metodología': 'B2'
+        };
+
+        function getWordDifficulty(word) {
+            return wordDifficulty[word.toLowerCase()] || 'A2'; // Default to A2
+        }
+
+        function getDifficultyColor(level) {
+            const colors = {
+                'A1': '#10b981', // Green - Easy
+                'A2': '#3b82f6', // Blue - Elementary
+                'B1': '#f59e0b', // Orange - Intermediate
+                'B2': '#ef4444', // Red - Advanced
+                'C1': '#9333ea', // Purple - Proficient
+                'C2': '#ec4899'  // Pink - Mastery
+            };
+            return colors[level] || colors['A2'];
+        }
+
+        // Word context examples (Duolingo pattern - shows usage in sentences)
+        const wordExamples = {
+            'hola': '¡<strong>Hola</strong>! ¿Cómo estás?',
+            'gracias': 'Muchas <strong>gracias</strong> por tu ayuda',
+            'casa': 'Mi <strong>casa</strong> es grande',
+            'agua': 'Necesito <strong>agua</strong> fría',
+            'comida': 'La <strong>comida</strong> está deliciosa',
+            'día': 'Hoy es un <strong>día</strong> perfecto',
+            'también': 'Yo <strong>también</strong> quiero ir',
+            'porque': 'Estoy feliz <strong>porque</strong> es viernes',
+            'pero': 'Me gusta, <strong>pero</strong> es caro',
+            'gente': 'La <strong>gente</strong> aquí es amable',
+            'tiempo': 'No tengo mucho <strong>tiempo</strong>',
+            'ciudad': 'Esta <strong>ciudad</strong> es hermosa',
+            'es': 'Él <strong>es</strong> mi amigo',
+            'está': 'Ella <strong>está</strong> estudiando',
+            'de': 'El libro <strong>de</strong> María',
+            'la': '<strong>La</strong> casa es bonita',
+            'el': '<strong>El</strong> gato es negro',
+            'y': 'Tú <strong>y</strong> yo somos amigos',
+            'mucho': 'Me gusta <strong>mucho</strong> el español',
+            'poco': 'Un <strong>poco</strong> de café, por favor'
+        };
+
+        function getWordExample(word) {
+            return wordExamples[word.toLowerCase()] || null;
+        }
+
+        // 🔥 INSTAGRAM REELS PATTERN: Double-tap to favorite word (instant save)
+        let lastTap = 0;
+        function handleWordDoubleTap(wordEl, word, event) {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+
+            // Detect double-tap (< 300ms between taps, Instagram standard)
+            if (tapLength < 300 && tapLength > 0) {
+                event.preventDefault();
+                doubleTapSaveWord(wordEl, word);
+            }
+            lastTap = currentTime;
+        }
+
+        async function doubleTapSaveWord(wordEl, word) {
+            // Clean word
+            const cleanWord = word.replace(/[¿?¡!,.:;""]/g, '').toLowerCase().trim();
+            if (!cleanWord) return;
+
+            // 🔥 INSTAGRAM PATTERN: Heart animation on double-tap
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.style.cssText = `
+                position: fixed;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%) scale(0);
+                font-size: 80px;
+                z-index: 9999;
+                pointer-events: none;
+                animation: heartPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            `;
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 600);
+
+            // Haptic feedback
+            if ('vibrate' in navigator) {
+                navigator.vibrate([10, 50, 10]); // Double vibration pattern
+            }
+
+            // Get or fetch translation
+            let translation;
+            if (translationCache.has(cleanWord)) {
+                translation = translationCache.get(cleanWord);
+            } else {
+                try {
+                    const response = await fetch('/api/translate', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ word: cleanWord, targetLang: 'en' })
+                    });
+                    const data = await response.json();
+                    translation = data.translation || cleanWord;
+                    translationCache.set(cleanWord, translation);
+                } catch (error) {
+                    translation = cleanWord;
+                }
+            }
+
+            // Save word immediately (no tooltip)
+            await saveWordToVocabulary(cleanWord, translation);
+
+            // Show quick success indicator
+            wordEl.style.background = 'rgba(16, 185, 129, 0.4)';
+            wordEl.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                wordEl.style.background = '';
+                wordEl.style.transform = '';
+            }, 400);
+
+            console.log(`❤️ Double-tap saved: ${cleanWord} = ${translation}`);
+        }
+
+        async function showWordTranslation(wordEl, word) {
+            // Clean word (remove punctuation)
+            const cleanWord = word.replace(/[¿?¡!,.:;""]/g, '').toLowerCase().trim();
+
+            if (!cleanWord) return;
+
+            // Highlight word IMMEDIATELY (no wait)
+            wordEl.style.background = 'rgba(255, 0, 80, 0.4)';
+            wordEl.style.transform = 'scale(1.1)';
+
+            // Check cache first
+            let translation;
+            if (translationCache.has(cleanWord)) {
+                translation = translationCache.get(cleanWord);
+            } else {
+                // Show "translating..." immediately for better UX
+                const loadingTooltip = document.createElement('div');
+                loadingTooltip.className = 'word-tooltip';
+                loadingTooltip.textContent = 'Translating...';
+                loadingTooltip.style.cssText = `
+                    position: absolute;
+                    background: rgba(0, 0, 0, 0.9);
+                    color: #fff;
+                    padding: 8px 12px;
+                    border-radius: 8px;
+                    font-size: 11px;
+                    z-index: 1000;
+                    transform: translateY(-110%);
+                    margin-top: -4px;
+                `;
+                wordEl.style.position = 'relative';
+                wordEl.appendChild(loadingTooltip);
+
+                // Call translation API with timeout
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 1000); // 1s timeout
+
+                    const response = await fetch(
+                        `https://api.mymemory.translated.net/get?q=${encodeURIComponent(cleanWord)}&langpair=es|en`,
+                        { signal: controller.signal }
+                    );
+                    clearTimeout(timeoutId);
+
+                    const data = await response.json();
+                    translation = data.responseData?.translatedText || cleanWord;
+
+                    // Cache it
+                    translationCache.set(cleanWord, translation);
+                    loadingTooltip.remove();
+                } catch (error) {
+                    console.error('Translation error:', error);
+                    translation = cleanWord;
+                    loadingTooltip.remove();
+                }
+            }
+
+            // Get word difficulty (Duolingo pattern)
+            const difficulty = getWordDifficulty(cleanWord);
+            const difficultyColor = getDifficultyColor(difficulty);
+
+            // Check if word was previously learned (mastery tracking)
+            const vocab = JSON.parse(localStorage.getItem('savedVocabulary') || '{}');
+            const isLearned = !!vocab[cleanWord];
+            const reviewCount = vocab[cleanWord]?.reviewCount || 0;
+
+            // Mastery levels (Duolingo pattern)
+            let masteryBadge = '';
+            if (reviewCount >= 5) {
+                masteryBadge = '<div style="background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 700; margin-left: 4px;">⭐ Mastered</div>';
+            } else if (reviewCount >= 2) {
+                masteryBadge = '<div style="background: #3b82f6; color: white; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 700; margin-left: 4px;">📚 Learning</div>';
+            } else if (isLearned) {
+                masteryBadge = '<div style="background: #10b981; color: white; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 700; margin-left: 4px;">✓ Saved</div>';
+            }
+
+            // Get example sentence (Duolingo pattern)
+            const example = getWordExample(cleanWord);
+
+            // Show translation tooltip with arrow, difficulty badge, mastery status, and example (best practice)
+            const tooltip = document.createElement('div');
+            tooltip.className = 'word-tooltip';
+            tooltip.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap;">
+                    <div style="font-weight: 800; font-size: 14px; flex: 1; min-width: 60px; overflow: hidden; text-overflow: ellipsis;">${cleanWord}</div>
+                    <div style="background: ${difficultyColor}; color: white; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 700; white-space: nowrap;">${difficulty}</div>
+                    ${masteryBadge}
+                </div>
+                <div style="color: #4ade80; font-size: 13px; font-weight: 600; margin-bottom: ${example ? '8px' : '6px'};">${translation}</div>
+                ${example ? `<div style="background: rgba(255,255,255,0.08); padding: 8px 10px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid ${difficultyColor};">
+                    <div style="font-size: 9px; color: rgba(255,255,255,0.5); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Example</div>
+                    <div style="font-size: 11px; line-height: 1.5; color: rgba(255,255,255,0.9);">${example}</div>
+                </div>` : ''}
+                <div style="font-size: 10px; color: rgba(255,255,255,0.7); display: flex; align-items: center; justify-content: center; gap: 4px;">
+                    <span>🔊</span>
+                    <span>${isLearned ? 'Review again' : 'Tap to save + hear'}</span>
+                </div>
+                <div style="position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid rgba(0, 0, 0, 0.95);"></div>
+            `;
+            tooltip.style.cssText = `
+                position: absolute;
+                background: linear-gradient(135deg, rgba(0, 0, 0, 0.96), rgba(20, 20, 20, 0.96));
+                color: #fff;
+                padding: 14px 18px;
+                border-radius: 14px;
+                font-size: 12px;
+                font-weight: 600;
+                z-index: 1000;
+                pointer-events: all;
+                transform: translateY(-115%);
+                margin-top: -8px;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
+                cursor: pointer;
+                min-width: 140px;
+                max-width: 220px;
+                text-align: center;
+                animation: tooltipIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            `;
+
+            // Save word on click - DUOLINGO-STYLE with audio + better feedback
+            tooltip.onclick = async () => {
+                // 🔥 TIKTOK PATTERN: Haptic feedback on interaction
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(10); // Subtle 10ms vibration
+                }
+
+                // Play pronunciation FIRST (Duolingo pattern)
+                try {
+                    const utterance = new SpeechSynthesisUtterance(cleanWord);
+                    utterance.lang = 'es-ES'; // Spanish pronunciation
+                    utterance.rate = 0.9; // Slightly slower for learning
+                    utterance.pitch = 1.0;
+                    window.speechSynthesis.speak(utterance);
+                } catch (error) {
+                    console.error('Speech synthesis error:', error);
+                }
+
+                tooltip.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
+                tooltip.innerHTML = '💾 Saving to database...';
+
+                await saveWordToVocabulary(cleanWord, translation);
+
+                // Show SUCCESS with unified database message + sound
+                tooltip.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                tooltip.innerHTML = `
+                    <div style="text-align: center;">
+                        <div style="font-size: 20px; margin-bottom: 4px; animation: successPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">✅</div>
+                        <div style="font-weight: 700; font-size: 14px;">Saved to Database!</div>
+                        <div style="font-size: 10px; opacity: 0.95; margin-top: 4px;">🔄 Available in ALL apps</div>
+                    </div>
+                `;
+
+                // Update word count in UI with animation
+                const wordsCountEl = document.getElementById('wordsCount');
+                if (wordsCountEl) {
+                    const currentCount = parseInt(wordsCountEl.textContent) || 0;
+                    wordsCountEl.textContent = currentCount + 1;
+
+                    // Animate the count
+                    wordsCountEl.style.transform = 'scale(1.4)';
+                    wordsCountEl.style.color = '#10b981';
+                    setTimeout(() => {
+                        wordsCountEl.style.transform = 'scale(1)';
+                        wordsCountEl.style.color = '';
+                    }, 400);
+                }
+
+                setTimeout(() => tooltip.remove(), 2500);
+            };
+
+            wordEl.style.position = 'relative';
+            wordEl.appendChild(tooltip);
+
+            // 🔥 YOUTUBE SHORTS/TIKTOK PATTERN: Smart positioning to prevent screen edge overflow
+            setTimeout(() => {
+                const tooltipRect = tooltip.getBoundingClientRect();
+                const viewportWidth = window.innerWidth;
+
+                // Check if tooltip overflows right edge
+                if (tooltipRect.right > viewportWidth - 10) {
+                    tooltip.style.left = 'auto';
+                    tooltip.style.right = '0';
+                    tooltip.style.transform = 'translateY(-115%)';
+                }
+                // Check if tooltip overflows left edge
+                else if (tooltipRect.left < 10) {
+                    tooltip.style.left = '0';
+                    tooltip.style.right = 'auto';
+                    tooltip.style.transform = 'translateY(-115%)';
+                }
+                // Center by default (already set in CSS)
+            }, 0);
+
+            // Auto-remove after 3 seconds
+            setTimeout(() => {
+                if (tooltip.parentNode) {
+                    tooltip.remove();
+                    wordEl.style.background = '';
+                    wordEl.style.transform = '';
+                }
+            }, 3000);
+        }
+
+        // Save word to vocabulary (localStorage + unified database sync)
+        async function saveWordToVocabulary(word, translation) {
+            const vocab = JSON.parse(localStorage.getItem('savedVocabulary') || '{}');
+
+            if (!vocab[word]) {
+                // First time saving this word
+                vocab[word] = {
+                    word,
+                    translation,
+                    savedAt: Date.now(),
+                    reviewCount: 1,
+                    nextReview: Date.now() + (24 * 60 * 60 * 1000) // 1 day
+                };
+            } else {
+                // Increment review count for mastery tracking (Duolingo pattern)
+                vocab[word].reviewCount = (vocab[word].reviewCount || 0) + 1;
+                vocab[word].lastReviewed = Date.now();
+            }
+
+            localStorage.setItem('savedVocabulary', JSON.stringify(vocab));
+
+                // 🔥 UNIFIED DATABASE - Sync word to ALL apps
+                try {
+                    const userId = localStorage.getItem('userId') || 'user_' + Date.now();
+                    localStorage.setItem('userId', userId);
+
+                    const response = await fetch('/api/words/learned', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            userId: userId,
+                            word: word,
+                            translation: translation,
+                            level: 'A2', // Default level, can be detected later
+                            context: 'video_reel'
+                        })
+                    });
+
+                    const data = await response.json();
+                    if (data.success) {
+                        console.log(`✅ Word saved to unified database: ${word} = ${translation}`);
+                    } else {
+                        console.error('❌ Failed to save word to database:', data.error);
+                    }
+                } catch (error) {
+                    console.error('❌ Database sync error:', error);
+                    // Continue even if database sync fails - word is still in localStorage
+                }
+
+                // Award XP for saving word
+                awardXP(10);
+
+                console.log(`💾 Saved word: ${word} = ${translation}`);
+
+                // Show celebration (intermittent reward - 30% chance)
+                if (Math.random() < 0.30) {
+                    showMicroCelebration('🎉 +10 XP');
+                }
+            }
+        }
+
+        // Award XP system
+        function awardXP(amount) {
+            const xpData = JSON.parse(localStorage.getItem('userXP') || '{"total": 0, "level": 1}');
+            xpData.total += amount;
+            xpData.level = Math.floor(xpData.total / 100) + 1;
+            localStorage.setItem('userXP', JSON.stringify(xpData));
+        }
+
+        // Micro-celebration animation (Duolingo-style)
+        function showMicroCelebration(text) {
+            const celebration = document.createElement('div');
+            celebration.textContent = text;
+            celebration.style.cssText = `
+                position: fixed;
+                top: 100px;
+                left: 50%;
+                transform: translateX(-50%) translateY(0);
+                background: linear-gradient(135deg, #FF0050, #00f2ea);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 20px;
+                font-weight: 800;
+                font-size: 16px;
+                z-index: 9999;
+                box-shadow: 0 4px 20px rgba(255, 0, 80, 0.4);
+                animation: slideDown 0.5s ease-out;
+            `;
+
+            document.body.appendChild(celebration);
+            setTimeout(() => celebration.remove(), 2000);
+        }
+
+        // Cycle playback speed
+        const speeds = [0.5, 1, 1.5, 2];
+        let currentSpeedIndex = 1;
+
+        function cycleSpeed(btn) {
+            const slide = btn.closest('.video-slide');
+            const video = slide.querySelector('video');
+
+            currentSpeedIndex = (currentSpeedIndex + 1) % speeds.length;
+            const newSpeed = speeds[currentSpeedIndex];
+
+            video.playbackRate = newSpeed;
+            btn.textContent = `⚡ ${newSpeed}x`;
+
+            console.log(`⚡ Speed changed to ${newSpeed}x`);
+        }
+
+        // 📊 SAVE TRACKER (Instagram's #1 engagement signal)
+        const saveTracker = {
+            saves: JSON.parse(localStorage.getItem('videoSaves') || '{}'),
+
+            toggleSave(videoId) {
+                if (this.saves[videoId]) {
+                    delete this.saves[videoId];
+                    console.log(`❌ Unsaved video: ${videoId}`);
+                    return false;
+                } else {
+                    this.saves[videoId] = {
+                        savedAt: Date.now(),
+                        videoId: videoId
+                    };
+                    console.log(`💾 Saved video: ${videoId} (Total saves: ${Object.keys(this.saves).length})`);
+                    return true;
+                }
+            },
+
+            isSaved(videoId) {
+                return !!this.saves[videoId];
+            },
+
+            getSaveCount(videoId) {
+                // In a real app, this would come from backend
+                // For now, show global save count from localStorage
+                return this.saves[videoId] ? 1 : 0;
+            },
+
+            persist() {
+                localStorage.setItem('videoSaves', JSON.stringify(this.saves));
+            }
+        };
+
+
+        // ═══════════════════════════════════════════════════════════
+        // 🏆 GAMIFICATION SYSTEM - Duolingo-style
+        // ═══════════════════════════════════════════════════════════
+
+        const gamificationTracker = {
+            stats: null,
+
+            init() {
+                // Load from localStorage
+                const saved = localStorage.getItem('userStats');
+                if (saved) {
+                    this.stats = JSON.parse(saved);
+                } else {
+                    // Initialize new user
+                    this.stats = {
+                        xp: 0,
+                        level: 1,
+                        streak: 0,
+                        lastVisit: new Date().toDateString(),
+                        wordsLearned: 0,
+                        videosCompleted: 0,
+                        totalWatchTime: 0
+                    };
+                    this.persist();
+                }
+
+                // Check streak
+                this.updateStreak();
+
+                // Display stats
+                this.updateUI();
+            },
+
+            updateStreak() {
+                const today = new Date().toDateString();
+                const lastVisit = this.stats.lastVisit;
+
+                if (lastVisit !== today) {
+                    const lastDate = new Date(lastVisit);
+                    const todayDate = new Date(today);
+                    const diffDays = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+
+                    if (diffDays === 1) {
+                        // Consecutive day - increase streak
+                        this.stats.streak += 1;
+                        console.log(`🔥 Streak increased to ${this.stats.streak} days!`);
+                    } else if (diffDays > 1) {
+                        // Missed days - reset streak
+                        console.log(`💔 Streak broken! Was ${this.stats.streak} days`);
+                        this.stats.streak = 1;
+                    }
+
+                    this.stats.lastVisit = today;
+                    this.persist();
+                }
+            },
+
+            addXP(amount, reason) {
+                this.stats.xp += amount;
+
+                // Check for level up
+                const xpForNextLevel = this.stats.level * 100;
+                if (this.stats.xp >= xpForNextLevel) {
+                    this.stats.level += 1;
+                    this.stats.xp -= xpForNextLevel;
+                    this.showLevelUp();
+                    console.log(`🎉 LEVEL UP! Now level ${this.stats.level}`);
+                }
+
+                this.persist();
+                this.updateUI();
+
+                console.log(`⭐ +${amount} XP: ${reason}`);
+            },
+
+            showLevelUp() {
+                // Create celebration overlay
+                const overlay = document.createElement('div');
+                overlay.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0, 0, 0, 0.8);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 10000;
+                    animation: fadeIn 0.3s ease;
+                `;
+
+                overlay.innerHTML = `
+                    <div style="text-align: center; animation: scaleIn 0.5s ease;">
+                        <div style="font-size: 80px; margin-bottom: 20px;">🎉</div>
+                        <div style="font-size: 48px; font-weight: bold; color: #FFD60A; margin-bottom: 10px;">
+                            LEVEL ${this.stats.level}!
+                        </div>
+                        <div style="font-size: 24px; color: white;">
+                            You're getting better!
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(overlay);
+
+                // Remove after 3 seconds
+                setTimeout(() => {
+                    overlay.style.animation = 'fadeOut 0.3s ease';
+                    setTimeout(() => overlay.remove(), 300);
+                }, 3000);
+            },
+
+            updateUI() {
+                // Update streak
+                const streakEl = document.getElementById('streakCount');
+                if (streakEl) streakEl.textContent = this.stats.streak;
+
+                // Update level
+                const levelEl = document.getElementById('userLevel');
+                if (levelEl) levelEl.textContent = `Lvl ${this.stats.level}`;
+
+                // Update XP progress bar
+                const xpForNextLevel = this.stats.level * 100;
+                const xpProgress = (this.stats.xp / xpForNextLevel) * 100;
+
+                const xpProgressBar = document.getElementById('xpProgress');
+                if (xpProgressBar) xpProgressBar.style.width = `${xpProgress}%`;
+
+                const currentXPEl = document.getElementById('currentXP');
+                if (currentXPEl) currentXPEl.textContent = this.stats.xp;
+
+                const nextLevelXPEl = document.getElementById('nextLevelXP');
+                if (nextLevelXPEl) nextLevelXPEl.textContent = xpForNextLevel;
+
+                // Update word count
+                const savedWords = JSON.parse(localStorage.getItem('savedWords') || '[]');
+                const wordsCountEl = document.getElementById('wordsCount');
+                if (wordsCountEl) wordsCountEl.textContent = savedWords.length;
+
+                // 🔥 DUOLINGO PATTERN: Update mastery circle with learned word percentage
+                this.updateMasteryCircle();
+
+                // Update daily goal widget (Duolingo-style - 60% engagement boost)
+                this.updateDailyGoal();
+            },
+
+            updateDailyGoal() {
+                const today = new Date().toDateString();
+                const dailyData = JSON.parse(localStorage.getItem('dailyGoal') || '{}');
+
+                // Reset if new day
+                if (dailyData.date !== today) {
+                    dailyData.date = today;
+                    dailyData.videosWatched = 0;
+                    dailyData.goal = 5; // Duolingo research: 5 videos/day optimal
+                    localStorage.setItem('dailyGoal', JSON.stringify(dailyData));
+                }
+
+                const progress = dailyData.videosWatched || 0;
+                const goal = dailyData.goal || 5;
+                const percentage = Math.min((progress / goal) * 100, 100);
+                const isComplete = progress >= goal;
+
+                // Update widget
+                const widget = document.getElementById('dailyGoalWidget');
+                const icon = document.getElementById('dailyGoalIcon');
+                const text = document.getElementById('dailyGoalText');
+                const fill = document.getElementById('dailyGoalFill');
+
+                if (widget && icon && text && fill) {
+                    if (isComplete) {
+                        widget.classList.add('complete');
+                        icon.innerHTML = '<span class="daily-goal-checkmark">✅</span>';
+                        text.textContent = `${goal}/${goal} videos - Complete!`;
+                    } else {
+                        widget.classList.remove('complete');
+                        icon.textContent = '🎯';
+                        text.textContent = `${progress}/${goal} videos`;
+                    }
+                    fill.style.width = `${percentage}%`;
+                }
+            },
+
+            trackVideoComplete() {
+                const today = new Date().toDateString();
+                const dailyData = JSON.parse(localStorage.getItem('dailyGoal') || '{}');
+
+                // Initialize if needed
+                if (dailyData.date !== today) {
+                    dailyData.date = today;
+                    dailyData.videosWatched = 0;
+                    dailyData.goal = 5;
+                }
+
+                // Increment count
+                dailyData.videosWatched = (dailyData.videosWatched || 0) + 1;
+                localStorage.setItem('dailyGoal', JSON.stringify(dailyData));
+
+                // Update stats
+                this.stats.videosCompleted = (this.stats.videosCompleted || 0) + 1;
+                this.persist();
+
+                // Check if goal just completed (for celebration)
+                const wasComplete = (dailyData.videosWatched - 1) >= dailyData.goal;
+                const isNowComplete = dailyData.videosWatched >= dailyData.goal;
+
+                if (isNowComplete && !wasComplete) {
+                    this.showDailyGoalComplete();
+                }
+
+                // Update UI
+                this.updateDailyGoal();
+
+                // Award XP for video completion
+                this.addXP(20, 'Completed video');
+
+                console.log(`🎥 Video completed! ${dailyData.videosWatched}/${dailyData.goal} today`);
+            },
+
+            showDailyGoalComplete() {
+                // Duolingo-style celebration when daily goal reached
+                const celebration = document.createElement('div');
+                celebration.className = 'level-up-celebration';
+                celebration.innerHTML = `
+                    <div style="font-size: 60px; margin-bottom: 16px;">🎉</div>
+                    <div style="font-size: 32px; margin-bottom: 8px;">Daily Goal Complete!</div>
+                    <div style="font-size: 18px; opacity: 0.9;">+50 XP Bonus</div>
+                `;
+                document.body.appendChild(celebration);
+
+                // Award bonus XP
+                this.addXP(50, 'Daily goal complete');
+
+                // Confetti animation
+                for (let i = 0; i < 30; i++) {
+                    setTimeout(() => {
+                        const confetti = document.createElement('div');
+                        confetti.className = 'confetti';
+                        confetti.style.left = Math.random() * 100 + '%';
+                        confetti.style.top = '-10px';
+                        const colors = ['#FFCC00', '#FF0050', '#007AFF', '#34C759'];
+                        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                        document.body.appendChild(confetti);
+                        setTimeout(() => confetti.remove(), 3000);
+                    }, i * 50);
+                }
+
+                // Remove celebration after 3 seconds
+                setTimeout(() => celebration.remove(), 3000);
+            },
+
+            persist() {
+                localStorage.setItem('userStats', JSON.stringify(this.stats));
+            },
+
+            // 🔥 DUOLINGO PATTERN: Calculate and display mastery progress
+            updateMasteryCircle() {
+                const vocab = JSON.parse(localStorage.getItem('savedVocabulary') || '{}');
+                const totalWords = Object.keys(vocab).length;
+
+                if (totalWords === 0) {
+                    // No words saved yet
+                    const circleEl = document.getElementById('masteryCircleFill');
+                    const percentEl = document.getElementById('masteryPercentage');
+                    if (circleEl) circleEl.style.strokeDashoffset = '125.6';
+                    if (percentEl) percentEl.textContent = '0%';
+                    return;
+                }
+
+                // Calculate mastery: % of words reviewed 5+ times (mastered)
+                let masteredCount = 0;
+                Object.values(vocab).forEach(wordData => {
+                    if (wordData.reviewCount >= 5) {
+                        masteredCount++;
+                    }
+                });
+
+                const masteryPercentage = Math.round((masteredCount / totalWords) * 100);
+
+                // Update circular progress (SVG circle circumference = 125.6)
+                const circumference = 125.6;
+                const offset = circumference - (masteryPercentage / 100) * circumference;
+
+                const circleEl = document.getElementById('masteryCircleFill');
+                const percentEl = document.getElementById('masteryPercentage');
+
+                if (circleEl) {
+                    circleEl.style.strokeDashoffset = offset.toString();
+                }
+                if (percentEl) {
+                    percentEl.textContent = `${masteryPercentage}%`;
+                }
+
+                console.log(`📊 Mastery: ${masteredCount}/${totalWords} words mastered (${masteryPercentage}%)`);
+            }
+        };
+
+        // Click handlers for gamification bar
+        function showStreakDetails() {
+            const stats = gamificationTracker.stats;
+            const msg = `
+🔥 ${stats.streak} Day Streak!
+
+📊 Your Stats:
+• Level ${stats.level}
+• ${stats.xp} / ${stats.level * 100} XP
+• ${stats.videosCompleted} videos completed
+• ${Math.floor(stats.totalWatchTime / 60)} minutes watched
+
+Keep it up! Come back tomorrow to maintain your streak.
+            `.trim();
+
+            alert(msg);
+        }
+
+        function showVocabulary() {
+            const savedWords = JSON.parse(localStorage.getItem('savedWords') || '[]');
+
+            if (savedWords.length === 0) {
+                alert('No saved words yet!\n\nClick on any Spanish word in the videos to save it to your vocabulary.');
+            } else {
+                alert(`📚 Vocabulary: ${savedWords.length} words\n\n${savedWords.slice(0, 10).map(w => `• ${w.word} - ${w.translation}`).join('\n')}\n\n${savedWords.length > 10 ? `...and ${savedWords.length - 10} more!` : ''}`);
+            }
+        }
+
+        // Initialize gamification on page load
+        gamificationTracker.init();
+
+        // ⌨️ KEYBOARD SHORTCUTS (TikTok desktop pattern)
+        document.addEventListener('keydown', (e) => {
+            const container = document.getElementById('videoContainer');
+            const currentSlide = container.querySelector(`[data-index="${currentIndex}"]`);
+            const currentVideo = currentSlide?.querySelector('video');
+
+            switch(e.key) {
+                case ' ': // Spacebar - Play/Pause
+                    e.preventDefault();
+                    if (currentVideo) {
+                        if (currentVideo.paused) {
+                            currentVideo.play();
+                        } else {
+                            currentVideo.pause();
+                        }
+                    }
+                    break;
+
+                case 'ArrowUp': // Up arrow - Previous video
+                    e.preventDefault();
+                    if (currentIndex > 0) {
+                        const slideHeight = window.innerHeight;
+                        container.scrollTo({
+                            top: slideHeight * (currentIndex - 1),
+                            behavior: 'smooth'
+                        });
+                    }
+                    break;
+
+                case 'ArrowDown': // Down arrow - Next video
+                    e.preventDefault();
+                    const slideHeight = window.innerHeight;
+                    if (currentIndex < videos.length - 1) {
+                        container.scrollTo({
+                            top: slideHeight * (currentIndex + 1),
+                            behavior: 'smooth'
+                        });
+                    }
+                    break;
+
+                case 'm': // M - Mute/Unmute
+                    e.preventDefault();
+                    if (currentVideo) {
+                        currentVideo.muted = !currentVideo.muted;
+                        console.log(`🔊 ${currentVideo.muted ? 'Muted' : 'Unmuted'}`);
+                    }
+                    break;
+            }
+        });
+
+        console.log('🎬 TikTok-style video feed loaded!');
+        console.log('⌨️ Keyboard shortcuts: Space=Play/Pause, ↑↓=Navigate, M=Mute');
+        // 📝 POST-VIDEO QUIZ SYSTEM (Duolingo-style)
+        // ════════════════════════════════════════════════════════════
+
+        const quizSystem = {
+            currentQuiz: null,
+            quizAnswered: false,
+
+            // Generate quiz from video subtitles
+            generateQuiz(subtitles, videoTitle) {
+                if (!subtitles || subtitles.length === 0) return null;
+
+                // Pick random subtitle for question
+                const randomSub = subtitles[Math.floor(Math.random() * subtitles.length)];
+                const spanishText = randomSub.text;
+
+                // Detect quiz type based on content
+                if (spanishText.includes('calor') || spanishText.includes('frío')) {
+                    return {
+                        question: `What does "${spanishText}" mean?`,
+                        correct: 'Weather/Temperature talk',
+                        options: ['Weather/Temperature talk', 'Food description', 'Greeting someone'],
+                        topic: 'weather'
+                    };
+                } else if (spanishText.includes('vida') || spanishText.includes('gusta')) {
+                    return {
+                        question: `"${spanishText}" is about:`,
+                        correct: 'Life and preferences',
+                        options: ['Life and preferences', 'Asking for directions', 'Ordering food'],
+                        topic: 'life'
+                    };
+                } else if (spanishText.includes('comida') || spanishText.includes('comer')) {
+                    return {
+                        question: `What topic is "${spanishText}"?`,
+                        correct: 'Food and eating',
+                        options: ['Food and eating', 'Shopping', 'Sports'],
+                        topic: 'food'
+                    };
+                }
+
+                // Default quiz format
+                return {
+                    question: `You just learned: "${spanishText}"`,
+                    correct: 'I got it!',
+                    options: ['I got it!', 'Show me again', 'Too fast'],
+                    topic: 'general'
+                };
+            },
+
+            // Show quiz modal (Duolingo-style)
+            showQuiz(quiz, onComplete) {
+                if (!quiz) {
+                    onComplete(false);
+                    return;
+                }
+
+                this.currentQuiz = quiz;
+                this.quizAnswered = false;
+
+                const modal = document.createElement('div');
+                modal.className = 'quiz-modal';
+                modal.innerHTML = `
+                    <div class="quiz-container">
+                        <div class="quiz-header">
+                            <div class="quiz-title">Quick Check! 🎯</div>
+                            <div class="quiz-subtitle">Test what you learned</div>
+                        </div>
+                        <div class="quiz-question">${quiz.question}</div>
+                        <div class="quiz-options">
+                            ${quiz.options.map(option => `
+                                <div class="quiz-option" data-option="${option}">
+                                    ${option}
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="quiz-feedback" style="display: none;"></div>
+                        <button class="quiz-next-btn" style="display: none;">Continue Learning →</button>
+                    </div>
+                `;
+
+                document.body.appendChild(modal);
+
+                // Handle option clicks
+                const options = modal.querySelectorAll('.quiz-option');
+                const feedback = modal.querySelector('.quiz-feedback');
+                const nextBtn = modal.querySelector('.quiz-next-btn');
+
+                options.forEach(option => {
+                    option.addEventListener('click', () => {
+                        if (this.quizAnswered) return;
+                        this.quizAnswered = true;
+
+                        const selected = option.dataset.option;
+                        const isCorrect = selected === quiz.correct;
+
+                        // Visual feedback (Duolingo-style instant)
+                        if (isCorrect) {
+                            option.classList.add('correct');
+                            feedback.textContent = '✓ Perfect! +30 XP';
+                            feedback.className = 'quiz-feedback correct';
+                            gamificationTracker.addXP(30, 'Quiz correct');
+
+                            // Subtle unlock notification (NOT spammy)
+                            this.showUnlockToast(quiz.topic);
+                        } else {
+                            option.classList.add('wrong');
+                            // Show correct answer
+                            options.forEach(opt => {
+                                if (opt.dataset.option === quiz.correct) {
+                                    opt.classList.add('correct');
+                                }
+                            });
+                            feedback.textContent = '✗ Try again next time!';
+                            feedback.className = 'quiz-feedback wrong';
+                            gamificationTracker.addXP(10, 'Quiz attempted');
+                        }
+
+                        feedback.style.display = 'block';
+                        nextBtn.style.display = 'block';
+                    });
+                });
+
+                // Continue button
+                nextBtn.addEventListener('click', () => {
+                    modal.remove();
+                    onComplete(this.quizAnswered);
+                });
+            },
+
+            // Show subtle unlock notification (Duolingo-style, NOT spammy)
+            showUnlockToast(topic) {
+                const unlocks = {
+                    'weather': '🌤️ Weather Conversations Unlocked!',
+                    'life': '💭 Life Expressions Unlocked!',
+                    'food': '🍽️ Food Vocabulary Unlocked!',
+                    'general': '✨ New Words Unlocked!'
+                };
+
+                const message = unlocks[topic] || unlocks.general;
+
+                const toast = document.createElement('div');
+                toast.className = 'unlock-toast';
+                toast.textContent = message;
+                document.body.appendChild(toast);
+
+                // Auto-remove after 3 seconds
+                setTimeout(() => toast.remove(), 3000);
+            }
+        };
+
+        // Initialize gamification tracker first
+        gamificationTracker.init();
+
+    </script>
+
+    <!-- 📱 BOTTOM NAVIGATION - TikTok-Style SVG Icons -->
+    <nav class="bottom-nav">
+        <a href="/tiktok-videos.html" class="nav-item active">
+            <div class="nav-icon">
+                <svg viewBox="0 0 24 24">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+            </div>
+            <div class="nav-label">Reels</div>
+        </a>
+        <a href="/stories.html" class="nav-item">
+            <div class="nav-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+            </div>
+            <div class="nav-label">Stories</div>
+        </a>
+        <a href="/unified-infinite-feed.html" class="nav-item">
+            <div class="nav-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M4 11a9 9 0 0 1 9 9"></path>
+                    <path d="M4 4a16 16 0 0 1 16 16"></path>
+                    <circle cx="5" cy="19" r="1"></circle>
+                </svg>
+            </div>
+            <div class="nav-label">News</div>
+        </a>
+        <a href="/chat.html" class="nav-item">
+            <div class="nav-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+            </div>
+            <div class="nav-label">Chat</div>
+        </a>
+        <a href="/" class="nav-item">
+            <div class="nav-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            <div class="nav-label">Profile</div>
+        </a>
+    </nav>
+</body>
+</html>

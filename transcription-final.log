@@ -1,0 +1,120 @@
+
+======================================================================
+🎙️  BATCH VIDEO TRANSCRIPTION SERVICE
+======================================================================
+🚀 Initializing Batch Transcription Service...
+📝 Starting fresh - no previous progress found
+✅ Service initialized
+
+📂 Scanning for videos without transcriptions...
+📊 Found 928 videos without .srt files
+📊 Videos to process: 928 (0 already processed)
+
+💰 COST ESTIMATE:
+   Videos to process: 928
+   Estimated duration: 464 minutes
+   Estimated cost: $2.78
+   Batch size: 10 concurrent
+
+⏳ Starting in 3 seconds... (Ctrl+C to cancel)
+
+======================================================================
+📦 BATCH 1/93 (10 videos)
+======================================================================
+
+🎙️  [1/928] Processing: 0903 (4).mov
+
+🎙️  [2/928] Processing: 0904.mov
+
+🎙️  [3/928] Processing: 0904 (2).mov
+
+🎙️  [4/928] Processing: 0904 (4)(1).mov
+
+🎙️  [5/928] Processing: 0904 (4)(2).mov
+
+🎙️  [6/928] Processing: Cold hot.mov
+
+🎙️  [7/928] Processing: LAngag.mov
+
+🎙️  [8/928] Processing: Die.mov
+
+🎙️  [9/928] Processing: Food no.mov
+
+🎙️  [10/928] Processing: Jesus!.mov
+   ⚠️  File too large (28.0MB), skipping
+   📊 Size: 7.1MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 9.0MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 9.9MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 11.5MB
+   🇪🇸 Transcribing Spanish...
+   ⚠️  File too large (26.0MB), skipping
+   ⚠️  File too large (55.4MB), skipping
+   📊 Size: 14.6MB
+   🇪🇸 Transcribing Spanish...
+   ⚠️  File too large (61.2MB), skipping
+   📊 Size: 12.2MB
+   🇪🇸 Transcribing Spanish...
+   ❌ Error: Transcription failed: Invalid file format. Supported formats: ['flac', 'm4a', 'mp3', 'mp4', 'mpeg', 'mpga', 'oga', 'ogg', 'wav', 'webm']
+   ❌ Error: Transcription failed: Invalid file format. Supported formats: ['flac', 'm4a', 'mp3', 'mp4', 'mpeg', 'mpga', 'oga', 'ogg', 'wav', 'webm']
+   ❌ Error: Transcription failed: Invalid file format. Supported formats: ['flac', 'm4a', 'mp3', 'mp4', 'mpeg', 'mpga', 'oga', 'ogg', 'wav', 'webm']
+   ❌ Error: Transcription failed: Invalid file format. Supported formats: ['flac', 'm4a', 'mp3', 'mp4', 'mpeg', 'mpga', 'oga', 'ogg', 'wav', 'webm']
+   ❌ Error: Transcription failed: Invalid file format. Supported formats: ['flac', 'm4a', 'mp3', 'mp4', 'mpeg', 'mpga', 'oga', 'ogg', 'wav', 'webm']
+   ❌ Error: Transcription failed: Invalid file format. Supported formats: ['flac', 'm4a', 'mp3', 'mp4', 'mpeg', 'mpga', 'oga', 'ogg', 'wav', 'webm']
+
+⏸️  Pausing 3 seconds between batches (rate limiting)...
+
+======================================================================
+📦 BATCH 2/93 (10 videos)
+======================================================================
+
+🎙️  [11/928] Processing: Money.mov
+
+🎙️  [12/928] Processing: 0903 (4).mov
+
+🎙️  [13/928] Processing: 0904.mov
+
+🎙️  [14/928] Processing: 0904 (2).mov
+
+🎙️  [15/928] Processing: 0904 (3).mov
+
+🎙️  [16/928] Processing: 0904 (4).mov
+
+🎙️  [17/928] Processing: 0904 (4)(1).mov
+
+🎙️  [18/928] Processing: 0904 (4)(2).mov
+
+🎙️  [19/928] Processing: Claymation_style_8second_202510142200_p4pxr.mp4
+
+🎙️  [20/928] Processing: Cold hot.mov
+   ⚠️  File too large (28.0MB), skipping
+   ⚠️  File too large (41.7MB), skipping
+   📊 Size: 7.1MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 9.0MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 9.5MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 10.0MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 9.9MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 11.5MB
+   🇪🇸 Transcribing Spanish...
+   📊 Size: 2.9MB
+   🇪🇸 Transcribing Spanish...
+   ⚠️  File too large (26.0MB), skipping
+   🇬🇧 Translating to English...
+   ❌ Error: Transcription failed: Invalid file format. Supported formats: ['flac', 'm4a', 'mp3', 'mp4', 'mpeg', 'mpga', 'oga', 'ogg', 'wav', 'webm']
+   ❌ Error: Transcription failed: Invalid file format. Supported formats: ['flac', 'm4a', 'mp3', 'mp4', 'mpeg', 'mpga', 'oga', 'ogg', 'wav', 'webm']
+   💾 Creating SRT files...
+   ✅ Complete! Progress: 1/928 (0.1%) | ETA: 45h 6m
+   ❌ Error: Transcription failed: Invalid file format. Supported formats: ['flac', 'm4a', 'mp3', 'mp4', 'mpeg', 'mpga', 'oga', 'ogg', 'wav', 'webm']
+   ❌ Error: Transcription failed: Invalid file format. Supported formats: ['flac', 'm4a', 'mp3', 'mp4', 'mpeg', 'mpga', 'oga', 'ogg', 'wav', 'webm']
+
+
+⚠️  Terminated! Progress has been saved.
+💡 Run again to resume from where you left off.
+

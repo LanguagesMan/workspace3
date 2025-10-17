@@ -1,0 +1,65 @@
+
+> unified-feed-server@1.0.0 start
+> node server.js
+
+📹 Loading video catalog from MULTIPLE sources...
+✅ Loaded 506 MP4 videos from Langfeed
+✅ Loaded 142 videos from public/videos/reels/
+🎬 TOTAL: 648 videos loaded
+🎯 Spanish Frequency Database loaded - 10K+ words organized by CEFR bands
+🎯 Spanish Frequency System loaded - TOP 20 words with viral contexts!
+🔥 Spanish Gossip Feed loaded - 8 celebrity drama items ready!
+🧠 SRS Prisma Adapter initialized - persistent spaced repetition
+🎯 Spanish Frequency Database loaded - 10K+ words organized by CEFR bands
+🔥 Smart Feed System initialized with frequency targeting
+🧠 Personalized SRS Feed System initialized
+🎯 Extended Spanish Frequency System loaded - 1000+ words organized by CEFR levels!
+✅ VideoDifficultyScorer initialized with 10k Spanish words
+⚠️ Supabase credentials not found in environment variables. Database features will be limited.
+   Please set SUPABASE_URL and SUPABASE_ANON_KEY in your .env file.
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+🌐 Fast Translation Service initialized
+   Providers: Google Translate → DeepL → OpenAI
+✅ Personalization engine loaded
+🚀 Unified Feed Algorithm initialized with TikTok mechanics
+🎯 Frequency Lookup loaded: 9997 words indexed
+⚠️  Mixpanel not configured (MIXPANEL_TOKEN not set)
+🤖 AI Content Adapter initialized with 90/10 theory
+🎯 Level Detection System initialized
+🌐 Translation Service initialized
+   API URL: https://libretranslate.com
+   Rate limit: 5 req/s
+🎰 Dopamine Engine initialized
+🧪 A/B Testing Engine initialized with 7 experiments
+✅ VideoDifficultyScorer initialized with 10k Spanish words
+🎥 Video Feed API endpoints loaded
+🧠 Adaptive Learning API endpoints loaded
+⚠️  SENTRY_DSN not configured. Error tracking disabled.
+📦 Cache system initialized (in-memory)
+📊 Monitoring & Analytics endpoints loaded
+🎓 Beginner Mode API endpoints loaded
+🤖 AI Systems loaded: Content Adapter + Level Detector
+🧠 SRS System loaded with SM-2 algorithm
+🏆 Gamification System loaded: Streaks, XP, Achievements
+📊 Engagement Tracker loaded: Watch time, Saves, Completions
+📊 Analytics API loaded: Track, Daily, Weekly, Progress, Interests, Insights
+🎯 Spanish Frequency Database loaded - 10K+ words organized by CEFR bands
+📰 Adaptive News Curator loaded: ChatGPT Pulse + Perplexity style
+🤖 AI Discover Feed API loaded - ChatGPT Pulse style
+✅ Server running on http://localhost:3001
+📊 Stats Dashboard: http://localhost:3001
+🔌 API Endpoints:
+    GET  /api/health/status       - System health check
+    POST /api/analytics           - Track user events
+    GET  /api/user/level/:userId
+    GET  /api/user/words/:userId
+    POST /api/words/learned
+    GET  /api/user/stats/:userId
+    GET  /api/user/progress/:userId
+    
+(node:31693) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/mindful/_projects/workspace3/lib/article-scraping-queue.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/mindful/_projects/workspace3/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[Queue] Supabase not configured - running in test mode
+✅ Firecrawl integration loaded

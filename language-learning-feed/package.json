@@ -1,0 +1,43 @@
+{
+  "name": "language-learning-feed",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build --turbopack",
+    "start": "next start",
+    "lint": "eslint",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:studio": "prisma studio",
+    "services:dev": "concurrently \"cd services/content-analyzer && python analyzer.py\" \"cd services/recommender && python feed_algorithm.py\""
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.17.1",
+    "axios": "^1.12.2",
+    "framer-motion": "^12.23.24",
+    "next": "15.5.5",
+    "prisma": "^6.17.1",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "redis": "^5.8.3",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20.19.21",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "concurrently": "^9.2.1",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.5",
+    "tailwindcss": "^4",
+    "tsx": "^4.20.6",
+    "typescript": "^5"
+  }
+}

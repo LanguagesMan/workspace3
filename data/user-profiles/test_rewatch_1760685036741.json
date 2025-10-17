@@ -1,0 +1,23 @@
+{
+  "userId": "test_rewatch_1760685036741",
+  "level": "B1",
+  "watchedVideos": [
+    "langfeed_8second_slow_spanish_202509181157_272z2_mp4"
+  ],
+  "interactions": [
+    {
+      "videoId": "langfeed_8second_slow_spanish_202509181157_272z2_mp4",
+      "type": "rewatch",
+      "timestamp": "2025-10-17T07:10:36.746Z"
+    }
+  ],
+  "interests": {},
+  "seenThemes": {},
+  "knownWords": [],
+  "behaviorPatterns": {
+    "avgCompletionRate": 0.76,
+    "avgWatchTime": 20,
+    "skipRate": 0.2,
+    "rewatchRate": 0.05
+  }
+}

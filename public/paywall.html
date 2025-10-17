@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💎 Premium - VIDA Spanish Learning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .paywall-container {
+            max-width: 500px;
+            width: 100%;
+            background: #fff;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .premium-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 32px;
+        }
+
+        .trial-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-radius: 20px;
+            font-weight: 700;
+            margin-bottom: 32px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .features-list {
+            text-align: left;
+            margin-bottom: 32px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .feature-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .feature-text {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .price-box {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .price {
+            font-size: 48px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .price-period {
+            font-size: 18px;
+            color: #666;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 18px;
+        }
+
+        .cta-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-bottom: 16px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .cta-button:active {
+            transform: translateY(0);
+        }
+
+        .disclaimer {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 24px;
+        }
+
+        .testimonials {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 24px;
+        }
+
+        .testimonial {
+            font-size: 14px;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+
+        .testimonial-author {
+            font-size: 12px;
+            color: #999;
+            font-weight: 600;
+        }
+
+        .free-trial-count {
+            font-size: 14px;
+            color: #667eea;
+            font-weight: 600;
+            margin-top: 16px;
+        }
+
+        .loading {
+            display: none;
+            margin: 20px 0;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .error {
+            color: #e74c3c;
+            margin-top: 16px;
+            display: none;
+        }
+
+        .error.active {
+            display: block;
+        }
+    </style>
+    <link rel="preconnect" href="https://js.stripe.com" crossorigin>
+    <script src="https://js.stripe.com/v3/" async></script>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <div class="paywall-container">
+        <div class="premium-icon">💎</div>
+        <h1>Unlock Premium</h1>
+        <p class="subtitle">Learn Spanish 10x faster with unlimited access</p>
+
+        <div class="trial-badge">🎁 7-Day FREE Trial</div>
+
+        <div class="features-list">
+            <div class="feature-item">
+                <span class="feature-icon">✅</span>
+                <span class="feature-text"><strong>Unlimited videos</strong> from native speakers</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">✅</span>
+                <span class="feature-text"><strong>AI-adapted articles</strong> at your level</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">✅</span>
+                <span class="feature-text"><strong>Interactive word translations</strong> (Lingopie-style)</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">✅</span>
+                <span class="feature-text"><strong>Flashcard auto-save</strong> for every clicked word</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">✅</span>
+                <span class="feature-text"><strong>Playback speed control</strong> (0.5x - 1.5x)</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">✅</span>
+                <span class="feature-text"><strong>Spanish memes</strong> with word breakdowns</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">✅</span>
+                <span class="feature-text"><strong>Ad-free experience</strong></span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">✅</span>
+                <span class="feature-text"><strong>Priority support</strong></span>
+            </div>
+        </div>
+
+        <div class="price-box">
+            <div class="original-price">$19.99/month</div>
+            <div class="price">$9.99</div>
+            <div class="price-period">per month</div>
+        </div>
+
+        <button class="cta-button" onclick="startTrial()" id="startTrialBtn">
+            Start 7-Day FREE Trial
+        </button>
+
+        <p class="disclaimer">
+            Cancel anytime. Free trial for 7 days, then $9.99/month.<br>
+            No commitment required.
+        </p>
+
+        <div class="loading" id="loading">
+            Processing... ⏳
+        </div>
+
+        <div class="error" id="error">
+            Something went wrong. Please try again.
+        </div>
+
+        <div class="free-trial-count">
+            🔥 <span id="trialCount">1,247</span> users started their free trial today
+        </div>
+
+        <div class="testimonials">
+            <div class="testimonial">
+                "I learned more Spanish in 2 weeks than 6 months of Duolingo!"
+            </div>
+            <div class="testimonial-author">- Maria, Premium User</div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Stripe
+        // NOTE: Replace with your actual Stripe publishable key
+        const stripe = Stripe('pk_test_YOUR_KEY_HERE'); // Demo key
+
+        // Simulate trial count (would be real-time from backend)
+        function updateTrialCount() {
+            const count = 1247 + Math.floor(Math.random() * 10);
+            document.getElementById('trialCount').textContent = count.toLocaleString();
+        }
+
+        setInterval(updateTrialCount, 5000);
+
+        async function startTrial() {
+            const btn = document.getElementById('startTrialBtn');
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+
+            btn.disabled = true;
+            loading.classList.add('active');
+            error.classList.remove('active');
+
+            try {
+                // Call backend to create checkout session
+                const response = await fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        priceId: 'price_YOUR_PRICE_ID', // Replace with actual Stripe Price ID
+                        trialDays: 7
+                    })
+                });
+
+                const { sessionId } = await response.json();
+
+                // Redirect to Stripe Checkout
+                const { error: stripeError } = await stripe.redirectToCheckout({
+                    sessionId: sessionId
+                });
+
+                if (stripeError) {
+                    throw new Error(stripeError.message);
+                }
+
+            } catch (err) {
+                console.error('Payment error:', err);
+                error.textContent = err.message || 'Something went wrong. Please try again.';
+                error.classList.add('active');
+                btn.disabled = false;
+                loading.classList.remove('active');
+            }
+        }
+
+        // Track page view for analytics
+        console.log('Paywall viewed');
+
+        // Check if user has already started trial
+        const trialStarted = localStorage.getItem('trialStarted');
+        if (trialStarted) {
+            // Redirect to content if trial active
+            const trialDate = new Date(parseInt(trialStarted));
+            const now = new Date();
+            const daysPassed = (now - trialDate) / (1000 * 60 * 60 * 24);
+
+            if (daysPassed < 7) {
+                // Still in trial period
+                window.location.href = '/videos-feed.html';
+            }
+        }
+    </script>
+</body>
+</html>

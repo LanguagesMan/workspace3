@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Video Test</title>
+</head>
+<body style="background: black; color: white; text-align: center; padding: 50px;">
+    <h1>Video Codec Test</h1>
+    <video id="vid" controls autoplay muted style="max-width: 100%; max-height: 500px;">
+        <source src="/videos/langfeed/3d_pixelated_voxel_202510090058_w6zr8.mp4" type="video/mp4">
+    </video>
+    <div id="status" style="margin-top: 20px; font-size: 20px;"></div>
+    <script>
+        const video = document.getElementById('vid');
+        const status = document.getElementById('status');
+
+        video.addEventListener('loadeddata', () => {
+            status.innerHTML = '✅ VIDEO LOADED! Ready to play.';
+            status.style.color = 'green';
+        });
+
+        video.addEventListener('error', (e) => {
+            status.innerHTML = `❌ ERROR: ${video.error.message}<br>Code: ${video.error.code}`;
+            status.style.color = 'red';
+        });
+
+        video.addEventListener('canplay', () => {
+            console.log('Can play!');
+        });
+    </script>
+</body>
+</html>

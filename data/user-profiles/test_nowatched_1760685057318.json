@@ -1,0 +1,137 @@
+{
+  "userId": "test_nowatched_1760685057318",
+  "level": "B1",
+  "watchedVideos": [
+    "langfeed_8second_slow_spanish_202509181157_272z2_mp4",
+    "langfeed_character_young_energetic_202509141716_o0uqa_mp4",
+    "reels__originals_spanish_conversation_naturally_202509122327_o_mp4",
+    "langfeed_music_video_cuts_202510091725_yc2d6_mp4",
+    "langfeed_claymation_style_8second_202510132259_mr4jk_mp4",
+    "langfeed_character_middleaged_professional_20250914_mp4",
+    "langfeed_claymation_style_8second_202510142200_p4pxr_mp4",
+    "langfeed_retro_8bit_pixel_202510090102_owxkx_mp4",
+    "langfeed_claymation_stopmotion_style_202510090053_465_mp4",
+    "langfeed_watercolor_painting_style_202510090056_gxps5_mp4",
+    "langfeed_claymation_style_8second_202510142042_14qht_mp4",
+    "langfeed_chalk_animation_style_202510142207_j31ta_mp4",
+    "langfeed_create_a_tiktokstyle_202509191805_hmshs_mp4",
+    "langfeed_call_center_worker_202509140307_ys415_mp4",
+    "langfeed_barista_creating_insanely_202510091538_5u3rg_mp4",
+    "langfeed_anime_style_8second_202510121945_dnh6t_mp4",
+    "langfeed_contortionist_bending_impossibly_20251009163_mp4",
+    "langfeed_create_an_8second_202510120045_a6vmq_mp4",
+    "langfeed_model_trips_in_202510091552_rlduv_mp4",
+    "reels__originals_slapstick_comedy_es_202509122344_bikhw_mp4"
+  ],
+  "interactions": [
+    {
+      "videoId": "langfeed_8second_slow_spanish_202509181157_272z2_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:10:57.324Z"
+    },
+    {
+      "videoId": "langfeed_character_young_energetic_202509141716_o0uqa_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:10:57.326Z"
+    },
+    {
+      "videoId": "reels__originals_spanish_conversation_naturally_202509122327_o_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:10:57.328Z"
+    },
+    {
+      "videoId": "langfeed_music_video_cuts_202510091725_yc2d6_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:10:57.329Z"
+    },
+    {
+      "videoId": "langfeed_claymation_style_8second_202510132259_mr4jk_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:10:57.331Z"
+    },
+    {
+      "videoId": "langfeed_character_middleaged_professional_20250914_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:10:57.333Z"
+    },
+    {
+      "videoId": "langfeed_claymation_style_8second_202510142200_p4pxr_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:10:57.334Z"
+    },
+    {
+      "videoId": "langfeed_retro_8bit_pixel_202510090102_owxkx_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:10:57.336Z"
+    },
+    {
+      "videoId": "langfeed_claymation_stopmotion_style_202510090053_465_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:10:57.338Z"
+    },
+    {
+      "videoId": "langfeed_watercolor_painting_style_202510090056_gxps5_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:10:57.339Z"
+    },
+    {
+      "videoId": "langfeed_claymation_style_8second_202510142042_14qht_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:10:57.341Z"
+    },
+    {
+      "videoId": "langfeed_chalk_animation_style_202510142207_j31ta_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:10:57.345Z"
+    },
+    {
+      "videoId": "langfeed_create_a_tiktokstyle_202509191805_hmshs_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:10:57.347Z"
+    },
+    {
+      "videoId": "langfeed_call_center_worker_202509140307_ys415_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:10:57.349Z"
+    },
+    {
+      "videoId": "langfeed_barista_creating_insanely_202510091538_5u3rg_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:10:57.350Z"
+    },
+    {
+      "videoId": "langfeed_anime_style_8second_202510121945_dnh6t_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:10:57.350Z"
+    },
+    {
+      "videoId": "langfeed_contortionist_bending_impossibly_20251009163_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:10:57.351Z"
+    },
+    {
+      "videoId": "langfeed_create_an_8second_202510120045_a6vmq_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:10:57.352Z"
+    },
+    {
+      "videoId": "langfeed_model_trips_in_202510091552_rlduv_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:10:57.354Z"
+    },
+    {
+      "videoId": "reels__originals_slapstick_comedy_es_202509122344_bikhw_mp4",
+      "type": "complete",
+      "timestamp": "2025-10-17T07:10:57.355Z"
+    }
+  ],
+  "interests": {},
+  "seenThemes": {},
+  "knownWords": [],
+  "behaviorPatterns": {
+    "avgCompletionRate": 0.9965412354861796,
+    "avgWatchTime": 20,
+    "skipRate": 0.2,
+    "rewatchRate": 0.05
+  }
+}

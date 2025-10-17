@@ -1,0 +1,102 @@
+📹 Loading video catalog from MULTIPLE sources...
+✅ Loaded 687 videos from Langfeed
+✅ Loaded 142 videos from public/videos/reels/
+🎬 TOTAL: 829 videos loaded
+🎯 Spanish Frequency Database loaded - 10K+ words organized by CEFR bands
+🎯 Spanish Frequency System loaded - TOP 20 words with viral contexts!
+🔥 Spanish Gossip Feed loaded - 8 celebrity drama items ready!
+🧠 SRS Prisma Adapter initialized - persistent spaced repetition
+🎯 Spanish Frequency Database loaded - 10K+ words organized by CEFR bands
+🔥 Smart Feed System initialized with frequency targeting
+🧠 Personalized SRS Feed System initialized
+🎯 Extended Spanish Frequency System loaded - 1000+ words organized by CEFR levels!
+✅ VideoDifficultyScorer initialized with 10k Spanish words
+⚠️ Supabase credentials not found in environment variables. Database features will be limited.
+   Please set SUPABASE_URL and SUPABASE_ANON_KEY in your .env file.
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+🌐 Fast Translation Service initialized
+   Providers: Google Translate → DeepL → OpenAI
+✅ Personalization engine loaded
+🚀 Unified Feed Algorithm initialized with TikTok mechanics
+🎯 Frequency Lookup loaded: 9997 words indexed
+⚠️  Mixpanel not configured (MIXPANEL_TOKEN not set)
+🤖 AI Content Adapter initialized with 90/10 theory
+🎯 Level Detection System initialized
+🌐 Translation Service initialized
+   API URL: https://libretranslate.com
+   Rate limit: 5 req/s
+🎰 Dopamine Engine initialized
+🧪 A/B Testing Engine initialized with 7 experiments
+🎥 Video Feed API endpoints loaded
+🧠 Adaptive Learning API endpoints loaded
+⚠️  SENTRY_DSN not configured. Error tracking disabled.
+📦 Cache system initialized (in-memory)
+📊 Monitoring & Analytics endpoints loaded
+🎓 Beginner Mode API endpoints loaded
+🤖 AI Systems loaded: Content Adapter + Level Detector
+🧠 SRS System loaded with SM-2 algorithm
+🏆 Gamification System loaded: Streaks, XP, Achievements
+📊 Engagement Tracker loaded: Watch time, Saves, Completions
+📊 Analytics API loaded: Track, Daily, Weekly, Progress, Interests, Insights
+🎯 Spanish Frequency Database loaded - 10K+ words organized by CEFR bands
+📰 Adaptive News Curator loaded: ChatGPT Pulse + Perplexity style
+🤖 AI Discover Feed API loaded - ChatGPT Pulse style
+✅ Server running on http://localhost:3001
+📊 Stats Dashboard: http://localhost:3001
+🔌 API Endpoints:
+    GET  /api/health/status       - System health check
+    POST /api/analytics           - Track user events
+    GET  /api/user/level/:userId
+    GET  /api/user/words/:userId
+    POST /api/words/learned
+    GET  /api/user/stats/:userId
+    GET  /api/user/progress/:userId
+    
+(node:76416) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/mindful/_projects/workspace3/lib/viralContentEngine.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/mindful/_projects/workspace3/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[Queue] Supabase not configured - running in test mode
+✅ Firecrawl integration loaded
+🎯 Getting personalized feed for user123
+🎯 Generating personalized feed for user: user123
+🔄 Adapting 0 articles to user...
+✅ Generated 0 personalized articles
+🧪 User test_user assigned to reward_frequency: 10
+🧪 User test_user assigned to celebration_intensity: standard
+🧪 User test_user assigned to feed_weights: level_first
+🧪 User test_user assigned to social_proof_frequency: medium
+⚠️  Retrying translation (attempt 2/3)...
+⚠️  Retrying translation (attempt 2/3)...
+⚠️  Retrying translation (attempt 3/3)...
+📱 Unified feed request: Level=A2, Interests=news,culture
+📰 Aggregating content for user default_user at level A2
+📹 Skipping external Pexels videos - using local reels only
+News fetch error: Request failed with status code 401
+📰 Fetching real Spanish news from RSS feeds...
+✅ Fetched 5 articles from El País
+✅ Fetched 5 articles from El Mundo
+✅ Fetched 5 articles from BBC Mundo
+✅ Cached 15 articles
+✅ Fetched 15 real Spanish news articles from RSS
+📊 Feed mix: 28 articles, 20 videos, 4 memes
+📊 Tracking interaction: complete for user user_1760668352424_cnxthts62
+📱 Unified feed request: Level=A2, Interests=news,culture
+📰 Aggregating content for user default_user at level A2
+📹 Skipping external Pexels videos - using local reels only
+News fetch error: Request failed with status code 401
+📰 Fetching real Spanish news from RSS feeds...
+✅ Fetched 5 articles from El País
+✅ Fetched 5 articles from El Mundo
+✅ Fetched 5 articles from BBC Mundo
+✅ Cached 15 articles
+✅ Fetched 15 real Spanish news articles from RSS
+📊 Feed mix: 28 articles, 20 videos, 4 memes
+🎯 Getting personalized feed for guest
+🎯 Generating personalized feed for user: guest
+🔄 Adapting 0 articles to user...
+✅ Generated 0 personalized articles
+🎯 Getting personalized feed for guest
+🎯 Generating personalized feed for user: guest
+🔄 Adapting 0 articles to user...
+✅ Generated 0 personalized articles

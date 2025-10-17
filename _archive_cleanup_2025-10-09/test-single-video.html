@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Single Video</title>
+</head>
+<body style="margin: 0; background: black;">
+    <h1 style="color: white;">Video Test</h1>
+
+    <h2 style="color: white;">Test 1: Direct path (spaces + parentheses)</h2>
+    <video controls style="width: 400px;" id="video1">
+        <source src="/videos/0903 (3)/0903 (3).mp4" type="video/mp4">
+    </video>
+
+    <h2 style="color: white;">Test 2: URL-encoded path</h2>
+    <video controls style="width: 400px;" id="video2">
+        <source src="/videos/0903%20(3)/0903%20(3).mp4" type="video/mp4">
+    </video>
+
+    <h2 style="color: white;">Test 3: Reel video (no spaces)</h2>
+    <video controls style="width: 400px;" id="video3">
+        <source src="/videos/reels/Person_says_tengo_202509130121_cdz81.mp4" type="video/mp4">
+    </video>
+
+    <script>
+        document.querySelectorAll('video').forEach((video, idx) => {
+            video.addEventListener('loadeddata', () => {
+                console.log(`✅ Video ${idx + 1} loaded successfully`);
+            });
+            video.addEventListener('error', (e) => {
+                console.error(`❌ Video ${idx + 1} error:`, e, video.error);
+            });
+        });
+    </script>
+</body>
+</html>

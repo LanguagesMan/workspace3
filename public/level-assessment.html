@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Spanish Level Assessment - Langflix</title>
+
+    <!-- BEGINNER MODE STYLES -->
+    <link rel="stylesheet" href="/components/beginner-mode-styles.html">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Welcome Screen */
+        .welcome-screen {
+            text-align: center;
+            max-width: 500px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .welcome-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .welcome-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .welcome-subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .start-btn {
+            padding: 16px 40px;
+            font-size: 18px;
+            font-weight: 700;
+            background: #fff;
+            color: #667eea;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .start-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Question Card - TikTok-style swipeable */
+        .question-card {
+            background: rgba(255, 255, 255, 0.95);
+            color: #1a1a1a;
+            border-radius: 20px;
+            padding: 40px 30px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: #667eea;
+            border-radius: 20px 0 0 0;
+            transition: width 0.3s ease;
+        }
+
+        .question-number {
+            font-size: 14px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .question-type {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .question-text {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            line-height: 1.4;
+            color: #1a1a1a;
+        }
+
+        /* Video comprehension */
+        .video-container {
+            position: relative;
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            background: #000;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Answer options */
+        .answer-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .answer-option {
+            padding: 16px 20px;
+            background: rgba(102, 126, 234, 0.1);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+            text-align: left;
+        }
+
+        .answer-option:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateX(4px);
+        }
+
+        .answer-option:active {
+            transform: scale(0.98);
+        }
+
+        .answer-option.selected {
+            background: #667eea;
+            color: #fff;
+            border-color: #667eea;
+        }
+
+        .answer-option.correct {
+            background: #4CAF50;
+            color: #fff;
+            border-color: #4CAF50;
+        }
+
+        .answer-option.incorrect {
+            background: #f44336;
+            color: #fff;
+            border-color: #f44336;
+        }
+
+        /* Fill in the blank */
+        .sentence-container {
+            font-size: 20px;
+            line-height: 2;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .blank {
+            display: inline-block;
+            min-width: 100px;
+            border-bottom: 2px solid #667eea;
+            padding: 4px 12px;
+            margin: 0 8px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        /* Next button */
+        .next-btn {
+            width: 100%;
+            padding: 16px;
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: 700;
+            background: #667eea;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .next-btn.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .next-btn:hover {
+            background: #5568d3;
+        }
+
+        .next-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Results Screen */
+        .results-screen {
+            text-align: center;
+            max-width: 500px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .results-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .results-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .level-badge {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #fff;
+            color: #667eea;
+            border-radius: 30px;
+            font-size: 28px;
+            font-weight: 700;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .level-description {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .score-breakdown {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .score-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+
+        .continue-btn {
+            padding: 16px 40px;
+            font-size: 18px;
+            font-weight: 700;
+            background: #fff;
+            color: #667eea;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Loading indicator */
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div class="welcome-screen" id="welcomeScreen">
+            <div class="welcome-icon">🎯</div>
+            <h1 class="welcome-title">Spanish Level Assessment</h1>
+            <p class="welcome-subtitle">
+                Take this quick 5-question test to find your perfect starting level.
+                It takes just 2 minutes!
+            </p>
+            <button class="start-btn" onclick="startAssessment()">Let's Go!</button>
+        </div>
+
+        <!-- Question Card -->
+        <div class="question-card hidden" id="questionCard">
+            <div class="progress-bar" id="progressBar"></div>
+            <div class="question-number" id="questionNumber">Question 1 of 5</div>
+            <div class="question-type" id="questionType">Video Comprehension</div>
+            <h2 class="question-text" id="questionText"></h2>
+
+            <div class="video-container hidden" id="videoContainer">
+                <video id="questionVideo" controls playsinline></video>
+            </div>
+
+            <div class="sentence-container hidden" id="sentenceContainer"></div>
+
+            <div class="answer-options" id="answerOptions"></div>
+
+            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next Question</button>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="results-screen hidden" id="resultsScreen">
+            <div class="results-icon">🎉</div>
+            <h1 class="results-title">Assessment Complete!</h1>
+            <div class="level-badge" id="levelBadge">B1</div>
+            <p class="level-description" id="levelDescription"></p>
+
+            <div class="score-breakdown">
+                <div class="score-item">
+                    <span>Questions Correct:</span>
+                    <span id="correctCount">0/5</span>
+                </div>
+                <div class="score-item">
+                    <span>Average Response Time:</span>
+                    <span id="avgTime">0s</span>
+                </div>
+                <div class="score-item">
+                    <span>Confidence Level:</span>
+                    <span id="confidence">High</span>
+                </div>
+            </div>
+
+            <button class="continue-btn" onclick="goToFeed()">Start Learning!</button>
+        </div>
+    </div>
+
+    <!-- User State Management -->
+    <script src="/js/user-state.js"></script>
+    
+    <script type="module">
+
+        // Assessment questions (adaptive difficulty)
+        const questions = [
+            {
+                type: 'comprehension',
+                difficulty: 'A1',
+                question: '¿Qué dijo la persona?',
+                text: 'Hola, ¿cómo estás?',
+                options: [
+                    { text: 'Hello, how are you?', correct: true },
+                    { text: 'Goodbye, see you later', correct: false },
+                    { text: 'Thank you very much', correct: false },
+                    { text: 'I am hungry', correct: false }
+                ]
+            },
+            {
+                type: 'word',
+                difficulty: 'A2',
+                question: 'What does "hambre" mean?',
+                options: [
+                    { text: 'hunger', correct: true },
+                    { text: 'man', correct: false },
+                    { text: 'house', correct: false },
+                    { text: 'happy', correct: false }
+                ]
+            },
+            {
+                type: 'fill',
+                difficulty: 'A2',
+                question: 'Fill in the blank:',
+                sentence: 'Yo ___ estudiante',
+                options: [
+                    { text: 'soy', correct: true },
+                    { text: 'eres', correct: false },
+                    { text: 'es', correct: false },
+                    { text: 'son', correct: false }
+                ]
+            },
+            {
+                type: 'comprehension',
+                difficulty: 'B1',
+                question: '¿Cuál es el significado?',
+                text: 'Me gustaría viajar por el mundo',
+                options: [
+                    { text: 'I would like to travel the world', correct: true },
+                    { text: 'I traveled around the world', correct: false },
+                    { text: 'The world is beautiful', correct: false },
+                    { text: 'I like my journey', correct: false }
+                ]
+            },
+            {
+                type: 'word',
+                difficulty: 'B2',
+                question: 'What does "desarrollar" mean?',
+                options: [
+                    { text: 'develop', correct: true },
+                    { text: 'destroy', correct: false },
+                    { text: 'discover', correct: false },
+                    { text: 'describe', correct: false }
+                ]
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let responses = [];
+        let questionStartTime = 0;
+
+        function startAssessment() {
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('questionCard').classList.remove('hidden');
+            loadQuestion(0);
+        }
+
+        function loadQuestion(index) {
+            if (index >= questions.length) {
+                showResults();
+                return;
+            }
+
+            currentQuestionIndex = index;
+            const question = questions[index];
+            questionStartTime = Date.now();
+
+            // Update progress
+            const progress = ((index + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('questionNumber').textContent = `Question ${index + 1} of ${questions.length}`;
+
+            // Update question type
+            const typeLabels = {
+                'comprehension': 'Comprehension',
+                'word': 'Vocabulary',
+                'fill': 'Grammar'
+            };
+            document.getElementById('questionType').textContent = typeLabels[question.type];
+
+            // Update question text
+            if (question.type === 'comprehension') {
+                document.getElementById('questionText').textContent = question.text;
+                document.getElementById('sentenceContainer').classList.add('hidden');
+            } else if (question.type === 'fill') {
+                document.getElementById('questionText').textContent = question.question;
+                const sentence = question.sentence.replace('___', '<span class="blank">?</span>');
+                document.getElementById('sentenceContainer').innerHTML = sentence;
+                document.getElementById('sentenceContainer').classList.remove('hidden');
+            } else {
+                document.getElementById('questionText').textContent = question.question;
+                document.getElementById('sentenceContainer').classList.add('hidden');
+            }
+
+            // Render answer options
+            const optionsContainer = document.getElementById('answerOptions');
+            optionsContainer.innerHTML = '';
+
+            question.options.forEach((option, i) => {
+                const optionEl = document.createElement('div');
+                optionEl.className = 'answer-option';
+                optionEl.textContent = option.text;
+                optionEl.dataset.correct = option.correct;
+                optionEl.dataset.index = i;
+                optionEl.onclick = () => selectAnswer(optionEl, question);
+                optionsContainer.appendChild(optionEl);
+            });
+
+            // Reset next button
+            document.getElementById('nextBtn').classList.remove('active');
+        }
+
+        function selectAnswer(optionEl, question) {
+            // Clear previous selections
+            document.querySelectorAll('.answer-option').forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+
+            optionEl.classList.add('selected');
+
+            // Record response
+            const responseTime = Date.now() - questionStartTime;
+            const isCorrect = optionEl.dataset.correct === 'true';
+
+            responses.push({
+                questionIndex: currentQuestionIndex,
+                difficulty: question.difficulty,
+                correct: isCorrect,
+                responseTime: responseTime
+            });
+
+            // Show feedback
+            if (isCorrect) {
+                optionEl.classList.add('correct');
+            } else {
+                optionEl.classList.add('incorrect');
+                // Show correct answer
+                document.querySelectorAll('.answer-option').forEach(opt => {
+                    if (opt.dataset.correct === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+
+            // Enable next button
+            document.getElementById('nextBtn').classList.add('active');
+        }
+
+        function nextQuestion() {
+            loadQuestion(currentQuestionIndex + 1);
+        }
+
+        function showResults() {
+            document.getElementById('questionCard').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.remove('hidden');
+
+            // Calculate user level
+            const userLevel = calculateUserLevel(responses);
+
+            // Update UI
+            document.getElementById('levelBadge').textContent = userLevel.level;
+            document.getElementById('levelDescription').textContent = userLevel.description;
+
+            const correctCount = responses.filter(r => r.correct).length;
+            document.getElementById('correctCount').textContent = `${correctCount}/${questions.length}`;
+
+            const avgTime = Math.round(responses.reduce((sum, r) => sum + r.responseTime, 0) / responses.length / 1000);
+            document.getElementById('avgTime').textContent = avgTime + 's';
+
+            document.getElementById('confidence').textContent = userLevel.confidence;
+
+            // Save to localStorage
+            localStorage.setItem('userLevel', userLevel.level);
+            localStorage.setItem('assessmentComplete', 'true');
+
+            // Save to database via API
+            saveAssessmentResults(userLevel, responses);
+
+            // Show beginner mode prompt for A1 users or low scores
+            // Research: Duolingo uses gradual engagement - show prompt after completion
+            if (userLevel.level === 'A1' || userLevel.score < 30) {
+                setTimeout(() => showBeginnerModePrompt(userLevel.level, userLevel.score), 1500);
+            }
+        }
+
+        function calculateUserLevel(responses) {
+            let score = 0;
+
+            responses.forEach(r => {
+                // Points based on difficulty (RECALIBRATED for accuracy)
+                const difficultyPoints = {
+                    'A1': 10,
+                    'A2': 20,
+                    'B1': 30,
+                    'B2': 40,
+                    'C1': 50,
+                    'C2': 60
+                };
+
+                if (r.correct) {
+                    score += difficultyPoints[r.difficulty] || 20;
+                }
+
+                // REDUCED bonus for fast response (was +5, now +2)
+                // Prevents over-inflation of scores
+                if (r.responseTime < 3000 && r.correct) {
+                    score += 2;
+                }
+            });
+
+            // Map score to CEFR level (ADJUSTED THRESHOLDS for better accuracy)
+            let level, description, confidence, frequencyPosition;
+
+            if (score < 25) {
+                level = 'A1';
+                description = 'Beginner - You\'re just starting your Spanish journey!';
+                confidence = 'Building';
+                frequencyPosition = 'Words 1-500';
+            } else if (score < 50) {
+                level = 'A2';
+                description = 'Elementary - You know basic Spanish phrases and vocabulary.';
+                confidence = 'Growing';
+                frequencyPosition = 'Words 500-1000';
+            } else if (score < 85) {
+                level = 'B1';
+                description = 'Intermediate - You can handle everyday conversations!';
+                confidence = 'Good';
+                frequencyPosition = 'Words 1000-2000';
+            } else if (score < 125) {
+                level = 'B2';
+                description = 'Upper Intermediate - You\'re fluent in most situations.';
+                confidence = 'Strong';
+                frequencyPosition = 'Words 2000-3500';
+            } else if (score < 150) {
+                level = 'C1';
+                description = 'Advanced - You have excellent command of Spanish!';
+                confidence = 'Very High';
+            } else {
+                level = 'C2';
+                description = 'Mastery - You\'re practically a native speaker!';
+                confidence = 'Expert';
+            }
+
+            return { level, description, confidence, score };
+        }
+
+        async function saveAssessmentResults(userLevel, responses) {
+            try {
+                const userId = localStorage.getItem('userId') || 'user_' + Date.now();
+                localStorage.setItem('userId', userId);
+                
+                const response = await fetch('/api/assessment/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId,
+                        level: userLevel.level,
+                        score: userLevel.score,
+                        confidence: userLevel.confidence,
+                        responses: responses.map(r => ({
+                            difficulty: r.difficulty,
+                            correct: r.correct,
+                            responseTime: r.responseTime
+                        }))
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    console.log(`✅ Assessment saved: ${userLevel.level} (Score: ${userLevel.score})`);
+                } else {
+                    console.error('Error saving assessment:', data.error);
+                }
+            } catch (error) {
+                console.error('Error saving assessment:', error);
+            }
+        }
+
+        function goToFeed() {
+            window.location.href = '/tiktok-video-feed.html';
+        }
+
+        /**
+         * Show beginner mode activation prompt
+         * Research: Duolingo's "gradual engagement" - prompt appears after user invests time
+         */
+        function showBeginnerModePrompt(userLevel, userScore) {
+            const modal = document.createElement('div');
+            modal.className = 'beginner-mode-prompt-modal';
+            modal.innerHTML = `
+                <div class="beginner-mode-prompt">
+                    <h2>👋 Welcome to Spanish!</h2>
+                    <p>We noticed you're just starting out. Would you like:</p>
+
+                    <button class="beginner-mode-btn primary" onclick="window.activateBeginnerMode()">
+                        🎓 Complete Beginner Mode
+                        <small>Slower videos, word previews, optional quizzes</small>
+                    </button>
+
+                    <button class="regular-mode-btn" onclick="window.skipBeginnerMode()">
+                        🚀 Regular Mode
+                        <small>Jump right in and explore</small>
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+        }
+
+        window.activateBeginnerMode = () => {
+            // Activate beginner mode
+            localStorage.setItem('beginnerMode', 'true');
+            localStorage.setItem('beginnerModeSpeed', '0.75');
+            localStorage.setItem('playbackSpeed', '0.75');
+
+            // Remove modal
+            const modal = document.querySelector('.beginner-mode-prompt-modal');
+            if (modal) modal.remove();
+
+            // Show confirmation and redirect
+            alert('🎓 Beginner Mode activated! Videos will be slowed down and you\'ll get extra guidance.');
+            window.location.href = '/tiktok-video-feed.html';
+        };
+
+        window.skipBeginnerMode = () => {
+            // Close modal
+            const modal = document.querySelector('.beginner-mode-prompt-modal');
+            if (modal) modal.remove();
+
+            // Continue to feed
+            window.location.href = '/tiktok-video-feed.html';
+        };
+
+        // Make functions global
+        window.startAssessment = startAssessment;
+        window.nextQuestion = nextQuestion;
+        window.goToFeed = goToFeed;
+    </script>
+</body>
+</html>

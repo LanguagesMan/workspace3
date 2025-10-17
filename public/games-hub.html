@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Games Hub - Langflix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            padding-top: 80px;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            text-align: center;
+            color: white;
+            margin-bottom: 48px;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 900;
+            margin-bottom: 16px;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero p {
+            font-size: 20px;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        .stats-bar {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 48px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            color: white;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 900;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-title {
+            color: white;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .game-card {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--gradient);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .game-card:hover::before {
+            opacity: 1;
+        }
+
+        .game-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .game-card.duolingo {
+            --gradient: linear-gradient(90deg, #58cc02, #1cb0f6);
+        }
+
+        .game-card.fire {
+            --gradient: linear-gradient(90deg, #ff6b6b, #feca57);
+        }
+
+        .game-card.cool {
+            --gradient: linear-gradient(90deg, #a8edea, #fed6e3);
+        }
+
+        .game-card.purple {
+            --gradient: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .game-card.teal {
+            --gradient: linear-gradient(90deg, #11998e, #38ef7d);
+        }
+
+        .game-card.sunset {
+            --gradient: linear-gradient(90deg, #fa709a, #fee140);
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .game-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: #f0f0f0;
+            color: #666;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge.new {
+            background: #58cc02;
+            color: white;
+        }
+
+        .badge.popular {
+            background: #ff4b4b;
+            color: white;
+        }
+
+        .badge.srs {
+            background: #1cb0f6;
+            color: white;
+        }
+
+        .game-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: #222;
+        }
+
+        .game-description {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .game-meta {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 16px;
+            border-top: 2px solid #f0f0f0;
+            font-size: 14px;
+            color: #999;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .play-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #58cc02, #42a802);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 800;
+            text-decoration: none;
+            margin-top: 16px;
+            transition: all 0.2s;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(88, 204, 2, 0.4);
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 32px;
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .info-card h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .info-card p {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            padding: 40px 0;
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-value {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="goBack()">← Home</button>
+
+    <div class="container">
+        <div class="hero">
+            <h1>🎮 Games Hub</h1>
+            <p>Master Spanish through fun, addictive games</p>
+        </div>
+
+        <!-- Stats Bar -->
+        <div id="statsBar" class="stats-bar" style="display: none;">
+            <div class="stat-item">
+                <div class="stat-value" id="wordsLearned">0</div>
+                <div class="stat-label">Words Learned</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="gamesPlayed">0</div>
+                <div class="stat-label">Games Played</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="totalXP">0</div>
+                <div class="stat-label">Total XP</div>
+            </div>
+        </div>
+
+        <!-- Info Card -->
+        <div class="info-card">
+            <h3>🧠 Smart Vocabulary Games</h3>
+            <p>All games use YOUR learned words from videos you've watched. The more you learn, the better the games get!</p>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+            <p>Loading games...</p>
+        </div>
+
+        <!-- Games Grid -->
+        <div id="gamesGrid" class="games-grid" style="display: none;">
+            <!-- Word Match -->
+            <div class="game-card duolingo" onclick="playGame('word-match')">
+                <div class="game-header">
+                    <div class="game-icon">🎯</div>
+                    <div class="badges">
+                        <span class="badge srs">SRS</span>
+                        <span class="badge popular">Popular</span>
+                    </div>
+                </div>
+                <div class="game-title">Word Match</div>
+                <div class="game-description">
+                    Match Spanish words with English translations. Beat the timer and build your streak for bonus points!
+                </div>
+                <div class="game-meta">
+                    <div class="meta-item">
+                        <span>⏱️</span>
+                        <span>2-3 min</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>🎓</span>
+                        <span>All Levels</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tap Pairs -->
+            <div class="game-card duolingo" onclick="playGame('tap-pairs')">
+                <div class="game-header">
+                    <div class="game-icon">👆</div>
+                    <div class="badges">
+                        <span class="badge srs">SRS</span>
+                        <span class="badge new">New</span>
+                    </div>
+                </div>
+                <div class="game-title">Tap Pairs</div>
+                <div class="game-description">
+                    Duolingo-style tapping game! Match word pairs quickly and accurately to master your vocabulary.
+                </div>
+                <div class="game-meta">
+                    <div class="meta-item">
+                        <span>⏱️</span>
+                        <span>3-4 min</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>🎓</span>
+                        <span>All Levels</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Speed Round -->
+            <div class="game-card fire" onclick="playGame('speed-round')">
+                <div class="game-header">
+                    <div class="game-icon">⚡</div>
+                    <div class="badges">
+                        <span class="badge new">New</span>
+                    </div>
+                </div>
+                <div class="game-title">Speed Round</div>
+                <div class="game-description">
+                    Race against the clock! Translate as many words as possible in 60 seconds. Build combos for massive scores!
+                </div>
+                <div class="game-meta">
+                    <div class="meta-item">
+                        <span>⏱️</span>
+                        <span>1 min</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>🎓</span>
+                        <span>Intermediate</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fill in the Blank -->
+            <div class="game-card cool" onclick="playGame('fill-blank')">
+                <div class="game-header">
+                    <div class="game-icon">📝</div>
+                    <div class="badges">
+                        <span class="badge srs">SRS</span>
+                        <span class="badge new">New</span>
+                    </div>
+                </div>
+                <div class="game-title">Fill in the Blank</div>
+                <div class="game-description">
+                    Complete Spanish sentences by choosing the correct word. Perfect for learning words in context!
+                </div>
+                <div class="game-meta">
+                    <div class="meta-item">
+                        <span>⏱️</span>
+                        <span>4-5 min</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>🎓</span>
+                        <span>All Levels</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sentence Builder -->
+            <div class="game-card purple" onclick="playGame('sentence-builder')">
+                <div class="game-header">
+                    <div class="game-icon">🔤</div>
+                    <div class="badges">
+                        <span class="badge">Grammar</span>
+                    </div>
+                </div>
+                <div class="game-title">Sentence Builder</div>
+                <div class="game-description">
+                    Arrange words to form correct Spanish sentences. Learn grammar naturally through practice!
+                </div>
+                <div class="game-meta">
+                    <div class="meta-item">
+                        <span>⏱️</span>
+                        <span>5-7 min</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>🎓</span>
+                        <span>Beginner</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flashcards (SRS) -->
+            <div class="game-card teal" onclick="playGame('flashcards')">
+                <div class="game-header">
+                    <div class="game-icon">🃏</div>
+                    <div class="badges">
+                        <span class="badge srs">SRS</span>
+                        <span class="badge popular">Popular</span>
+                    </div>
+                </div>
+                <div class="game-title">Flashcards</div>
+                <div class="game-description">
+                    Review words with spaced repetition. The scientifically proven method for vocabulary retention!
+                </div>
+                <div class="game-meta">
+                    <div class="meta-item">
+                        <span>⏱️</span>
+                        <span>5-10 min</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>🎓</span>
+                        <span>All Levels</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Listening Challenge -->
+            <div class="game-card sunset" onclick="playGame('listening')">
+                <div class="game-header">
+                    <div class="game-icon">🎧</div>
+                    <div class="badges">
+                        <span class="badge">Listening</span>
+                    </div>
+                </div>
+                <div class="game-title">Listening Challenge</div>
+                <div class="game-description">
+                    Listen to Spanish audio and type what you hear. Train your ear for native pronunciation!
+                </div>
+                <div class="game-meta">
+                    <div class="meta-item">
+                        <span>⏱️</span>
+                        <span>5-8 min</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>🎓</span>
+                        <span>Advanced</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Quiz -->
+            <div class="game-card duolingo" onclick="playGame('quiz')">
+                <div class="game-header">
+                    <div class="game-icon">📊</div>
+                    <div class="badges">
+                        <span class="badge">Assessment</span>
+                    </div>
+                </div>
+                <div class="game-title">Quick Quiz</div>
+                <div class="game-description">
+                    Test your knowledge with adaptive quizzes. Questions adjust to your level in real-time!
+                </div>
+                <div class="game-meta">
+                    <div class="meta-item">
+                        <span>⏱️</span>
+                        <span>3-5 min</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>🎓</span>
+                        <span>All Levels</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; color: rgba(255, 255, 255, 0.8); padding: 40px 0;">
+            <p style="font-size: 16px; margin-bottom: 8px;">🎯 Your progress is saved automatically</p>
+            <p style="font-size: 14px;">Games use words from videos you've watched and saved</p>
+        </div>
+    </div>
+
+    <script>
+        const userId = localStorage.getItem('userId') || 'default-user';
+
+        // Load user stats
+        async function loadStats() {
+            try {
+                const response = await fetch(`/api/vocabulary/stats?userId=${userId}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('wordsLearned').textContent = data.stats.totalWords || 0;
+                    document.getElementById('totalXP').textContent = data.stats.totalXP || 0;
+                    
+                    // Get games played from localStorage
+                    const gamesPlayed = localStorage.getItem('gamesPlayed') || 0;
+                    document.getElementById('gamesPlayed').textContent = gamesPlayed;
+
+                    document.getElementById('statsBar').style.display = 'flex';
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Initialize page
+        async function init() {
+            await loadStats();
+            
+            // Hide loading, show games
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('gamesGrid').style.display = 'grid';
+
+            // Track visit
+            const visits = parseInt(localStorage.getItem('gamesHubVisits') || 0) + 1;
+            localStorage.setItem('gamesHubVisits', visits);
+        }
+
+        // Play game
+        function playGame(gameType) {
+            const gameUrls = {
+                'word-match': '/games/word-match.html',
+                'tap-pairs': '/games/tap-pairs.html',
+                'speed-round': '/games/speed-round.html',
+                'fill-blank': '/games/fill-blank.html',
+                'sentence-builder': '/sentence-builder-game.html',
+                'flashcards': '/srs-review.html',
+                'quiz': '/components/vocab-assessment.html',
+                'listening': '/listening-challenge.html'
+            };
+
+            const url = gameUrls[gameType];
+            if (url) {
+                // Track game played
+                const gamesPlayed = parseInt(localStorage.getItem('gamesPlayed') || 0) + 1;
+                localStorage.setItem('gamesPlayed', gamesPlayed);
+
+                window.location.href = url;
+            } else {
+                alert('Coming soon! 🚀');
+            }
+        }
+
+        // Go back
+        function goBack() {
+            window.location.href = '/tiktok-video-feed.html';
+        }
+
+        // Initialize on load
+        window.onload = init;
+    </script>
+</body>
+</html>

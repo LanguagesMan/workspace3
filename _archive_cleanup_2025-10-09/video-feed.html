@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>📹 Video Feed - VIDA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        :root {
+            --silver: #e8e8ed;
+            --silver-light: #f5f5f7;
+            --blue: #007AFF;
+            --purple: #AF52DE;
+            --green: #34C759;
+            --orange: #FF9500;
+            --red: #FF3B30;
+            --gold: #FFD700;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --text-primary: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --radius-lg: 24px;
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: #000;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* HEADER */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            padding: 12px 20px;
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: white;
+            color: var(--text-primary);
+        }
+
+        /* VIDEO FEED CONTAINER */
+        .video-feed {
+            margin-top: 60px;
+            height: calc(100vh - 60px);
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .video-item {
+            position: relative;
+            height: calc(100vh - 60px);
+            scroll-snap-align: start;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+
+        /* VIDEO PLAYER */
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
+        }
+
+        /* SUBTITLE OVERLAY */
+        .subtitle-overlay {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            max-width: 90%;
+            line-height: 1.4;
+        }
+
+        .subtitle-word {
+            display: inline;
+            cursor: pointer;
+            padding: 2px 4px;
+            margin: 0 2px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .subtitle-word:hover {
+            background: var(--blue);
+            transform: scale(1.05);
+        }
+
+        /* VIDEO CONTROLS */
+        .video-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            border-radius: 20px;
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 12px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .control-btn.active {
+            background: white;
+            color: var(--text-primary);
+        }
+
+        .control-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* SIDE ACTIONS */
+        .side-actions {
+            position: absolute;
+            right: 20px;
+            bottom: 120px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .action-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: none;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        /* VIDEO INFO */
+        .video-info {
+            position: absolute;
+            left: 20px;
+            bottom: 120px;
+            max-width: 60%;
+        }
+
+        .video-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-stats {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            gap: 16px;
+        }
+
+        /* LOADING STATE */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* PROGRESS BAR */
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--blue);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .video-info {
+                max-width: 70%;
+            }
+
+            .subtitle-overlay {
+                bottom: 100px;
+                font-size: 16px;
+            }
+
+            .control-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">📹 VIDA</div>
+            <div class="nav-tabs">
+                <button class="tab active" onclick="window.location.href='/video-feed.html'">Videos</button>
+                <button class="tab" onclick="window.location.href='/apple-feed.html'">Feed</button>
+                <button class="tab" onclick="window.location.href='/achievements.html'">Achievements</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIDEO FEED -->
+    <div class="video-feed" id="videoFeed">
+        <div class="loading">🔄</div>
+    </div>
+
+    <script>
+        let videos = [];
+        let currentIndex = 0;
+        let currentSubtitles = [];
+        let currentSubtitleIndex = 0;
+
+        // Load videos on page load
+        async function loadVideos() {
+            try {
+                const response = await fetch('/api/videos/with-subtitles');
+                const data = await response.json();
+
+                if (data.success) {
+                    videos = data.videos;
+                    console.log(`✅ Loaded ${videos.length} videos with subtitles`);
+                    renderVideos();
+                } else {
+                    console.error('Failed to load videos');
+                }
+            } catch (error) {
+                console.error('Error loading videos:', error);
+            }
+        }
+
+        // Render video feed
+        function renderVideos() {
+            const feed = document.getElementById('videoFeed');
+            feed.innerHTML = '';
+
+            videos.forEach((video, index) => {
+                const videoItem = document.createElement('div');
+                videoItem.className = 'video-item';
+                videoItem.innerHTML = `
+                    <video
+                        id="video-${index}"
+                        src="${video.path}"
+                        playsinline
+                        ${index === 0 ? 'autoplay' : ''}
+                        loop
+                    ></video>
+
+                    <div class="subtitle-overlay" id="subtitle-${index}" style="display: none;"></div>
+
+                    <div class="video-info">
+                        <div class="video-title">${video.title}</div>
+                        <div class="video-stats">
+                            <span>📁 ${video.folder}</span>
+                            ${video.hasSubtitles ? '<span>📝 Subtitles</span>' : ''}
+                        </div>
+                    </div>
+
+                    <div class="side-actions">
+                        <button class="action-btn" onclick="toggleSave(${index})">❤️</button>
+                        <button class="action-btn" onclick="toggleSubtitles(${index})">📝</button>
+                        <button class="action-btn" onclick="shareVideo(${index})">📤</button>
+                    </div>
+
+                    <div class="video-controls">
+                        <button class="control-btn" onclick="setSpeed(${index}, 0.5)">0.5x</button>
+                        <button class="control-btn" onclick="setSpeed(${index}, 0.75)">0.75x</button>
+                        <button class="control-btn active" onclick="setSpeed(${index}, 1)">1x</button>
+                        <button class="control-btn" onclick="setSpeed(${index}, 1.25)">1.25x</button>
+                        <button class="control-btn" onclick="setSpeed(${index}, 1.5)">1.5x</button>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-${index}"></div>
+                    </div>
+                `;
+
+                feed.appendChild(videoItem);
+
+                // Load subtitles if available
+                if (video.hasSubtitles && video.subtitlesPath) {
+                    loadSubtitles(video.subtitlesPath, index);
+                }
+
+                // Update progress bar
+                const videoEl = videoItem.querySelector('video');
+                videoEl.addEventListener('timeupdate', () => {
+                    const progress = (videoEl.currentTime / videoEl.duration) * 100;
+                    document.getElementById(`progress-${index}`).style.width = progress + '%';
+                });
+            });
+
+            // Auto-play on scroll
+            setupScrollAutoPlay();
+        }
+
+        // Parse and load SRT subtitles
+        async function loadSubtitles(srtPath, videoIndex) {
+            try {
+                const response = await fetch(srtPath);
+                const srtText = await response.text();
+                const subtitles = parseSRT(srtText);
+
+                // Store subtitles for this video
+                videos[videoIndex].parsedSubtitles = subtitles;
+
+                console.log(`✅ Loaded ${subtitles.length} subtitle cues for video ${videoIndex}`);
+            } catch (error) {
+                console.error(`Error loading subtitles for ${srtPath}:`, error);
+            }
+        }
+
+        // Parse SRT format
+        function parseSRT(srt) {
+            const subtitles = [];
+            const blocks = srt.trim().split(/\n\n+/);
+
+            blocks.forEach(block => {
+                const lines = block.split('\n');
+                if (lines.length >= 3) {
+                    const timeLine = lines[1];
+                    const textLine = lines.slice(2).join(' ');
+
+                    const timeMatch = timeLine.match(/(\d{2}):(\d{2}):(\d{2}),(\d{3}) --> (\d{2}):(\d{2}):(\d{2}),(\d{3})/);
+
+                    if (timeMatch) {
+                        const start = parseTime(timeMatch[1], timeMatch[2], timeMatch[3], timeMatch[4]);
+                        const end = parseTime(timeMatch[5], timeMatch[6], timeMatch[7], timeMatch[8]);
+
+                        subtitles.push({
+                            start,
+                            end,
+                            text: textLine
+                        });
+                    }
+                }
+            });
+
+            return subtitles;
+        }
+
+        function parseTime(h, m, s, ms) {
+            return parseInt(h) * 3600 + parseInt(m) * 60 + parseInt(s) + parseInt(ms) / 1000;
+        }
+
+        // Show subtitles during video playback
+        function updateSubtitles(videoIndex) {
+            const video = document.getElementById(`video-${videoIndex}`);
+            const subtitleEl = document.getElementById(`subtitle-${videoIndex}`);
+            const subtitles = videos[videoIndex]?.parsedSubtitles;
+
+            if (!subtitles || !video) return;
+
+            const currentTime = video.currentTime;
+            const currentCue = subtitles.find(cue => currentTime >= cue.start && currentTime <= cue.end);
+
+            if (currentCue) {
+                subtitleEl.style.display = 'block';
+                subtitleEl.innerHTML = createClickableSubtitle(currentCue.text);
+            } else {
+                subtitleEl.style.display = 'none';
+            }
+        }
+
+        // Make subtitle words clickable
+        function createClickableSubtitle(text) {
+            return text.split(' ').map(word =>
+                `<span class="subtitle-word" onclick="showWordTranslation('${word}')">${word}</span>`
+            ).join(' ');
+        }
+
+        function showWordTranslation(word) {
+            const clean = word.replace(/[¿?¡!,.:;]/g, '').toLowerCase();
+            alert(`📚 Word: ${clean}\n\n(Translation feature coming soon!)`);
+        }
+
+        // Video speed control
+        function setSpeed(videoIndex, speed) {
+            const video = document.getElementById(`video-${videoIndex}`);
+            video.playbackRate = speed;
+
+            // Update active button
+            const controls = video.closest('.video-item').querySelectorAll('.control-btn');
+            controls.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent === `${speed}x`) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // Toggle subtitles on/off
+        function toggleSubtitles(videoIndex) {
+            const video = document.getElementById(`video-${videoIndex}`);
+            const subtitleEl = document.getElementById(`subtitle-${videoIndex}`);
+
+            if (videos[videoIndex]?.parsedSubtitles) {
+                if (subtitleEl.dataset.enabled === 'true') {
+                    subtitleEl.dataset.enabled = 'false';
+                    subtitleEl.style.display = 'none';
+                } else {
+                    subtitleEl.dataset.enabled = 'true';
+                    // Start subtitle updates
+                    video.addEventListener('timeupdate', () => updateSubtitles(videoIndex));
+                }
+            }
+        }
+
+        function toggleSave(videoIndex) {
+            alert('❤️ Video saved to favorites!');
+        }
+
+        function shareVideo(videoIndex) {
+            alert('📤 Share feature coming soon!');
+        }
+
+        // Auto-play videos on scroll
+        function setupScrollAutoPlay() {
+            const feed = document.getElementById('videoFeed');
+            let currentVideo = null;
+
+            feed.addEventListener('scroll', () => {
+                const videos = document.querySelectorAll('.video-item video');
+
+                videos.forEach((video, index) => {
+                    const rect = video.getBoundingClientRect();
+                    const isVisible = rect.top >= 0 && rect.top < window.innerHeight / 2;
+
+                    if (isVisible && currentVideo !== video) {
+                        // Pause previous video
+                        if (currentVideo) {
+                            currentVideo.pause();
+                        }
+
+                        // Play new video
+                        video.play();
+                        currentVideo = video;
+
+                        // Enable subtitle updates
+                        if (videos[index]?.parsedSubtitles) {
+                            video.addEventListener('timeupdate', () => updateSubtitles(index));
+                        }
+                    }
+                });
+            });
+        }
+
+        // Load videos on page load
+        loadVideos();
+    </script>
+</body>
+</html>

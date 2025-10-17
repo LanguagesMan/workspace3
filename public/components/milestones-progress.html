@@ -1,0 +1,467 @@
+<!-- 🏆 MILESTONES PROGRESS COMPONENT -->
+<!-- Beautiful milestone tracking with badges and progress bars -->
+
+<style>
+.milestones-container {
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 16px;
+    margin: 16px 0;
+}
+
+.milestones-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.milestones-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.milestones-stats {
+    display: flex;
+    gap: 16px;
+    font-size: 14px;
+    color: #666;
+}
+
+.milestones-stat {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.milestones-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.milestone-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+}
+
+.milestone-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.milestone-card.completed {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.milestone-card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.milestone-icon {
+    font-size: 40px;
+    margin-right: 12px;
+}
+
+.milestone-card.completed .milestone-icon {
+    animation: bounce 1s;
+}
+
+.milestone-info {
+    flex: 1;
+}
+
+.milestone-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.milestone-description {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.milestone-progress-container {
+    margin: 12px 0;
+}
+
+.milestone-progress-text {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.milestone-progress-bar {
+    background: #e0e0e0;
+    border-radius: 10px;
+    height: 8px;
+    overflow: hidden;
+}
+
+.milestone-card.completed .milestone-progress-bar {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.milestone-progress-fill {
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+.milestone-card.completed .milestone-progress-fill {
+    background: white;
+}
+
+.milestone-reward {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+}
+
+.milestone-card.completed .milestone-reward {
+    border-top-color: rgba(255, 255, 255, 0.2);
+}
+
+.milestone-xp {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: bold;
+}
+
+.milestone-share-btn {
+    background: rgba(0, 0, 0, 0.1);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.milestone-share-btn:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.milestone-card.completed .milestone-share-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.milestone-category-filter {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.filter-btn:hover {
+    border-color: #667eea;
+    color: #667eea;
+}
+
+.filter-btn.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.milestones-empty {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+</style>
+
+<!-- Milestones Container -->
+<div class="milestones-container">
+    <div class="milestones-header">
+        <h2 class="milestones-title">🏆 Milestones</h2>
+        <div class="milestones-stats">
+            <div class="milestones-stat">
+                <span>✅</span>
+                <span id="completedCount">0</span>
+                <span>completed</span>
+            </div>
+            <div class="milestones-stat">
+                <span>⭐</span>
+                <span id="totalXP">0</span>
+                <span>XP earned</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="milestone-category-filter">
+        <button class="filter-btn active" onclick="filterMilestones('all')">All</button>
+        <button class="filter-btn" onclick="filterMilestones('videos_watched')">🎬 Videos</button>
+        <button class="filter-btn" onclick="filterMilestones('words_learned')">📚 Words</button>
+        <button class="filter-btn" onclick="filterMilestones('streak_days')">🔥 Streaks</button>
+        <button class="filter-btn" onclick="filterMilestones('games_completed')">🎮 Games</button>
+    </div>
+
+    <div class="milestones-grid" id="milestonesGrid">
+        <!-- Milestone cards will be dynamically inserted here -->
+    </div>
+
+    <div class="milestones-empty" id="milestonesEmpty" style="display: none;">
+        <h3>No milestones yet</h3>
+        <p>Start learning to unlock your first milestone!</p>
+    </div>
+</div>
+
+<script>
+let allMilestones = [];
+let currentFilter = 'all';
+
+// Initialize milestones
+async function initMilestones(userId) {
+    try {
+        const response = await fetch(`/api/retention/progress/${userId}`);
+        const data = await response.json();
+
+        if (data.success) {
+            allMilestones = data.progress.milestones;
+            renderMilestones();
+            updateMilestoneStats();
+        }
+    } catch (error) {
+        console.error('Error initializing milestones:', error);
+    }
+}
+
+// Render milestones
+function renderMilestones() {
+    const grid = document.getElementById('milestonesGrid');
+    const empty = document.getElementById('milestonesEmpty');
+
+    // Filter milestones
+    let filtered = allMilestones;
+    if (currentFilter !== 'all') {
+        filtered = allMilestones.filter(m => m.type === currentFilter);
+    }
+
+    if (filtered.length === 0) {
+        grid.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+    }
+
+    empty.style.display = 'none';
+
+    // Sort: incomplete first, then by progress percentage
+    filtered.sort((a, b) => {
+        if (a.isCompleted !== b.isCompleted) {
+            return a.isCompleted ? 1 : -1;
+        }
+        return b.percentage - a.percentage;
+    });
+
+    grid.innerHTML = filtered.map(milestone => createMilestoneCard(milestone)).join('');
+}
+
+// Create milestone card HTML
+function createMilestoneCard(milestone) {
+    const completedClass = milestone.isCompleted ? 'completed' : '';
+    const progressWidth = Math.min(100, milestone.percentage);
+
+    return `
+        <div class="milestone-card ${completedClass}" data-type="${milestone.type}">
+            <div class="milestone-card-header">
+                <div class="milestone-icon">${milestone.icon}</div>
+                <div class="milestone-info">
+                    <div class="milestone-title">${milestone.title}</div>
+                    <div class="milestone-description">${milestone.description}</div>
+                </div>
+            </div>
+
+            <div class="milestone-progress-container">
+                <div class="milestone-progress-text">
+                    <span>${milestone.progress} / ${milestone.threshold}</span>
+                    <span>${progressWidth}%</span>
+                </div>
+                <div class="milestone-progress-bar">
+                    <div class="milestone-progress-fill" style="width: ${progressWidth}%"></div>
+                </div>
+            </div>
+
+            <div class="milestone-reward">
+                <div class="milestone-xp">
+                    <span>⭐</span>
+                    <span>+${milestone.xpReward} XP</span>
+                </div>
+                ${milestone.isCompleted ? `
+                    <button class="milestone-share-btn" onclick="shareMilestone('${milestone.id}')">
+                        📤 Share
+                    </button>
+                ` : ''}
+            </div>
+        </div>
+    `;
+}
+
+// Filter milestones
+function filterMilestones(filter) {
+    currentFilter = filter;
+
+    // Update button states
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+
+    renderMilestones();
+}
+
+// Update milestone statistics
+function updateMilestoneStats() {
+    const completed = allMilestones.filter(m => m.isCompleted).length;
+    const totalXP = allMilestones
+        .filter(m => m.isCompleted)
+        .reduce((sum, m) => sum + m.xpReward, 0);
+
+    document.getElementById('completedCount').textContent = completed;
+    document.getElementById('totalXP').textContent = totalXP.toLocaleString();
+}
+
+// Share milestone
+async function shareMilestone(milestoneId) {
+    try {
+        const userId = getCurrentUserId();
+        const milestone = allMilestones.find(m => m.id === milestoneId);
+
+        if (!milestone) return;
+
+        // Generate share card
+        const response = await fetch('/api/retention/share/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId,
+                type: 'milestone',
+                data: milestone
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            const shareUrl = data.shareCard.shareUrl;
+            const title = data.shareCard.title;
+
+            // Share using Web Share API if available
+            if (navigator.share) {
+                await navigator.share({
+                    title: title,
+                    text: `I just achieved: ${title} on Langflix!`,
+                    url: shareUrl
+                });
+
+                // Track share
+                await trackShare(data.shareCard.id, 'native');
+            } else {
+                // Fallback: Show share options
+                showShareOptions(shareUrl, title);
+            }
+        }
+    } catch (error) {
+        console.error('Error sharing milestone:', error);
+    }
+}
+
+// Show share options (fallback)
+function showShareOptions(url, title) {
+    const encodedUrl = encodeURIComponent(url);
+    const encodedTitle = encodeURIComponent(title);
+
+    const shareLinks = {
+        twitter: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`,
+        facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+        linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+        whatsapp: `https://wa.me/?text=${encodedTitle}%20${encodedUrl}`
+    };
+
+    // Show modal with share options (simplified)
+    const platform = prompt('Share on:\n1. Twitter\n2. Facebook\n3. LinkedIn\n4. WhatsApp\n\nEnter number:');
+
+    const platforms = ['', 'twitter', 'facebook', 'linkedin', 'whatsapp'];
+    const selected = platforms[parseInt(platform)];
+
+    if (selected && shareLinks[selected]) {
+        window.open(shareLinks[selected], '_blank');
+        trackShare(url, selected);
+    }
+}
+
+// Track share
+async function trackShare(shareCardId, platform) {
+    try {
+        await fetch('/api/retention/share/track', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ shareCardId, platform })
+        });
+    } catch (error) {
+        console.error('Error tracking share:', error);
+    }
+}
+
+// Track milestone progress
+async function trackMilestoneProgress(userId, type, increment = 1) {
+    try {
+        await fetch('/api/retention/progress/track', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, type, increment })
+        });
+
+        // Refresh milestones
+        initMilestones(userId);
+    } catch (error) {
+        console.error('Error tracking milestone progress:', error);
+    }
+}
+
+// Get current user ID
+function getCurrentUserId() {
+    return localStorage.getItem('userId') || 'guest';
+}
+
+// Auto-initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const userId = getCurrentUserId();
+    if (userId !== 'guest') {
+        initMilestones(userId);
+    }
+});
+</script>
+

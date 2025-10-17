@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Spanish Feed - Scroll & Learn</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            overflow-x: hidden;
+            height: 100vh;
+            color: white;
+        }
+
+        .feed-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .feed-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .card {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .image-container {
+            width: 100%;
+            max-width: 500px;
+            aspect-ratio: 1;
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .ai-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+        }
+
+        .text-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            padding: 40px 20px 20px;
+            text-align: center;
+        }
+
+        .spanish-text {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .english-text {
+            font-size: 18px;
+            opacity: 0.8;
+            font-weight: 400;
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            border: 3px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .play-button:hover {
+            background: rgba(255,255,255,0.5);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .play-button::before {
+            content: '▶';
+            font-size: 32px;
+            color: white;
+            margin-left: 5px;
+        }
+
+        .play-button.playing::before {
+            content: '🔊';
+            margin-left: 0;
+        }
+
+        .progress-dots {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 100;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: white;
+            height: 24px;
+            border-radius: 4px;
+        }
+
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">🚀 Generating funny content...</div>
+    <div class="progress-dots" id="dots"></div>
+    <div class="feed-container" id="feed"></div>
+
+    <script>
+        // Funny Spanish learning scenarios
+        const scenarios = [
+            {
+                emoji: '😂',
+                spanish: '¡El gato usa mi laptop!',
+                english: 'The cat is using my laptop!',
+                bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+            },
+            {
+                emoji: '🌮',
+                spanish: 'Quiero tacos todos los días',
+                english: 'I want tacos every day',
+                bg: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
+            },
+            {
+                emoji: '🎸',
+                spanish: 'Mi guitarra canta mejor que yo',
+                english: 'My guitar sings better than me',
+                bg: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
+            },
+            {
+                emoji: '☕',
+                spanish: 'Café primero, español después',
+                english: 'Coffee first, Spanish later',
+                bg: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'
+            },
+            {
+                emoji: '🦙',
+                spanish: 'La llama habla español mejor',
+                english: 'The llama speaks Spanish better',
+                bg: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
+            },
+            {
+                emoji: '🎉',
+                spanish: '¡Fiesta en mi casa esta noche!',
+                english: 'Party at my house tonight!',
+                bg: 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)'
+            },
+            {
+                emoji: '🌶️',
+                spanish: 'El chile es muy picante',
+                english: 'The chili is very spicy',
+                bg: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'
+            },
+            {
+                emoji: '📱',
+                spanish: 'Mi teléfono no encuentra WiFi',
+                english: 'My phone can\'t find WiFi',
+                bg: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)'
+            },
+            {
+                emoji: '🚗',
+                spanish: 'El coche baila salsa solo',
+                english: 'The car dances salsa by itself',
+                bg: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'
+            },
+            {
+                emoji: '🌙',
+                spanish: 'Duermo con música española',
+                english: 'I sleep with Spanish music',
+                bg: 'linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 100%)'
+            }
+        ];
+
+        let currentIndex = 0;
+        let audioPlaying = false;
+
+        // Create feed
+        function createFeed() {
+            const feed = document.getElementById('feed');
+            const dots = document.getElementById('dots');
+
+            scenarios.forEach((scenario, index) => {
+                // Create card
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="image-container">
+                        <div class="ai-image" style="background: ${scenario.bg}">
+                            ${scenario.emoji}
+                        </div>
+                        <div class="text-overlay">
+                            <div class="spanish-text">${scenario.spanish}</div>
+                            <div class="english-text">${scenario.english}</div>
+                        </div>
+                        <div class="play-button" onclick="playAudio(${index})"></div>
+                    </div>
+                `;
+                feed.appendChild(card);
+
+                // Create progress dot
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                dot.id = `dot-${index}`;
+                dots.appendChild(dot);
+            });
+
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        // Text-to-speech function (simulated - you'll add OpenAI TTS)
+        function playAudio(index) {
+            const button = document.querySelectorAll('.play-button')[index];
+            button.classList.add('playing');
+
+            // Use Web Speech API for now (can replace with OpenAI TTS)
+            const utterance = new SpeechSynthesisUtterance(scenarios[index].spanish);
+            utterance.lang = 'es-ES';
+            utterance.rate = 0.9;
+
+            utterance.onend = () => {
+                button.classList.remove('playing');
+            };
+
+            speechSynthesis.speak(utterance);
+        }
+
+        // Track scroll position
+        const feedContainer = document.getElementById('feed');
+        feedContainer.addEventListener('scroll', () => {
+            const scrollPosition = feedContainer.scrollTop;
+            const cardHeight = window.innerHeight;
+            const newIndex = Math.round(scrollPosition / cardHeight);
+
+            if (newIndex !== currentIndex) {
+                document.getElementById(`dot-${currentIndex}`)?.classList.remove('active');
+                document.getElementById(`dot-${newIndex}`)?.classList.add('active');
+                currentIndex = newIndex;
+            }
+        });
+
+        // Auto-play audio when card comes into view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !audioPlaying) {
+                    const index = Array.from(feedContainer.children).indexOf(entry.target);
+                    setTimeout(() => playAudio(index), 500);
+                }
+            });
+        }, { threshold: 0.8 });
+
+        // Initialize
+        createFeed();
+        document.getElementById('dot-0').classList.add('active');
+
+        // Observe cards for auto-play
+        document.querySelectorAll('.card').forEach(card => observer.observe(card));
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' || e.key === ' ') {
+                e.preventDefault();
+                feedContainer.scrollTo({
+                    top: (currentIndex + 1) * window.innerHeight,
+                    behavior: 'smooth'
+                });
+            }
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                feedContainer.scrollTo({
+                    top: (currentIndex - 1) * window.innerHeight,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    </script>
+</body>
+</html>

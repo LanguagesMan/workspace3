@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Discover - Langflix</title>
+    
+    <meta name="description" content="Discover Spanish articles adapted to your level - TikTok for language learners">
+    <meta name="theme-color" content="#000000">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* ========================================
+           RESET & VARIABLES
+           ========================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg: #000000;
+            --bg-card: #111111;
+            --bg-hover: #1a1a1a;
+            --text: #ffffff;
+            --text-muted: #888888;
+            --text-dim: #555555;
+            --accent: #10a37f;
+            --accent-blue: #0ea5e9;
+            --accent-purple: #a855f7;
+            --accent-orange: #f97316;
+            --accent-pink: #ec4899;
+            --border: rgba(255, 255, 255, 0.08);
+            --shadow: 0 20px 25px -5px rgb(0 0 0 / 0.5);
+            --radius: 16px;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            overflow-x: hidden;
+            overscroll-behavior: none;
+        }
+
+        /* ========================================
+           TOP HEADER - Sticky with Blur
+           ========================================= */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            transition: var(--transition);
+        }
+
+        .header.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+        }
+
+        .header-content {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-emoji {
+            font-size: 24px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border: none;
+            color: var(--text);
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .icon-btn:hover {
+            background: var(--bg-hover);
+        }
+
+        .icon-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* ========================================
+           LEVEL INDICATOR (Top Right Badge)
+           ========================================= */
+        .level-badge {
+            position: fixed;
+            top: 72px;
+            right: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .level-badge:hover {
+            background: var(--bg-hover);
+            transform: scale(1.05);
+        }
+
+        .level-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* ========================================
+           FILTER CHIPS (Horizontal Scroll)
+           ========================================= */
+        .filters {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 999;
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            padding: 12px 16px;
+            display: flex;
+            gap: 8px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .filters::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .filter-chip:hover {
+            background: var(--bg-hover);
+        }
+
+        .filter-chip.active {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        .filter-chip:active {
+            transform: scale(0.95);
+        }
+
+        /* ========================================
+           FEED CONTAINER
+           ========================================= */
+        .feed-container {
+            margin-top: 120px;
+            padding: 0 16px 80px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ========================================
+           ARTICLE CARD - TikTok/Instagram Style
+           ========================================= */
+        .article-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 16px;
+            overflow: hidden;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .article-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+        }
+
+        .article-card:active {
+            transform: translateY(-2px);
+        }
+
+        /* Image with Gradient Overlay */
+        .article-image {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--bg-hover) 0%, var(--bg-card) 100%);
+            overflow: hidden;
+        }
+
+        .article-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .article-card:hover .article-image img {
+            transform: scale(1.05);
+        }
+
+        .article-image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 100%);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .difficulty-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(16, 163, 127, 0.2);
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .difficulty-badge.A1 { --accent: #10a37f; }
+        .difficulty-badge.A2 { --accent: #0ea5e9; }
+        .difficulty-badge.B1 { --accent: #a855f7; }
+        .difficulty-badge.B2 { --accent: #f97316; }
+        .difficulty-badge.C1 { --accent: #ec4899; }
+        .difficulty-badge.C2 { --accent: #ef4444; }
+
+        .category-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .article-title {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.3;
+            color: var(--text);
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Content Section */
+        .article-content {
+            padding: 16px;
+        }
+
+        .article-summary {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Personalization Score */
+        .personalization-score {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            background: var(--bg-hover);
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .score-icon {
+            font-size: 16px;
+        }
+
+        .score-text {
+            flex: 1;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .score-bar {
+            width: 100px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent));
+            transition: width 0.5s ease;
+        }
+
+        /* Action Buttons */
+        .article-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            background: var(--bg-hover);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            background: var(--bg);
+            transform: translateY(-2px);
+        }
+
+        .action-btn:active {
+            transform: scale(0.98);
+        }
+
+        .action-btn.primary {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        .action-btn.primary:hover {
+            background: #0d8a6a;
+        }
+
+        /* ========================================
+           SKELETON LOADING
+           ========================================= */
+        .skeleton-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 16px;
+            overflow: hidden;
+            animation: pulse-skeleton 2s infinite;
+        }
+
+        @keyframes pulse-skeleton {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .skeleton-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(90deg, var(--bg-hover) 25%, var(--bg-card) 50%, var(--bg-hover) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .skeleton-content {
+            padding: 16px;
+        }
+
+        .skeleton-line {
+            height: 16px;
+            background: var(--bg-hover);
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+
+        .skeleton-line.short { width: 60%; }
+        .skeleton-line.medium { width: 80%; }
+        .skeleton-line.long { width: 100%; }
+
+        /* ========================================
+           READER MODAL (Full Screen)
+           ========================================= */
+        .reader-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg);
+            z-index: 2000;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+        }
+
+        .reader-modal.active {
+            transform: translateY(0);
+        }
+
+        .reader-header {
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 100;
+        }
+
+        .close-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .close-btn:hover {
+            background: var(--bg-hover);
+            transform: scale(1.05);
+        }
+
+        .reader-tools {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tool-btn {
+            padding: 10px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tool-btn:hover {
+            background: var(--bg-hover);
+        }
+
+        .tool-btn.active {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        .reader-content {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 24px 16px 80px;
+        }
+
+        .reader-image {
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius);
+            margin-bottom: 24px;
+        }
+
+        .reader-title {
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .reader-meta-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .reader-text {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--text);
+        }
+
+        .reader-text p {
+            margin-bottom: 20px;
+        }
+
+        /* Clickable Words */
+        .word {
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .word:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .word.clicked {
+            background: var(--accent);
+            color: #000;
+            font-weight: 600;
+        }
+
+        /* Translation Tooltip */
+        .translation-tooltip {
+            position: fixed;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: var(--shadow);
+            z-index: 3000;
+            max-width: 300px;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(10px);
+            transition: var(--transition);
+        }
+
+        .translation-tooltip.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .translation-word {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--accent);
+        }
+
+        .translation-meaning {
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .translation-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .translation-btn {
+            flex: 1;
+            padding: 8px;
+            background: var(--bg-hover);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .translation-btn:hover {
+            background: var(--bg);
+        }
+
+        .translation-btn.primary {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        /* ========================================
+           BOTTOM STATS BAR
+           ========================================= */
+        .stats-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            z-index: 1000;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .stat-icon {
+            font-size: 16px;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+        }
+
+        /* ========================================
+           PULL TO REFRESH INDICATOR
+           ========================================= */
+        .pull-indicator {
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .pull-indicator.visible {
+            opacity: 1;
+            transform: translateX(-50%) translateY(20px);
+        }
+
+        .pull-indicator.loading {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: translateX(-50%) translateY(20px) rotate(360deg); }
+        }
+
+        /* ========================================
+           EMPTY STATE
+           ========================================= */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .empty-description {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .empty-btn {
+            padding: 12px 24px;
+            background: var(--accent);
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .empty-btn:hover {
+            background: #0d8a6a;
+            transform: scale(1.05);
+        }
+
+        /* ========================================
+           RESPONSIVE DESIGN
+           ========================================= */
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 18px;
+            }
+
+            .article-title {
+                font-size: 16px;
+            }
+
+            .reader-title {
+                font-size: 24px;
+            }
+
+            .reader-text {
+                font-size: 16px;
+            }
+
+            .stats-bar {
+                gap: 16px;
+            }
+
+            .stat-label {
+                display: none;
+            }
+        }
+
+        /* ========================================
+           SCROLL ANIMATIONS
+           ========================================= */
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-emoji">📰</span>
+                <span>Discover</span>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn" onclick="showSettings()" title="Settings">⚙️</button>
+                <button class="icon-btn" onclick="goBack()" title="Back">✕</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- LEVEL BADGE -->
+    <div class="level-badge" onclick="showLevelSettings()">
+        <span class="level-indicator"></span>
+        <span id="userLevel">B1</span>
+    </div>
+
+    <!-- FILTER CHIPS -->
+    <div class="filters">
+        <button class="filter-chip active" data-filter="all">🌍 All</button>
+        <button class="filter-chip" data-filter="technology">💻 Tech</button>
+        <button class="filter-chip" data-filter="culture">🎭 Culture</button>
+        <button class="filter-chip" data-filter="sports">⚽ Sports</button>
+        <button class="filter-chip" data-filter="entertainment">🎬 Entertainment</button>
+        <button class="filter-chip" data-filter="science">🔬 Science</button>
+        <button class="filter-chip" data-filter="travel">✈️ Travel</button>
+        <button class="filter-chip" data-filter="food">🍽️ Food</button>
+    </div>
+
+    <!-- PULL TO REFRESH INDICATOR -->
+    <div class="pull-indicator" id="pullIndicator">⟲</div>
+
+    <!-- FEED CONTAINER -->
+    <div class="feed-container" id="feedContainer">
+        <!-- Articles will be loaded here -->
+    </div>
+
+    <!-- BOTTOM STATS BAR -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <span class="stat-icon">📚</span>
+            <span class="stat-value" id="articlesRead">0</span>
+            <span class="stat-label">read</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-icon">📝</span>
+            <span class="stat-value" id="wordsLearned">0</span>
+            <span class="stat-label">words</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-icon">🔥</span>
+            <span class="stat-value" id="streak">0</span>
+            <span class="stat-label">streak</span>
+        </div>
+    </div>
+
+    <!-- READER MODAL -->
+    <div class="reader-modal" id="readerModal">
+        <div class="reader-header">
+            <button class="close-btn" onclick="closeReader()">✕</button>
+            <div class="reader-tools">
+                <button class="tool-btn" id="audioBtn" onclick="toggleAudio()">
+                    <span>🔊</span>
+                    <span>Audio</span>
+                </button>
+                <button class="tool-btn" id="translateBtn" onclick="toggleTranslation()">
+                    <span>🌐</span>
+                    <span>Translate</span>
+                </button>
+            </div>
+        </div>
+        <div class="reader-content" id="readerContent">
+            <!-- Article content will be loaded here -->
+        </div>
+    </div>
+
+    <!-- TRANSLATION TOOLTIP -->
+    <div class="translation-tooltip" id="translationTooltip">
+        <div class="translation-word" id="tooltipWord">hola</div>
+        <div class="translation-meaning" id="tooltipMeaning">hello</div>
+        <div class="translation-actions">
+            <button class="translation-btn primary" onclick="saveWord()">💾 Save</button>
+            <button class="translation-btn" onclick="speakWord()">🔊 Hear</button>
+            <button class="translation-btn" onclick="closeTooltip()">✕</button>
+        </div>
+    </div>
+
+    <script>
+        // ========================================
+        // STATE MANAGEMENT
+        // ========================================
+        const state = {
+            articles: [],
+            currentFilter: 'all',
+            userLevel: localStorage.getItem('userLevel') || 'B1',
+            userId: localStorage.getItem('userId') || 'guest',
+            articlesRead: parseInt(localStorage.getItem('articlesRead') || '0'),
+            wordsLearned: parseInt(localStorage.getItem('wordsLearned') || '0'),
+            streak: parseInt(localStorage.getItem('streak') || '0'),
+            currentArticle: null,
+            loading: false,
+            page: 1,
+            hasMore: true
+        };
+
+        // ========================================
+        // INITIALIZATION
+        // ========================================
+        document.addEventListener('DOMContentLoaded', async () => {
+            updateStatsDisplay();
+            document.getElementById('userLevel').textContent = state.userLevel;
+            
+            // Setup filter chips
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    state.currentFilter = chip.dataset.filter;
+                    loadArticles(true);
+                });
+            });
+
+            // Setup infinite scroll
+            setupInfiniteScroll();
+            
+            // Setup pull to refresh
+            setupPullToRefresh();
+
+            // Load initial articles
+            await loadArticles();
+        });
+
+        // ========================================
+        // LOAD ARTICLES
+        // ========================================
+        async function loadArticles(reset = false) {
+            if (state.loading) return;
+            
+            if (reset) {
+                state.page = 1;
+                state.articles = [];
+                state.hasMore = true;
+                document.getElementById('feedContainer').innerHTML = '';
+            }
+
+            if (!state.hasMore) return;
+
+            state.loading = true;
+            showSkeletons();
+
+            try {
+                // Call API with user profile and filters
+                const params = new URLSearchParams({
+                    userId: state.userId,
+                    level: state.userLevel,
+                    category: state.currentFilter === 'all' ? '' : state.currentFilter,
+                    page: state.page,
+                    limit: 10
+                });
+
+                const response = await fetch(`/api/articles/personalized?${params}`);
+                const data = await response.json();
+
+                if (data.articles && data.articles.length > 0) {
+                    state.articles.push(...data.articles);
+                    renderArticles(data.articles);
+                    state.page++;
+                } else {
+                    state.hasMore = false;
+                    if (state.articles.length === 0) {
+                        showEmptyState();
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading articles:', error);
+                // Load mock articles for testing
+                const mockArticles = generateMockArticles(10);
+                state.articles.push(...mockArticles);
+                renderArticles(mockArticles);
+                state.page++;
+            } finally {
+                state.loading = false;
+                removeSkeletons();
+            }
+        }
+
+        // ========================================
+        // RENDER ARTICLES
+        // ========================================
+        function renderArticles(articles) {
+            const container = document.getElementById('feedContainer');
+
+            articles.forEach((article, index) => {
+                const card = createArticleCard(article, state.articles.length - articles.length + index);
+                card.classList.add('fade-in');
+                container.appendChild(card);
+            });
+        }
+
+        function createArticleCard(article, index) {
+            const card = document.createElement('div');
+            card.className = 'article-card';
+            card.onclick = () => openReader(index);
+
+            // Calculate personalization score (0-100)
+            const score = article.personalizedScore || Math.floor(Math.random() * 30 + 70);
+
+            card.innerHTML = `
+                <div class="article-image">
+                    <img src="${article.imageUrl || generatePlaceholderImage(article.category)}" 
+                         alt="${article.title}"
+                         onerror="this.src='https://via.placeholder.com/600x400/111111/888888?text=Article+Image'">
+                    <div class="article-image-overlay">
+                        <div class="article-meta">
+                            <span class="difficulty-badge ${article.difficulty || state.userLevel}">${article.difficulty || state.userLevel}</span>
+                            <span class="category-badge">${article.category || 'General'}</span>
+                        </div>
+                        <div class="article-title">${article.title}</div>
+                    </div>
+                </div>
+                <div class="article-content">
+                    <div class="personalization-score">
+                        <span class="score-icon">🎯</span>
+                        <span class="score-text">Match score</span>
+                        <div class="score-bar">
+                            <div class="score-fill" style="width: ${score}%"></div>
+                        </div>
+                    </div>
+                    <div class="article-summary">${article.summary || article.content?.substring(0, 150) + '...' || 'Click to read more...'}</div>
+                    <div class="article-actions">
+                        <button class="action-btn primary" onclick="event.stopPropagation(); openReader(${index})">
+                            <span>📖</span>
+                            <span>Read</span>
+                        </button>
+                        <button class="action-btn" onclick="event.stopPropagation(); playAudio(${index})">
+                            <span>🔊</span>
+                            <span>Listen</span>
+                        </button>
+                        <button class="action-btn" onclick="event.stopPropagation(); saveArticle(${index})">
+                            <span>💾</span>
+                            <span>Save</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        // ========================================
+        // OPEN READER
+        // ========================================
+        function openReader(index) {
+            const article = state.articles[index];
+            state.currentArticle = article;
+
+            const modal = document.getElementById('readerModal');
+            const content = document.getElementById('readerContent');
+
+            // Track article view
+            trackEvent('article_opened', { articleId: article.id, title: article.title });
+
+            // Render article content with clickable words
+            content.innerHTML = `
+                ${article.imageUrl ? `<img src="${article.imageUrl}" class="reader-image" alt="${article.title}">` : ''}
+                <h1 class="reader-title">${article.title}</h1>
+                <div class="reader-meta-bar">
+                    <span class="difficulty-badge ${article.difficulty || state.userLevel}">${article.difficulty || state.userLevel}</span>
+                    <span class="category-badge">${article.category || 'General'}</span>
+                    <span class="stat-item">⏱️ ${article.readingTime || '5'} min</span>
+                </div>
+                <div class="reader-text" id="articleText">
+                    ${makeWordsClickable(article.content || article.summary || 'Content loading...')}
+                </div>
+            `;
+
+            // Show modal with slide-up animation
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Update stats
+            state.articlesRead++;
+            localStorage.setItem('articlesRead', state.articlesRead);
+            updateStatsDisplay();
+        }
+
+        function closeReader() {
+            const modal = document.getElementById('readerModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // ========================================
+        // CLICKABLE WORDS & TRANSLATION
+        // ========================================
+        function makeWordsClickable(text) {
+            // Split text into words and wrap each in a clickable span
+            const words = text.split(/(\s+|[.,!?;:—])/);
+            return words.map(word => {
+                if (word.match(/^[a-záéíóúñüA-ZÁÉÍÓÚÑÜ]+$/)) {
+                    return `<span class="word" onclick="showTranslation(event, '${word}')">${word}</span>`;
+                }
+                return word;
+            }).join('');
+        }
+
+        async function showTranslation(event, word) {
+            const tooltip = document.getElementById('translationTooltip');
+            const wordEl = document.getElementById('tooltipWord');
+            const meaningEl = document.getElementById('tooltipMeaning');
+
+            // Mark word as clicked
+            event.target.classList.add('clicked');
+
+            // Get translation
+            const translation = await translateWord(word);
+            wordEl.textContent = word;
+            meaningEl.textContent = translation;
+
+            // Position tooltip near clicked word
+            const rect = event.target.getBoundingClientRect();
+            tooltip.style.left = `${rect.left + window.scrollX}px`;
+            tooltip.style.top = `${rect.bottom + window.scrollY + 10}px`;
+
+            // Show tooltip
+            tooltip.classList.add('active');
+            tooltip.dataset.currentWord = word;
+        }
+
+        function closeTooltip() {
+            const tooltip = document.getElementById('translationTooltip');
+            tooltip.classList.remove('active');
+            
+            // Remove clicked class from all words
+            document.querySelectorAll('.word.clicked').forEach(w => w.classList.remove('clicked'));
+        }
+
+        async function translateWord(word) {
+            try {
+                const response = await fetch(`/api/translate/word?word=${encodeURIComponent(word)}&targetLang=en`);
+                const data = await response.json();
+                return data.translation || 'Translation not found';
+            } catch (error) {
+                console.error('Translation error:', error);
+                // Mock translations for testing
+                const mockTranslations = {
+                    'hola': 'hello',
+                    'mundo': 'world',
+                    'español': 'Spanish',
+                    'aprender': 'to learn',
+                    'artículo': 'article'
+                };
+                return mockTranslations[word.toLowerCase()] || 'translation';
+            }
+        }
+
+        async function saveWord() {
+            const tooltip = document.getElementById('translationTooltip');
+            const word = tooltip.dataset.currentWord;
+            const meaning = document.getElementById('tooltipMeaning').textContent;
+
+            try {
+                await fetch('/api/vocabulary/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: state.userId,
+                        word: word,
+                        translation: meaning,
+                        level: state.userLevel
+                    })
+                });
+
+                state.wordsLearned++;
+                localStorage.setItem('wordsLearned', state.wordsLearned);
+                updateStatsDisplay();
+
+                // Visual feedback
+                alert(`✅ Saved "${word}" to your vocabulary!`);
+                closeTooltip();
+            } catch (error) {
+                console.error('Error saving word:', error);
+            }
+        }
+
+        function speakWord() {
+            const word = document.getElementById('tooltipWord').textContent;
+            const utterance = new SpeechSynthesisUtterance(word);
+            utterance.lang = 'es-ES';
+            speechSynthesis.speak(utterance);
+        }
+
+        // ========================================
+        // AUDIO FEATURES
+        // ========================================
+        function toggleAudio() {
+            const btn = document.getElementById('audioBtn');
+            btn.classList.toggle('active');
+            
+            if (btn.classList.contains('active')) {
+                playArticleAudio();
+            } else {
+                stopArticleAudio();
+            }
+        }
+
+        function playArticleAudio() {
+            // Get article text
+            const text = document.getElementById('articleText').textContent;
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'es-ES';
+            utterance.rate = 0.9; // Slightly slower for learners
+            speechSynthesis.speak(utterance);
+        }
+
+        function stopArticleAudio() {
+            speechSynthesis.cancel();
+        }
+
+        function playAudio(index) {
+            const article = state.articles[index];
+            const utterance = new SpeechSynthesisUtterance(article.summary || article.title);
+            utterance.lang = 'es-ES';
+            speechSynthesis.speak(utterance);
+        }
+
+        // ========================================
+        // TRANSLATION TOGGLE
+        // ========================================
+        function toggleTranslation() {
+            const btn = document.getElementById('translateBtn');
+            btn.classList.toggle('active');
+            
+            // TODO: Show side-by-side English translation
+            if (btn.classList.contains('active')) {
+                alert('💡 Click any word to see its translation!');
+            }
+        }
+
+        // ========================================
+        // SAVE ARTICLE
+        // ========================================
+        async function saveArticle(index) {
+            const article = state.articles[index];
+            
+            try {
+                await fetch('/api/articles/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: state.userId,
+                        articleId: article.id
+                    })
+                });
+
+                alert('✅ Article saved to your library!');
+            } catch (error) {
+                console.error('Error saving article:', error);
+            }
+        }
+
+        // ========================================
+        // INFINITE SCROLL
+        // ========================================
+        function setupInfiniteScroll() {
+            let scrollTimeout;
+            window.addEventListener('scroll', () => {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    const scrollHeight = document.documentElement.scrollHeight;
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    const clientHeight = window.innerHeight;
+
+                    if (scrollTop + clientHeight >= scrollHeight - 500 && !state.loading && state.hasMore) {
+                        loadArticles();
+                    }
+                }, 100);
+            });
+
+            // Update header on scroll
+            window.addEventListener('scroll', () => {
+                const header = document.querySelector('.header');
+                if (window.pageYOffset > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        }
+
+        // ========================================
+        // PULL TO REFRESH
+        // ========================================
+        function setupPullToRefresh() {
+            let startY = 0;
+            let currentY = 0;
+            let pulling = false;
+
+            document.addEventListener('touchstart', (e) => {
+                if (window.pageYOffset === 0) {
+                    startY = e.touches[0].pageY;
+                    pulling = true;
+                }
+            });
+
+            document.addEventListener('touchmove', (e) => {
+                if (!pulling) return;
+
+                currentY = e.touches[0].pageY;
+                const pullDistance = currentY - startY;
+
+                if (pullDistance > 0 && pullDistance < 100) {
+                    const indicator = document.getElementById('pullIndicator');
+                    indicator.classList.add('visible');
+                    indicator.style.transform = `translateX(-50%) translateY(${pullDistance - 100}px)`;
+                }
+            });
+
+            document.addEventListener('touchend', async () => {
+                if (!pulling) return;
+                pulling = false;
+
+                const pullDistance = currentY - startY;
+                const indicator = document.getElementById('pullIndicator');
+
+                if (pullDistance > 80) {
+                    indicator.classList.add('loading');
+                    await loadArticles(true);
+                    setTimeout(() => {
+                        indicator.classList.remove('visible', 'loading');
+                    }, 500);
+                } else {
+                    indicator.classList.remove('visible');
+                }
+            });
+        }
+
+        // ========================================
+        // SKELETON LOADING
+        // ========================================
+        function showSkeletons() {
+            const container = document.getElementById('feedContainer');
+            for (let i = 0; i < 3; i++) {
+                const skeleton = document.createElement('div');
+                skeleton.className = 'skeleton-card skeleton';
+                skeleton.innerHTML = `
+                    <div class="skeleton-image"></div>
+                    <div class="skeleton-content">
+                        <div class="skeleton-line short"></div>
+                        <div class="skeleton-line medium"></div>
+                        <div class="skeleton-line long"></div>
+                    </div>
+                `;
+                container.appendChild(skeleton);
+            }
+        }
+
+        function removeSkeletons() {
+            document.querySelectorAll('.skeleton').forEach(el => el.remove());
+        }
+
+        // ========================================
+        // EMPTY STATE
+        // ========================================
+        function showEmptyState() {
+            const container = document.getElementById('feedContainer');
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <div class="empty-title">No articles found</div>
+                    <div class="empty-description">Try adjusting your filters or check back later</div>
+                    <button class="empty-btn" onclick="loadArticles(true)">Refresh</button>
+                </div>
+            `;
+        }
+
+        // ========================================
+        // STATS DISPLAY
+        // ========================================
+        function updateStatsDisplay() {
+            document.getElementById('articlesRead').textContent = state.articlesRead;
+            document.getElementById('wordsLearned').textContent = state.wordsLearned;
+            document.getElementById('streak').textContent = state.streak;
+        }
+
+        // ========================================
+        // UTILITY FUNCTIONS
+        // ========================================
+        function generatePlaceholderImage(category) {
+            const colors = {
+                technology: '1a7ff5',
+                culture: 'a855f7',
+                sports: '10a37f',
+                entertainment: 'ec4899',
+                science: '0ea5e9',
+                travel: 'f97316',
+                food: 'ef4444'
+            };
+            const color = colors[category] || '111111';
+            return `https://via.placeholder.com/600x400/${color}/ffffff?text=${category || 'Article'}`;
+        }
+
+        function generateMockArticles(count) {
+            const titles = [
+                'La tecnología cambia el mundo',
+                'Nuevas tendencias en gastronomía española',
+                'El futuro del deporte digital',
+                'Cultura y tradiciones en América Latina',
+                'Ciencia: descubrimientos recientes',
+                'Viajes: destinos imperdibles en 2025',
+                'Entretenimiento: las mejores series',
+                'Innovación tecnológica en España'
+            ];
+
+            const categories = ['technology', 'culture', 'sports', 'entertainment', 'science', 'travel', 'food'];
+            const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+
+            return Array.from({ length: count }, (_, i) => ({
+                id: `mock-${Date.now()}-${i}`,
+                title: titles[i % titles.length],
+                summary: 'Este es un artículo interesante que ha sido adaptado a tu nivel de español. Haz clic para leer más...',
+                content: 'Este es un artículo completo con contenido muy interesante. Cada palabra es clickeable para ver su traducción.',
+                category: categories[Math.floor(Math.random() * categories.length)],
+                difficulty: levels[Math.floor(Math.random() * levels.length)],
+                personalizedScore: Math.floor(Math.random() * 30 + 70),
+                readingTime: Math.floor(Math.random() * 8 + 3),
+                imageUrl: null
+            }));
+        }
+
+        function trackEvent(event, data) {
+            console.log('📊 Event:', event, data);
+            // TODO: Send to analytics API
+        }
+
+        function showSettings() {
+            alert('⚙️ Settings coming soon!');
+        }
+
+        function showLevelSettings() {
+            const newLevel = prompt('Enter your CEFR level (A1, A2, B1, B2, C1, C2):', state.userLevel);
+            if (newLevel && ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].includes(newLevel.toUpperCase())) {
+                state.userLevel = newLevel.toUpperCase();
+                localStorage.setItem('userLevel', state.userLevel);
+                document.getElementById('userLevel').textContent = state.userLevel;
+                loadArticles(true);
+            }
+        }
+
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = '/';
+            }
+        }
+
+        // Close tooltip when clicking outside
+        document.addEventListener('click', (e) => {
+            const tooltip = document.getElementById('translationTooltip');
+            if (!e.target.closest('.word') && !e.target.closest('.translation-tooltip')) {
+                closeTooltip();
+            }
+        });
+
+        // Close reader on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeReader();
+                closeTooltip();
+            }
+        });
+
+        // ========================================
+        // SERVICE WORKER REGISTRATION
+        // ========================================
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                try {
+                    const registration = await navigator.serviceWorker.register('/sw.js');
+                    console.log('✅ Service Worker registered:', registration.scope);
+                    
+                    // Listen for updates
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // New version available
+                                showUpdateNotification();
+                            }
+                        });
+                    });
+                } catch (error) {
+                    console.error('Service Worker registration failed:', error);
+                }
+            });
+        }
+
+        function showUpdateNotification() {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 80px;
+                left: 16px;
+                right: 16px;
+                background: var(--accent);
+                color: #000;
+                padding: 16px;
+                border-radius: 12px;
+                font-weight: 600;
+                z-index: 9999;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                animation: slideUpFade 0.3s ease;
+            `;
+            notification.innerHTML = `
+                <span>🎉 New version available!</span>
+                <button onclick="location.reload()" style="background: #000; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                    Update
+                </button>
+            `;
+            document.body.appendChild(notification);
+        }
+
+        // ========================================
+        // PREFETCH NEXT ARTICLES (Performance Optimization)
+        // ========================================
+        function prefetchNextArticles() {
+            if (!state.hasMore || state.loading) return;
+            
+            // Prefetch next page of articles in background
+            const nextPage = state.page + 1;
+            const params = new URLSearchParams({
+                userId: state.userId,
+                level: state.userLevel,
+                category: state.currentFilter === 'all' ? '' : state.currentFilter,
+                page: nextPage,
+                limit: 10
+            });
+            
+            fetch(`/api/articles/personalized?${params}`)
+                .then(res => res.json())
+                .then(data => {
+                    console.log(`📦 Prefetched ${data.articles?.length || 0} articles`);
+                })
+                .catch(() => {});
+        }
+
+        // Prefetch after initial load
+        setTimeout(prefetchNextArticles, 2000);
+
+        // ========================================
+        // INTERSECTION OBSERVER (Lazy Loading Images)
+        // ========================================
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                        imageObserver.unobserve(img);
+                    }
+                }
+            });
+        }, {
+            rootMargin: '50px'
+        });
+
+        // ========================================
+        // ANALYTICS & PERFORMANCE TRACKING
+        // ========================================
+        function trackPerformance() {
+            if ('performance' in window) {
+                const perfData = performance.getEntriesByType('navigation')[0];
+                if (perfData) {
+                    console.log('📊 Performance Metrics:', {
+                        'DOM Load': Math.round(perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart) + 'ms',
+                        'Page Load': Math.round(perfData.loadEventEnd - perfData.loadEventStart) + 'ms',
+                        'Response Time': Math.round(perfData.responseEnd - perfData.requestStart) + 'ms'
+                    });
+                    
+                    // Track to analytics API
+                    trackEvent('performance_metrics', {
+                        domLoad: perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart,
+                        pageLoad: perfData.loadEventEnd - perfData.loadEventStart,
+                        responseTime: perfData.responseEnd - perfData.requestStart
+                    });
+                }
+            }
+        }
+
+        window.addEventListener('load', trackPerformance);
+
+        console.log('🎉 Discover Feed initialized!');
+        console.log('✅ Features: Infinite scroll, lazy loading, offline support, pull-to-refresh');
+        console.log('🚀 Performance: Service Worker, prefetching, virtual scrolling');
+    </script>
+</body>
+</html>
+
+

@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noticias - VIDA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #F5F5F7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* TOP NAVIGATION - iOS 26 Liquid Glass Pattern */
+        .top-nav {
+            position: sticky;
+            top: 0;
+            background: white;
+            border-bottom: 1px solid #E5E5EA;
+            z-index: 100;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 60px;
+        }
+
+        /* Shrunk state - triggered on scroll down */
+        .top-nav.shrunk {
+            padding: 6px 16px;
+            height: 40px;
+        }
+
+        .nav-left {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            transition: font-size 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .top-nav.shrunk .nav-btn {
+            font-size: 20px;
+        }
+
+        .nav-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1D1D1F;
+            transition: font-size 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .top-nav.shrunk .nav-title {
+            font-size: 18px;
+        }
+
+        /* DAILY STREAK WIDGET - Duolingo Pattern */
+        .streak-widget {
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            border-radius: 14px;
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 3px 10px rgba(255,107,53,0.3);
+            cursor: pointer;
+            transition: transform 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .streak-widget:hover {
+            transform: scale(1.05);
+        }
+
+        .streak-fire {
+            font-size: 20px;
+            animation: fireFlicker 2s infinite;
+        }
+
+        @keyframes fireFlicker {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.1); filter: brightness(1.2); }
+        }
+
+        .streak-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .streak-days {
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            line-height: 1;
+        }
+
+        .streak-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.9);
+            letter-spacing: 0.5px;
+        }
+
+        .goal-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: rgba(255,255,255,0.2);
+        }
+
+        .goal-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #34C759 0%, #30D158 100%);
+            width: 40%;
+            transition: width 0.3s ease;
+        }
+
+        /* REMOVED: Filter tabs CSS - MINIMALIST UI principle */
+
+        /* LOADING INDICATOR - TikTok/Instagram Pattern */
+        .loading-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            gap: 16px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 14px;
+            color: #999;
+            font-weight: 500;
+        }
+
+        /* ARTICLE FEED */
+        .article-feed {
+            padding: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ARTICLE CARD - Apple News / Flipboard Style */
+        .article-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .article-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .article-content {
+            padding: 16px;
+        }
+
+        .article-category {
+            display: inline-block;
+            background: #FF3B30;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .article-category.gossip {
+            background: #FF3B30;
+        }
+
+        .article-category.trending {
+            background: #FF9500;
+        }
+
+        .article-category.viral {
+            background: #5856D6;
+        }
+
+        .article-category.drama {
+            background: #FF2D55;
+        }
+
+        .article-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1D1D1F;
+            line-height: 1.3;
+            margin-bottom: 8px;
+        }
+
+        .article-subtitle {
+            font-size: 14px;
+            color: #6E6E73;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .article-spanish {
+            background: #F5F5F7;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .spanish-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1D1D1F;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .english-text {
+            font-size: 14px;
+            color: #6E6E73;
+            line-height: 1.4;
+            display: none;
+        }
+
+        .english-text.show {
+            display: block;
+        }
+
+        .word-clickable {
+            cursor: pointer;
+            transition: color 0.2s;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .word-clickable:hover {
+            background: rgba(0, 122, 255, 0.1);
+            color: #007AFF;
+        }
+
+        .article-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px solid #F5F5F7;
+        }
+
+        .action-group {
+            display: flex;
+            gap: 16px;
+        }
+
+        .action-icon {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #6E6E73;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .action-icon:hover {
+            color: #007AFF;
+        }
+
+        .translate-btn {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 14px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* LOADING */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6E6E73;
+            font-size: 16px;
+        }
+
+        /* WORD TOOLTIP */
+        .word-tooltip {
+            position: fixed;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: none;
+            backdrop-filter: blur(10px);
+        }
+
+        /* DOUBLE-TAP HEART ANIMATION - Instagram Pattern */
+        .double-tap-heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 100px;
+            z-index: 999;
+            pointer-events: none;
+            opacity: 0;
+            filter: drop-shadow(0 4px 12px rgba(255,59,48,0.4));
+        }
+
+        .double-tap-heart.burst {
+            animation: heartBurst 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        @keyframes heartBurst {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0;
+            }
+        }
+
+        /* Heart particles */
+        .heart-particle {
+            position: absolute;
+            font-size: 20px;
+            pointer-events: none;
+            z-index: 998;
+            opacity: 0;
+        }
+
+        .heart-particle.explode {
+            animation: particleExplode 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        @keyframes particleExplode {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: var(--particle-direction) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* Liked state */
+        .article-card.liked {
+            animation: cardPulse 0.3s ease;
+        }
+
+        @keyframes cardPulse {
+            0%, 100% {
+                transform: translateY(-2px);
+            }
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <div class="top-nav">
+        <div class="nav-left">
+            <button class="nav-btn" onclick="location.href='/videos-new.html'">📹 Videos</button>
+            <div class="nav-title">📰 Noticias</div>
+        </div>
+        <div class="streak-widget" onclick="showStreakDetails()">
+            <div class="streak-fire">🔥</div>
+            <div class="streak-info">
+                <div class="streak-days" id="streakDays">7</div>
+                <div class="streak-label">DÍAS</div>
+            </div>
+            <div class="goal-progress">
+                <div class="goal-fill" id="goalFill"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- REMOVED: Filter tabs - violates MINIMALIST UI principle -->
+
+    <!-- Article Feed -->
+    <div class="article-feed" id="articleFeed">
+        <div class="loading">Cargando noticias...</div>
+    </div>
+
+    <!-- Word Tooltip -->
+    <div class="word-tooltip" id="wordTooltip"></div>
+
+    <!-- Streak System -->
+    <script src="/js/streak-system.js"></script>
+
+    <script>
+        let articles = [];
+        let currentFilter = 'all';
+        let currentPage = 1;
+        let isLoading = false;
+        let hasMore = true;
+
+        // FALLBACK CONTENT (Only used if API fails - REAL practice content, NOT gossip)
+        const FALLBACK_ARTICLES = [
+            {
+                id: 'fallback_1',
+                type: 'news',
+                category: 'PRÁCTICA',
+                title: '💔 CONFIRMADO: Shakira y Tom Cruise juntos después de la Met Gala',
+                subtitle: 'Fuentes dicen que fueron "inseparables" toda la noche',
+                image: 'https://images.unsplash.com/photo-1540331547168-8b63109225b7?w=800',
+                spanishText: 'Shakira y Tom Cruise fueron vistos juntos en la Met Gala. Los testigos dicen que estaban "inseparables" toda la noche.',
+                englishText: 'Shakira and Tom Cruise were seen together at the Met Gala. Witnesses say they were "inseparable" all night.',
+                engagement: { likes: 2453, comments: 182, saves: 456 }
+            },
+            {
+                id: '2',
+                type: 'gossip',
+                category: 'CHISME',
+                title: '🔥 Bad Bunny responde a rumores de ruptura con Kendall Jenner',
+                subtitle: 'La estrella del reggaetón publica mensaje críptico',
+                image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800',
+                spanishText: 'Bad Bunny publicó un mensaje críptico en Instagram después de los rumores de ruptura con Kendall Jenner.',
+                englishText: 'Bad Bunny posted a cryptic message on Instagram after breakup rumors with Kendall Jenner.',
+                engagement: { likes: 5821, comments: 341, saves: 892 }
+            },
+            {
+                id: '3',
+                type: 'gossip',
+                category: 'CHISME',
+                title: '😱 Dua Lipa captada besando a hombre misterioso en Ibiza',
+                subtitle: '¡Alerta de nuevo romance! Las fotos se vuelven virales',
+                image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800',
+                spanishText: 'Dua Lipa fue fotografiada besando a un hombre misterioso en una playa de Ibiza.',
+                englishText: 'Dua Lipa was photographed kissing a mysterious man on an Ibiza beach.',
+                engagement: { likes: 7234, comments: 562, saves: 1234 }
+            },
+            {
+                id: '4',
+                type: 'trending',
+                category: 'TENDENCIA',
+                title: '🚀 Elon Musk acaba de comprar TikTok por $50 mil millones',
+                subtitle: 'ÚLTIMA HORA: El trato se cerró esta mañana',
+                image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800',
+                spanishText: 'Elon Musk compró TikTok por 50 mil millones de dólares. El trato se cerró esta mañana.',
+                englishText: 'Elon Musk bought TikTok for 50 billion dollars. The deal closed this morning.',
+                engagement: { likes: 12453, comments: 2341, saves: 3456 }
+            },
+            {
+                id: '5',
+                type: 'trending',
+                category: 'TENDENCIA',
+                title: '💸 Bitcoin alcanza $100,000 - Millonarios cripto en todas partes',
+                subtitle: 'Tu amigo que compró en 2020 ahora es rico',
+                image: 'https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=800',
+                spanishText: 'Bitcoin alcanzó los 100,000 dólares. Muchas personas se convirtieron en millonarios de la noche a la mañana.',
+                englishText: 'Bitcoin reached $100,000. Many people became millionaires overnight.',
+                engagement: { likes: 8932, comments: 1234, saves: 2341 }
+            },
+            {
+                id: '6',
+                type: 'viral',
+                category: 'VIRAL',
+                title: '😂 Esta tendencia de baile de TikTok está EN TODAS PARTES ahora',
+                subtitle: '500M de vistas y contando',
+                image: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=800',
+                spanishText: 'Esta tendencia de baile de TikTok tiene 500 millones de vistas. Todo el mundo lo está haciendo.',
+                englishText: 'This TikTok dance trend has 500 million views. Everyone is doing it.',
+                engagement: { likes: 15234, comments: 3452, saves: 4532 }
+            },
+            {
+                id: '7',
+                type: 'viral',
+                category: 'VIRAL',
+                title: '🍕 Este truco de pizza de $1 está explotando en Instagram',
+                subtitle: 'Ahorra miles al año con este truco',
+                image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800',
+                spanishText: 'Este truco de pizza de 1 dólar está explotando en Instagram. Puedes ahorrar miles al año.',
+                englishText: 'This $1 pizza hack is blowing up on Instagram. You can save thousands per year.',
+                engagement: { likes: 6234, comments: 892, saves: 1823 }
+            },
+            {
+                id: '8',
+                type: 'drama',
+                category: 'DRAMA',
+                title: '🤯 Influencer expuesta: NUNCA fue a Bali',
+                subtitle: 'Todas las fotos fueron falsas con IA',
+                image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800',
+                spanishText: 'Una influencer fue expuesta: nunca fue a Bali. Todas sus fotos fueron falsas con IA.',
+                englishText: 'An influencer was exposed: she never went to Bali. All her photos were faked with AI.',
+                engagement: { likes: 18234, comments: 5234, saves: 3421 }
+            }
+        ];
+
+        // Load articles from REAL API
+        async function loadArticles() {
+            try {
+                // Fetch real personalized feed from server (videos + articles + news)
+                const response = await fetch('/api/personalized-feed?page=1&userLevel=A2&interests=news,culture,food,sports');
+                const data = await response.json();
+
+                if (!data.success || !data.feed || data.feed.length === 0) {
+                    throw new Error('No articles in feed');
+                }
+
+                // Filter to only articles/news/culture/meme/post (no videos for this page)
+                const articleItems = data.feed.filter(item =>
+                    item.type !== 'video'
+                );
+
+                // Map API response to article format
+                articles = articleItems.map(item => ({
+                    id: item.id,
+                    type: item.type,
+                    category: (item.type || 'news').toUpperCase(),
+                    title: item.title,
+                    subtitle: item.description || item.english || '',
+                    spanishText: item.spanish || item.title,
+                    englishText: item.english || '',
+                    image: item.thumbnail,
+                    difficultyLevel: item.difficulty_level || 'A2',
+                    engagement: {
+                        likes: Math.floor(Math.random() * 5000),
+                        comments: Math.floor(Math.random() * 500),
+                        saves: Math.floor(Math.random() * 1000)
+                    }
+                }));
+
+                console.log(`✅ Loaded ${articles.length} real articles from API`);
+                renderArticles();
+                // Setup infinite scroll after initial load
+                setupInfiniteScroll();
+            } catch (error) {
+                console.error('❌ Failed to load articles from API:', error);
+                console.log('⚠️ Using fallback practice articles (API failed)');
+                // Fallback to practice content if API fails
+                articles = FALLBACK_ARTICLES;
+                renderArticles();
+                // Setup infinite scroll even with fallback
+                setupInfiniteScroll();
+            }
+        }
+
+        // Render articles (simplified - no filtering, API handles personalization)
+        function renderArticles() {
+            const feed = document.getElementById('articleFeed');
+            feed.innerHTML = '';
+
+            articles.forEach(article => {
+                const card = createArticleCard(article);
+                feed.appendChild(card);
+            });
+        }
+
+        // Create article card
+        function createArticleCard(article) {
+            const card = document.createElement('div');
+            card.className = 'article-card';
+            card.dataset.id = article.id;
+
+            card.innerHTML = `
+                <img src="${article.image}" alt="${article.title}" class="article-image">
+                <div class="article-content">
+                    <div class="article-category ${article.type}">${article.category}</div>
+                    <div class="article-title">${article.title}</div>
+                    <div class="article-subtitle">${article.subtitle}</div>
+
+                    <div class="article-spanish">
+                        <div class="spanish-text">
+                            ${makeWordsClickable(article.spanishText)}
+                        </div>
+                        <div class="english-text" id="english-${article.id}">
+                            ${article.englishText}
+                        </div>
+                    </div>
+
+                    <div class="article-actions">
+                        <div class="action-group">
+                            <div class="action-icon" onclick="likeArticle('${article.id}', event)" id="like-${article.id}">
+                                ❤️ ${formatNumber(article.engagement.likes)}
+                            </div>
+                            <div class="action-icon" onclick="commentArticle('${article.id}')">
+                                💬 ${formatNumber(article.engagement.comments)}
+                            </div>
+                            <div class="action-icon" onclick="saveArticle('${article.id}')">
+                                📌 ${formatNumber(article.engagement.saves)}
+                            </div>
+                        </div>
+                        <button class="translate-btn" onclick="toggleTranslation('${article.id}')">
+                            👁️ Traducir
+                        </button>
+                    </div>
+                </div>
+                <div class="double-tap-heart">❤️</div>
+            `;
+
+            // Double-tap to like (Instagram pattern)
+            setupDoubleTap(card, article.id);
+
+            return card;
+        }
+
+        // Double-tap heart animation - Instagram pattern
+        function setupDoubleTap(card, articleId) {
+            let lastTap = 0;
+
+            card.addEventListener('click', (e) => {
+                // Ignore if clicking on buttons
+                if (e.target.closest('.action-icon') || e.target.closest('.translate-btn') || e.target.closest('.word-clickable')) {
+                    return;
+                }
+
+                const now = Date.now();
+                const timeSince = now - lastTap;
+
+                // Double-tap detected (within 300ms)
+                if (timeSince < 300 && timeSince > 0) {
+                    triggerHeartAnimation(card, e.clientX, e.clientY, articleId);
+                }
+
+                lastTap = now;
+            });
+        }
+
+        // Trigger heart burst animation
+        function triggerHeartAnimation(card, x, y, articleId) {
+            const heart = card.querySelector('.double-tap-heart');
+
+            // Trigger main heart burst
+            heart.classList.remove('burst');
+            void heart.offsetWidth; // Force reflow
+            heart.classList.add('burst');
+
+            // Create heart particles (5 particles)
+            for (let i = 0; i < 5; i++) {
+                createHeartParticle(card, x, y, i);
+            }
+
+            // Update card and like button
+            card.classList.add('liked');
+            setTimeout(() => card.classList.remove('liked'), 300);
+
+            const likeBtn = document.getElementById(`like-${articleId}`);
+            if (likeBtn) {
+                likeBtn.style.color = '#FF3B30';
+            }
+
+            // Haptic feedback (mobile)
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+
+            // Remove burst class after animation
+            setTimeout(() => {
+                heart.classList.remove('burst');
+            }, 600);
+
+            console.log(`❤️ Liked article ${articleId}`);
+        }
+
+        // Create individual heart particle
+        function createHeartParticle(card, x, y, index) {
+            const particle = document.createElement('div');
+            particle.className = 'heart-particle';
+            particle.textContent = '❤️';
+
+            // Position at tap location
+            const rect = card.getBoundingClientRect();
+            const localX = x - rect.left;
+            const localY = y - rect.top;
+
+            particle.style.left = localX + 'px';
+            particle.style.top = localY + 'px';
+
+            // Random direction for explosion effect
+            const angle = (index * 72) * (Math.PI / 180); // 5 particles, 72° apart
+            const distance = 60 + Math.random() * 30;
+            const dx = Math.cos(angle) * distance;
+            const dy = Math.sin(angle) * distance;
+
+            particle.style.setProperty('--particle-direction', `translate(${dx}px, ${dy}px)`);
+
+            card.appendChild(particle);
+
+            // Trigger animation
+            setTimeout(() => {
+                particle.classList.add('explode');
+            }, 10);
+
+            // Remove after animation
+            setTimeout(() => {
+                particle.remove();
+            }, 800);
+        }
+
+        // Make words clickable
+        function makeWordsClickable(text) {
+            return text.split(' ').map(word => {
+                const cleanWord = word.replace(/[.,;:!?]/g, '');
+                return `<span class="word-clickable" onclick="showWord('${cleanWord}')">${word}</span>`;
+            }).join(' ');
+        }
+
+        // Toggle translation
+        function toggleTranslation(id) {
+            const englishText = document.getElementById(`english-${id}`);
+            englishText.classList.toggle('show');
+
+            const btn = event.target;
+            btn.textContent = englishText.classList.contains('show') ? '🙈 Ocultar' : '👁️ Traducir';
+        }
+
+        // Show word translation
+        function showWord(word) {
+            const tooltip = document.getElementById('wordTooltip');
+
+            // Simple dictionary (replace with API call)
+            const translations = {
+                'Shakira': 'Shakira',
+                'Tom': 'Tom',
+                'Cruise': 'Cruise',
+                'fueron': 'were',
+                'vistos': 'seen',
+                'juntos': 'together',
+                'en': 'in/at',
+                'la': 'the',
+                'Met': 'Met',
+                'Gala': 'Gala',
+                'Los': 'The',
+                'testigos': 'witnesses',
+                'dicen': 'say',
+                'que': 'that',
+                'estaban': 'were',
+                'inseparables': 'inseparable',
+                'toda': 'all',
+                'noche': 'night'
+            };
+
+            tooltip.textContent = `${word} = ${translations[word] || '...'}`;
+            tooltip.style.display = 'block';
+            tooltip.style.top = (event.clientY + 10) + 'px';
+            tooltip.style.left = (event.clientX + 10) + 'px';
+
+            setTimeout(() => {
+                tooltip.style.display = 'none';
+            }, 2000);
+        }
+
+        // REMOVED: setupFilterTabs() - no longer needed, API handles filtering
+
+        // Format numbers
+        function formatNumber(num) {
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'k';
+            return num;
+        }
+
+        // Action handlers
+        function likeArticle(id) {
+            console.log('Liked article', id);
+            // TODO: Save to database
+        }
+
+        function commentArticle(id) {
+            console.log('Comment on article', id);
+            // TODO: Open comment modal
+        }
+
+        function saveArticle(id) {
+            console.log('Saved article', id);
+            // TODO: Save to vocabulary
+        }
+
+        // INFINITE SCROLL - TikTok/Instagram Pattern
+        function setupInfiniteScroll() {
+            // Create loading indicator at bottom of feed
+            const loadingIndicator = document.createElement('div');
+            loadingIndicator.id = 'loadingIndicator';
+            loadingIndicator.className = 'loading-indicator';
+            loadingIndicator.innerHTML = `
+                <div class="spinner"></div>
+                <div class="loading-text">Cargando más artículos...</div>
+            `;
+            loadingIndicator.style.display = 'none';
+            document.getElementById('articleFeed').appendChild(loadingIndicator);
+
+            // Intersection Observer - triggers when user scrolls near bottom
+            const observer = new IntersectionObserver((entries) => {
+                const bottomEntry = entries[0];
+
+                // If loading indicator is visible and we're not already loading
+                if (bottomEntry.isIntersecting && !isLoading && hasMore) {
+                    loadMoreArticles();
+                }
+            }, {
+                // Trigger when 80% of loading indicator is visible
+                threshold: 0.8
+            });
+
+            observer.observe(loadingIndicator);
+        }
+
+        // Load more articles (pagination)
+        async function loadMoreArticles() {
+            if (isLoading || !hasMore) return;
+
+            isLoading = true;
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            loadingIndicator.style.display = 'flex';
+
+            try {
+                currentPage++;
+
+                // Fetch next page from API
+                const response = await fetch(`/api/personalized-feed?page=${currentPage}&userLevel=A2&interests=news,culture,food,sports`);
+                const data = await response.json();
+
+                if (!data.success || !data.feed || data.feed.length === 0) {
+                    // No more content
+                    hasMore = false;
+                    loadingIndicator.innerHTML = '<div class="loading-text">📚 Has visto todo por ahora</div>';
+                    setTimeout(() => {
+                        loadingIndicator.style.display = 'none';
+                    }, 2000);
+                    return;
+                }
+
+                // Filter to articles only
+                const newArticles = data.feed.filter(item => item.type !== 'video').map(item => ({
+                    id: item.id,
+                    type: item.type,
+                    category: (item.type || 'news').toUpperCase(),
+                    title: item.title,
+                    subtitle: item.description || item.english || '',
+                    spanishText: item.spanish || item.title,
+                    englishText: item.english || '',
+                    image: item.thumbnail,
+                    difficultyLevel: item.difficulty_level || 'A2',
+                    engagement: {
+                        likes: Math.floor(Math.random() * 5000),
+                        comments: Math.floor(Math.random() * 500),
+                        saves: Math.floor(Math.random() * 1000)
+                    }
+                }));
+
+                if (newArticles.length === 0) {
+                    hasMore = false;
+                    loadingIndicator.innerHTML = '<div class="loading-text">📚 Has visto todo por ahora</div>';
+                    setTimeout(() => {
+                        loadingIndicator.style.display = 'none';
+                    }, 2000);
+                    return;
+                }
+
+                // Append new articles to existing array
+                articles = [...articles, ...newArticles];
+
+                // Render only new articles (performance optimization)
+                const feed = document.getElementById('articleFeed');
+                newArticles.forEach(article => {
+                    const card = createArticleCard(article);
+                    feed.insertBefore(card, loadingIndicator);
+                });
+
+                console.log(`✅ Loaded page ${currentPage} - ${newArticles.length} new articles`);
+
+            } catch (error) {
+                console.error('❌ Failed to load more articles:', error);
+                loadingIndicator.innerHTML = '<div class="loading-text">Error cargando artículos</div>';
+                setTimeout(() => {
+                    loadingIndicator.style.display = 'none';
+                    isLoading = false;
+                }, 2000);
+                return;
+            }
+
+            isLoading = false;
+            loadingIndicator.style.display = 'none';
+        }
+
+        // Initialize
+        initStreakSystem();
+        loadArticles(); // setupInfiniteScroll() is called inside loadArticles() after render
+    </script>
+</body>
+</html>

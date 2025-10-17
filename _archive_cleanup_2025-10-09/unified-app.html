@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIDA - Complete Spanish Learning Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        /* Main content area */
+        .app-container {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Content area (videos, articles, etc) */
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* TikTok-style bottom navigation menu */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.85) 100%);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 1000;
+        }
+
+        /* Navigation buttons */
+        .nav-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 8px 12px;
+            border-radius: 12px;
+            min-width: 60px;
+        }
+
+        .nav-button:active {
+            transform: scale(0.95);
+        }
+
+        .nav-button.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-button .icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .nav-button .label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        /* Section content styling */
+        .section {
+            display: none;
+            height: calc(100vh - 80px);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-top: 20px;
+        }
+
+        .section-description {
+            font-size: 16px;
+            opacity: 0.8;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* Video Section (iframe to existing feed) */
+        .video-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Feed section card styling */
+        .feed-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .card-content {
+            font-size: 16px;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        /* Music section */
+        .music-card {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .album-art {
+            width: 200px;
+            height: 200px;
+            border-radius: 16px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        /* Stories section */
+        .story-card {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        /* Chat section */
+        .chat-interface {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            border-radius: 20px;
+            padding: 30px;
+            min-height: 300px;
+        }
+
+        /* Social section */
+        .social-card {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        /* Loading state */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            font-size: 18px;
+        }
+
+        /* Coming soon badge */
+        .coming-soon {
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-left: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Videos Section -->
+            <div id="videos" class="section active">
+                <iframe
+                    src="/entertainment-feed.html"
+                    class="video-frame"
+                    allow="autoplay; fullscreen">
+                </iframe>
+            </div>
+
+            <!-- Feed Section (Articles/News) -->
+            <div id="feed" class="section">
+                <h1 class="section-title">📰 News & Articles</h1>
+                <p class="section-description">
+                    Daily Spanish news and articles adapted to your learning level.
+                </p>
+
+                <div class="feed-card">
+                    <div class="card-title">🔴 Últimas Noticias</div>
+                    <div class="card-content">
+                        Real-time Spanish news from around the world, automatically adapted to your vocabulary level.
+                        <span class="coming-soon">COMING SOON</span>
+                    </div>
+                </div>
+
+                <div class="feed-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <div class="card-title">📱 Social Media Feed</div>
+                    <div class="card-content">
+                        Trending posts, memes, and viral content from Spanish social media.
+                        <span class="coming-soon">COMING SOON</span>
+                    </div>
+                </div>
+
+                <div class="feed-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                    <div class="card-title">🌍 Internet Trends</div>
+                    <div class="card-content">
+                        What's trending right now in the Spanish-speaking world.
+                        <span class="coming-soon">COMING SOON</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Music Section -->
+            <div id="music" class="section">
+                <h1 class="section-title">🎵 Music & Lyrics</h1>
+                <p class="section-description">
+                    Learn Spanish through music with clickable lyrics and translations.
+                </p>
+
+                <div class="music-card">
+                    <div class="album-art"></div>
+                    <div class="card-title">Spotify Integration</div>
+                    <div class="card-content">
+                        Listen to Spanish music with real-time lyric translations. Click any word in the lyrics to see its meaning.
+                        <span class="coming-soon">COMING SOON</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stories Section -->
+            <div id="stories" class="section">
+                <h1 class="section-title">📖 Stories</h1>
+                <p class="section-description">
+                    Engaging Spanish stories adapted to your level, with audio and visuals.
+                </p>
+
+                <div class="story-card">
+                    <div class="card-title">📚 Daily Stories</div>
+                    <div class="card-content">
+                        Instagram Stories-style Spanish content with dual-language text and audio narration.
+                        <span class="coming-soon">COMING SOON</span>
+                    </div>
+                </div>
+
+                <div class="story-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                    <div class="card-title">🎭 Interactive Stories</div>
+                    <div class="card-content">
+                        Choose-your-own-adventure stories where your vocabulary choices affect the plot.
+                        <span class="coming-soon">COMING SOON</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Section -->
+            <div id="chat" class="section">
+                <h1 class="section-title">💬 AI Conversation</h1>
+                <p class="section-description">
+                    Practice speaking Spanish with our AI that remembers your vocabulary and adapts to your level.
+                </p>
+
+                <div class="chat-interface">
+                    <div class="card-title">🤖 Voice Chat with AI</div>
+                    <div class="card-content">
+                        Talk about your day, interests, and practice using words you've learned. The AI knows your vocabulary and will help you practice naturally.
+                        <span class="coming-soon">COMING SOON</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Section -->
+            <div id="social" class="section">
+                <h1 class="section-title">🌐 Social Integration</h1>
+                <p class="section-description">
+                    Connect your social media accounts and see Spanish content from accounts you follow, adapted to your level.
+                </p>
+
+                <div class="social-card">
+                    <div class="card-title">📲 Connect Instagram</div>
+                    <div class="card-content">
+                        See posts from Spanish accounts you follow, with instant translations and vocabulary help.
+                        <span class="coming-soon">COMING SOON</span>
+                    </div>
+                </div>
+
+                <div class="social-card" style="background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);">
+                    <div class="card-title">🐦 Connect Twitter/X</div>
+                    <div class="card-content">
+                        Follow Spanish speakers and learn from their tweets, adapted to your vocabulary.
+                        <span class="coming-soon">COMING SOON</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation Menu (TikTok/Instagram Style) -->
+        <nav class="bottom-nav">
+            <button class="nav-button active" data-section="videos">
+                <div class="icon">🎬</div>
+                <div class="label">Videos</div>
+            </button>
+
+            <button class="nav-button" data-section="feed">
+                <div class="icon">📰</div>
+                <div class="label">Feed</div>
+            </button>
+
+            <button class="nav-button" data-section="music">
+                <div class="icon">🎵</div>
+                <div class="label">Music</div>
+            </button>
+
+            <button class="nav-button" data-section="stories">
+                <div class="icon">📖</div>
+                <div class="label">Stories</div>
+            </button>
+
+            <button class="nav-button" data-section="chat">
+                <div class="icon">💬</div>
+                <div class="label">Chat</div>
+            </button>
+
+            <button class="nav-button" data-section="social">
+                <div class="icon">🌐</div>
+                <div class="label">Social</div>
+            </button>
+        </nav>
+    </div>
+
+    <script>
+        // Navigation system
+        const navButtons = document.querySelectorAll('.nav-button');
+        const sections = document.querySelectorAll('.section');
+
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetSection = button.dataset.section;
+
+                // Remove active class from all buttons and sections
+                navButtons.forEach(btn => btn.classList.remove('active'));
+                sections.forEach(section => section.classList.remove('active'));
+
+                // Add active class to clicked button and corresponding section
+                button.classList.add('active');
+                document.getElementById(targetSection).classList.add('active');
+
+                // Analytics
+                console.log(`Switched to ${targetSection} section`);
+            });
+        });
+
+        // Add smooth scroll behavior
+        document.querySelectorAll('.section').forEach(section => {
+            section.style.scrollBehavior = 'smooth';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Spanish Reels - TikTok Style Learning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #000;
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+        }
+
+        /* TikTok-style vertical scroll container - Based on https://stackoverflow.com/questions/75340067 */
+        .reels-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .reel {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+
+        .reel video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* TikTok + Instagram Reels 2025 safe zone standard */
+        /* Research: orsonlord.com/articles/free-safe-zone-overlays-for-reels-tiktok-and-shorts */
+        /* TikTok 2025: Right 120px, Bottom 240px+ */
+        /* Instagram Reels 2025: Right 120px, Bottom 320px */
+        .sidebar {
+            position: absolute;
+            right: 16px; /* 2025 standard: buttons at right edge (TikTok/IG spec) */
+            bottom: 160px; /* Above bottom safe zone (240px TikTok, 320px Instagram) */
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            z-index: 10;
+        }
+
+        .sidebar-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .sidebar-btn:active {
+            transform: scale(0.9);
+        }
+
+        .sidebar-btn svg {
+            width: 32px;
+            height: 32px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+
+        .sidebar-btn span {
+            font-size: 12px;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+
+        /* Instagram Reels 2025 safe zone: Bottom 320px+ for caption overlay */
+        /* TikTok/YouTube Shorts 2025: Centered text, 20-30% larger for mobile */
+        /* Research: https://www.minta.ai/blog-post/instagram-safe-zone */
+        .word-overlay {
+            position: absolute;
+            bottom: 30%; /* TikTok style - centered in lower third */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            z-index: 5;
+        }
+
+        .spanish-text {
+            font-size: 26px; /* 30% larger than original 20px for YouTube Shorts pattern */
+            font-weight: 700;
+            color: white;
+            line-height: 1.5;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.9),
+                         0 0 20px rgba(0,0,0,0.6);
+            margin-bottom: 12px;
+            letter-spacing: 0.3px;
+        }
+
+        /* Mobile optimization: even larger text on small screens */
+        @media (max-width: 480px) {
+            .spanish-text {
+                font-size: 28px;
+            }
+        }
+
+        .word {
+            display: inline-block;
+            padding: 2px 6px;
+            margin: 2px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .word:active {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+
+        .word.clicked {
+            background: rgba(254,44,85,0.8);
+            animation: pulse 0.3s;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Translation popup - Lingopie 2025 style */
+        /* Source: lingopie.com/blog/best-features-on-lingopie */
+        .translation {
+            display: none;
+            opacity: 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+            background: rgba(0,0,0,0.9);
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin-top: 12px;
+            text-shadow: none;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: opacity 0.2s ease;
+        }
+
+        .translation.show {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Video metadata - TikTok style */
+        .video-info {
+            position: absolute;
+            bottom: 20px;
+            left: 16px;
+            right: 80px;
+            z-index: 5;
+        }
+
+        .username {
+            font-size: 15px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 8px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+
+        .description {
+            font-size: 14px;
+            color: white;
+            line-height: 1.3;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+
+        /* ✅ Instagram 2025: Audio attribution (bottom-left) */
+        /* Based on https://www.captions.ai/blog-post/how-to-make-original-audio-on-instagram */
+        .audio-attribution {
+            position: absolute;
+            bottom: 100px;
+            left: 16px;
+            z-index: 6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(8px);
+            padding: 6px 12px 6px 6px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .audio-attribution:active {
+            transform: scale(0.95);
+        }
+
+        .audio-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: spin 3s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .audio-icon svg {
+            width: 12px;
+            height: 12px;
+            fill: white;
+        }
+
+        .audio-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* ✅ Instagram 2025: Video progress bar */
+        /* Based on https://techinsightzone.com/how-to-pause-instagram-reels/ */
+        .video-progress-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: rgba(255,255,255,0.3);
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        .video-progress-bar {
+            height: 100%;
+            background: white;
+            width: 0%;
+            transition: width 0.1s linear;
+            position: relative;
+        }
+
+        .video-progress-bar::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .video-progress-container:hover .video-progress-bar::after,
+        .video-progress-container:active .video-progress-bar::after {
+            opacity: 1;
+        }
+
+        /* Pause indicator */
+        .pause-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 80px;
+            height: 80px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 30;
+            opacity: 0;
+        }
+
+        .pause-indicator.show {
+            animation: pausePop 0.4s ease;
+        }
+
+        @keyframes pausePop {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+        }
+
+        .pause-indicator svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+        }
+
+        /* Loading indicator */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 16px;
+            z-index: 20;
+        }
+
+        /* Hide scrollbar but keep functionality */
+        .reels-container::-webkit-scrollbar {
+            display: none;
+        }
+        .reels-container {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+
+
+        /* ✅ Instagram Reels 2025: Double-tap heart animation */
+        /* Based on https://www.eleken.co/blog-posts/mobile-ux-design-examples */
+        .double-tap-heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 120px;
+            height: 120px;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0;
+        }
+
+        .double-tap-heart.show {
+            animation: heartPop 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes heartPop {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .double-tap-heart svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 4px 20px rgba(0,0,0,0.5));
+        }
+
+        /* Like button pulsing when active */
+        .like-btn.liked svg {
+            fill: #fe2c55;
+            animation: likePulse 0.3s ease;
+        }
+
+        @keyframes likePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        /* Save button active state */
+        .save-btn.saved svg {
+            fill: #FFD700;
+        }
+
+        /* Comment counter badge */
+        .engagement-count {
+            font-size: 11px;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+    </style>
+</head>
+<body>
+    <h1 style="position: absolute; left: -9999px;">Spanish Learning Reels</h1>
+    <div class="loading">Loading Spanish Reels...</div>
+
+    <div class="reels-container" id="reelsContainer" role="main"></div>
+
+    <script>
+        // Spanish learning vocabulary with translations
+        const spanishDictionary = {
+            'hola': 'hello',
+            'adiós': 'goodbye',
+            'gracias': 'thank you',
+            'por favor': 'please',
+            'sí': 'yes',
+            'no': 'no',
+            'buenos días': 'good morning',
+            'buenas tardes': 'good afternoon',
+            'buenas noches': 'good night',
+            'cómo estás': 'how are you',
+            'bien': 'well/good',
+            'mal': 'bad',
+            'agua': 'water',
+            'comida': 'food',
+            'casa': 'house',
+            'amor': 'love',
+            'tiempo': 'time',
+            'día': 'day',
+            'noche': 'night',
+            'amigo': 'friend',
+            'familia': 'family',
+            'trabajo': 'work',
+            'escuela': 'school',
+            'vida': 'life',
+            'mundo': 'world',
+            'tengo': 'I have',
+            'quiero': 'I want',
+            'necesito': 'I need',
+            'puedo': 'I can',
+            'voy': 'I go',
+            'estoy': 'I am',
+            'soy': 'I am (permanent)',
+            'hay': 'there is/are',
+            'muy': 'very',
+            'poco': 'little',
+            'mucho': 'much/a lot',
+            'grande': 'big',
+            'pequeño': 'small'
+        };
+
+        let videos = [];
+        let currentVideoIndex = 0;
+        let isLoading = false;
+
+        // Track learned words (lightweight - no gamification)
+        let learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
+
+        // ✅ Instagram 2025: Format engagement counts (1.2K, 5.4M style)
+        function formatCount(count) {
+            if (count >= 1000000) {
+                return (count / 1000000).toFixed(1) + 'M';
+            } else if (count >= 1000) {
+                return (count / 1000).toFixed(1) + 'K';
+            }
+            return count.toString();
+        }
+
+        // Fetch videos from server
+        async function loadVideos() {
+            try {
+                // Prioritize videos WITH Spanish subtitles for word-level learning!
+                const responseWithSubs = await fetch('/api/videos/with-subtitles');
+                const dataWithSubs = await responseWithSubs.json();
+
+                if (dataWithSubs.success && dataWithSubs.videos && dataWithSubs.videos.length > 0) {
+                    // Use videos with REAL Spanish subtitles FIRST
+                    const subtitledVideos = dataWithSubs.videos.map(v => ({
+                        src: v.path,
+                        spanish: extractSpanishFromSubtitles(v.subtitles),
+                        username: '@LearnSpanish',
+                        description: v.title,
+                        hasSubtitles: true,
+                        subtitles: v.subtitles
+                    }));
+
+                    console.log(`✅ Loaded ${subtitledVideos.length} videos with REAL Spanish subtitles`);
+
+                    // Then add more videos without subtitles (with generated Spanish phrases)
+                    const allResponse = await fetch('/api/videos/all');
+                    const allData = await allResponse.json();
+
+                    if (allData.success && allData.videos) {
+                        const additionalVideos = allData.videos
+                            .filter(v => !v.hasSubtitles && v.path.includes('/reels/'))
+                            .slice(0, 10) // Add up to 10 more videos
+                            .map(v => ({
+                                src: v.path,
+                                spanish: extractSpanishFromTitle(v.title),
+                                username: '@LearnSpanish',
+                                description: v.title,
+                                hasSubtitles: false
+                            }));
+
+                        videos = [...subtitledVideos, ...additionalVideos];
+                        console.log(`✅ Added ${additionalVideos.length} more videos (total: ${videos.length})`);
+                    } else {
+                        videos = subtitledVideos;
+                    }
+                } else {
+                    // Fallback: try all videos
+                    const response = await fetch('/api/videos/all');
+                    const data = await response.json();
+
+                    if (data.success && data.videos && data.videos.length > 0) {
+                        videos = data.videos
+                            .slice(0, 20)
+                            .map(v => ({
+                                src: v.path,
+                                spanish: extractSpanishFromTitle(v.title),
+                                username: '@LearnSpanish',
+                                description: v.title,
+                                hasSubtitles: v.hasSubtitles
+                            }));
+
+                        console.log(`✅ Loaded ${videos.length} real Spanish videos`);
+                    } else {
+                        videos = getSampleVideos();
+                    }
+                }
+
+                renderReels();
+            } catch (error) {
+                console.error('Error loading videos:', error);
+                videos = getSampleVideos();
+                renderReels();
+            }
+        }
+
+        // Extract Spanish text from subtitle data
+        function extractSpanishFromSubtitles(subtitles) {
+            if (!subtitles || subtitles.length === 0) {
+                return '¡Hola! ¿Cómo estás?';
+            }
+
+            // Get Spanish subtitles (they're usually in the second half after English)
+            const spanishSubs = subtitles.filter(sub =>
+                /[áéíóúñü¿¡]/i.test(sub.text) ||
+                subtitles.indexOf(sub) >= subtitles.length / 2
+            );
+
+            if (spanishSubs.length > 0) {
+                // Take first 3 Spanish subtitle lines
+                return spanishSubs
+                    .slice(0, 3)
+                    .map(s => s.text)
+                    .join(' ');
+            }
+
+            // Fallback to first subtitle
+            return subtitles[0]?.text || '¡Hola! ¿Cómo estás?';
+        }
+
+        // Fallback: sample videos if API fails
+        function getSampleVideos() {
+            const basePath = '/videos/reels/';
+            const sampleFiles = [
+                { file: 'Person_says_tengo_202509130121_cdz81.mp4', spanish: 'Tengo hambre. Quiero comida.' },
+                { file: 'Person_says_necesito_202509130115_ly6g0.mp4', spanish: 'Necesito agua, por favor.' },
+                { file: 'Person_says_estoy_202509130113_a7rw0.mp4', spanish: 'Estoy muy cansado hoy.' },
+                { file: 'Create_a_viral_202509090401.mp4', spanish: '¡Hola! ¿Cómo estás?' },
+                { file: 'Slapstick_comedy_cul_202509122356_aawfx.mp4', spanish: '¿Dónde está la comida?' }
+            ];
+
+            return sampleFiles.map(({ file, spanish }) => ({
+                src: basePath + file,
+                spanish: spanish,
+                username: '@LearnSpanish',
+                description: 'Real Spanish learning video',
+                hasSubtitles: false
+            }));
+        }
+
+        // Extract Spanish text from video title
+        function extractSpanishFromTitle(title) {
+            // Map common Spanish words/phrases from title
+            const spanishPhrases = {
+                'tengo': 'Tengo hambre y sed.',
+                'necesito': 'Necesito ayuda, por favor.',
+                'estoy': 'Estoy muy feliz hoy.',
+                'quiero': 'Quiero aprender español.',
+                'puedo': '¿Puedo ir al baño?',
+                'me gusta': 'Me gusta mucho bailar.',
+                'hola': '¡Hola! ¿Cómo estás?',
+                'gracias': 'Muchas gracias, amigo.'
+            };
+
+            // Check title for Spanish keywords
+            const lowerTitle = title.toLowerCase();
+            for (const [keyword, phrase] of Object.entries(spanishPhrases)) {
+                if (lowerTitle.includes(keyword)) {
+                    return phrase;
+                }
+            }
+
+            // Default Spanish phrases for learning
+            const defaults = [
+                '¡Hola! ¿Cómo estás? Muy bien, gracias.',
+                'Buenos días. Tengo hambre.',
+                'Quiero comida española, por favor.',
+                '¿Dónde está el baño?',
+                'Me gusta mucho la música.'
+            ];
+
+            return defaults[Math.floor(Math.random() * defaults.length)];
+        }
+
+        // Render reels with TikTok-style layout
+        function renderReels() {
+            const container = document.getElementById('reelsContainer');
+            const loading = document.querySelector('.loading');
+
+            if (videos.length === 0) {
+                loading.textContent = 'No videos found. Add videos to /public/videos/reels/';
+                return;
+            }
+
+            loading.style.display = 'none';
+
+            videos.forEach((video, index) => {
+                const reel = document.createElement('div');
+                reel.className = 'reel';
+                reel.innerHTML = `
+                    <video
+                        src="${video.src}"
+                        playsinline
+                        loop
+                        ${index === 0 ? 'autoplay' : ''}
+                        muted
+                    ></video>
+
+                    <div class="word-overlay">
+                        <div class="spanish-text">${makeWordsClickable(video.spanish)}</div>
+                        <div class="translation"></div>
+                    </div>
+
+                    <div class="video-info">
+                        <div class="username">${video.username}</div>
+                        <div class="description">${video.description}</div>
+                    </div>
+
+                    <!-- Instagram 2025: Audio attribution (bottom-left) -->
+                    <div class="audio-attribution">
+                        <div class="audio-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                            </svg>
+                        </div>
+                        <div class="audio-text">Spanish Learning Audio</div>
+                    </div>
+
+                    <!-- Instagram 2025: Video progress bar -->
+                    <div class="video-progress-container">
+                        <div class="video-progress-bar"></div>
+                    </div>
+
+                    <!-- Pause indicator -->
+                    <div class="pause-indicator">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+                        </svg>
+                    </div>
+
+                    <!-- Instagram 2025: Double-tap heart animation -->
+                    <div class="double-tap-heart">
+                        <svg viewBox="0 0 24 24" fill="#fe2c55">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                    </div>
+
+                    <div class="sidebar">
+                        <button class="sidebar-btn like-btn" data-likes="${Math.floor(Math.random() * 5000) + 100}" aria-label="Like video">
+                            <svg viewBox="0 0 24 24" fill="white" aria-hidden="true">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
+                            <span class="engagement-count">${formatCount(Math.floor(Math.random() * 5000) + 100)}</span>
+                        </button>
+                        <button class="sidebar-btn comment-btn" data-comments="${Math.floor(Math.random() * 500) + 10}" aria-label="View comments">
+                            <svg viewBox="0 0 24 24" fill="white" aria-hidden="true">
+                                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+                            </svg>
+                            <span class="engagement-count">${formatCount(Math.floor(Math.random() * 500) + 10)}</span>
+                        </button>
+                        <button class="sidebar-btn save-btn" aria-label="Save video">
+                            <svg viewBox="0 0 24 24" fill="white" aria-hidden="true">
+                                <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
+                            </svg>
+                            <span>Save</span>
+                        </button>
+                        <button class="sidebar-btn share-btn" aria-label="Share video">
+                            <svg viewBox="0 0 24 24" fill="white" aria-hidden="true">
+                                <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>
+                            </svg>
+                            <span>Share</span>
+                        </button>
+                        <button class="sidebar-btn speed-btn" data-speed="1" title="Playback speed (TikTok + Lingopie style)" aria-label="Change playback speed">
+                            <svg viewBox="0 0 24 24" fill="white" aria-hidden="true">
+                                <path d="M13,2.03C17.73,2.5 21.5,6.25 21.95,11C22.5,16.5 18.5,21.38 13,21.93V19.93C16.64,19.5 19.5,16.61 19.96,12.97C20.5,8.58 17.39,4.59 13,4.05V2.05L13,2.03M11,2.06V4.06C9.57,4.26 8.22,4.84 7.1,5.74L5.67,4.26C7.19,3.03 9.05,2.25 11,2.06M4.26,5.67L5.69,7.1C4.8,8.23 4.24,9.58 4.05,11H2.05C2.25,9.04 3.03,7.19 4.26,5.67M2.06,13H4.06C4.24,14.42 4.81,15.77 5.69,16.9L4.27,18.33C3.03,16.81 2.26,14.96 2.06,13M7.1,18.37C8.23,19.25 9.58,19.82 11,20V22C9.04,21.79 7.18,21 5.67,19.74L7.1,18.37M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"/>
+                            </svg>
+                            <span class="speed-label">1x</span>
+                        </button>
+                    </div>
+                `;
+
+                container.appendChild(reel);
+
+                // Add word click handlers
+                reel.querySelectorAll('.word').forEach(wordEl => {
+                    wordEl.addEventListener('click', () => showTranslation(wordEl, reel));
+                });
+
+                // Add speed control handler (TikTok + Lingopie pattern)
+                // TikTok: 0.5x, 1x, 1.5x, 2x
+                // Lingopie: 0.5x, 0.75x, 0.8x, 0.9x, 1x
+                const speedBtn = reel.querySelector('.speed-btn');
+                speedBtn.addEventListener('click', () => {
+                    const speeds = [1, 0.75, 0.5, 1.5]; // Most useful for learners
+                    const currentSpeed = parseFloat(speedBtn.dataset.speed);
+                    const currentIndex = speeds.indexOf(currentSpeed);
+                    const nextSpeed = speeds[(currentIndex + 1) % speeds.length];
+
+                    speedBtn.dataset.speed = nextSpeed;
+                    speedBtn.querySelector('.speed-label').textContent = nextSpeed + 'x';
+                    videoEl.playbackRate = nextSpeed;
+
+                    console.log(`⚡ Speed: ${nextSpeed}x`);
+                });
+
+                // Video intersection observer for auto-play + preloading
+                const videoEl = reel.querySelector('video');
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            videoEl.play().catch(e => console.log('Play failed:', e));
+
+                            // Preload next video for smooth TikTok-style scrolling
+                            const nextReel = reel.nextElementSibling;
+                            if (nextReel) {
+                                const nextVideo = nextReel.querySelector('video');
+                                if (nextVideo && nextVideo.readyState < 3) {
+                                    nextVideo.load();
+                                }
+                            }
+                        } else {
+                            videoEl.pause();
+                        }
+                    });
+                }, { threshold: 0.5 });
+
+                observer.observe(reel);
+
+                // Preload first 3 videos immediately
+                if (index < 3) {
+                    videoEl.load();
+                }
+
+                // ✅ Instagram 2025: Double-tap heart animation
+                // Based on https://www.eleken.co/blog-posts/mobile-ux-design-examples
+                const doubleTapHeart = reel.querySelector('.double-tap-heart');
+                const likeBtn = reel.querySelector('.like-btn');
+                const saveBtn = reel.querySelector('.save-btn');
+                let lastTapTime = 0;
+                let tapCount = 0;
+
+                function handleDoubleTap(e) {
+                    const currentTime = new Date().getTime();
+                    const tapInterval = currentTime - lastTapTime;
+
+                    if (tapInterval < 300 && tapInterval > 0) {
+                        // Double tap detected!
+                        e.preventDefault();
+
+                        // Show heart animation
+                        doubleTapHeart.classList.remove('show');
+                        setTimeout(() => doubleTapHeart.classList.add('show'), 10);
+                        setTimeout(() => doubleTapHeart.classList.remove('show'), 800);
+
+                        // Like the reel
+                        if (!likeBtn.classList.contains('liked')) {
+                            likeBtn.classList.add('liked');
+                            const countEl = likeBtn.querySelector('.engagement-count');
+                            const currentCount = parseInt(likeBtn.dataset.likes) || 0;
+                            likeBtn.dataset.likes = currentCount + 1;
+                            countEl.textContent = formatCount(currentCount + 1);
+                        }
+
+                        tapCount = 0;
+                    } else {
+                        tapCount = 1;
+                    }
+
+                    lastTapTime = currentTime;
+                }
+
+                videoEl.addEventListener('touchend', handleDoubleTap);
+                videoEl.addEventListener('click', handleDoubleTap);
+
+                // Like button click handler
+                likeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    likeBtn.classList.toggle('liked');
+                    const countEl = likeBtn.querySelector('.engagement-count');
+                    const currentCount = parseInt(likeBtn.dataset.likes) || 0;
+
+                    if (likeBtn.classList.contains('liked')) {
+                        likeBtn.dataset.likes = currentCount + 1;
+                        countEl.textContent = formatCount(currentCount + 1);
+                    } else {
+                        likeBtn.dataset.likes = currentCount - 1;
+                        countEl.textContent = formatCount(currentCount - 1);
+                    }
+                });
+
+                // Save button handler
+                saveBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    saveBtn.classList.toggle('saved');
+                    const savedReels = JSON.parse(localStorage.getItem('savedReels') || '[]');
+
+                    if (saveBtn.classList.contains('saved')) {
+                        savedReels.push(video.src);
+                        localStorage.setItem('savedReels', JSON.stringify(savedReels));
+                    } else {
+                        const index = savedReels.indexOf(video.src);
+                        if (index > -1) savedReels.splice(index, 1);
+                        localStorage.setItem('savedReels', JSON.stringify(savedReels));
+                    }
+                });
+
+                // Check if already saved
+                const savedReels = JSON.parse(localStorage.getItem('savedReels') || '[]');
+                if (savedReels.includes(video.src)) {
+                    saveBtn.classList.add('saved');
+                }
+
+                // ✅ Instagram 2025: Video progress bar + tap-to-pause
+                // Based on https://techinsightzone.com/how-to-pause-instagram-reels/
+                const progressContainer = reel.querySelector('.video-progress-container');
+                const progressBar = reel.querySelector('.video-progress-bar');
+                const pauseIndicator = reel.querySelector('.pause-indicator');
+
+                // Update progress bar as video plays
+                videoEl.addEventListener('timeupdate', () => {
+                    const progress = (videoEl.currentTime / videoEl.duration) * 100;
+                    progressBar.style.width = `${progress}%`;
+                });
+
+                // Tap progress bar to seek
+                progressContainer.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const rect = progressContainer.getBoundingClientRect();
+                    const pos = (e.clientX - rect.left) / rect.width;
+                    videoEl.currentTime = pos * videoEl.duration;
+                });
+
+                // Single tap to pause/play (Instagram pattern)
+                let pauseTapTimer;
+                videoEl.addEventListener('click', (e) => {
+                    // Don't interfere with double-tap heart
+                    if (e.detail === 1) {
+                        pauseTapTimer = setTimeout(() => {
+                            if (videoEl.paused) {
+                                videoEl.play();
+                            } else {
+                                videoEl.pause();
+                                // Show pause indicator
+                                pauseIndicator.classList.remove('show');
+                                setTimeout(() => pauseIndicator.classList.add('show'), 10);
+                            }
+                        }, 250);
+                    }
+                });
+
+                // Clear single-tap timer if double-tap happens
+                videoEl.addEventListener('dblclick', () => {
+                    clearTimeout(pauseTapTimer);
+                });
+
+                // ✅ Instagram 2025: Long-press for fullscreen mode
+                // Based on https://www.socialmediatoday.com/news/instagram-tests-new-full-screen-scrollable-display-of-posts-and-reels/623125/
+                let longPressTimer;
+                const fullscreenHint = document.getElementById('fullscreenHint');
+
+                videoEl.addEventListener('touchstart', (e) => {
+                    longPressTimer = setTimeout(() => {
+                        // Enter fullscreen mode
+                        reel.classList.add('fullscreen-mode');
+                        fullscreenHint.classList.add('show');
+
+                        setTimeout(() => {
+                            fullscreenHint.classList.remove('show');
+                        }, 1500);
+                    }, 500); // 500ms long press
+                });
+
+                videoEl.addEventListener('touchend', () => {
+                    clearTimeout(longPressTimer);
+                    // Exit fullscreen mode
+                    reel.classList.remove('fullscreen-mode');
+                });
+
+                videoEl.addEventListener('touchmove', () => {
+                    clearTimeout(longPressTimer);
+                });
+
+                // Desktop support: right-click or long mouse press
+                videoEl.addEventListener('mousedown', (e) => {
+                    if (e.button === 2) { // Right click
+                        e.preventDefault();
+                        reel.classList.toggle('fullscreen-mode');
+                        fullscreenHint.classList.add('show');
+                        setTimeout(() => fullscreenHint.classList.remove('show'), 1500);
+                    }
+                });
+
+                videoEl.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                });
+            });
+
+            // Enable scroll snapping
+            container.style.scrollSnapType = 'y mandatory';
+
+            // ✅ 2025 PATTERN: Chrome 127+ scrollsnapchange events for better video control
+            // Based on https://developer.chrome.com/blog/scroll-snap-events
+            if ('onscrollsnapchange' in window) {
+                console.log('✅ Using modern scrollsnapchange API (Chrome 127+)');
+
+                container.addEventListener('scrollsnapchange', (event) => {
+                    // Pause previously playing video
+                    const previousVideo = document.querySelector('.video-playing');
+                    if (previousVideo) {
+                        previousVideo.pause();
+                        previousVideo.classList.remove('video-playing');
+                    }
+
+                    // Play newly snapped video
+                    const snappedReel = event.snapTargetBlock;
+                    const snappedVideo = snappedReel?.querySelector('video');
+                    if (snappedVideo) {
+                        snappedVideo.play().catch(e => console.log('Play failed:', e));
+                        snappedVideo.classList.add('video-playing');
+
+                        // Preload next video for smooth TikTok-style scrolling
+                        const nextReel = snappedReel.nextElementSibling;
+                        if (nextReel) {
+                            const nextVideo = nextReel.querySelector('video');
+                            if (nextVideo && nextVideo.readyState < 3) {
+                                nextVideo.load();
+                            }
+                        }
+                    }
+                });
+
+                // Optional: scrollsnapchanging for preview/preparation (fires during scroll)
+                container.addEventListener('scrollsnapchanging', (event) => {
+                    const pendingReel = event.snapTargetBlock;
+                    const pendingVideo = pendingReel?.querySelector('video');
+
+                    // Preload video while user is still scrolling
+                    if (pendingVideo && pendingVideo.readyState < 3) {
+                        pendingVideo.load();
+                    }
+                });
+            } else {
+                console.log('ℹ️ Using IntersectionObserver fallback (scrollsnapchange not supported)');
+            }
+        }
+
+        // Make Spanish words clickable
+        function makeWordsClickable(text) {
+            const words = text.split(/\s+/);
+            return words.map(word => {
+                const cleanWord = word.toLowerCase().replace(/[¿¡.,!?]/g, '');
+                const translation = spanishDictionary[cleanWord];
+                if (translation) {
+                    return `<span class="word" data-spanish="${cleanWord}" data-translation="${translation}">${word}</span>`;
+                }
+                return word;
+            }).join(' ');
+        }
+
+        // Show translation when word is clicked
+        // LingoPie 2025 pattern: Auto-pause video on word click + <100ms response
+        // Source: lingopie.com/blog/best-features-on-lingopie
+        function showTranslation(wordEl, reel) {
+            const spanish = wordEl.dataset.spanish;
+            const translation = wordEl.dataset.translation;
+
+            // INSTANT response: Set text and visibility synchronously (< 100ms)
+            const translationEl = reel.querySelector('.translation');
+            translationEl.textContent = `✨ ${spanish} = ${translation}`;
+            translationEl.classList.add('show');
+
+            // Visual feedback on word
+            wordEl.classList.add('clicked');
+
+            // LingoPie pattern: Pause video when word clicked for focused learning
+            const video = reel.querySelector('video');
+            if (video && !video.paused) {
+                video.pause();
+            }
+
+            // Track learned words (async - doesn't block UI)
+            if (!learnedWords.includes(spanish)) {
+                learnedWords.push(spanish);
+                requestIdleCallback(() => {
+                    localStorage.setItem('learnedWords', JSON.stringify(learnedWords));
+                });
+            }
+
+            // Remove visual feedback
+            setTimeout(() => wordEl.classList.remove('clicked'), 300);
+
+            // Hide translation after 4 seconds (longer for beginners)
+            setTimeout(() => {
+                translationEl.classList.remove('show');
+            }, 4000);
+        }
+
+        // ⌨️ YouTube Shorts Keyboard Shortcuts (Power User Feature)
+        // Research: https://support.google.com/youtube/answer/7631406
+        // K/Space = play/pause, ↑↓ = navigate, M = mute, J/L = skip
+        document.addEventListener('keydown', (e) => {
+            const container = document.getElementById('reelsContainer');
+            const activeVideo = document.querySelector('.reel video');
+
+            // Ignore if typing in input
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+            switch(e.key.toLowerCase()) {
+                case ' ':  // Spacebar
+                case 'k':  // K key (YouTube standard)
+                    e.preventDefault();
+                    if (activeVideo) {
+                        activeVideo.paused ? activeVideo.play() : activeVideo.pause();
+                        console.log('⌨️  Keyboard: Play/Pause');
+                    }
+                    break;
+
+                case 'arrowup':  // ↑ = Previous video
+                    e.preventDefault();
+                    container.scrollBy({ top: -window.innerHeight, behavior: 'smooth' });
+                    console.log('⌨️  Keyboard: Previous video');
+                    break;
+
+                case 'arrowdown':  // ↓ = Next video
+                    e.preventDefault();
+                    container.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
+                    console.log('⌨️  Keyboard: Next video');
+                    break;
+
+                case 'j':  // J = Rewind 10s (YouTube standard)
+                    e.preventDefault();
+                    if (activeVideo) {
+                        activeVideo.currentTime = Math.max(0, activeVideo.currentTime - 10);
+                        console.log('⌨️  Keyboard: -10s');
+                    }
+                    break;
+
+                case 'l':  // L = Forward 10s (YouTube standard)
+                    e.preventDefault();
+                    if (activeVideo) {
+                        activeVideo.currentTime = Math.min(activeVideo.duration, activeVideo.currentTime + 10);
+                        console.log('⌨️  Keyboard: +10s');
+                    }
+                    break;
+
+                case 'm':  // M = Mute/unmute
+                    e.preventDefault();
+                    if (activeVideo) {
+                        activeVideo.muted = !activeVideo.muted;
+                        console.log(`⌨️  Keyboard: ${activeVideo.muted ? 'Muted' : 'Unmuted'}`);
+                    }
+                    break;
+
+                case 's':  // S = Save current word (custom for language learning)
+                    e.preventDefault();
+                    console.log('⌨️  Keyboard: Save word (TODO: implement)');
+                    break;
+            }
+        });
+
+        console.log('⌨️  Keyboard shortcuts enabled:');
+        console.log('   Space/K = Play/Pause');
+        console.log('   ↑/↓ = Navigate videos');
+        console.log('   J/L = Skip ±10s');
+        console.log('   M = Mute');
+        console.log('   S = Save word');
+
+        // NO onboarding spam - TikTok/Instagram show content immediately
+
+        // Initialize app
+        loadVideos();
+    </script>
+</body>
+</html>

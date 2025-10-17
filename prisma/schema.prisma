@@ -1,0 +1,929 @@
+// 🗄️ UNIFIED DATABASE SCHEMA - Vocabulary, Users, Progress
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// NOTE: For production deployment with PostgreSQL (Neon), change provider to "postgresql"
+// and update DATABASE_URL in .env to PostgreSQL connection string
+
+// 👤 USER MODEL (Enhanced with authentication)
+model User {
+  id           String   @id @default(uuid())
+  email        String?  @unique
+  username     String?  @unique
+  passwordHash String? // For password authentication
+  name         String? // Full name
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Authentication
+  verified      Boolean   @default(false)
+  lastLoginAt   DateTime?
+  role          String    @default("user") // user, admin, superadmin
+  nativeLanguage    String   @default("en")
+  learningLanguage  String   @default("es")
+
+  // Learning Stats
+  level         String   @default("A1") // CEFR level (renamed from currentLevel)
+  levelUpdatedAt DateTime @default(now())
+  streak        Int      @default(0)
+  longestStreak Int      @default(0)
+  lastActivity  DateTime @default(now())
+  totalXP       Int      @default(0)
+
+  // Relationships
+  words            Word[]
+  articles         SavedArticle[]
+  likes            Like[]
+  achievements     Achievement[]
+  sessions         Session[]
+  progress         Progress[]
+  interests        UserInterest[]
+  learningSessions LearningSession[]
+  refreshTokens    RefreshToken[]
+  verificationTokens VerificationToken[]
+  passwordResetTokens PasswordResetToken[]
+}
+
+// 📝 WORD MODEL (Vocabulary) - Enhanced for spaced repetition
+model Word {
+  id          String  @id @default(uuid())
+  word        String
+  translation String
+  context     String?
+  level       String // A1, A2, B1, B2, C1, C2
+  language    String  @default("es")
+  source      String  @default("article") // article, video, game
+  sourceId    String?
+  userId      String
+  user        User    @relation(fields: [userId], references: [id])
+
+  // Spaced Repetition (SM-2)
+  clickCount   Int     @default(1)
+  saved        Boolean @default(false)
+  masteryLevel Int     @default(0) // 0-5
+  easiness     Float   @default(2.5)
+  interval     Int     @default(0)
+  repetitions  Int     @default(0)
+
+  savedAt      DateTime  @default(now())
+  lastSeen     DateTime  @default(now())
+  nextReview   DateTime?
+  reviewCount  Int       @default(0)
+  lastReviewed DateTime?
+  mastered     Boolean   @default(false)
+
+  @@unique([userId, word])
+  @@index([userId])
+  @@index([level])
+  @@index([userId, nextReview])
+  @@index([userId, saved])
+}
+
+// 📚 SAVED ARTICLE
+model SavedArticle {
+  id        String  @id @default(uuid())
+  title     String
+  content   String
+  spanish   String
+  english   String
+  thumbnail String?
+  level     String
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+
+  savedAt   DateTime @default(now())
+  readTime  Int? // minutes
+  completed Boolean  @default(false)
+
+  @@index([userId])
+}
+
+// ❤️ LIKE MODEL
+model Like {
+  id          String @id @default(uuid())
+  contentId   String
+  contentType String // video, article, news, etc.
+  userId      String
+  user        User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, contentId])
+  @@index([userId])
+}
+
+// 🏆 ACHIEVEMENT MODEL
+model Achievement {
+  id          String  @id @default(uuid())
+  type        String // vocabulary_10, streak_7, etc.
+  title       String
+  description String
+  icon        String?
+  userId      String
+  user        User    @relation(fields: [userId], references: [id])
+
+  unlockedAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+// 📊 LEARNING SESSION
+model Session {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  startedAt    DateTime  @default(now())
+  endedAt      DateTime?
+  duration     Int? // seconds
+  wordsLearned Int       @default(0)
+  xpEarned     Int       @default(0)
+
+  @@index([userId])
+}
+
+// 📈 PROGRESS TRACKER
+model Progress {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  date       DateTime @default(now())
+  level      String
+  wordsCount Int      @default(0)
+  timeSpent  Int      @default(0) // minutes
+  xpEarned   Int      @default(0)
+
+  @@index([userId])
+  @@index([date])
+}
+
+// 🎯 USER INTERESTS
+model UserInterest {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  interest  String // sports, technology, cooking, etc.
+  weight    Float    @default(1.0) // importance/preference weight
+  createdAt DateTime @default(now())
+
+  @@unique([userId, interest])
+  @@index([userId])
+}
+
+// 📖 LEARNING SESSIONS (Enhanced)
+model LearningSession {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  startedAt    DateTime  @default(now())
+  endedAt      DateTime?
+  duration     Int? // seconds
+  wordsLearned Int       @default(0)
+  xpEarned     Int       @default(0)
+  contentType  String? // video, article, game, etc.
+  contentId    String?
+
+  @@index([userId])
+  @@index([startedAt])
+}
+
+// 🎯 DAILY GOAL (Duolingo-style)
+model DailyGoal {
+  id        String   @id @default(uuid())
+  userId    String
+  date      DateTime @default(now())
+  goal      Int      @default(5) // videos per day
+  completed Int      @default(0)
+  achieved  Boolean  @default(false)
+  xpBonus   Int      @default(0)
+
+  @@unique([userId, date])
+  @@index([userId])
+  @@index([date])
+}
+
+// 🧠 QUIZ RESULTS
+model QuizResult {
+  id            String   @id @default(uuid())
+  userId        String?
+  videoId       String
+  question      String
+  userAnswer    String
+  correctAnswer String
+  isCorrect     Boolean
+  topic         String // weather, food, life, etc.
+  xpEarned      Int      @default(0)
+  completedAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([videoId])
+  @@index([completedAt])
+}
+
+// 🔓 UNLOCKED TOPICS
+model UnlockedTopic {
+  id         String   @id @default(uuid())
+  userId     String
+  topic      String // weather, food, life, etc.
+  unlockedAt DateTime @default(now())
+  videoCount Int      @default(1)
+
+  @@unique([userId, topic])
+  @@index([userId])
+}
+
+// 🎴 FLASHCARD (Spaced Repetition - SM2 Algorithm)
+model Flashcard {
+  id      String  @id @default(uuid())
+  userId  String
+  front   String // Spanish phrase
+  back    String // English translation
+  context String? // Where it was learned
+  topic   String?
+
+  // SM-2 Algorithm fields
+  easeFactor   Float     @default(2.5)
+  interval     Int       @default(1) // days
+  repetitions  Int       @default(0)
+  nextReview   DateTime
+  lastReviewed DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([nextReview])
+  @@index([userId, nextReview])
+}
+
+// 📝 REVIEW SESSION (Track individual reviews for analytics)
+model ReviewSession {
+  id        String   @id @default(uuid())
+  userId    String
+  wordId    String
+  quality   Int // 1-5 (Anki style: 1=again, 2=hard, 3=good, 4=easy, 5=perfect)
+  timeSpent Int? // seconds
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([wordId])
+  @@index([userId, createdAt])
+  @@index([createdAt])
+}
+
+// 📊 USER INTERACTION TRACKING (for smart recommendations)
+model UserInteraction {
+  id     String @id @default(uuid())
+  userId String
+
+  type       String // word_click, article_read, video_watched, game_played
+  contentId  String?
+  difficulty String? // A1, A2, etc.
+  correct    Boolean?
+  timeSpent  Int? // seconds
+  completed  Boolean  @default(false)
+
+  metadata  String   @default("{}") // JSON for additional data
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([userId, type])
+  @@index([userId, createdAt])
+  @@index([type, createdAt])
+}
+
+// 🎯 SKILL ASSESSMENT (adaptive level testing)
+model SkillAssessment {
+  id     String @id @default(uuid())
+  userId String @unique
+
+  vocabularyScore Float @default(0) // 0-100
+  grammarScore    Float @default(0)
+  readingScore    Float @default(0)
+  listeningScore  Float @default(0)
+
+  overallLevel String @default("A2")
+  confidence   Float  @default(50) // 0-100
+
+  lastAssessed    DateTime @default(now())
+  assessmentCount Int      @default(0)
+
+  @@index([userId])
+  @@index([overallLevel])
+}
+
+// 📰 ARTICLE (for smart recommendations)
+model Article {
+  id          String  @id
+  title       String
+  description String
+  content     String
+  level       String // CEFR: A1, A2, B1, B2, C1, C2
+  topics      String // JSON array of topics
+  sourceUrl   String
+  sourceName  String
+  hasAudio    Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([level])
+  @@index([createdAt])
+}
+
+// 📊 DAILY ACTIVITY ANALYTICS
+model DailyActivity {
+  id     String   @id @default(uuid())
+  userId String
+  date   DateTime @default(now())
+
+  videosWatched    Int     @default(0)
+  articlesRead     Int     @default(0)
+  wordsLearned     Int     @default(0)
+  wordsReviewed    Int     @default(0)
+  gamesPlayed      Int     @default(0)
+  quizzesCompleted Int     @default(0)
+  timeSpentMins    Int     @default(0)
+  streakMaintained Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, date])
+  @@index([userId])
+  @@index([date])
+  @@index([userId, date])
+}
+
+// 🎯 USER INTEREST CATEGORIES (Enhanced)
+model UserInterestCategory {
+  id          String   @id @default(uuid())
+  userId      String
+  category    String // News, Sports, Entertainment, Technology, Food, Travel, Culture
+  weight      Float    @default(1.0) // Weight based on engagement (0-10)
+  lastUpdated DateTime @default(now())
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, category])
+  @@index([userId])
+  @@index([category])
+}
+
+// 📈 CONTENT ENGAGEMENT TRACKING
+model ContentEngagement {
+  id          String @id @default(uuid())
+  userId      String
+  contentType String // video, article, game, quiz
+  contentId   String
+  action      String // viewed, completed, saved, shared
+  timeSpent   Int? // seconds
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([contentType])
+  @@index([userId, contentType])
+  @@index([createdAt])
+}
+
+// 🎙️ PODCAST EPISODES
+model Podcast {
+  id             String   @id @default(uuid())
+  title          String
+  description    String?
+  audioUrl       String   @unique
+  localAudioPath String?
+  transcriptUrl  String?
+  source         String   @default("podcast")
+  level          String
+  category       String   @default("learning")
+  duration       Int?
+  publishedAt    DateTime @default(now())
+  guid           String?  @unique
+  thumbnail      String?
+  topics         String   @default("[]") // JSON array
+
+  transcribed   Boolean @default(false)
+  transcription String?
+
+  clips PodcastClip[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([level])
+  @@index([category])
+  @@index([publishedAt])
+}
+
+// 🎙️ PODCAST CLIPS
+model PodcastClip {
+  id        String  @id @default(uuid())
+  podcastId String
+  podcast   Podcast @relation(fields: [podcastId], references: [id], onDelete: Cascade)
+
+  clipNumber Int
+  startTime  Float
+  endTime    Float
+  duration   Float
+
+  transcript  String
+  translation String?
+  level       String
+
+  topics String @default("[]")
+
+  createdAt DateTime @default(now())
+
+  @@unique([podcastId, clipNumber])
+  @@index([podcastId])
+  @@index([level])
+}
+
+// 🎵 MUSIC & SONGS
+model Song {
+  id         String  @id @default(uuid())
+  title      String
+  artist     String
+  albumArt   String?
+  previewUrl String?
+  spotifyId  String? @unique
+  genre      String
+  level      String?
+
+  hasLyrics Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@index([genre])
+  @@index([level])
+}
+
+// 🎵 SONG LYRICS
+model Lyrics {
+  id     String @id @default(uuid())
+  songId String @unique
+
+  spanish      String
+  english      String
+  synchronized String?
+
+  level String
+
+  createdAt DateTime @default(now())
+
+  @@index([level])
+}
+
+// 📖 AI GENERATED STORIES
+model AIStory {
+  id     String @id @default(uuid())
+  userId String
+
+  title       String
+  content     String
+  translation String?
+  level       String
+  type        String
+
+  audioUrl  String?
+  newWords  String  @default("[]")
+  questions String  @default("[]")
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([level])
+  @@index([type])
+}
+
+// 📺 YOUTUBE EDUCATIONAL VIDEOS
+model YouTubeVideo {
+  id        String   @id @default(uuid())
+  youtubeId String   @unique
+  title     String
+  thumbnailUrl String?
+  duration  Int? // seconds
+  transcriptUrl String?
+  level     String // A1, A2, B1, B2, C1, C2
+  topics    String @default("[]") // JSON array
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([level])
+  @@index([createdAt])
+}
+
+// 🎵 MUSIC (Spanish songs for learning)
+model Music {
+  id       String  @id @default(uuid())
+  title    String
+  artist   String
+  audioUrl String  @unique
+  lyrics   String?
+  thumbnail String?
+  level    String // A1, A2, B1, B2, C1, C2
+  topics   String  @default("[]") // JSON array
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([level])
+  @@index([artist])
+}
+
+// ===========================================================
+// 🔐 AUTHENTICATION MODELS
+// ===========================================================
+
+// 🔄 REFRESH TOKEN
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  revoked   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([token])
+}
+
+// ✉️ EMAIL VERIFICATION TOKEN
+model VerificationToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([token])
+}
+
+// 🔑 PASSWORD RESET TOKEN
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([token])
+}
+
+// ===========================================================
+// 💰 MONETIZATION & SUBSCRIPTION MODELS
+// ===========================================================
+
+// 📦 SUBSCRIPTION PLAN
+model SubscriptionPlan {
+  id          String   @id @default(uuid())
+  name        String   @unique // Free, Premium, Super
+  displayName String
+  description String
+  priceMonthly Int     // in cents (e.g., 999 = $9.99)
+  priceYearly  Int?    // in cents for annual plan
+  
+  // Feature limits
+  videosPerDay       Int?    // null = unlimited
+  gamesPerDay        Int?    // null = unlimited
+  aiMessagesPerDay   Int?    // null = unlimited
+  offlineDownloads   Boolean @default(false)
+  advancedAnalytics  Boolean @default(false)
+  noAds              Boolean @default(false)
+  prioritySupport    Boolean @default(false)
+  
+  // Metadata
+  stripePriceIdMonthly String?
+  stripePriceIdYearly  String?
+  isActive             Boolean @default(true)
+  sortOrder            Int     @default(0)
+  
+  subscriptions UserSubscription[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([isActive])
+}
+
+// 💳 USER SUBSCRIPTION
+model UserSubscription {
+  id        String   @id @default(uuid())
+  userId    String
+  planId    String
+  plan      SubscriptionPlan @relation(fields: [planId], references: [id])
+  
+  status    String   @default("trial") // trial, active, cancelled, expired, past_due
+  
+  // Trial info
+  isTrialUsed      Boolean   @default(false)
+  trialStartDate   DateTime?
+  trialEndDate     DateTime?
+  trialDaysLeft    Int?
+  
+  // Subscription dates
+  startDate        DateTime  @default(now())
+  currentPeriodStart DateTime @default(now())
+  currentPeriodEnd   DateTime
+  cancelAt         DateTime?
+  canceledAt       DateTime?
+  endedAt          DateTime?
+  
+  // Payment info
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  stripePaymentMethod  String?
+  autoRenew            Boolean @default(true)
+  billingCycle         String  @default("monthly") // monthly, yearly
+  
+  // Usage tracking
+  videosWatchedToday    Int      @default(0)
+  gamesPlayedToday      Int      @default(0)
+  aiMessagesUsedToday   Int      @default(0)
+  lastUsageReset        DateTime @default(now())
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([status])
+  @@index([currentPeriodEnd])
+  @@index([stripeSubscriptionId])
+}
+
+// 💰 PAYMENT HISTORY
+model Payment {
+  id        String   @id @default(uuid())
+  userId    String
+  
+  amount           Int      // in cents
+  currency         String   @default("usd")
+  status           String   // succeeded, failed, pending, refunded
+  paymentMethod    String?  // card, apple_pay, google_pay
+  
+  stripePaymentId  String?  @unique
+  stripeInvoiceId  String?
+  
+  subscriptionId   String?
+  planName         String?
+  billingCycle     String?  // monthly, yearly
+  
+  description      String?
+  receiptUrl       String?
+  
+  failureReason    String?
+  refundedAmount   Int?
+  refundedAt       DateTime?
+  
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// ===========================================================
+// 🔥 ENHANCED RETENTION FEATURES
+// ===========================================================
+
+// 🔥 STREAK TRACKING (Enhanced)
+model StreakHistory {
+  id        String   @id @default(uuid())
+  userId    String
+  
+  date              DateTime @default(now())
+  streakCount       Int
+  wasStreakSaved    Boolean  @default(false) // streak freeze feature
+  activityType      String?  // video, game, quiz, etc.
+  activityCount     Int      @default(1)
+  
+  createdAt DateTime @default(now())
+  
+  @@unique([userId, date])
+  @@index([userId])
+  @@index([date])
+}
+
+// 🏅 MILESTONE TRACKING
+model Milestone {
+  id          String   @id @default(uuid())
+  type        String   // videos_watched, words_learned, streak_days, games_completed
+  title       String
+  description String
+  icon        String?
+  threshold   Int      // e.g., 10 videos, 50 words, 7 days
+  xpReward    Int      @default(0)
+  badgeImage  String?
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  
+  userMilestones UserMilestone[]
+  
+  createdAt DateTime @default(now())
+  
+  @@unique([type, threshold])
+  @@index([type])
+  @@index([isActive])
+}
+
+// 🏆 USER MILESTONE PROGRESS
+model UserMilestone {
+  id          String   @id @default(uuid())
+  userId      String
+  milestoneId String
+  milestone   Milestone @relation(fields: [milestoneId], references: [id])
+  
+  currentValue Int      @default(0) // current progress
+  isCompleted  Boolean  @default(false)
+  completedAt  DateTime?
+  
+  // Social sharing
+  sharedToSocial Boolean @default(false)
+  shareCount     Int     @default(0)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([userId, milestoneId])
+  @@index([userId])
+  @@index([isCompleted])
+}
+
+// 📢 PUSH NOTIFICATION PREFERENCES
+model NotificationPreference {
+  id     String @id @default(uuid())
+  userId String @unique
+  
+  // Notification types
+  dailyReminder         Boolean @default(true)
+  streakReminder        Boolean @default(true)
+  newContent            Boolean @default(false)
+  friendActivity        Boolean @default(false)
+  achievements          Boolean @default(true)
+  weeklyReport          Boolean @default(true)
+  
+  // Timing preferences
+  reminderTime          String?  // e.g., "09:00"
+  timezone              String?  @default("America/New_York")
+  
+  // Channels
+  pushEnabled           Boolean @default(true)
+  emailEnabled          Boolean @default(true)
+  smsEnabled            Boolean @default(false)
+  
+  // Device tokens for push
+  pushTokens            String   @default("[]") // JSON array of device tokens
+  
+  // Do not disturb
+  quietHoursStart       String?  // e.g., "22:00"
+  quietHoursEnd         String?  // e.g., "08:00"
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([userId])
+}
+
+// 📱 PUSH NOTIFICATION LOG
+model PushNotification {
+  id        String   @id @default(uuid())
+  userId    String
+  
+  type      String   // daily_reminder, streak_warning, new_content, achievement, etc.
+  title     String
+  body      String
+  data      String   @default("{}") // JSON metadata
+  
+  status    String   @default("pending") // pending, sent, failed, clicked
+  sentAt    DateTime?
+  clickedAt DateTime?
+  
+  deviceToken String?
+  platform    String?  // ios, android, web
+  
+  errorMessage String?
+  
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([status])
+  @@index([type])
+  @@index([createdAt])
+}
+
+// 🎴 SHARE CARD (Social Sharing)
+model ShareCard {
+  id        String   @id @default(uuid())
+  userId    String
+  
+  type      String   // progress, streak, achievement, milestone
+  title     String
+  subtitle  String?
+  imageUrl  String?  // generated card image
+  
+  // Data for card generation
+  cardData  String   @default("{}") // JSON with stats
+  
+  // Sharing stats
+  shareCount    Int      @default(0)
+  viewCount     Int      @default(0)
+  platforms     String   @default("[]") // JSON array: twitter, facebook, etc.
+  
+  createdAt DateTime @default(now())
+  expiresAt DateTime? // optional expiration for time-sensitive cards
+  
+  @@index([userId])
+  @@index([type])
+  @@index([createdAt])
+}
+
+// 🎯 A/B TEST EXPERIMENTS
+model ABTest {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  type      String   // paywall_timing, pricing, messaging, design
+  
+  variants  String   @default("[]") // JSON array of variants
+  
+  isActive  Boolean  @default(true)
+  startDate DateTime @default(now())
+  endDate   DateTime?
+  
+  // Winning variant
+  winner    String?
+  
+  createdAt DateTime @default(now())
+  
+  userAssignments UserABTest[]
+  
+  @@index([isActive])
+  @@index([type])
+}
+
+// 👤 USER A/B TEST ASSIGNMENT
+model UserABTest {
+  id       String @id @default(uuid())
+  userId   String
+  testId   String
+  test     ABTest @relation(fields: [testId], references: [id])
+  
+  variant  String // which variant user is assigned to
+  
+  // Conversion tracking
+  converted    Boolean @default(false)
+  convertedAt  DateTime?
+  conversionValue Int? // in cents if applicable
+  
+  assignedAt DateTime @default(now())
+  
+  @@unique([userId, testId])
+  @@index([userId])
+  @@index([testId])
+  @@index([variant])
+}
+
+// 📊 RETENTION METRICS (Pre-calculated for reporting)
+model RetentionMetric {
+  id     String @id @default(uuid())
+  
+  date   DateTime @default(now())
+  cohort String   // e.g., "2025-10-01" or "October 2025"
+  
+  // Day N retention
+  day1Retention  Float @default(0) // percentage
+  day7Retention  Float @default(0)
+  day30Retention Float @default(0)
+  
+  // Cohort stats
+  cohortSize       Int @default(0)
+  activeUsers      Int @default(0)
+  convertedUsers   Int @default(0)
+  conversionRate   Float @default(0)
+  
+  // Revenue
+  mrr              Int @default(0) // Monthly Recurring Revenue in cents
+  totalRevenue     Int @default(0)
+  
+  createdAt DateTime @default(now())
+  
+  @@unique([date, cohort])
+  @@index([date])
+  @@index([cohort])
+}
+

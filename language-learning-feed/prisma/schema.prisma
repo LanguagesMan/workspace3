@@ -1,0 +1,314 @@
+// Language Learning Feed - Complete Database Schema
+// Optimized for SRS, comprehensible input tracking, and dopamine-driven engagement
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// CEFR language proficiency levels
+enum CEFRLevel {
+  A0 // Absolute beginner
+  A1
+  A2
+  B1
+  B2
+  C1
+  C2
+}
+
+enum ContentType {
+  VIDEO
+  ARTICLE
+  PODCAST
+  MUSIC
+  IMAGE_AUDIO // For A0 learners
+  SOCIAL_POST
+}
+
+enum InteractionType {
+  SWIPE_UP // Next (positive)
+  SWIPE_DOWN // Previous
+  SWIPE_LEFT // Too hard
+  SWIPE_RIGHT // Save
+  DOUBLE_TAP // Like
+  SKIP
+  REPLAY
+  WORD_LOOKUP
+  COMPLETED
+}
+
+enum SRSCardStatus {
+  NEW
+  LEARNING
+  REVIEWING
+  MASTERED
+}
+
+// Core user model with learning profile
+model User {
+  id                String   @id @default(cuid())
+  email             String   @unique
+  name              String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Language settings
+  nativeLanguage    String   @default("en")
+  targetLanguage    String   // e.g., "es", "fr", "ja"
+  currentLevel      CEFRLevel @default(A0)
+  
+  // Gamification
+  totalXP           Int      @default(0)
+  currentStreak     Int      @default(0)
+  longestStreak     Int      @default(0)
+  lastActiveDate    DateTime?
+  
+  // Learning stats
+  wordsLearned      Int      @default(0)
+  minutesImmersed   Int      @default(0)
+  contentConsumed   Int      @default(0)
+  
+  // Adaptive difficulty (secretly tracked)
+  comprehensionScore Float   @default(0.5) // 0-1, adjusts difficulty
+  engagementScore   Float    @default(0.5) // 0-1, for content recommendation
+  
+  // Relations
+  wordKnowledge     WordKnowledge[]
+  interactions      ContentInteraction[]
+  srsCards          SRSCard[]
+  sessions          LearningSession[]
+  preferences       UserPreference?
+  
+  @@index([email])
+  @@index([targetLanguage, currentLevel])
+}
+
+// User content preferences for personalization
+model UserPreference {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Content type preferences (0-1 scores)
+  videoPreference   Float    @default(0.5)
+  articlePreference Float    @default(0.5)
+  podcastPreference Float    @default(0.5)
+  musicPreference   Float    @default(0.5)
+  
+  // Topic interests (JSON array of topics with scores)
+  topicInterests    Json     @default("[]")
+  
+  // Behavioral preferences
+  averageSessionLength Int   @default(15) // minutes
+  preferredDifficulty  Float @default(0.96) // target % known words
+  
+  updatedAt         DateTime @updatedAt
+}
+
+// Content model with rich metadata
+model Content {
+  id                String      @id @default(cuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  
+  // Basic info
+  type              ContentType
+  title             String
+  description       String?
+  language          String      // Target language
+  
+  // Content URLs
+  contentUrl        String      // Video/audio URL
+  thumbnailUrl      String?
+  subtitlesUrl      String?     // VTT/SRT file
+  
+  // Source tracking
+  source            String      // "youtube", "spotify", "news_api", etc.
+  sourceId          String?     // Original ID from source
+  sourceUrl         String?     // Original URL
+  
+  // Content metadata
+  durationSeconds   Int?
+  transcription     String?     @db.Text
+  
+  // Difficulty analysis
+  cefrLevel         CEFRLevel
+  difficultyScore   Float       // 0-1, calculated by analyzer
+  uniqueWordCount   Int         @default(0)
+  totalWordCount    Int         @default(0)
+  
+  // Engagement metrics
+  viewCount         Int         @default(0)
+  likeCount         Int         @default(0)
+  saveCount         Int         @default(0)
+  skipCount         Int         @default(0)
+  averageTimeSpent  Float       @default(0) // seconds
+  dopamineScore     Float       @default(0.5) // 0-1, predicted engagement
+  
+  // Topics for personalization
+  topics            Json        @default("[]") // Array of topic tags
+  
+  // Relations
+  words             ContentWord[]
+  interactions      ContentInteraction[]
+  
+  @@index([language, cefrLevel])
+  @@index([type, language])
+  @@index([dopamineScore])
+  @@index([source, sourceId])
+}
+
+// Words in specific content (for targeted SRS)
+model ContentWord {
+  id              String   @id @default(cuid())
+  contentId       String
+  content         Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  
+  word            String
+  lemma           String   // Base form
+  frequency       Int      // Times it appears in this content
+  cefrLevel       CEFRLevel
+  position        Int      // First occurrence position in text
+  context         String?  // Sentence containing the word
+  
+  @@unique([contentId, word])
+  @@index([word, cefrLevel])
+}
+
+// User's knowledge of individual words
+model WordKnowledge {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  word              String
+  lemma             String
+  language          String
+  
+  // Knowledge tracking
+  confidenceScore   Float    @default(0) // 0-1, how well user knows word
+  exposureCount     Int      @default(0) // Times seen in context
+  lookupCount       Int      @default(0) // Times user looked it up
+  correctReviews    Int      @default(0)
+  incorrectReviews  Int      @default(0)
+  
+  // Learning timestamps
+  firstSeenAt       DateTime @default(now())
+  lastSeenAt        DateTime @default(now())
+  lastReviewedAt    DateTime?
+  
+  // SRS scheduling
+  nextReviewAt      DateTime?
+  reviewInterval    Int      @default(1) // Days until next review
+  easeFactor        Float    @default(2.5) // SM-2 algorithm
+  
+  @@unique([userId, word, language])
+  @@index([userId, language, confidenceScore])
+  @@index([userId, nextReviewAt])
+}
+
+// User interactions with content (fuel for recommendation algorithm)
+model ContentInteraction {
+  id                String          @id @default(cuid())
+  userId            String
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contentId         String
+  content           Content         @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  
+  interactionType   InteractionType
+  timestamp         DateTime        @default(now())
+  
+  // Detailed metrics
+  timeSpentSeconds  Float?          // How long they watched/read
+  completionRate    Float?          // 0-1, how much they consumed
+  replayCount       Int             @default(0)
+  wordsLookedUp     Int             @default(0)
+  
+  // Comprehension inference
+  inferredComprehension Float?      // 0-1, calculated from behavior
+  
+  @@index([userId, timestamp])
+  @@index([contentId, interactionType])
+  @@index([userId, contentId])
+}
+
+// SRS flashcards (invisible to user, surfaced as content)
+model SRSCard {
+  id                String        @id @default(cuid())
+  userId            String
+  user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  word              String
+  lemma             String
+  language          String
+  
+  // Card content
+  frontText         String        // Question/word in context
+  backText          String        // Answer/translation
+  exampleSentence   String?
+  imageUrl          String?       // For A0 learners
+  audioUrl          String?
+  
+  // SRS algorithm (SM-2 with modifications)
+  status            SRSCardStatus @default(NEW)
+  easeFactor        Float         @default(2.5)
+  interval          Int           @default(1) // Days
+  repetitions       Int           @default(0)
+  
+  // Scheduling
+  nextReviewAt      DateTime
+  lastReviewedAt    DateTime?
+  
+  // Performance tracking
+  correctCount      Int           @default(0)
+  incorrectCount    Int           @default(0)
+  averageResponseTime Float?      // Milliseconds
+  
+  createdAt         DateTime      @default(now())
+  
+  @@index([userId, nextReviewAt, status])
+  @@index([userId, word, language])
+}
+
+// Learning sessions for streak tracking and analytics
+model LearningSession {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  startedAt         DateTime @default(now())
+  endedAt           DateTime?
+  durationMinutes   Int      @default(0)
+  
+  // Session stats
+  contentViewed     Int      @default(0)
+  wordsEncountered  Int      @default(0)
+  wordsLearned      Int      @default(0)
+  srsReviewsCompleted Int    @default(0)
+  xpEarned          Int      @default(0)
+  
+  // Session quality metrics
+  averageEngagement Float    @default(0) // 0-1
+  completionRate    Float    @default(0) // 0-1
+  
+  @@index([userId, startedAt])
+}
+
+// Global word frequency database (for difficulty calculation)
+model WordFrequency {
+  id                String    @id @default(cuid())
+  word              String
+  lemma             String
+  language          String
+  cefrLevel         CEFRLevel
+  frequency         Int       // Global frequency rank (1 = most common)
+  
+  @@unique([word, language])
+  @@index([language, cefrLevel])
+  @@index([language, frequency])
+}

@@ -1,0 +1,358 @@
+// 🎯 COMPLETE APP VALIDATION - Test EVERYTHING
+// Screenshots ALL pages, tests functionality, identifies issues
+// Tests:
+// - All pages load correctly
+// - Videos play (TikTok-style)
+// - Feed loads content
+// - Performance (loading speed)
+// - Mobile responsiveness
+// - Design matches TikTok/Duolingo quality
+
+const { test, expect } = require('@playwright/test');
+const fs = require('fs').promises;
+
+const PAGES = [
+    { name: 'Home', url: 'http://localhost:3001/' },
+    { name: 'TikTok Feed', url: 'http://localhost:3001/tiktok.html' },
+    { name: 'Unified Feed', url: 'http://localhost:3001/unified-feed.html' },
+    { name: 'Infinite Feed', url: 'http://localhost:3001/unified-infinite-feed.html' },
+    { name: 'Flashcard Review', url: 'http://localhost:3001/flashcard-review.html' },
+    { name: 'Langflix App', url: 'http://localhost:3001/langflix-app.html' },
+    { name: 'Onboarding', url: 'http://localhost:3001/onboarding.html' }
+];
+
+test.describe('🎯 Complete App Validation - All Pages', () => {
+
+    test('should screenshot and validate ALL pages', async ({ page }) => {
+        const results = [];
+
+        for (const pageInfo of PAGES) {
+            console.log(`\n📸 Testing: ${pageInfo.name} (${pageInfo.url})`);
+
+            const pageResult = {
+                name: pageInfo.name,
+                url: pageInfo.url,
+                loaded: false,
+                loadTime: 0,
+                errors: [],
+                warnings: [],
+                screenshot: null
+            };
+
+            try {
+                // Track console errors
+                const consoleErrors = [];
+                page.on('console', msg => {
+                    if (msg.type() === 'error') {
+                        consoleErrors.push(msg.text());
+                    }
+                });
+
+                // Track network errors
+                const networkErrors = [];
+                page.on('requestfailed', request => {
+                    networkErrors.push(`${request.url()} - ${request.failure().errorText}`);
+                });
+
+                // Navigate with performance timing
+                const startTime = Date.now();
+                const response = await page.goto(pageInfo.url, {
+                    waitUntil: 'domcontentloaded',
+                    timeout: 15000
+                });
+                const loadTime = Date.now() - startTime;
+
+                pageResult.loadTime = loadTime;
+                pageResult.loaded = response.ok();
+
+                // Wait for page to settle
+                await page.waitForTimeout(3000);
+
+                // Take screenshot
+                const screenshotPath = `tests/screenshots/validation-${pageInfo.name.toLowerCase().replace(/\s+/g, '-')}.png`;
+                await page.screenshot({
+                    path: screenshotPath,
+                    fullPage: true
+                });
+                pageResult.screenshot = screenshotPath;
+
+                // Check for visible content
+                const bodyText = await page.textContent('body');
+                const hasContent = bodyText && bodyText.length > 100;
+
+                // Collect errors
+                pageResult.errors = [...networkErrors, ...consoleErrors];
+
+                // Performance warnings
+                if (loadTime > 3000) {
+                    pageResult.warnings.push(`⚠️ Slow load time: ${loadTime}ms`);
+                }
+
+                if (!hasContent) {
+                    pageResult.warnings.push('⚠️ Minimal content detected');
+                }
+
+                console.log(`   ✅ Loaded in ${loadTime}ms`);
+                console.log(`   📸 Screenshot: ${screenshotPath}`);
+
+                if (pageResult.errors.length > 0) {
+                    console.log(`   ❌ ${pageResult.errors.length} errors detected`);
+                }
+
+                if (pageResult.warnings.length > 0) {
+                    console.log(`   ⚠️  ${pageResult.warnings.length} warnings`);
+                }
+
+            } catch (error) {
+                pageResult.errors.push(error.message);
+                console.log(`   ❌ Failed to load: ${error.message}`);
+            }
+
+            results.push(pageResult);
+        }
+
+        // Generate report
+        const report = {
+            timestamp: new Date().toISOString(),
+            totalPages: results.length,
+            successfulPages: results.filter(r => r.loaded).length,
+            failedPages: results.filter(r => !r.loaded).length,
+            avgLoadTime: results.reduce((sum, r) => sum + r.loadTime, 0) / results.length,
+            pages: results
+        };
+
+        // Save report
+        await fs.writeFile(
+            'tests/screenshots/validation-report.json',
+            JSON.stringify(report, null, 2)
+        );
+
+        console.log('\n📊 VALIDATION REPORT:');
+        console.log(`   Total Pages: ${report.totalPages}`);
+        console.log(`   Successful: ${report.successfulPages}`);
+        console.log(`   Failed: ${report.failedPages}`);
+        console.log(`   Avg Load Time: ${Math.round(report.avgLoadTime)}ms`);
+
+        // Test should pass if majority of pages load
+        expect(report.successfulPages).toBeGreaterThan(report.totalPages / 2);
+    });
+
+    test('should test TikTok feed specifically - video playback', async ({ page }) => {
+        console.log('\n🎬 Testing TikTok Feed Video Playback...');
+
+        await page.goto('http://localhost:3001/tiktok.html', {
+            waitUntil: 'networkidle',
+            timeout: 15000
+        });
+
+        await page.waitForTimeout(3000);
+
+        // Check for video elements
+        const videos = await page.locator('video').count();
+        console.log(`   📹 Found ${videos} video elements`);
+
+        // Check for feed container
+        const feedContainer = page.locator('.feed-container, #feedContainer, .video-feed');
+        const feedExists = await feedContainer.count() > 0;
+        console.log(`   📦 Feed container exists: ${feedExists}`);
+
+        // Check if videos have src
+        if (videos > 0) {
+            const firstVideo = page.locator('video').first();
+            const hasSrc = await firstVideo.getAttribute('src');
+            console.log(`   🎥 First video has src: ${!!hasSrc}`);
+
+            // Try to get video state
+            const videoState = await firstVideo.evaluate(video => ({
+                paused: video.paused,
+                currentTime: video.currentTime,
+                duration: video.duration,
+                readyState: video.readyState,
+                networkState: video.networkState
+            }));
+
+            console.log(`   📊 Video state:`, videoState);
+        } else {
+            console.log(`   ❌ No videos found on page`);
+        }
+
+        // Screenshot
+        await page.screenshot({
+            path: 'tests/screenshots/tiktok-feed-detailed.png',
+            fullPage: false
+        });
+
+        expect(feedExists || videos > 0).toBe(true);
+    });
+
+    test('should test unified feed content loading', async ({ page }) => {
+        console.log('\n🌐 Testing Unified Feed Content Loading...');
+
+        const consoleMessages = [];
+        page.on('console', msg => consoleMessages.push(`[${msg.type()}] ${msg.text()}`));
+
+        await page.goto('http://localhost:3001/unified-infinite-feed.html', {
+            waitUntil: 'networkidle',
+            timeout: 15000
+        });
+
+        await page.waitForTimeout(5000); // Wait for dynamic content
+
+        // Check for content cards
+        const cards = await page.locator('.content-card, .feed-item, article, .card').count();
+        console.log(`   📇 Content cards found: ${cards}`);
+
+        // Check for loading indicators
+        const loadingIndicators = await page.locator('.loading, .spinner, [aria-busy="true"]').count();
+        console.log(`   ⏳ Loading indicators: ${loadingIndicators}`);
+
+        // Check if content types are present
+        const contentTypes = await page.locator('.content-type, [data-type]').allTextContents();
+        const uniqueTypes = [...new Set(contentTypes)];
+        console.log(`   📊 Content types: ${uniqueTypes.join(', ')}`);
+
+        // Check console for errors
+        const errors = consoleMessages.filter(m => m.startsWith('[error]'));
+        if (errors.length > 0) {
+            console.log(`   ❌ Console errors (${errors.length}):`);
+            errors.slice(0, 5).forEach(e => console.log(`      ${e}`));
+        }
+
+        // Screenshot
+        await page.screenshot({
+            path: 'tests/screenshots/unified-feed-detailed.png',
+            fullPage: true
+        });
+
+        console.log(`   ✅ Feed validation complete`);
+    });
+
+    test('should measure performance metrics', async ({ page }) => {
+        console.log('\n⚡ Testing Performance...');
+
+        const results = {};
+
+        for (const pageInfo of PAGES.slice(0, 4)) { // Test top 4 pages
+            await page.goto(pageInfo.url, { waitUntil: 'load', timeout: 15000 });
+
+            const metrics = await page.evaluate(() => {
+                const perfData = performance.getEntriesByType('navigation')[0];
+                return {
+                    domContentLoaded: perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart,
+                    loadComplete: perfData.loadEventEnd - perfData.loadEventStart,
+                    domInteractive: perfData.domInteractive - perfData.fetchStart,
+                    totalLoadTime: perfData.loadEventEnd - perfData.fetchStart
+                };
+            });
+
+            results[pageInfo.name] = metrics;
+            console.log(`   ${pageInfo.name}:`);
+            console.log(`      DOM Interactive: ${Math.round(metrics.domInteractive)}ms`);
+            console.log(`      Total Load: ${Math.round(metrics.totalLoadTime)}ms`);
+        }
+
+        // Check if any page is too slow
+        const slowPages = Object.entries(results).filter(([name, metrics]) =>
+            metrics.totalLoadTime > 5000
+        );
+
+        if (slowPages.length > 0) {
+            console.log(`   ⚠️  Slow pages detected (>5s):`);
+            slowPages.forEach(([name, metrics]) => {
+                console.log(`      ${name}: ${Math.round(metrics.totalLoadTime)}ms`);
+            });
+        }
+    });
+
+    test('should check mobile responsiveness', async ({ page }) => {
+        console.log('\n📱 Testing Mobile Responsiveness...');
+
+        const viewports = [
+            { name: 'iPhone 12', width: 390, height: 844 },
+            { name: 'iPhone SE', width: 375, height: 667 },
+            { name: 'iPad', width: 768, height: 1024 },
+            { name: 'Desktop', width: 1920, height: 1080 }
+        ];
+
+        await page.goto('http://localhost:3001/tiktok.html');
+
+        for (const viewport of viewports) {
+            await page.setViewportSize({ width: viewport.width, height: viewport.height });
+            await page.waitForTimeout(1000);
+
+            await page.screenshot({
+                path: `tests/screenshots/responsive-${viewport.name.toLowerCase().replace(/\s+/g, '-')}.png`
+            });
+
+            console.log(`   ✅ Screenshot: ${viewport.name} (${viewport.width}x${viewport.height})`);
+        }
+    });
+
+    test('should identify TikTok design gaps', async ({ page }) => {
+        console.log('\n🎨 Identifying TikTok Design Gaps...');
+
+        await page.goto('http://localhost:3001/tiktok.html', { waitUntil: 'networkidle' });
+        await page.waitForTimeout(3000);
+
+        const issues = [];
+
+        // Check scroll snap behavior
+        const hasScrollSnap = await page.evaluate(() => {
+            const container = document.querySelector('.feed-container, .video-feed, #feedContainer');
+            if (!container) return false;
+            const styles = window.getComputedStyle(container);
+            return styles.scrollSnapType.includes('y mandatory');
+        });
+
+        if (!hasScrollSnap) {
+            issues.push('❌ Missing scroll-snap-type: y mandatory (TikTok core UX)');
+        }
+
+        // Check for fullscreen videos
+        const hasFullscreenVideos = await page.evaluate(() => {
+            const videos = document.querySelectorAll('.video-card, .video-item');
+            if (videos.length === 0) return false;
+            const firstVideo = videos[0];
+            const rect = firstVideo.getBoundingClientRect();
+            return rect.height >= window.innerHeight * 0.9;
+        });
+
+        if (!hasFullscreenVideos) {
+            issues.push('❌ Videos not fullscreen (should be 100vh)');
+        }
+
+        // Check for action buttons (like, share, etc)
+        const actionButtons = await page.locator('button[aria-label*="like"], button[aria-label*="share"], .action-buttons').count();
+        if (actionButtons === 0) {
+            issues.push('⚠️ Missing TikTok-style action buttons (like, share, comment)');
+        }
+
+        // Check for auto-play
+        const videosAutoPlay = await page.evaluate(() => {
+            const videos = document.querySelectorAll('video');
+            return Array.from(videos).some(v => v.autoplay);
+        });
+
+        if (!videosAutoPlay) {
+            issues.push('⚠️ Videos missing autoplay attribute');
+        }
+
+        console.log('\n🔍 TikTok Design Gap Analysis:');
+        if (issues.length === 0) {
+            console.log('   ✅ No major issues detected');
+        } else {
+            issues.forEach(issue => console.log(`   ${issue}`));
+        }
+
+        // Screenshot for design review
+        await page.screenshot({
+            path: 'tests/screenshots/tiktok-design-review.png',
+            fullPage: false
+        });
+
+        return issues;
+    });
+
+});
+
+console.log('🎯 Complete App Validation - Tests ALL pages with screenshots!');

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <title>Beginner Mode Helper Component</title>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <!-- 
+        🌱 BEGINNER MODE HELPER COMPONENT
+        Provides extra support and encouragement for users with <100 words
+        
+        Usage:
+        <div id="beginner-helper-container"></div>
+        <script src="/components/beginner-mode-helper.html"></script>
+    -->
+    
+    <style>
+        .beginner-helper {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 16px 0;
+            box-shadow: 0 4px 12px rgba(253, 203, 110, 0.3);
+        }
+
+        .beginner-helper .header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .beginner-helper .emoji {
+            font-size: 32px;
+        }
+
+        .beginner-helper .title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .beginner-helper .message {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .beginner-helper .tips {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .beginner-helper .tip {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .beginner-helper .tip:last-child {
+            margin-bottom: 0;
+        }
+
+        .beginner-helper .tip .icon {
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .beginner-helper .progress-section {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .beginner-helper .progress-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .beginner-helper .milestone-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: white;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #333;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Celebration animation */
+        @keyframes celebration {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .beginner-helper.celebrate {
+            animation: celebration 0.6s ease;
+        }
+
+        /* Extra hints overlay */
+        .extra-hint {
+            position: absolute;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .extra-hint.show {
+            opacity: 1;
+        }
+
+        .extra-hint::before {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid #764ba2;
+        }
+    </style>
+
+    <script>
+        class BeginnerModeHelper {
+            constructor(containerId, options = {}) {
+                this.containerId = containerId;
+                this.options = {
+                    showTips: options.showTips !== false,
+                    showProgress: options.showProgress !== false,
+                    showExtraHints: options.showExtraHints !== false
+                };
+                
+                this.userId = null;
+                this.wordCount = 0;
+                this.isBeginnerMode = false;
+                this.nextMilestone = null;
+                
+                this.init();
+            }
+
+            async init() {
+                this.userId = await this.getUserId();
+                
+                if (!this.userId) return;
+                
+                await this.loadUserProfile();
+                
+                if (this.isBeginnerMode) {
+                    this.render();
+                    this.setupExtraHints();
+                }
+            }
+
+            async getUserId() {
+                try {
+                    const supabase = window.supabase?.createClient(
+                        'https://uejiwteujraxczrxbqff.supabase.co',
+                        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVlaml3dGV1anJheGN6cnhicWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk5NDMxMzksImV4cCI6MjA3NTUxOTEzOX0.iva8q5bMcLHfqd6niXqB_i-i-VrPmKLNGr9eiiPwZHQ'
+                    );
+                    
+                    if (!supabase) return null;
+                    
+                    const { data: { user } } = await supabase.auth.getUser();
+                    return user?.id;
+                } catch (error) {
+                    return null;
+                }
+            }
+
+            async loadUserProfile() {
+                try {
+                    const response = await fetch(`/api/adaptive/user-profile/${this.userId}`);
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        this.wordCount = data.profile.sessionStats?.totalWordsSaved || 0;
+                        this.isBeginnerMode = data.profile.beginnerMode?.isBeginnerMode || false;
+                        this.nextMilestone = data.profile.nextMilestone;
+                    }
+                } catch (error) {
+                    console.error('Error loading user profile:', error);
+                }
+            }
+
+            render() {
+                const container = document.getElementById(this.containerId);
+                if (!container) return;
+                
+                const encouragement = this.getEncouragementMessage();
+                
+                container.innerHTML = `
+                    <div class="beginner-helper">
+                        <div class="header">
+                            <span class="emoji">🌱</span>
+                            <span class="title">Beginner Mode Active</span>
+                        </div>
+                        
+                        <div class="message">
+                            ${encouragement}
+                        </div>
+                        
+                        ${this.options.showTips ? this.renderTips() : ''}
+                        ${this.options.showProgress ? this.renderProgress() : ''}
+                    </div>
+                `;
+            }
+
+            getEncouragementMessage() {
+                if (this.wordCount === 0) {
+                    return "🎉 Welcome to Spanish learning! We'll start with the most common words. Take your time and enjoy the journey!";
+                } else if (this.wordCount < 10) {
+                    return "🌟 Great start! You're learning the foundation of Spanish. Every word counts!";
+                } else if (this.wordCount < 30) {
+                    return "💪 You're building momentum! You already know some of the most useful Spanish words!";
+                } else if (this.wordCount < 50) {
+                    return "🚀 Amazing progress! You're halfway to your first major milestone!";
+                } else if (this.wordCount < 100) {
+                    return "🔥 You're on fire! Soon you'll graduate from Beginner Mode. Keep it up!";
+                }
+                return "You're doing great! Keep learning at your own pace.";
+            }
+
+            renderTips() {
+                return `
+                    <div class="tips">
+                        <div class="tip">
+                            <span class="icon">💡</span>
+                            <span>Click any Spanish word to see its translation</span>
+                        </div>
+                        <div class="tip">
+                            <span class="icon">📚</span>
+                            <span>We're showing you only the top 500 most common words</span>
+                        </div>
+                        <div class="tip">
+                            <span class="icon">🎯</span>
+                            <span>Each video has only 3 new words (perfect for learning!)</span>
+                        </div>
+                        <div class="tip">
+                            <span class="icon">⏰</span>
+                            <span>Take your time - there's no rush to finish videos</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderProgress() {
+                if (!this.nextMilestone) return '';
+                
+                const progress = ((this.wordCount / this.nextMilestone.next) * 100).toFixed(0);
+                
+                return `
+                    <div class="progress-section">
+                        <div class="progress-text">
+                            ${this.nextMilestone.message}
+                        </div>
+                        <div class="milestone-badge">
+                            <span>🎯</span>
+                            <span>${this.wordCount} / ${this.nextMilestone.next} words</span>
+                            <span>(${progress}%)</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            setupExtraHints() {
+                if (!this.options.showExtraHints) return;
+                
+                // Add hover hints for Spanish words
+                document.addEventListener('mouseover', (e) => {
+                    if (e.target.classList.contains('spanish-word') || 
+                        e.target.classList.contains('clickable-word')) {
+                        this.showExtraHint(e.target);
+                    }
+                });
+                
+                document.addEventListener('mouseout', (e) => {
+                    if (e.target.classList.contains('spanish-word') || 
+                        e.target.classList.contains('clickable-word')) {
+                        this.hideExtraHint();
+                    }
+                });
+            }
+
+            showExtraHint(element) {
+                // Remove existing hint
+                this.hideExtraHint();
+                
+                // Create hint
+                const hint = document.createElement('div');
+                hint.className = 'extra-hint';
+                hint.id = 'beginner-extra-hint';
+                hint.textContent = '👆 Click to translate';
+                
+                // Position hint
+                const rect = element.getBoundingClientRect();
+                hint.style.position = 'fixed';
+                hint.style.left = `${rect.left + rect.width / 2}px`;
+                hint.style.top = `${rect.top - 50}px`;
+                hint.style.transform = 'translateX(-50%)';
+                
+                document.body.appendChild(hint);
+                
+                // Show hint after brief delay
+                setTimeout(() => hint.classList.add('show'), 100);
+            }
+
+            hideExtraHint() {
+                const existing = document.getElementById('beginner-extra-hint');
+                if (existing) {
+                    existing.remove();
+                }
+            }
+
+            celebrate() {
+                const helper = document.querySelector('.beginner-helper');
+                if (helper) {
+                    helper.classList.add('celebrate');
+                    setTimeout(() => helper.classList.remove('celebrate'), 600);
+                }
+            }
+        }
+
+        // Make available globally
+        window.BeginnerModeHelper = BeginnerModeHelper;
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,1758 @@
+🎬 COMPREHENSIVE VIDEO RE-ENCODING
+================================================
+
+This will re-encode ALL videos with browser-compatible settings:
+  - H.264 Baseline profile (maximum compatibility)
+  - Level 3.0 (mobile-friendly)
+  - AAC audio (128kbps)
+  - Faststart flag (streaming-optimized)
+  - YUV420P pixel format
+
+📊 Found 141 videos to re-encode
+⏱️  Estimated time: ~4 hours (282 minutes)
+
+Auto-confirming for autonomous execution...
+
+Starting re-encoding...
+
+📦 Creating backup...
+✅ Backup created: public/videos/reels-original-backup-20251017-025544 (84 files)
+
+[1/141 - 0%] Re-encoding: Slapstick_comedy_cul_202509122356_aawfx.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~calculating...m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/reels/Slapstick_comedy_cul_202509122356_aawfx.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Duration: 00:00:08.00, start: 0.000000, bitrate: 3851 kb/s
+  Stream #0:0[0x1](und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p(progressive), 720x1280, 3714 kb/s, 24 fps, 24 tbr, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 130 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x152e0dfb0] using cpu capabilities: ARMv8 NEON
+[libx264 @ 0x152e0dfb0] profile Constrained Baseline, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x152e0dfb0] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=0 ref=3 deblock=1:0:0 analyse=0x1:0x111 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=0 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=12 lookahead_threads=2 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=0 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'public/videos/reels-reencoding-temp/Slapstick_comedy_cul_202509122356_aawfx.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Stream #0:0(und): Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 720x1280, q=2-31, 24 fps, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 aac
+frame=   50 fps=0.0 q=28.0 size=     768KiB time=00:00:02.08 bitrate=3020.1kbits/s speed=4.09x    frame=  112 fps=110 q=28.0 size=    2304KiB time=00:00:04.66 bitrate=4044.6kbits/s speed=4.59x    [mp4 @ 0x152e0f970] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0x152e0f8b0] video:3462KiB audio:128KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.147382%
+frame=  192 fps=133 q=-1.0 Lsize=    3595KiB time=00:00:08.00 bitrate=3681.6kbits/s speed=5.56x    
+[libx264 @ 0x152e0dfb0] frame I:1     Avg QP:23.80  size: 47301
+[libx264 @ 0x152e0dfb0] frame P:191   Avg QP:23.79  size: 18312
+[libx264 @ 0x152e0dfb0] mb I  I16..4: 51.4%  0.0% 48.6%
+[libx264 @ 0x152e0dfb0] mb P  I16..4:  5.7%  0.0%  6.1%  P16..4: 46.4% 11.3%  3.1%  0.0%  0.0%    skip:27.4%
+[libx264 @ 0x152e0dfb0] coded y,uvDC,uvAC intra: 42.4% 76.6% 28.2% inter: 12.5% 40.0% 4.6%
+[libx264 @ 0x152e0dfb0] i16 v,h,dc,p: 32% 28% 15% 25%
+[libx264 @ 0x152e0dfb0] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 27% 17% 14%  5%  9% 11%  7%  7%  4%
+[libx264 @ 0x152e0dfb0] i8c dc,h,v,p: 47% 21% 23%  9%
+[libx264 @ 0x152e0dfb0] ref P L0: 80.7% 13.7%  5.6%
+[libx264 @ 0x152e0dfb0] kb/s:3544.84
+[aac @ 0x1539534a0] Qavg: 847.520
+  ✅ Success (3 MB → 3 MB)
+
+[2/141 - 1%] Re-encoding: Andheld_camera_footage_202509112217_yzrzq.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~2m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+[in#0 @ 0x12fe241b0] Error opening input: No such file or directory
+Error opening input file blic/videos/reels/Andheld_camera_footage_202509112217_yzrzq.mp4.
+Error opening input files: No such file or directory
+  ❌ Failed to re-encode
+
+[3/141 - 2%] Re-encoding: Mime_acts_out_202509122353_whfwr.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~2m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/reels/Mime_acts_out_202509122353_whfwr.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Duration: 00:00:08.00, start: 0.000000, bitrate: 2340 kb/s
+  Stream #0:0[0x1](und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p(progressive), 720x1280, 2210 kb/s, 24 fps, 24 tbr, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 123 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x149732240] using cpu capabilities: ARMv8 NEON
+[libx264 @ 0x149732240] profile Constrained Baseline, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x149732240] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=0 ref=3 deblock=1:0:0 analyse=0x1:0x111 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=0 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=12 lookahead_threads=2 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=0 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'public/videos/reels-reencoding-temp/Mime_acts_out_202509122353_whfwr.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Stream #0:0(und): Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 720x1280, q=2-31, 24 fps, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 aac
+frame=   56 fps=0.0 q=28.0 size=     512KiB time=00:00:02.33 bitrate=1797.7kbits/s speed=4.58x    frame=  113 fps=111 q=28.0 size=    1280KiB time=00:00:04.70 bitrate=2227.1kbits/s speed=4.64x    [mp4 @ 0x1497314c0] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0x149731400] video:2084KiB audio:119KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.240101%
+frame=  192 fps=128 q=-1.0 Lsize=    2209KiB time=00:00:08.00 bitrate=2262.0kbits/s speed=5.32x    
+[libx264 @ 0x149732240] frame I:1     Avg QP:18.59  size: 50043
+[libx264 @ 0x149732240] frame P:191   Avg QP:21.44  size: 10909
+[libx264 @ 0x149732240] mb I  I16..4: 64.4%  0.0% 35.6%
+[libx264 @ 0x149732240] mb P  I16..4:  6.9%  0.0%  3.1%  P16..4: 37.9%  8.1%  2.4%  0.0%  0.0%    skip:41.6%
+[libx264 @ 0x149732240] coded y,uvDC,uvAC intra: 25.8% 50.3% 3.4% inter: 7.0% 20.0% 0.1%
+[libx264 @ 0x149732240] i16 v,h,dc,p: 47% 17% 15% 21%
+[libx264 @ 0x149732240] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 19% 26% 15%  5%  8%  7%  9%  5%  6%
+[libx264 @ 0x149732240] i8c dc,h,v,p: 59% 17% 22%  3%
+[libx264 @ 0x149732240] ref P L0: 76.4% 16.4%  7.2%
+[libx264 @ 0x149732240] kb/s:2133.60
+[aac @ 0x14964f0b0] Qavg: 11922.646
+  ✅ Success (2 MB → 2 MB)
+
+[4/141 - 2%] Re-encoding: Person_says_tengo_202509130121_cdz81.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~2m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+[in#0 @ 0x152b044a0] Error opening input: No such file or directory
+Error opening input file blic/videos/reels/Person_says_tengo_202509130121_cdz81.mp4.
+Error opening input files: No such file or directory
+  ❌ Failed to re-encode
+
+[5/141 - 3%] Re-encoding: Slapstick_comedy_es_202509122344_bikhw.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/reels/Slapstick_comedy_es_202509122344_bikhw.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Duration: 00:00:08.00, start: 0.000000, bitrate: 2418 kb/s
+  Stream #0:0[0x1](und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p(progressive), 720x1280, 2283 kb/s, 24 fps, 24 tbr, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 129 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x1467053a0] using cpu capabilities: ARMv8 NEON
+[libx264 @ 0x1467053a0] profile Constrained Baseline, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x1467053a0] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=0 ref=3 deblock=1:0:0 analyse=0x1:0x111 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=0 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=12 lookahead_threads=2 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=0 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'public/videos/reels-reencoding-temp/Slapstick_comedy_es_202509122344_bikhw.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Stream #0:0(und): Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 720x1280, q=2-31, 24 fps, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 aac
+frame=   37 fps=0.0 q=28.0 size=     512KiB time=00:00:01.54 bitrate=2720.9kbits/s speed=3.02x    frame=   78 fps= 77 q=28.0 size=    1280KiB time=00:00:03.25 bitrate=3226.5kbits/s speed=3.19x    [mp4 @ 0x1467047e0] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0x1467044d0] video:2127KiB audio:126KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.234783%
+frame=  192 fps=133 q=-1.0 Lsize=    2259KiB time=00:00:08.00 bitrate=2313.1kbits/s speed=5.56x    
+[libx264 @ 0x1467053a0] frame I:1     Avg QP:24.35  size: 27779
+[libx264 @ 0x1467053a0] frame P:191   Avg QP:21.55  size: 11257
+[libx264 @ 0x1467053a0] mb I  I16..4: 50.3%  0.0% 49.7%
+[libx264 @ 0x1467053a0] mb P  I16..4:  5.0%  0.0%  6.6%  P16..4: 28.0%  7.8%  1.8%  0.0%  0.0%    skip:50.8%
+[libx264 @ 0x1467053a0] coded y,uvDC,uvAC intra: 42.0% 57.8% 13.3% inter: 7.4% 17.7% 0.6%
+[libx264 @ 0x1467053a0] i16 v,h,dc,p: 25% 35% 12% 27%
+[libx264 @ 0x1467053a0] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 20% 29% 16%  6%  6%  5%  7%  5%  5%
+[libx264 @ 0x1467053a0] i8c dc,h,v,p: 56% 22% 16%  6%
+[libx264 @ 0x1467053a0] ref P L0: 81.0% 13.5%  5.5%
+[libx264 @ 0x1467053a0] kb/s:2177.92
+[aac @ 0x146757470] Qavg: 518.731
+  ✅ Success (2 MB → 2 MB)
+
+[6/141 - 4%] Re-encoding: Person_says_tengo_202509130114_w08k9.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~2m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+[in#0 @ 0x11cf06500] Error opening input: No such file or directory
+Error opening input file blic/videos/reels/Person_says_tengo_202509130114_w08k9.mp4.
+Error opening input files: No such file or directory
+  ❌ Failed to re-encode
+
+[7/141 - 4%] Re-encoding: Spanish_comedy_character_202509122150_z56pw.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/reels/Spanish_comedy_character_202509122150_z56pw.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Duration: 00:00:08.00, start: 0.000000, bitrate: 2995 kb/s
+  Stream #0:0[0x1](und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p(progressive), 720x1280, 2861 kb/s, 24 fps, 24 tbr, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x12d615240] using cpu capabilities: ARMv8 NEON
+[libx264 @ 0x12d615240] profile Constrained Baseline, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x12d615240] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=0 ref=3 deblock=1:0:0 analyse=0x1:0x111 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=0 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=12 lookahead_threads=2 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=0 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'public/videos/reels-reencoding-temp/Spanish_comedy_character_202509122150_z56pw.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Stream #0:0(und): Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 720x1280, q=2-31, 24 fps, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 aac
+frame=   59 fps=0.0 q=28.0 size=     768KiB time=00:00:02.45 bitrate=2559.4kbits/s speed=4.84x    frame=  125 fps=123 q=28.0 size=    1792KiB time=00:00:05.20 bitrate=2818.6kbits/s speed=5.12x    [mp4 @ 0x12d614610] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0x12d614360] video:2650KiB audio:126KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.190577%
+frame=  192 fps=148 q=-1.0 Lsize=    2782KiB time=00:00:08.00 bitrate=2848.4kbits/s speed=6.15x    
+[libx264 @ 0x12d615240] frame I:1     Avg QP:22.35  size: 93631
+[libx264 @ 0x12d615240] frame P:191   Avg QP:23.47  size: 13714
+[libx264 @ 0x12d615240] mb I  I16..4: 19.6%  0.0% 80.4%
+[libx264 @ 0x12d615240] mb P  I16..4:  3.2%  0.0%  3.5%  P16..4: 42.5% 11.4%  2.8%  0.0%  0.0%    skip:36.6%
+[libx264 @ 0x12d615240] coded y,uvDC,uvAC intra: 43.9% 82.5% 29.0% inter: 12.0% 34.0% 1.5%
+[libx264 @ 0x12d615240] i16 v,h,dc,p: 28% 22% 15% 34%
+[libx264 @ 0x12d615240] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 26% 19% 16%  5%  8%  8%  7%  6%  4%
+[libx264 @ 0x12d615240] i8c dc,h,v,p: 46% 18% 25% 10%
+[libx264 @ 0x12d615240] ref P L0: 87.0%  9.3%  3.7%
+[libx264 @ 0x12d615240] kb/s:2712.96
+[aac @ 0x12d6672f0] Qavg: 486.195
+  ✅ Success (2 MB → 2 MB)
+
+[8/141 - 5%] Re-encoding: Microscopic_character_says_202509130109_9kj19.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+[in#0 @ 0x135821c50] Error opening input: No such file or directory
+Error opening input file blic/videos/reels/Microscopic_character_says_202509130109_9kj19.mp4.
+Error opening input files: No such file or directory
+  ❌ Failed to re-encode
+
+[9/141 - 6%] Re-encoding: Person_calmly_says_202509130042_hrmfv.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/reels/Person_calmly_says_202509130042_hrmfv.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Duration: 00:00:08.00, start: 0.000000, bitrate: 1706 kb/s
+  Stream #0:0[0x1](und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p(progressive), 720x1280, 1572 kb/s, 24 fps, 24 tbr, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x11ef063f0] using cpu capabilities: ARMv8 NEON
+[libx264 @ 0x11ef063f0] profile Constrained Baseline, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x11ef063f0] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=0 ref=3 deblock=1:0:0 analyse=0x1:0x111 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=0 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=12 lookahead_threads=2 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=0 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'public/videos/reels-reencoding-temp/Person_calmly_says_202509130042_hrmfv.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Stream #0:0(und): Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 720x1280, q=2-31, 24 fps, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 aac
+frame=  104 fps=0.0 q=28.0 size=     768KiB time=00:00:04.33 bitrate=1452.0kbits/s speed=8.52x    [mp4 @ 0x11ef05060] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0x11ef04fa0] video:1474KiB audio:127KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.330534%
+frame=  192 fps=0.0 q=-1.0 Lsize=    1606KiB time=00:00:08.00 bitrate=1644.6kbits/s speed=9.51x    
+[libx264 @ 0x11ef063f0] frame I:1     Avg QP:21.25  size: 27693
+[libx264 @ 0x11ef063f0] frame P:191   Avg QP:21.32  size:  7755
+[libx264 @ 0x11ef063f0] mb I  I16..4: 59.2%  0.0% 40.8%
+[libx264 @ 0x11ef063f0] mb P  I16..4:  2.3%  0.0%  1.5%  P16..4: 36.9%  7.6%  1.8%  0.0%  0.0%    skip:49.9%
+[libx264 @ 0x11ef063f0] coded y,uvDC,uvAC intra: 30.9% 54.3% 15.5% inter: 5.8% 18.5% 0.3%
+[libx264 @ 0x11ef063f0] i16 v,h,dc,p: 52% 25% 10% 14%
+[libx264 @ 0x11ef063f0] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 24% 22% 17%  4%  8%  8%  7%  5%  4%
+[libx264 @ 0x11ef063f0] i8c dc,h,v,p: 58% 18% 19%  5%
+[libx264 @ 0x11ef063f0] ref P L0: 79.8% 13.7%  6.5%
+[libx264 @ 0x11ef063f0] kb/s:1508.93
+[aac @ 0x11ee7fea0] Qavg: 772.362
+  ✅ Success (1 MB → 1 MB)
+
+[10/141 - 7%] Re-encoding: Person_says_me_202509130103_au4cr.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+[in#0 @ 0x12e705eb0] Error opening input: No such file or directory
+Error opening input file ublic/videos/reels/Person_says_me_202509130103_au4cr.mp4.
+Error opening input files: No such file or directory
+  ❌ Failed to re-encode
+
+[11/141 - 7%] Re-encoding: Person_dramatically_prepares_202509130055_vc1.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/reels/Person_dramatically_prepares_202509130055_vc1.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Duration: 00:00:08.00, start: 0.000000, bitrate: 1750 kb/s
+  Stream #0:0[0x1](und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p(progressive), 720x1280, 1614 kb/s, 24 fps, 24 tbr, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 130 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x126e20510] using cpu capabilities: ARMv8 NEON
+[libx264 @ 0x126e20510] profile Constrained Baseline, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x126e20510] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=0 ref=3 deblock=1:0:0 analyse=0x1:0x111 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=0 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=12 lookahead_threads=2 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=0 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'public/videos/reels-reencoding-temp/Person_dramatically_prepares_202509130055_vc1.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Stream #0:0(und): Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 720x1280, q=2-31, 24 fps, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 aac
+frame=   85 fps=0.0 q=28.0 size=     512KiB time=00:00:03.54 bitrate=1184.4kbits/s speed=6.97x    [mp4 @ 0x126e21640] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0x126e12cb0] video:1541KiB audio:128KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.317123%
+frame=  192 fps=0.0 q=-1.0 Lsize=    1675KiB time=00:00:08.00 bitrate=1715.2kbits/s speed=8.06x    
+[libx264 @ 0x126e20510] frame I:2     Avg QP:20.67  size: 30976
+[libx264 @ 0x126e20510] frame P:190   Avg QP:21.60  size:  7977
+[libx264 @ 0x126e20510] mb I  I16..4: 51.8%  0.0% 48.2%
+[libx264 @ 0x126e20510] mb P  I16..4:  6.3%  0.0%  2.2%  P16..4: 47.7%  6.7%  1.2%  0.0%  0.0%    skip:35.9%
+[libx264 @ 0x126e20510] coded y,uvDC,uvAC intra: 16.9% 55.4% 4.3% inter: 3.3% 23.7% 0.0%
+[libx264 @ 0x126e20510] i16 v,h,dc,p: 39% 20% 14% 27%
+[libx264 @ 0x126e20510] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 27% 17% 22%  5%  8%  8%  6%  6%  2%
+[libx264 @ 0x126e20510] i8c dc,h,v,p: 59% 13% 22%  6%
+[libx264 @ 0x126e20510] ref P L0: 76.5% 16.1%  7.4%
+[libx264 @ 0x126e20510] kb/s:1577.55
+[aac @ 0x103027510] Qavg: 605.087
+  ✅ Success (1 MB → 1 MB)
+
+[12/141 - 8%] Re-encoding: Spanish_comedy_using_202509122211_1aqqr.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+[in#0 @ 0x14e706480] Error opening input: No such file or directory
+Error opening input file ublic/videos/reels/Spanish_comedy_using_202509122211_1aqqr.mp4.
+Error opening input files: No such file or directory
+  ❌ Failed to re-encode
+
+[13/141 - 9%] Re-encoding: Serious_dramatic_buildup_202509122358_fw60h.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/reels/Serious_dramatic_buildup_202509122358_fw60h.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Duration: 00:00:08.00, start: 0.000000, bitrate: 2590 kb/s
+  Stream #0:0[0x1](und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p(progressive), 720x1280, 2456 kb/s, 24 fps, 24 tbr, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 127 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x14c708c00] using cpu capabilities: ARMv8 NEON
+[libx264 @ 0x14c708c00] profile Constrained Baseline, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x14c708c00] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=0 ref=3 deblock=1:0:0 analyse=0x1:0x111 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=0 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=12 lookahead_threads=2 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=0 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'public/videos/reels-reencoding-temp/Serious_dramatic_buildup_202509122358_fw60h.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Stream #0:0(und): Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 720x1280, q=2-31, 24 fps, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 aac
+frame=   49 fps=0.0 q=28.0 size=     768KiB time=00:00:02.08 bitrate=3020.1kbits/s speed=4.14x    frame=  150 fps=149 q=28.0 size=    1792KiB time=N/A bitrate=N/A speed=N/A    [mp4 @ 0x14c707f50] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0x14c707d20] video:2274KiB audio:125KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.220504%
+frame=  192 fps=160 q=-1.0 Lsize=    2405KiB time=00:00:08.00 bitrate=2462.5kbits/s speed=6.67x    
+[libx264 @ 0x14c708c00] frame I:1     Avg QP:24.08  size: 55892
+[libx264 @ 0x14c708c00] frame P:191   Avg QP:22.34  size: 11898
+[libx264 @ 0x14c708c00] mb I  I16..4: 26.9%  0.0% 73.1%
+[libx264 @ 0x14c708c00] mb P  I16..4:  4.3%  0.0%  1.9%  P16..4: 49.3% 10.7%  2.9%  0.0%  0.0%    skip:30.9%
+[libx264 @ 0x14c708c00] coded y,uvDC,uvAC intra: 25.3% 61.2% 5.1% inter: 9.6% 26.6% 0.1%
+[libx264 @ 0x14c708c00] i16 v,h,dc,p: 43% 22% 19% 16%
+[libx264 @ 0x14c708c00] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 30% 13% 24%  5%  6%  8%  5%  7%  3%
+[libx264 @ 0x14c708c00] i8c dc,h,v,p: 57% 16% 23%  4%
+[libx264 @ 0x14c708c00] ref P L0: 81.6% 13.3%  5.1%
+[libx264 @ 0x14c708c00] kb/s:2328.35
+[aac @ 0x14c75acb0] Qavg: 336.004
+  ✅ Success (2 MB → 2 MB)
+
+[14/141 - 9%] Re-encoding: Langai_wise_globe_202509122009_fty61.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+[in#0 @ 0x142706480] Error opening input: No such file or directory
+Error opening input file blic/videos/reels/Langai_wise_globe_202509122009_fty61.mp4.
+Error opening input files: No such file or directory
+  ❌ Failed to re-encode
+
+[15/141 - 10%] Re-encoding: Person_brushing_teeth_202509130015_broku.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/reels/Person_brushing_teeth_202509130015_broku.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Duration: 00:00:08.00, start: 0.000000, bitrate: 2671 kb/s
+  Stream #0:0[0x1](und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p(progressive), 720x1280, 2537 kb/s, 24 fps, 24 tbr, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x142f08c00] using cpu capabilities: ARMv8 NEON
+[libx264 @ 0x142f08c00] profile Constrained Baseline, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x142f08c00] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=0 ref=3 deblock=1:0:0 analyse=0x1:0x111 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=0 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=12 lookahead_threads=2 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=0 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'public/videos/reels-reencoding-temp/Person_brushing_teeth_202509130015_broku.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Stream #0:0(und): Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 720x1280, q=2-31, 24 fps, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 aac
+frame=   66 fps=0.0 q=28.0 size=     768KiB time=00:00:02.75 bitrate=2287.9kbits/s speed=5.39x    frame=  175 fps=172 q=28.0 size=    2048KiB time=N/A bitrate=N/A speed=N/A    [mp4 @ 0x142f07f50] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0x142f07d20] video:2329KiB audio:126KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.215852%
+frame=  192 fps=176 q=-1.0 Lsize=    2460KiB time=00:00:08.00 bitrate=2519.2kbits/s speed=7.33x    
+[libx264 @ 0x142f08c00] frame I:3     Avg QP:21.51  size: 62207
+[libx264 @ 0x142f08c00] frame P:189   Avg QP:23.85  size: 11627
+[libx264 @ 0x142f08c00] mb I  I16..4: 28.7%  0.0% 71.3%
+[libx264 @ 0x142f08c00] mb P  I16..4:  2.4%  0.0%  2.2%  P16..4: 52.1% 12.2%  2.7%  0.0%  0.0%    skip:28.4%
+[libx264 @ 0x142f08c00] coded y,uvDC,uvAC intra: 43.6% 73.0% 25.0% inter: 8.3% 28.3% 0.4%
+[libx264 @ 0x142f08c00] i16 v,h,dc,p: 35% 23% 12% 29%
+[libx264 @ 0x142f08c00] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 24% 21% 14%  5%  9%  9%  7%  6%  5%
+[libx264 @ 0x142f08c00] i8c dc,h,v,p: 48% 21% 21%  9%
+[libx264 @ 0x142f08c00] ref P L0: 80.7% 14.0%  5.2%
+[libx264 @ 0x142f08c00] kb/s:2384.14
+[aac @ 0x142f5acb0] Qavg: 778.956
+  ✅ Success (2 MB → 2 MB)
+
+[16/141 - 11%] Re-encoding: Perfect_timing_comedy_202509122149_w86qo.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+[in#0 @ 0x137706480] Error opening input: No such file or directory
+Error opening input file blic/videos/reels/Perfect_timing_comedy_202509122149_w86qo.mp4.
+Error opening input files: No such file or directory
+  ❌ Failed to re-encode
+
+[17/141 - 12%] Re-encoding: Epic_dramatic_tension_202509122323_gcy2e.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/reels/Epic_dramatic_tension_202509122323_gcy2e.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Duration: 00:00:08.00, start: 0.000000, bitrate: 1745 kb/s
+  Stream #0:0[0x1](und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p(progressive), 720x1280, 1610 kb/s, 24 fps, 24 tbr, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x122708c00] using cpu capabilities: ARMv8 NEON
+[libx264 @ 0x122708c00] profile Constrained Baseline, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x122708c00] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=0 ref=3 deblock=1:0:0 analyse=0x1:0x111 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=0 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=12 lookahead_threads=2 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=0 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'public/videos/reels-reencoding-temp/Epic_dramatic_tension_202509122323_gcy2e.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Stream #0:0(und): Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 720x1280, q=2-31, 24 fps, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 aac
+frame=   62 fps=0.0 q=28.0 size=     512KiB time=00:00:02.58 bitrate=1623.8kbits/s speed=5.05x    frame=  188 fps=184 q=-1.0 size=    1536KiB time=N/A bitrate=N/A speed=N/A    [mp4 @ 0x122707f50] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0x122707d20] video:1503KiB audio:126KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.324962%
+frame=  192 fps=182 q=-1.0 Lsize=    1635KiB time=00:00:08.00 bitrate=1673.9kbits/s speed=7.57x    
+[libx264 @ 0x122708c00] frame I:2     Avg QP:20.04  size: 26692
+[libx264 @ 0x122708c00] frame P:190   Avg QP:21.30  size:  7819
+[libx264 @ 0x122708c00] mb I  I16..4: 62.4%  0.0% 37.6%
+[libx264 @ 0x122708c00] mb P  I16..4:  5.1%  0.0%  1.6%  P16..4: 39.9%  7.3%  1.4%  0.0%  0.0%    skip:44.6%
+[libx264 @ 0x122708c00] coded y,uvDC,uvAC intra: 17.4% 48.4% 3.5% inter: 5.8% 18.0% 0.0%
+[libx264 @ 0x122708c00] i16 v,h,dc,p: 40% 27% 11% 21%
+[libx264 @ 0x122708c00] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 22% 21% 21%  5%  8%  8%  6%  5%  3%
+[libx264 @ 0x122708c00] i8c dc,h,v,p: 61% 19% 16%  3%
+[libx264 @ 0x122708c00] ref P L0: 84.8% 11.1%  4.1%
+[libx264 @ 0x122708c00] kb/s:1538.92
+[aac @ 0x12275acb0] Qavg: 480.531
+  ✅ Success (1 MB → 1 MB)
+
+[18/141 - 12%] Re-encoding: Create_a_viral_202509090401 (3).mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+[in#0 @ 0x159006480] Error opening input: No such file or directory
+Error opening input file blic/videos/reels/Create_a_viral_202509090401 (3).mp4.
+Error opening input files: No such file or directory
+  ❌ Failed to re-encode
+
+[19/141 - 13%] Re-encoding: Genius_punchline_talking_202509101625_5r9vp.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/reels/Genius_punchline_talking_202509101625_5r9vp.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Duration: 00:00:08.00, start: 0.000000, bitrate: 1061 kb/s
+  Stream #0:0[0x1](und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p(progressive), 720x1280, 926 kb/s, 24 fps, 24 tbr, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 129 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x1280137e0] using cpu capabilities: ARMv8 NEON
+[libx264 @ 0x1280137e0] profile Constrained Baseline, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x1280137e0] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=0 ref=3 deblock=1:0:0 analyse=0x1:0x111 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=0 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=12 lookahead_threads=2 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=0 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'public/videos/reels-reencoding-temp/Genius_punchline_talking_202509101625_5r9vp.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Stream #0:0(und): Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 720x1280, q=2-31, 24 fps, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 aac
+frame=  114 fps=0.0 q=28.0 size=     512KiB time=00:00:04.75 bitrate= 883.1kbits/s speed=9.34x    [mp4 @ 0x128005dd0] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0x128014970] video:897KiB audio:127KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.516666%
+frame=  192 fps=0.0 q=-1.0 Lsize=    1029KiB time=00:00:08.00 bitrate=1054.1kbits/s speed=10.3x    
+[libx264 @ 0x1280137e0] frame I:1     Avg QP:19.09  size: 37237
+[libx264 @ 0x1280137e0] frame P:191   Avg QP:20.54  size:  4613
+[libx264 @ 0x1280137e0] mb I  I16..4: 63.0%  0.0% 37.0%
+[libx264 @ 0x1280137e0] mb P  I16..4:  3.8%  0.0%  0.4%  P16..4: 33.5%  3.5%  0.6%  0.0%  0.0%    skip:58.2%
+[libx264 @ 0x1280137e0] coded y,uvDC,uvAC intra: 8.3% 57.9% 5.0% inter: 1.3% 17.6% 0.0%
+[libx264 @ 0x1280137e0] i16 v,h,dc,p: 33% 21% 16% 30%
+[libx264 @ 0x1280137e0] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 18% 25% 32%  4%  5%  4%  5%  3%  5%
+[libx264 @ 0x1280137e0] i8c dc,h,v,p: 60% 17% 20%  3%
+[libx264 @ 0x1280137e0] ref P L0: 71.8% 17.9% 10.4%
+[libx264 @ 0x1280137e0] kb/s:918.31
+[aac @ 0x128059fa0] Qavg: 756.538
+  ✅ Success (1 MB → 1 MB)
+
+[20/141 - 14%] Re-encoding: Sofia_stunning_25yearold_202509122108_qgi9.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+[in#0 @ 0x12be300d0] Error opening input: No such file or directory
+Error opening input file ublic/videos/reels/Sofia_stunning_25yearold_202509122108_qgi9.mp4.
+Error opening input files: No such file or directory
+  ❌ Failed to re-encode
+
+[21/141 - 14%] Re-encoding: Langai_earth_globe_202509120621_nxmy5.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/reels/Langai_earth_globe_202509120621_nxmy5.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Duration: 00:00:08.00, start: 0.000000, bitrate: 2367 kb/s
+  Stream #0:0[0x1](und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p(progressive), 720x1280, 2241 kb/s, 24 fps, 24 tbr, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 120 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x137e060a0] using cpu capabilities: ARMv8 NEON
+[libx264 @ 0x137e060a0] profile Constrained Baseline, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x137e060a0] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=0 ref=3 deblock=1:0:0 analyse=0x1:0x111 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=0 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=12 lookahead_threads=2 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=0 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'public/videos/reels-reencoding-temp/Langai_earth_globe_202509120621_nxmy5.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Stream #0:0(und): Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 720x1280, q=2-31, 24 fps, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 aac
+frame=  103 fps=0.0 q=28.0 size=    1024KiB time=00:00:04.29 bitrate=1954.7kbits/s speed=8.52x    [mp4 @ 0x137e053f0] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0x137e051d0] video:2063KiB audio:116KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.242851%
+frame=  192 fps=0.0 q=-1.0 Lsize=    2184KiB time=00:00:08.00 bitrate=2236.4kbits/s speed=9.57x    
+[libx264 @ 0x137e060a0] frame I:1     Avg QP:19.67  size:101031
+[libx264 @ 0x137e060a0] frame P:191   Avg QP:22.17  size: 10527
+[libx264 @ 0x137e060a0] mb I  I16..4: 37.0%  0.0% 63.0%
+[libx264 @ 0x137e060a0] mb P  I16..4:  2.1%  0.0%  2.9%  P16..4: 35.1%  7.5%  1.8%  0.0%  0.0%    skip:50.7%
+[libx264 @ 0x137e060a0] coded y,uvDC,uvAC intra: 45.6% 51.1% 8.7% inter: 9.5% 17.8% 0.2%
+[libx264 @ 0x137e060a0] i16 v,h,dc,p: 26% 24% 17% 33%
+[libx264 @ 0x137e060a0] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 24% 19% 16%  7%  8%  8%  7%  7%  4%
+[libx264 @ 0x137e060a0] i8c dc,h,v,p: 61% 19% 14%  6%
+[libx264 @ 0x137e060a0] ref P L0: 81.0% 13.1%  5.9%
+[libx264 @ 0x137e060a0] kb/s:2111.64
+[aac @ 0x137f80f50] Qavg: 13748.522
+  ✅ Success (2 MB → 2 MB)
+
+[22/141 - 15%] Re-encoding: Greek_tragedy_theater_202509122342_vipv1.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+[in#0 @ 0x153605fc0] Error opening input: No such file or directory
+Error opening input file ublic/videos/reels/Greek_tragedy_theater_202509122342_vipv1.mp4.
+Error opening input files: No such file or directory
+  ❌ Failed to re-encode
+
+[23/141 - 16%] Re-encoding: Serious_dramatic_buildup_202509122342_ltiam.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/reels/Serious_dramatic_buildup_202509122342_ltiam.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Duration: 00:00:08.00, start: 0.000000, bitrate: 2428 kb/s
+  Stream #0:0[0x1](und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p(progressive), 720x1280, 2295 kb/s, 24 fps, 24 tbr, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 127 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x151406390] using cpu capabilities: ARMv8 NEON
+[libx264 @ 0x151406390] profile Constrained Baseline, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x151406390] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=0 ref=3 deblock=1:0:0 analyse=0x1:0x111 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=0 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=12 lookahead_threads=2 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=0 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'public/videos/reels-reencoding-temp/Serious_dramatic_buildup_202509122342_ltiam.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Stream #0:0(und): Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 720x1280, q=2-31, 24 fps, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 aac
+frame=   63 fps=0.0 q=28.0 size=     512KiB time=00:00:02.62 bitrate=1598.0kbits/s speed= 5.2x    frame=  147 fps=145 q=28.0 size=    1536KiB time=N/A bitrate=N/A speed=N/A    [mp4 @ 0x151404fb0] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0x151404ef0] video:2137KiB audio:125KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.233951%
+frame=  192 fps=156 q=-1.0 Lsize=    2267KiB time=00:00:08.00 bitrate=2321.3kbits/s speed=6.49x    
+[libx264 @ 0x151406390] frame I:1     Avg QP:21.52  size: 38576
+[libx264 @ 0x151406390] frame P:191   Avg QP:21.93  size: 11250
+[libx264 @ 0x151406390] mb I  I16..4: 38.2%  0.0% 61.8%
+[libx264 @ 0x151406390] mb P  I16..4:  3.2%  0.0%  8.4%  P16..4: 39.8%  8.2%  1.8%  0.0%  0.0%    skip:38.7%
+[libx264 @ 0x151406390] coded y,uvDC,uvAC intra: 51.3% 39.7% 0.9% inter: 7.2% 20.3% 0.0%
+[libx264 @ 0x151406390] i16 v,h,dc,p: 50% 15% 14% 20%
+[libx264 @ 0x151406390] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 47%  9% 19%  4%  4%  7%  3%  7%  2%
+[libx264 @ 0x151406390] i8c dc,h,v,p: 73% 10% 16%  1%
+[libx264 @ 0x151406390] ref P L0: 68.1% 21.2% 10.7%
+[libx264 @ 0x151406390] kb/s:2187.40
+[aac @ 0x151458400] Qavg: 230.300
+  ✅ Success (2 MB → 2 MB)
+
+[24/141 - 17%] Re-encoding: Visual_comedy_35yearold_202509122152_294ev.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+[in#0 @ 0x12fe0ff50] Error opening input: No such file or directory
+Error opening input file blic/videos/reels/Visual_comedy_35yearold_202509122152_294ev.mp4.
+Error opening input files: No such file or directory
+  ❌ Failed to re-encode
+
+[25/141 - 17%] Re-encoding: Hilarious_character_spanish_202509121151_0ki.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/reels/Hilarious_character_spanish_202509121151_0ki.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Duration: 00:00:08.00, start: 0.000000, bitrate: 3641 kb/s
+  Stream #0:0[0x1](und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p(progressive), 720x1280, 3504 kb/s, 24 fps, 24 tbr, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 130 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x147e13470] using cpu capabilities: ARMv8 NEON
+[libx264 @ 0x147e13470] profile Constrained Baseline, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x147e13470] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=0 ref=3 deblock=1:0:0 analyse=0x1:0x111 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=0 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=12 lookahead_threads=2 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=0 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'public/videos/reels-reencoding-temp/Hilarious_character_spanish_202509121151_0ki.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Stream #0:0(und): Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 720x1280, q=2-31, 24 fps, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 aac
+frame=   67 fps=0.0 q=28.0 size=    1280KiB time=00:00:02.79 bitrate=3756.2kbits/s speed=5.57x    [mp4 @ 0x147e05a60] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0x147e14610] video:3172KiB audio:127KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.160398%
+frame=  192 fps=0.0 q=-1.0 Lsize=    3304KiB time=00:00:08.00 bitrate=3383.3kbits/s speed=8.05x    
+[libx264 @ 0x147e13470] frame I:1     Avg QP:24.69  size: 48758
+[libx264 @ 0x147e13470] frame P:191   Avg QP:23.41  size: 16745
+[libx264 @ 0x147e13470] mb I  I16..4: 40.3%  0.0% 59.7%
+[libx264 @ 0x147e13470] mb P  I16..4:  1.7%  0.0%  2.9%  P16..4: 37.6% 12.3%  3.8%  0.0%  0.0%    skip:41.7%
+[libx264 @ 0x147e13470] coded y,uvDC,uvAC intra: 54.2% 65.4% 26.6% inter: 16.9% 24.2% 2.4%
+[libx264 @ 0x147e13470] i16 v,h,dc,p: 37% 40%  9% 14%
+[libx264 @ 0x147e13470] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 25% 21% 15%  6%  7%  7%  7%  7%  5%
+[libx264 @ 0x147e13470] i8c dc,h,v,p: 52% 22% 18%  7%
+[libx264 @ 0x147e13470] ref P L0: 81.9% 14.3%  3.8%
+[libx264 @ 0x147e13470] kb/s:3247.04
+[aac @ 0x147e59c40] Qavg: 378.946
+  ✅ Success (3 MB → 3 MB)
+
+[26/141 - 18%] Re-encoding: Serious_dramatic_buildup_202509122247_8dd2r.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+[in#0 @ 0x13f004420] Error opening input: No such file or directory
+Error opening input file ublic/videos/reels/Serious_dramatic_buildup_202509122247_8dd2r.mp4.
+Error opening input files: No such file or directory
+  ❌ Failed to re-encode
+
+[27/141 - 19%] Re-encoding: Epic_dramatic_tension_202509122323_l31cc.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/reels/Epic_dramatic_tension_202509122323_l31cc.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Duration: 00:00:08.00, start: 0.000000, bitrate: 1297 kb/s
+  Stream #0:0[0x1](und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p(progressive), 720x1280, 1162 kb/s, 24 fps, 24 tbr, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x13c1086f0] using cpu capabilities: ARMv8 NEON
+[libx264 @ 0x13c1086f0] profile Constrained Baseline, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x13c1086f0] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=0 ref=3 deblock=1:0:0 analyse=0x1:0x111 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=0 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=12 lookahead_threads=2 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=0 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'public/videos/reels-reencoding-temp/Epic_dramatic_tension_202509122323_l31cc.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Stream #0:0(und): Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 720x1280, q=2-31, 24 fps, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 aac
+frame=  100 fps=0.0 q=28.0 size=     512KiB time=00:00:04.16 bitrate=1006.7kbits/s speed=8.27x    [mp4 @ 0x13c1078f0] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0x13c107830] video:1092KiB audio:126KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.434479%
+frame=  192 fps=0.0 q=-1.0 Lsize=    1223KiB time=00:00:08.00 bitrate=1252.4kbits/s speed=10.3x    
+[libx264 @ 0x13c1086f0] frame I:1     Avg QP:19.12  size: 35951
+[libx264 @ 0x13c1086f0] frame P:191   Avg QP:20.11  size:  5661
+[libx264 @ 0x13c1086f0] mb I  I16..4: 55.2%  0.0% 44.8%
+[libx264 @ 0x13c1086f0] mb P  I16..4:  3.4%  0.0%  0.3%  P16..4: 37.2%  5.6%  1.2%  0.0%  0.0%    skip:52.3%
+[libx264 @ 0x13c1086f0] coded y,uvDC,uvAC intra: 10.9% 27.9% 3.7% inter: 3.6% 14.6% 0.0%
+[libx264 @ 0x13c1086f0] i16 v,h,dc,p: 58% 24%  8% 10%
+[libx264 @ 0x13c1086f0] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 28% 20% 20%  5%  6%  6%  5%  6%  3%
+[libx264 @ 0x13c1086f0] i8c dc,h,v,p: 74% 13% 11%  2%
+[libx264 @ 0x13c1086f0] ref P L0: 81.6% 13.4%  5.0%
+[libx264 @ 0x13c1086f0] kb/s:1117.29
+[aac @ 0x13af40970] Qavg: 386.779
+  ✅ Success (1 MB → 1 MB)
+
+[28/141 - 19%] Re-encoding: Breaking_news_report_202509130021_xb6vv.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+[in#0 @ 0x157f06480] Error opening input: No such file or directory
+Error opening input file ublic/videos/reels/Breaking_news_report_202509130021_xb6vv.mp4.
+Error opening input files: No such file or directory
+  ❌ Failed to re-encode
+
+[29/141 - 20%] Re-encoding: Create_a_viral_202509090401 (1).mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/reels/Create_a_viral_202509090401 (1).mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Duration: 00:00:08.00, start: 0.000000, bitrate: 3937 kb/s
+  Stream #0:0[0x1](und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p(progressive), 1920x1088, 3803 kb/s, 24 fps, 24 tbr, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 129 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x13ce326a0] using cpu capabilities: ARMv8 NEON
+[libx264 @ 0x13ce326a0] profile Constrained Baseline, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x13ce326a0] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=0 ref=3 deblock=1:0:0 analyse=0x1:0x111 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=0 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=12 lookahead_threads=2 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=0 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'public/videos/reels-reencoding-temp/Create_a_viral_202509090401 (1).mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Stream #0:0(und): Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 1920x1088, q=2-31, 24 fps, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 aac
+frame=   40 fps=0.0 q=28.0 size=     512KiB time=00:00:01.66 bitrate=2516.8kbits/s speed=3.32x    frame=   98 fps= 97 q=28.0 size=    1536KiB time=00:00:04.08 bitrate=3081.6kbits/s speed=4.04x    frame=  156 fps=103 q=28.0 size=    2816KiB time=N/A bitrate=N/A speed=N/A    [mp4 @ 0x13ce31b20] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0x13ce31860] video:3506KiB audio:124KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.145407%
+frame=  192 fps=109 q=-1.0 Lsize=    3636KiB time=00:00:07.91 bitrate=3763.4kbits/s speed=4.49x    
+[libx264 @ 0x13ce326a0] frame I:2     Avg QP:19.52  size:115670
+[libx264 @ 0x13ce326a0] frame P:190   Avg QP:20.53  size: 17677
+[libx264 @ 0x13ce326a0] mb I  I16..4: 52.6%  0.0% 47.4%
+[libx264 @ 0x13ce326a0] mb P  I16..4:  5.8%  0.0%  2.0%  P16..4: 30.8%  4.5%  0.9%  0.0%  0.0%    skip:56.0%
+[libx264 @ 0x13ce326a0] coded y,uvDC,uvAC intra: 23.7% 70.8% 10.1% inter: 5.1% 21.5% 0.0%
+[libx264 @ 0x13ce326a0] i16 v,h,dc,p: 24% 40% 13% 23%
+[libx264 @ 0x13ce326a0] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 21% 28% 21%  5%  6%  6%  6%  4%  4%
+[libx264 @ 0x13ce326a0] i8c dc,h,v,p: 42% 32% 17%  9%
+[libx264 @ 0x13ce326a0] ref P L0: 80.0% 12.9%  7.1%
+[libx264 @ 0x13ce326a0] kb/s:3589.99
+[aac @ 0x13ce84620] Qavg: 488.574
+  ✅ Success (3 MB → 3 MB)
+
+[30/141 - 21%] Re-encoding: Serious_dramatic_buildup_202509130030_gtw1z.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+[in#0 @ 0x132905be0] Error opening input: No such file or directory
+Error opening input file lic/videos/reels/Serious_dramatic_buildup_202509130030_gtw1z.mp4.
+Error opening input files: No such file or directory
+  ❌ Failed to re-encode
+
+[31/141 - 21%] Re-encoding: Meditation_instructor_slowly_202509122351_ha6.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/reels/Meditation_instructor_slowly_202509122351_ha6.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Duration: 00:00:08.00, start: 0.000000, bitrate: 1614 kb/s
+  Stream #0:0[0x1](und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p(progressive), 720x1280, 1479 kb/s, 24 fps, 24 tbr, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x137833fb0] using cpu capabilities: ARMv8 NEON
+[libx264 @ 0x137833fb0] profile Constrained Baseline, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x137833fb0] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=0 ref=3 deblock=1:0:0 analyse=0x1:0x111 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=0 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=12 lookahead_threads=2 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=0 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'public/videos/reels-reencoding-temp/Meditation_instructor_slowly_202509122351_ha6.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Stream #0:0(und): Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 720x1280, q=2-31, 24 fps, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 aac
+frame=  114 fps=0.0 q=28.0 size=     768KiB time=00:00:04.75 bitrate=1324.6kbits/s speed=9.46x    [mp4 @ 0x1378284e0] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0x137828420] video:1361KiB audio:126KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.355775%
+frame=  192 fps=0.0 q=-1.0 Lsize=    1492KiB time=00:00:08.00 bitrate=1528.3kbits/s speed=10.6x    
+[libx264 @ 0x137833fb0] frame I:1     Avg QP:22.35  size: 84555
+[libx264 @ 0x137833fb0] frame P:191   Avg QP:22.22  size:  6849
+[libx264 @ 0x137833fb0] mb I  I16..4: 18.7%  0.0% 81.3%
+[libx264 @ 0x137833fb0] mb P  I16..4:  0.2%  0.0%  0.1%  P16..4: 34.8%  8.7%  2.0%  0.0%  0.0%    skip:54.2%
+[libx264 @ 0x137833fb0] coded y,uvDC,uvAC intra: 59.0% 81.0% 42.3% inter: 7.4% 20.5% 0.3%
+[libx264 @ 0x137833fb0] i16 v,h,dc,p: 46% 31% 11% 12%
+[libx264 @ 0x137833fb0] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 30% 18% 10%  5%  9% 10%  7%  6%  5%
+[libx264 @ 0x137833fb0] i8c dc,h,v,p: 40% 21% 30%  9%
+[libx264 @ 0x137833fb0] ref P L0: 79.1% 14.2%  6.7%
+[libx264 @ 0x137833fb0] kb/s:1392.76
+[aac @ 0x13787c6a0] Qavg: 531.220
+  ✅ Success (1 MB → 1 MB)
+
+[32/141 - 22%] Re-encoding: Viral_langai_reel_202509120232_28vf5.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+[in#0 @ 0x12ca041a0] Error opening input: No such file or directory
+Error opening input file ublic/videos/reels/Viral_langai_reel_202509120232_28vf5.mp4.
+Error opening input files: No such file or directory
+  ❌ Failed to re-encode
+
+[33/141 - 23%] Re-encoding: test-fixed.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/reels/test-fixed.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Duration: 00:00:08.00, start: 0.000000, bitrate: 3099 kb/s
+  Stream #0:0[0x1](und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p(progressive), 720x1280, 2964 kb/s, 24 fps, 24 tbr, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x130e307c0] using cpu capabilities: ARMv8 NEON
+[libx264 @ 0x130e307c0] profile Constrained Baseline, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x130e307c0] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=0 ref=3 deblock=1:0:0 analyse=0x1:0x111 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=0 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=12 lookahead_threads=2 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=0 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'public/videos/reels-reencoding-temp/test-fixed.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Stream #0:0(und): Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 720x1280, q=2-31, 24 fps, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 aac
+frame=   94 fps=0.0 q=28.0 size=    1024KiB time=00:00:03.91 bitrate=2141.9kbits/s speed=7.75x    [mp4 @ 0x130e2fc50] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0x130e2f960] video:2712KiB audio:126KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.186389%
+frame=  192 fps=0.0 q=-1.0 Lsize=    2844KiB time=00:00:08.00 bitrate=2912.2kbits/s speed= 8.3x    
+[libx264 @ 0x130e307c0] frame I:1     Avg QP:21.37  size:150082
+[libx264 @ 0x130e307c0] frame P:191   Avg QP:22.97  size: 13753
+[libx264 @ 0x130e307c0] mb I  I16..4: 29.5%  0.0% 70.5%
+[libx264 @ 0x130e307c0] mb P  I16..4:  1.4%  0.0%  1.0%  P16..4: 39.1% 10.9%  3.5%  0.0%  0.0%    skip:44.1%
+[libx264 @ 0x130e307c0] coded y,uvDC,uvAC intra: 40.5% 78.3% 26.3% inter: 12.7% 26.7% 1.9%
+[libx264 @ 0x130e307c0] i16 v,h,dc,p: 13% 44% 16% 27%
+[libx264 @ 0x130e307c0] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 20% 16% 19%  6%  9%  8%  8%  7%  7%
+[libx264 @ 0x130e307c0] i8c dc,h,v,p: 53% 21% 19%  8%
+[libx264 @ 0x130e307c0] ref P L0: 80.3% 14.0%  5.6%
+[libx264 @ 0x130e307c0] kb/s:2776.89
+[aac @ 0x130e82710] Qavg: 883.826
+  ✅ Success (2 MB → 2 MB)
+
+[34/141 - 24%] Re-encoding: Episode_126_handheld_202509112156_d6lgl.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+[in#0 @ 0x137730060] Error opening input: No such file or directory
+Error opening input file ublic/videos/reels/Episode_126_handheld_202509112156_d6lgl.mp4.
+Error opening input files: No such file or directory
+  ❌ Failed to re-encode
+
+[35/141 - 24%] Re-encoding: test-reencoded.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/reels/test-reencoded.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Duration: 00:00:08.00, start: 0.000000, bitrate: 2915 kb/s
+  Stream #0:0[0x1](und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p(progressive), 720x1280, 2781 kb/s, 24 fps, 24 tbr, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x127e1d4a0] using cpu capabilities: ARMv8 NEON
+[libx264 @ 0x127e1d4a0] profile Constrained Baseline, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x127e1d4a0] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=0 ref=3 deblock=1:0:0 analyse=0x1:0x111 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=0 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=12 lookahead_threads=2 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=0 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'public/videos/reels-reencoding-temp/test-reencoded.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Stream #0:0(und): Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 720x1280, q=2-31, 24 fps, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 aac
+frame=  104 fps=0.0 q=28.0 size=    1280KiB time=00:00:04.33 bitrate=2419.9kbits/s speed=8.44x    [mp4 @ 0x127e11420] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0x127e11a80] video:2575KiB audio:126KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.195883%
+frame=  192 fps=0.0 q=-1.0 Lsize=    2706KiB time=00:00:08.00 bitrate=2771.4kbits/s speed=8.68x    
+[libx264 @ 0x127e1d4a0] frame I:1     Avg QP:21.34  size:149466
+[libx264 @ 0x127e1d4a0] frame P:191   Avg QP:22.85  size: 13021
+[libx264 @ 0x127e1d4a0] mb I  I16..4: 29.4%  0.0% 70.6%
+[libx264 @ 0x127e1d4a0] mb P  I16..4:  1.5%  0.0%  1.0%  P16..4: 39.2% 10.6%  3.3%  0.0%  0.0%    skip:44.6%
+[libx264 @ 0x127e1d4a0] coded y,uvDC,uvAC intra: 39.7% 79.3% 26.3% inter: 11.6% 26.8% 1.8%
+[libx264 @ 0x127e1d4a0] i16 v,h,dc,p: 13% 45% 17% 25%
+[libx264 @ 0x127e1d4a0] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 20% 17% 19%  6%  8%  8%  8%  7%  7%
+[libx264 @ 0x127e1d4a0] i8c dc,h,v,p: 52% 20% 19%  8%
+[libx264 @ 0x127e1d4a0] ref P L0: 80.0% 14.4%  5.7%
+[libx264 @ 0x127e1d4a0] kb/s:2636.39
+[aac @ 0x12923d010] Qavg: 664.066
+  ✅ Success (2 MB → 2 MB)
+
+[36/141 - 25%] Re-encoding: Person_says_necesito_202509130115_xouyd.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+[in#0 @ 0x12ca04960] Error opening input: No such file or directory
+Error opening input file ublic/videos/reels/Person_says_necesito_202509130115_xouyd.mp4.
+Error opening input files: No such file or directory
+  ❌ Failed to re-encode
+
+[37/141 - 26%] Re-encoding: Slapstick_comedy_cul_202509122356_aawfx.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/reels/_originals/Slapstick_comedy_cul_202509122356_aawfx.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Google
+  Duration: 00:00:08.00, start: 0.000000, bitrate: 4935 kb/s
+  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(progressive), 720x1280, 4787 kb/s, 24 fps, 24 tbr, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 139 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x1316312a0] using cpu capabilities: ARMv8 NEON
+[libx264 @ 0x1316312a0] profile Constrained Baseline, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x1316312a0] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=0 ref=3 deblock=1:0:0 analyse=0x1:0x111 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=0 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=12 lookahead_threads=2 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=0 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'public/videos/reels-reencoding-temp/Slapstick_comedy_cul_202509122356_aawfx.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Stream #0:0(und): Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 720x1280, q=2-31, 24 fps, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 aac
+frame=   43 fps=0.0 q=28.0 size=    1024KiB time=00:00:01.79 bitrate=4682.2kbits/s speed=3.57x    frame=   92 fps= 92 q=28.0 size=    2304KiB time=00:00:03.83 bitrate=4923.8kbits/s speed=3.81x    frame=  170 fps=112 q=28.0 size=    3840KiB time=N/A bitrate=N/A speed=N/A    [mp4 @ 0x131630590] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0x13162faa0] video:4185KiB audio:126KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.122725%
+frame=  192 fps=119 q=-1.0 Lsize=    4317KiB time=00:00:08.00 bitrate=4420.2kbits/s speed=4.97x    
+[libx264 @ 0x1316312a0] frame I:1     Avg QP:24.62  size: 50012
+[libx264 @ 0x1316312a0] frame P:191   Avg QP:24.52  size: 22173
+[libx264 @ 0x1316312a0] mb I  I16..4: 48.8%  0.0% 51.2%
+[libx264 @ 0x1316312a0] mb P  I16..4:  5.3%  0.0%  6.3%  P16..4: 42.9% 13.9%  4.9%  0.0%  0.0%    skip:26.7%
+[libx264 @ 0x1316312a0] coded y,uvDC,uvAC intra: 47.7% 75.3% 30.5% inter: 19.4% 39.2% 6.4%
+[libx264 @ 0x1316312a0] i16 v,h,dc,p: 30% 26% 12% 32%
+[libx264 @ 0x1316312a0] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 26% 17% 14%  5%  9% 11%  8%  7%  4%
+[libx264 @ 0x1316312a0] i8c dc,h,v,p: 46% 22% 23% 10%
+[libx264 @ 0x1316312a0] ref P L0: 78.4% 13.0%  8.6%
+[libx264 @ 0x1316312a0] kb/s:4285.14
+[aac @ 0x13167a690] Qavg: 642.386
+  ✅ Success (4 MB → 4 MB)
+
+[38/141 - 26%] Re-encoding: Andheld_camera_footage_202509112217_yzrzq.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+[in#0 @ 0x13f62dc00] Error opening input: No such file or directory
+Error opening input file lic/videos/reels/_originals/Andheld_camera_footage_202509112217_yzrzq.mp4.
+Error opening input files: No such file or directory
+  ❌ Failed to re-encode
+
+[39/141 - 27%] Re-encoding: Create_a_viral_202509090401.mp4
+  ⏱️  Elapsed: 0m | Remaining: ~0m
+ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with Apple clang version 16.0.0 (clang-1600.0.26.6)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/7.1.1_3 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags='-Wl,-ld_classic' --enable-ffplay --enable-gnutls --enable-gpl --enable-libaom --enable-libaribb24 --enable-libbluray --enable-libdav1d --enable-libharfbuzz --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librav1e --enable-librist --enable-librubberband --enable-libsnappy --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtesseract --enable-libtheora --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libxvid --enable-lzma --enable-libfontconfig --enable-libfreetype --enable-frei0r --enable-libass --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libspeex --enable-libsoxr --enable-libzmq --enable-libzimg --disable-libjack --disable-indev=jack --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.100 / 61.  7.100
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  4.100 / 10.  4.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100
+  libpostproc    58.  3.100 / 58.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/reels/_originals/Create_a_viral_202509090401.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Google
+  Duration: 00:00:08.00, start: 0.000000, bitrate: 3546 kb/s
+  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(progressive), 1920x1088, 3400 kb/s, 24 fps, 24 tbr, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 139 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x1496060d0] using cpu capabilities: ARMv8 NEON
+[libx264 @ 0x1496060d0] profile Constrained Baseline, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x1496060d0] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=0 ref=3 deblock=1:0:0 analyse=0x1:0x111 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=0 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=12 lookahead_threads=2 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=0 keyint=250 keyint_min=24 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'public/videos/reels-reencoding-temp/Create_a_viral_202509090401.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Stream #0:0(und): Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 1920x1088, q=2-31, 24 fps, 12288 tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.101 aac
+frame=   32 fps=0.0 q=28.0 size=     512KiB time=00:00:01.33 bitrate=3146.0kbits/s speed=2.61x    frame=   70 fps= 69 q=28.0 size=     768KiB time=00:00:02.91 bitrate=2157.2kbits/s speed=2.88x    frame=  114 fps= 75 q=28.0 size=    1536KiB time=00:00:04.75 bitrate=2649.1kbits/s speed=3.12x    frame=  173 fps= 85 q=28.0 size=    2304KiB time=N/A bitrate=N/A speed=N/A    [mp4 @ 0x1496054b0] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 0x149605210] video:2566KiB audio:123KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.196165%
+frame=  192 fps= 88 q=-1.0 Lsize=    2695KiB time=00:00:07.91 bitrate=2789.0kbits/s speed=3.62x    
+[libx264 @ 0x1496060d0] frame I:1     Avg QP:19.77  size:101723
+[libx264 @ 0x1496060d0] frame P:191   Avg QP:20.71  size: 13223
+[libx264 @ 0x1496060d0] mb I  I16..4: 49.8%  0.0% 50.2%
+[libx264 @ 0x1496060d0] mb P  I16..4:  1.3%  0.0%  0.4%  P16..4: 31.6%  4.2%  1.4%  0.0%  0.0%    skip:61.0%
+[libx264 @ 0x1496060d0] coded y,uvDC,uvAC intra: 34.7% 65.3% 15.0% inter: 5.6% 20.2% 0.1%
+[libx264 @ 0x1496060d0] i16 v,h,dc,p: 29% 26% 15% 31%
+[libx264 @ 0x1496060d0] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 29% 29% 19%  3%  5%  4%  5%  3%  3%
+[libx264 @ 0x1496060d0] i8c dc,h,v,p: 45% 26% 21%  9%
+[libx264 @ 0x1496060d0] ref P L0: 75.2% 14.7% 10.1%
+[libx264 @ 0x1496060d0] kb/s:2627.23
+[aac @ 0x149658170] Qavg: 653.924

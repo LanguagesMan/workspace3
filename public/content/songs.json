@@ -1,0 +1,151 @@
+{
+  "songs": [
+    {
+      "id": 1,
+      "title": "Despacito",
+      "artist": "Luis Fonsi ft. Daddy Yankee",
+      "level": "B1",
+      "genre": "Reggaeton",
+      "duration": 229,
+      "audioUrl": "/audio/songs/despacito.mp3",
+      "lyrics": [
+        { "time": 0, "spanish": "Sí, sabes que ya llevo un rato mirándote", "english": "Yes, you know I've been looking at you for a while" },
+        { "time": 5, "spanish": "Tengo que bailar contigo hoy", "english": "I have to dance with you today" },
+        { "time": 10, "spanish": "Vi que tu mirada ya estaba llamándome", "english": "I saw that your gaze was already calling me" },
+        { "time": 15, "spanish": "Muéstrame el camino que yo voy", "english": "Show me the way and I'll go" },
+        { "time": 20, "spanish": "Despacito, quiero respirar tu cuello despacito", "english": "Slowly, I want to breathe your neck slowly" },
+        { "time": 27, "spanish": "Deja que te diga cosas al oído", "english": "Let me tell you things in your ear" },
+        { "time": 32, "spanish": "Para que te acuerdes si no estás conmigo", "english": "So you remember when you're not with me" }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Vivir Mi Vida",
+      "artist": "Marc Anthony",
+      "level": "A2",
+      "genre": "Salsa",
+      "duration": 244,
+      "audioUrl": "/audio/songs/vivir-mi-vida.mp3",
+      "lyrics": [
+        { "time": 0, "spanish": "Voy a reír, voy a bailar", "english": "I'm going to laugh, I'm going to dance" },
+        { "time": 5, "spanish": "Vivir mi vida, la la la la", "english": "Live my life, la la la la" },
+        { "time": 10, "spanish": "Voy a vivir el momento", "english": "I'm going to live the moment" },
+        { "time": 15, "spanish": "Para entender el destino", "english": "To understand destiny" },
+        { "time": 20, "spanish": "Voy a escuchar en silencio", "english": "I'm going to listen in silence" }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Bailando",
+      "artist": "Enrique Iglesias",
+      "level": "B1",
+      "genre": "Pop Latino",
+      "duration": 240,
+      "audioUrl": "/audio/songs/bailando.mp3",
+      "lyrics": [
+        { "time": 0, "spanish": "Yo te miro, se me corta la respiración", "english": "I look at you, I lose my breath" },
+        { "time": 6, "spanish": "Cuando tú me miras, se me sube el corazón", "english": "When you look at me, my heart races" },
+        { "time": 12, "spanish": "Y en silencio tu mirada dice mil palabras", "english": "And in silence your gaze says a thousand words" },
+        { "time": 18, "spanish": "La noche en la que te suplico que no salga el sol", "english": "The night in which I beg that the sun doesn't come out" }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "La Bicicleta",
+      "artist": "Carlos Vives & Shakira",
+      "level": "B2",
+      "genre": "Vallenato",
+      "duration": 199,
+      "audioUrl": "/audio/songs/la-bicicleta.mp3",
+      "lyrics": [
+        { "time": 0, "spanish": "Nada voy a hacer rebuscando en el pasado", "english": "I'm not going to do anything searching in the past" },
+        { "time": 6, "spanish": "No voy a morirme por nada del pasado", "english": "I'm not going to die for anything from the past" },
+        { "time": 12, "spanish": "Hoy tengo mi mente ocupada en cosas más importantes", "english": "Today I have my mind occupied with more important things" }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Me Rehúso",
+      "artist": "Danny Ocean",
+      "level": "B1",
+      "genre": "Pop",
+      "duration": 205,
+      "audioUrl": "/audio/songs/me-rehuso.mp3",
+      "lyrics": [
+        { "time": 0, "spanish": "Me rehúso a darte un último beso", "english": "I refuse to give you one last kiss" },
+        { "time": 5, "spanish": "Así que solo me queda seguir este camino", "english": "So all that's left is to follow this path" },
+        { "time": 10, "spanish": "Pero yo me rehúso a aceptar que terminó", "english": "But I refuse to accept that it's over" }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Tusa",
+      "artist": "KAROL G & Nicki Minaj",
+      "level": "B2",
+      "genre": "Reggaeton",
+      "duration": 200,
+      "audioUrl": "/audio/songs/tusa.mp3",
+      "lyrics": [
+        { "time": 0, "spanish": "Ya no tiene excusa", "english": "She has no excuse anymore" },
+        { "time": 4, "spanish": "Hoy salió con su amiga, dizque pa' matar la tusa", "english": "Today she went out with her friend, supposedly to kill the heartbreak" },
+        { "time": 10, "spanish": "Que porque un hombre le pagó mal", "english": "Because a man treated her badly" }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Felices los 4",
+      "artist": "Maluma",
+      "level": "B1",
+      "genre": "Reggaeton",
+      "duration": 210,
+      "audioUrl": "/audio/songs/felices-los-4.mp3",
+      "lyrics": [
+        { "time": 0, "spanish": "Y si con otro pasas el rato", "english": "And if you spend time with someone else" },
+        { "time": 5, "spanish": "Vamo' a ser felices los cuatro", "english": "We're all going to be happy, the four of us" },
+        { "time": 10, "spanish": "Te voy a dar de lo que te gusta", "english": "I'm going to give you what you like" }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Havana",
+      "artist": "Camila Cabello",
+      "level": "A2",
+      "genre": "Pop",
+      "duration": 217,
+      "audioUrl": "/audio/songs/havana.mp3",
+      "lyrics": [
+        { "time": 0, "spanish": "Habana, ooh na-na", "english": "Havana, ooh na-na" },
+        { "time": 4, "spanish": "La mitad de mi corazón está en La Habana", "english": "Half of my heart is in Havana" },
+        { "time": 10, "spanish": "Me llevó de regreso al este de Atlanta", "english": "Took me back to East Atlanta" }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Ella Quiere Beber",
+      "artist": "Anuel AA",
+      "level": "B2",
+      "genre": "Trap Latino",
+      "duration": 256,
+      "audioUrl": "/audio/songs/ella-quiere-beber.mp3",
+      "lyrics": [
+        { "time": 0, "spanish": "Ella quiere beber, ella quiere bailar", "english": "She wants to drink, she wants to dance" },
+        { "time": 5, "spanish": "Ella quiere beber, para olvidar", "english": "She wants to drink, to forget" },
+        { "time": 10, "spanish": "Porque su ex la dejó, porque ya no volverá", "english": "Because her ex left her, because he won't come back" }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Con Altura",
+      "artist": "ROSALÍA & J Balvin",
+      "level": "B1",
+      "genre": "Reggaeton/Flamenco",
+      "duration": 162,
+      "audioUrl": "/audio/songs/con-altura.mp3",
+      "lyrics": [
+        { "time": 0, "spanish": "Esto vive, no para, esto sigue y sigue", "english": "This lives on, it doesn't stop, this continues and continues" },
+        { "time": 5, "spanish": "Con altura, muchos duros pa mi altura", "english": "With class, lots of money for my level" },
+        { "time": 10, "spanish": "Flores pa' tu cintura, que sólo quede la locura", "english": "Flowers for your waist, may only craziness remain" }
+      ]
+    }
+  ]
+}

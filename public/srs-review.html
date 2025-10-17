@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🧠 SRS Review - Spaced Repetition</title>
+    <style>
+        /* 🍎 APPLE-INSPIRED DESIGN SYSTEM */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        :root {
+            --silver: #e8e8ed;
+            --silver-light: #f5f5f7;
+            --blue: #007AFF;
+            --purple: #AF52DE;
+            --green: #34C759;
+            --red: #FF3B30;
+            --orange: #FF9500;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --text-primary: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --radius-lg: 24px;
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: var(--silver-light);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* HEADER */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            padding: 16px 20px;
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .header-content {
+            max-width: 680px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-button {
+            background: var(--silver);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            transform: scale(1.05);
+            background: var(--silver-dark);
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+
+        /* STATS PANEL */
+        .stats-panel {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* REVIEW CARD */
+        .review-container {
+            perspective: 1000px;
+            min-height: 500px;
+        }
+
+        .review-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            padding: 48px 32px;
+            text-align: center;
+            position: relative;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .review-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            backface-visibility: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 48px 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        .card-word {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .card-translation {
+            font-size: 32px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .card-context {
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-style: italic;
+            max-width: 400px;
+            margin-top: 24px;
+        }
+
+        .flip-hint {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 32px;
+            opacity: 0.6;
+        }
+
+        /* QUALITY BUTTONS */
+        .quality-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 24px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .quality-buttons.show {
+            opacity: 1;
+        }
+
+        .quality-btn {
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: white;
+        }
+
+        .quality-btn.hard {
+            background: var(--red);
+        }
+
+        .quality-btn.good {
+            background: var(--orange);
+        }
+
+        .quality-btn.easy {
+            background: var(--green);
+        }
+
+        .quality-btn.perfect {
+            background: var(--blue);
+        }
+
+        .quality-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .quality-btn .interval {
+            display: block;
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 80px 32px;
+        }
+
+        .empty-icon {
+            font-size: 80px;
+            margin-bottom: 16px;
+        }
+
+        .empty-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .empty-text {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .action-button {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 24px rgba(103, 126, 234, 0.3);
+        }
+
+        /* PROGRESS BAR */
+        .progress-container {
+            background: var(--silver);
+            border-radius: 12px;
+            height: 8px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: var(--gradient-primary);
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 12px;
+        }
+
+        /* LOADING */
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--silver);
+            border-top-color: var(--purple);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* MOBILE */
+        @media (max-width: 640px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .quality-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .card-word {
+                font-size: 36px;
+            }
+
+            .card-translation {
+                font-size: 24px;
+            }
+        }
+    </style>
+
+    <!-- Sentry Error Tracking -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">🧠 SRS REVIEW</div>
+            <button class="back-button" onclick="window.location.href='/apple-feed.html'">← Back to Feed</button>
+        </div>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="container">
+        <!-- STATS PANEL -->
+        <div class="stats-panel">
+            <div style="text-align: center; font-size: 20px; font-weight: 700; margin-bottom: 8px;">
+                📊 Today's Review
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value" id="dueCount">0</div>
+                    <div class="stat-label">Due Today</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="reviewedCount">0</div>
+                    <div class="stat-label">Reviewed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="accuracy">0%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="newCards">0</div>
+                    <div class="stat-label">New</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="learning">0</div>
+                    <div class="stat-label">Learning</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="mature">0</div>
+                    <div class="stat-label">Mature</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROGRESS BAR -->
+        <div class="progress-container" id="progressContainer" style="display: none;">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <!-- REVIEW CONTAINER -->
+        <div id="reviewContainer">
+            <div class="loading">
+                <div class="spinner"></div>
+                <div style="color: var(--text-secondary);">Loading review cards...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // STATE
+        let dueCards = [];
+        let currentCardIndex = 0;
+        let isFlipped = false;
+        let reviewedCount = 0;
+        let correctCount = 0;
+
+        // LOAD DATA
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/srs/stats');
+                const data = await response.json();
+
+                if (data.success) {
+                    const stats = data.stats;
+                    document.getElementById('dueCount').textContent = stats.dueToday;
+                    document.getElementById('accuracy').textContent = stats.accuracy + '%';
+                    document.getElementById('newCards').textContent = stats.newCards;
+                    document.getElementById('learning').textContent = stats.learning;
+                    document.getElementById('mature').textContent = stats.mature;
+                }
+            } catch (error) {
+                console.error('Failed to load stats:', error);
+            }
+        }
+
+        async function loadDueCards() {
+            try {
+                const response = await fetch('/api/srs/due-cards?limit=20');
+                const data = await response.json();
+
+                if (data.success) {
+                    dueCards = data.cards;
+
+                    if (dueCards.length === 0) {
+                        showEmptyState();
+                    } else {
+                        showReviewCard();
+                        document.getElementById('progressContainer').style.display = 'block';
+                        updateProgress();
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to load cards:', error);
+                showErrorState();
+            }
+        }
+
+        // SHOW REVIEW CARD
+        function showReviewCard() {
+            const card = dueCards[currentCardIndex];
+            const container = document.getElementById('reviewContainer');
+
+            container.innerHTML = `
+                <div class="review-card" id="reviewCard" onclick="flipCard()">
+                    <div class="card-front">
+                        <div class="card-word">${card.word}</div>
+                        <div class="flip-hint">Tap to reveal translation 👆</div>
+                    </div>
+                    <div class="card-back">
+                        <div class="card-translation">${card.translation}</div>
+                        ${card.context ? `<div class="card-context">"${card.context}"</div>` : ''}
+                    </div>
+                </div>
+                <div class="quality-buttons" id="qualityButtons">
+                    <button class="quality-btn hard" onclick="reviewCard(2)">
+                        <div>Hard</div>
+                        <div class="interval">1 day</div>
+                    </button>
+                    <button class="quality-btn good" onclick="reviewCard(3)">
+                        <div>Good</div>
+                        <div class="interval">3 days</div>
+                    </button>
+                    <button class="quality-btn easy" onclick="reviewCard(4)">
+                        <div>Easy</div>
+                        <div class="interval">6 days</div>
+                    </button>
+                    <button class="quality-btn perfect" onclick="reviewCard(5)">
+                        <div>Perfect</div>
+                        <div class="interval">10+ days</div>
+                    </button>
+                </div>
+            `;
+
+            isFlipped = false;
+        }
+
+        // FLIP CARD
+        function flipCard() {
+            const card = document.getElementById('reviewCard');
+            const buttons = document.getElementById('qualityButtons');
+
+            if (!isFlipped) {
+                card.classList.add('flipped');
+                buttons.classList.add('show');
+                isFlipped = true;
+            }
+        }
+
+        // REVIEW CARD
+        async function reviewCard(quality) {
+            const card = dueCards[currentCardIndex];
+
+            try {
+                const response = await fetch('/api/srs/review-card', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ cardId: card.id, quality })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    reviewedCount++;
+                    if (quality >= 3) correctCount++;
+
+                    // Update stats
+                    document.getElementById('reviewedCount').textContent = reviewedCount;
+                    document.getElementById('accuracy').textContent =
+                        Math.round((correctCount / reviewedCount) * 100) + '%';
+
+                    // Next card or finish
+                    currentCardIndex++;
+                    if (currentCardIndex < dueCards.length) {
+                        showReviewCard();
+                        updateProgress();
+                    } else {
+                        showCompletionState();
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to review card:', error);
+                alert('Failed to save review. Please try again.');
+            }
+        }
+
+        // UPDATE PROGRESS
+        function updateProgress() {
+            const progress = ((currentCardIndex + 1) / dueCards.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        // SHOW EMPTY STATE
+        function showEmptyState() {
+            const container = document.getElementById('reviewContainer');
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">🎉</div>
+                    <div class="empty-title">All Caught Up!</div>
+                    <div class="empty-text">No cards due for review right now.<br>Come back later or save more words from the feed.</div>
+                    <button class="action-button" onclick="window.location.href='/apple-feed.html'">
+                        Go to Feed
+                    </button>
+                </div>
+            `;
+        }
+
+        // SHOW COMPLETION STATE
+        function showCompletionState() {
+            const container = document.getElementById('reviewContainer');
+            const accuracy = Math.round((correctCount / reviewedCount) * 100);
+
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">🌟</div>
+                    <div class="empty-title">Review Complete!</div>
+                    <div class="empty-text">
+                        You reviewed ${reviewedCount} cards<br>
+                        Accuracy: ${accuracy}%
+                    </div>
+                    <button class="action-button" onclick="window.location.reload()">
+                        Review More
+                    </button>
+                    <button class="action-button" onclick="window.location.href='/apple-feed.html'"
+                            style="background: white; color: var(--purple); margin-top: 12px; border: 2px solid var(--purple);">
+                        Back to Feed
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('progressContainer').style.display = 'none';
+        }
+
+        // SHOW ERROR STATE
+        function showErrorState() {
+            const container = document.getElementById('reviewContainer');
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">⚠️</div>
+                    <div class="empty-title">Oops!</div>
+                    <div class="empty-text">Failed to load review cards. Please try again.</div>
+                    <button class="action-button" onclick="window.location.reload()">
+                        Retry
+                    </button>
+                </div>
+            `;
+        }
+
+        // INITIALIZE
+        loadStats();
+        loadDueCards();
+    </script>
+</body>
+</html>

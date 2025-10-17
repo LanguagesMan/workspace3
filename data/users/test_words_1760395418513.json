@@ -1,0 +1,70 @@
+{
+  "id": "test_words_1760395418513",
+  "profile": {
+    "name": "Learner",
+    "email": null,
+    "level": "A1",
+    "targetLevel": "B2",
+    "interests": [
+      "general"
+    ],
+    "nativeLanguage": "English",
+    "learningLanguage": "Spanish"
+  },
+  "progress": {
+    "xp": 0,
+    "level": "A1",
+    "levelProgress": 0,
+    "totalVideosWatched": 0,
+    "totalWordsLearned": 1,
+    "currentStreak": 0,
+    "longestStreak": 0,
+    "lastActiveDate": "2025-10-13"
+  },
+  "wordBank": {
+    "saved": [
+      {
+        "word": "hola",
+        "translation": "hello",
+        "context": "Hola, ¿cómo estás?",
+        "videoId": null,
+        "level": "A1",
+        "savedAt": "2025-10-13T22:43:38.514Z",
+        "reviewCount": 0,
+        "lastReviewed": null,
+        "strength": 0,
+        "nextReview": "2025-10-14T22:43:38.514Z"
+      }
+    ],
+    "mastered": [],
+    "learning": [
+      "hola"
+    ],
+    "weak": []
+  },
+  "engagement": {
+    "videosCompleted": [],
+    "videosLiked": [],
+    "videosSaved": [],
+    "quizzesCompleted": [],
+    "gamesPlayed": [],
+    "articlesRead": []
+  },
+  "achievements": [],
+  "settings": {
+    "notifications": true,
+    "autoplay": true,
+    "subtitles": "both",
+    "playbackSpeed": 1
+  },
+  "stats": {
+    "totalTimeSpent": 0,
+    "avgSessionTime": 0,
+    "bestStreak": 0,
+    "totalXPEarned": 0,
+    "dailyGoal": 50,
+    "dailyGoalStreak": 0
+  },
+  "createdAt": "2025-10-13T22:43:38.513Z",
+  "updatedAt": "2025-10-13T22:43:38.514Z"
+}

@@ -1,0 +1,17 @@
+{
+  "userId": "duptest",
+  "level": "A2",
+  "watchedVideos": [
+    "langfeed_anime_style_8second_202510121945_dnh6t_mp4"
+  ],
+  "interactions": [],
+  "interests": {},
+  "seenThemes": {},
+  "knownWords": [],
+  "behaviorPatterns": {
+    "avgCompletionRate": 0.76,
+    "avgWatchTime": 20,
+    "skipRate": 0.2,
+    "rewatchRate": 0.05
+  }
+}

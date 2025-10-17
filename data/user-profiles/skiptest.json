@@ -1,0 +1,37 @@
+{
+  "userId": "skiptest",
+  "level": "A2",
+  "watchedVideos": [
+    "video_skip_1",
+    "video_skip_2",
+    "video_skip_3"
+  ],
+  "interactions": [
+    {
+      "videoId": "video_skip_1",
+      "type": "skip",
+      "timestamp": "2025-10-17T07:10:15.435Z"
+    },
+    {
+      "videoId": "video_skip_2",
+      "type": "skip",
+      "timestamp": "2025-10-17T07:10:15.440Z"
+    },
+    {
+      "videoId": "video_skip_3",
+      "type": "skip",
+      "timestamp": "2025-10-17T07:10:15.445Z"
+    }
+  ],
+  "interests": {},
+  "seenThemes": {
+    "test": 3
+  },
+  "knownWords": [],
+  "behaviorPatterns": {
+    "avgCompletionRate": 0.4072,
+    "avgWatchTime": 20,
+    "skipRate": 0.2,
+    "rewatchRate": 0.05
+  }
+}

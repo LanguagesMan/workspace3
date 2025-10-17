@@ -1,0 +1,25 @@
+
+Running 1 test using 1 worker
+
+📱 Loaded vida-app.html
+✅ Video element found
+  ✘  1 [chromium] › tests/verify-dual-transcription-working.spec.js:4:1 › Verify dual-language transcription displays correctly (14.6s)
+
+
+  1) [chromium] › tests/verify-dual-transcription-working.spec.js:4:1 › Verify dual-language transcription displays correctly 
+
+    Error: locator.evaluate: NotSupportedError: Failed to load because no supported source was found.
+
+      15 |
+      16 |     // Force play the video
+    > 17 |     await video.evaluate(v => v.play());
+         |                 ^
+      18 |     console.log('▶️ Video playing...');
+      19 |
+      20 |     // Wait for video to start and subtitles to appear
+        at /Users/mindful/_projects/workspace3/tests/verify-dual-transcription-working.spec.js:17:17
+
+    Error Context: test-results/verify-dual-transcription--bf4b9-cription-displays-correctly-chromium/error-context.md
+
+  1 failed
+    [chromium] › tests/verify-dual-transcription-working.spec.js:4:1 › Verify dual-language transcription displays correctly 

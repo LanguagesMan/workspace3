@@ -1,0 +1,64 @@
+{
+  "id": "test_xp_1760395418421",
+  "profile": {
+    "name": "Learner",
+    "email": null,
+    "level": "A1",
+    "targetLevel": "B2",
+    "interests": [
+      "general"
+    ],
+    "nativeLanguage": "English",
+    "learningLanguage": "Spanish"
+  },
+  "progress": {
+    "xp": 650,
+    "level": "A2",
+    "levelProgress": 15,
+    "totalVideosWatched": 0,
+    "totalWordsLearned": 0,
+    "currentStreak": 0,
+    "longestStreak": 0,
+    "lastActiveDate": "2025-10-13"
+  },
+  "wordBank": {
+    "saved": [],
+    "mastered": [],
+    "learning": [],
+    "weak": []
+  },
+  "engagement": {
+    "videosCompleted": [],
+    "videosLiked": [],
+    "videosSaved": [],
+    "quizzesCompleted": [],
+    "gamesPlayed": [],
+    "articlesRead": []
+  },
+  "achievements": [
+    {
+      "id": "level_A2",
+      "name": "Reached A2",
+      "description": "You've reached level A2!",
+      "icon": "🎉",
+      "xp": 50,
+      "awardedAt": "2025-10-13T22:43:38.424Z"
+    }
+  ],
+  "settings": {
+    "notifications": true,
+    "autoplay": true,
+    "subtitles": "both",
+    "playbackSpeed": 1
+  },
+  "stats": {
+    "totalTimeSpent": 0,
+    "avgSessionTime": 0,
+    "bestStreak": 0,
+    "totalXPEarned": 600,
+    "dailyGoal": 50,
+    "dailyGoalStreak": 0
+  },
+  "createdAt": "2025-10-13T22:43:38.421Z",
+  "updatedAt": "2025-10-13T22:43:38.424Z"
+}

@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ Go Premium - Langflix</title>
+
+    <!-- 📊 Mixpanel Analytics - DEFERRED for performance -->
+    <meta name="mixpanel-token" content="">
+    <link rel="preconnect" href="https://cdn.mxpnl.com" crossorigin>
+    <script src="https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js" defer></script>
+    <script src="/js/mixpanel-client.js" defer></script>
+    <script src="/js/mixpanel-video-tracking.js" defer></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .tagline {
+            font-size: 24px;
+            opacity: 0.9;
+        }
+
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .pricing-card.featured {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .plan-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .plan-description {
+            opacity: 0.7;
+            margin-bottom: 24px;
+        }
+
+        .price {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .price-period {
+            opacity: 0.7;
+            margin-bottom: 24px;
+        }
+
+        .cta-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 24px;
+        }
+
+        .cta-btn.primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .cta-btn.secondary {
+            background: #f8f9fa;
+            color: #495057;
+        }
+
+        .pricing-card.featured .cta-btn {
+            background: white;
+            color: #667eea;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .features {
+            list-style: none;
+        }
+
+        .feature {
+            padding: 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .feature-icon {
+            font-size: 20px;
+        }
+
+        .comparison {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .comparison-title {
+            font-size: 32px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .comparison-table th {
+            font-weight: 600;
+            background: #f8f9fa;
+        }
+
+        .check {
+            color: #10b981;
+            font-size: 20px;
+        }
+
+        .cross {
+            color: #ef4444;
+            font-size: 20px;
+        }
+
+        .faq {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+        }
+
+        .faq-title {
+            font-size: 32px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .faq-item {
+            margin-bottom: 24px;
+        }
+
+        .faq-question {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .faq-answer {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .testimonials {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .testimonials-title {
+            font-size: 32px;
+            font-weight: 700;
+            text-align: center;
+            color: white;
+            margin-bottom: 32px;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .testimonial {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 24px;
+            border-radius: 16px;
+            color: white;
+        }
+
+        .testimonial-text {
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .pricing-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+
+    <!-- Sentry Error Tracking - DEFERRED for performance -->
+    <meta name="sentry-dsn" content="">
+    <meta name="sentry-environment" content="production">
+    <meta name="sentry-traces-sample-rate" content="0.1">
+    <meta name="app-version" content="1.0.0">
+    <script>
+    // Load Sentry AFTER page is fully interactive
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var script = document.createElement('script');
+            script.src = '/lib/sentry-client.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        }, 2000); // Load 2 seconds after page load
+    });
+    </script>
+</head>
+<body>
+    <button class="back-btn" onclick="goBack()">← Back</button>
+
+    <div class="container">
+        <div class="header">
+            <h1>✨ Go Premium</h1>
+            <p class="tagline">Unlock unlimited learning. Cancel anytime.</p>
+        </div>
+
+        <div class="pricing-cards">
+            <div class="pricing-card">
+                <div class="plan-name">Free</div>
+                <div class="plan-description">Perfect to get started</div>
+                <div class="price">$0</div>
+                <div class="price-period">Forever</div>
+                <button class="cta-btn secondary" onclick="stayFree()">Current Plan</button>
+                
+                <ul class="features">
+                    <li class="feature">
+                        <span class="feature-icon">✅</span>
+                        <span>5 videos per day</span>
+                    </li>
+                    <li class="feature">
+                        <span class="feature-icon">✅</span>
+                        <span>3 AI news articles per day</span>
+                    </li>
+                    <li class="feature">
+                        <span class="feature-icon">✅</span>
+                        <span>Basic streak tracking</span>
+                    </li>
+                    <li class="feature">
+                        <span class="feature-icon">✅</span>
+                        <span>One simple game</span>
+                    </li>
+                    <li class="feature">
+                        <span class="feature-icon">❌</span>
+                        <span>Ads between content</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="pricing-card featured">
+                <div class="featured-badge">🔥 BEST VALUE</div>
+                <div class="plan-name">Premium</div>
+                <div class="plan-description">Everything you need to master Spanish</div>
+                <div class="price">$4.99</div>
+                <div class="price-period">per month</div>
+                <button class="cta-btn" onclick="upgradeToPremium()">Start 7-Day Free Trial</button>
+                
+                <ul class="features">
+                    <li class="feature">
+                        <span class="feature-icon">✅</span>
+                        <span>Unlimited videos</span>
+                    </li>
+                    <li class="feature">
+                        <span class="feature-icon">✅</span>
+                        <span>Full AI-personalized news feed</span>
+                    </li>
+                    <li class="feature">
+                        <span class="feature-icon">✅</span>
+                        <span>Audio articles with professional voices</span>
+                    </li>
+                    <li class="feature">
+                        <span class="feature-icon">✅</span>
+                        <span>Ad-free experience</span>
+                    </li>
+                    <li class="feature">
+                        <span class="feature-icon">✅</span>
+                        <span>All games unlocked</span>
+                    </li>
+                    <li class="feature">
+                        <span class="feature-icon">✅</span>
+                        <span>Offline mode</span>
+                    </li>
+                    <li class="feature">
+                        <span class="feature-icon">✅</span>
+                        <span>Premium badge</span>
+                    </li>
+                    <li class="feature">
+                        <span class="feature-icon">✅</span>
+                        <span>Priority support</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="testimonials">
+            <div class="testimonials-title">💬 What Our Premium Users Say</div>
+            <div class="testimonial-grid">
+                <div class="testimonial">
+                    <div class="testimonial-text">"The AI personalization is incredible! It knows exactly what level I'm at and adjusts content perfectly."</div>
+                    <div class="testimonial-author">- Maria G.</div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-text">"Audio articles are a game-changer. I learn Spanish during my commute now. Worth every penny!"</div>
+                    <div class="testimonial-author">- Carlos R.</div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-text">"Finally, a Spanish learning app that doesn't feel like homework. I'm actually addicted!"</div>
+                    <div class="testimonial-author">- Ana S.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="comparison">
+            <div class="comparison-title">Free vs Premium</div>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Free</th>
+                        <th>Premium</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Videos per day</td>
+                        <td>5</td>
+                        <td>Unlimited ∞</td>
+                    </tr>
+                    <tr>
+                        <td>AI News Articles</td>
+                        <td>3 per day</td>
+                        <td>Unlimited</td>
+                    </tr>
+                    <tr>
+                        <td>AI Personalization</td>
+                        <td><span class="cross">✗</span></td>
+                        <td><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Audio Articles</td>
+                        <td><span class="cross">✗</span></td>
+                        <td><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Ads</td>
+                        <td>Yes</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td>All Games</td>
+                        <td>1 game</td>
+                        <td>All 5 games</td>
+                    </tr>
+                    <tr>
+                        <td>Offline Mode</td>
+                        <td><span class="cross">✗</span></td>
+                        <td><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Support</td>
+                        <td>Community</td>
+                        <td>Priority</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="faq">
+            <div class="faq-title">Frequently Asked Questions</div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Can I cancel anytime?</div>
+                <div class="faq-answer">Yes! Cancel anytime with one click. No questions asked.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Is the 7-day trial really free?</div>
+                <div class="faq-answer">Absolutely! Try Premium for 7 days completely free. No credit card required upfront. If you love it, subscribe for just $4.99/month.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">What payment methods do you accept?</div>
+                <div class="faq-answer">We accept all major credit cards, debit cards, Apple Pay, and Google Pay via Stripe.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Can I get a refund?</div>
+                <div class="faq-answer">Yes! If you're not satisfied within the first 30 days, we'll give you a full refund.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Will the price increase?</div>
+                <div class="faq-answer">If you subscribe now, your price is locked in forever. Even if we raise prices later, you keep paying $4.99/month.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Stripe.js - ASYNC for performance -->
+    <link rel="preconnect" href="https://js.stripe.com" crossorigin>
+    <script src="https://js.stripe.com/v3/" async></script>
+
+    <script>
+        // Check if user is authenticated (required for Stripe checkout)
+        function checkAuthentication() {
+            const token = localStorage.getItem('access_token') || getCookie('access_token');
+            return !!token;
+        }
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        async function upgradeToPremium() {
+            // 📊 Track premium upgrade clicked
+            if (window.trackMixpanelPremiumClicked) {
+                window.trackMixpanelPremiumClicked('premium_page');
+            }
+
+            // Check if user is authenticated
+            if (!checkAuthentication()) {
+                if (confirm('Please sign in to upgrade to Premium.\n\nDo you want to sign in now?')) {
+                    window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                }
+                return;
+            }
+
+            // Show loading state
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Loading...';
+            button.disabled = true;
+
+            try {
+                // Create Stripe Checkout session
+                const token = localStorage.getItem('access_token') || getCookie('access_token');
+                const response = await fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to create checkout session');
+                }
+
+                if (data.success && data.url) {
+                    // Redirect to Stripe Checkout
+                    window.location.href = data.url;
+                } else {
+                    throw new Error('Invalid checkout session response');
+                }
+
+            } catch (error) {
+                console.error('Checkout error:', error);
+                alert('Error starting checkout: ' + error.message + '\n\nPlease try again or contact support.');
+
+                // Restore button
+                button.textContent = originalText;
+                button.disabled = false;
+            }
+        }
+
+        function stayFree() {
+            if (confirm('Stay on the Free plan?\n\nYou can upgrade anytime to unlock:\n\n✨ Unlimited content\n🤖 AI personalization\n🎧 Audio articles\n🚫 No ads\n\nStart 7-day FREE trial of Premium?')) {
+                upgradeToPremium();
+            }
+        }
+
+        function goBack() {
+            window.location.href = '/tiktok-video-feed.html';
+        }
+
+        // Check if user is already premium (from backend)
+        async function checkPremiumStatus() {
+            if (!checkAuthentication()) {
+                return; // User not logged in, show normal upgrade flow
+            }
+
+            try {
+                const token = localStorage.getItem('access_token') || getCookie('access_token');
+                const response = await fetch('/api/premium/status', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.isPremium) {
+                    // User has premium, update button
+                    const premiumBtn = document.querySelector('.pricing-card.featured .cta-btn');
+                    if (premiumBtn) {
+                        premiumBtn.textContent = 'Current Plan ✓';
+                        premiumBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+                        premiumBtn.onclick = function(e) {
+                            e.preventDefault();
+                            const statusText = data.status === 'trialing' ? 'Trial' : 'Active';
+                            const expiryText = data.trialEnd ?
+                                `\nTrial ends: ${new Date(data.trialEnd).toLocaleDateString()}` : '';
+                            const cancelText = data.cancelAtPeriodEnd ?
+                                '\n\n⚠️ Will cancel at period end' : '';
+                            alert(`You're already Premium! 🎉\n\nStatus: ${statusText}${expiryText}${cancelText}`);
+                        };
+                    }
+
+                    // Also update localStorage for backward compatibility
+                    localStorage.setItem('isPremium', 'true');
+                    if (data.trialEnd) {
+                        localStorage.setItem('premiumExpiry', data.trialEnd.toString());
+                    }
+                }
+            } catch (error) {
+                console.error('Error checking premium status:', error);
+            }
+        }
+
+        // Check premium status on page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', checkPremiumStatus);
+        } else {
+            checkPremiumStatus();
+        }
+
+        // Handle success redirect from Stripe
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('premium') === 'success') {
+            alert('🎉 Welcome to Premium!\n\nYour 7-day free trial has started.\n\nEnjoy unlimited learning!');
+            window.history.replaceState({}, document.title, window.location.pathname);
+        } else if (urlParams.get('canceled') === 'true') {
+            alert('Checkout was cancelled. You can try again anytime!');
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    </script>
+    
+    <!-- 🧭 UNIFIED BOTTOM NAVIGATION -->
+    <style>
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
+        .bottom-nav .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #666;
+            text-decoration: none;
+        }
+        .bottom-nav .nav-item:hover {
+            color: #007AFF;
+            transform: translateY(-2px);
+        }
+        .bottom-nav .nav-item.active {
+            color: #007AFF;
+        }
+        .bottom-nav .nav-icon {
+            width: 24px;
+            height: 24px;
+        }
+        .bottom-nav .nav-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke-width: 2;
+        }
+        .bottom-nav .nav-label {
+            font-size: 11px;
+            font-weight: 500;
+        }
+    </style>
+    
+    <nav class="bottom-nav">
+        <a href="/tiktok-video-feed.html" class="nav-item">
+            <div class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+            </div>
+            <div class="nav-label">Home</div>
+        </a>
+        <a href="/discover-ai.html" class="nav-item">
+            <div class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.35-4.35"/>
+                </svg>
+            </div>
+            <div class="nav-label">Discover</div>
+        </a>
+        <a href="/vocabulary-review.html" class="nav-item">
+            <div class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+            </div>
+            <div class="nav-label">Review</div>
+        </a>
+        <a href="/games.html" class="nav-item">
+            <div class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+            </div>
+            <div class="nav-label">Games</div>
+        </a>
+        <a href="/refer-a-friend.html" class="nav-item">
+            <div class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <line x1="19" y1="8" x2="19" y2="14"></line>
+                    <line x1="22" y1="11" x2="16" y2="11"></line>
+                </svg>
+            </div>
+            <div class="nav-label">Refer</div>
+        </a>
+    </nav>
+</body>
+</html>

@@ -1,0 +1,55 @@
+{
+  "id": "test_streak_1760395418431",
+  "profile": {
+    "name": "Learner",
+    "email": null,
+    "level": "A1",
+    "targetLevel": "B2",
+    "interests": [
+      "general"
+    ],
+    "nativeLanguage": "English",
+    "learningLanguage": "Spanish"
+  },
+  "progress": {
+    "xp": 0,
+    "level": "A1",
+    "levelProgress": 0,
+    "totalVideosWatched": 0,
+    "totalWordsLearned": 0,
+    "currentStreak": 1,
+    "longestStreak": 1,
+    "lastActiveDate": "2025-10-13"
+  },
+  "wordBank": {
+    "saved": [],
+    "mastered": [],
+    "learning": [],
+    "weak": []
+  },
+  "engagement": {
+    "videosCompleted": [],
+    "videosLiked": [],
+    "videosSaved": [],
+    "quizzesCompleted": [],
+    "gamesPlayed": [],
+    "articlesRead": []
+  },
+  "achievements": [],
+  "settings": {
+    "notifications": true,
+    "autoplay": true,
+    "subtitles": "both",
+    "playbackSpeed": 1
+  },
+  "stats": {
+    "totalTimeSpent": 0,
+    "avgSessionTime": 0,
+    "bestStreak": 0,
+    "totalXPEarned": 0,
+    "dailyGoal": 50,
+    "dailyGoalStreak": 0
+  },
+  "createdAt": "2025-10-13T22:43:38.431Z",
+  "updatedAt": "2025-10-13T22:43:38.432Z"
+}

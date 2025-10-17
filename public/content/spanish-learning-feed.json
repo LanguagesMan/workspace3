@@ -1,0 +1,115 @@
+[
+  {
+    "id": 1,
+    "title": "GLOBO's Dancing Refrigerator",
+    "spanish": "¡La nevera baila salsa!",
+    "english": "The fridge dances salsa!",
+    "words": [
+      "nevera",
+      "baila",
+      "salsa"
+    ],
+    "difficulty": "beginner",
+    "type": "comedy",
+    "setup": "GLOBO opens fridge for midnight snack",
+    "transformation": "Refrigerator starts salsa dancing with food items",
+    "surprise": "Fridge reveals it's been taking dance classes with the microwave!",
+    "imagePrompt": "Cartoon refrigerator dancing salsa with anthropomorphic food items, colorful and fun",
+    "timestamp": "2025-10-01T03:08:29.507Z"
+  },
+  {
+    "id": 2,
+    "title": "Invisible Spanish Teacher",
+    "spanish": "¡El profesor es invisible! ¿Dónde está?",
+    "english": "The teacher is invisible! Where is he?",
+    "words": [
+      "profesor",
+      "invisible",
+      "dónde",
+      "está"
+    ],
+    "difficulty": "beginner",
+    "type": "comedy",
+    "setup": "GLOBO sits down for Spanish lesson",
+    "transformation": "Invisible teacher throws books and chalk everywhere",
+    "surprise": "Teacher becomes visible - it's a tiny hamster with globe sunglasses!",
+    "imagePrompt": "Floating books and chalk, tiny hamster wearing globe-shaped sunglasses, magical classroom",
+    "timestamp": "2025-10-01T03:08:29.508Z"
+  },
+  {
+    "id": 3,
+    "title": "Flying Taco Truck",
+    "spanish": "¡El camión de tacos vuela! ¡Los tacos caen del cielo!",
+    "english": "The taco truck flies! Tacos fall from the sky!",
+    "words": [
+      "camión",
+      "tacos",
+      "vuela",
+      "cielo"
+    ],
+    "difficulty": "beginner",
+    "type": "comedy",
+    "setup": "Marco orders from normal taco truck",
+    "transformation": "Truck sprouts wings and starts flying",
+    "surprise": "Truck lands on cloud made of tortillas - taco heaven!",
+    "imagePrompt": "Flying food truck with wings, tacos raining down, cloud made of tortillas",
+    "timestamp": "2025-10-01T03:08:29.508Z"
+  },
+  {
+    "id": 4,
+    "title": "Self-Stirring Coffee Mug",
+    "spanish": "¡La taza tiene brazos! ¡Mezcla todo!",
+    "english": "The cup has arms! It mixes everything!",
+    "words": [
+      "taza",
+      "brazos",
+      "mezcla",
+      "todo"
+    ],
+    "difficulty": "beginner",
+    "type": "comedy",
+    "setup": "Quiet morning coffee",
+    "transformation": "Mug grows tiny arms and stirs everything",
+    "surprise": "Mug realizes it's been stirring hot chocolate, not coffee!",
+    "imagePrompt": "Coffee mug with cute little arms stirring kitchen items, breakfast chaos",
+    "timestamp": "2025-10-01T03:08:29.508Z"
+  },
+  {
+    "id": 5,
+    "title": "Upside-Down City Drive",
+    "spanish": "¡El mundo está al revés! ¡Los carros vuelan!",
+    "english": "The world is upside down! Cars are flying!",
+    "words": [
+      "mundo",
+      "revés",
+      "carros",
+      "vuelan"
+    ],
+    "difficulty": "intermediate",
+    "type": "comedy",
+    "setup": "Normal car drive",
+    "transformation": "City flips upside down, cars drive on clouds",
+    "surprise": "GLOBO realizes he's been holding the map upside down!",
+    "imagePrompt": "Upside-down city, cars on clouds, buildings hanging from sky, surreal",
+    "timestamp": "2025-10-01T03:08:29.508Z"
+  },
+  {
+    "id": 6,
+    "title": "Spanish Dictionary Revolt",
+    "spanish": "¡Las palabras discuten! ¿Quién tiene razón?",
+    "english": "The words argue! Who is right?",
+    "words": [
+      "palabras",
+      "discuten",
+      "quién",
+      "razón"
+    ],
+    "difficulty": "intermediate",
+    "type": "comedy",
+    "setup": "GLOBO opens dictionary to study",
+    "transformation": "Words float off pages and start arguing",
+    "surprise": "Words form a union and demand better pronunciation!",
+    "imagePrompt": "Floating word bubbles arguing, dictionary pages alive, letters rearranging",
+    "timestamp": "2025-10-01T03:08:29.508Z"
+  }
+]
