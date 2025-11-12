@@ -4,12 +4,30 @@ node_modules/
 .env
 .env.local
 .env.*.local
+.env.production
+.env.production.*
+.env.development
+.env.test
+
+# Logs & runtime artifacts
+*.log
+auto-push-error.log
+playwright-report/
+test-results/
+coverage/
+dist/
+
+# Local workspace folders
+skills/
+
+# Documentation exports and binary evidence
+_documentation/artifacts/*
+!_documentation/artifacts/.gitkeep
 
 # Visual testing screenshots (large files - 118MB)
 # Use: npx playwright test to regenerate
 # screenshots/complete-audit/*.png
 
 # Large video files (3.8GB - too large for Git)
-public/videos/
-test-results/
-playwright-report/
+public/videos/*
+!public/videos/.gitkeep
