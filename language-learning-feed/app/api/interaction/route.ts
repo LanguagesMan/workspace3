@@ -63,13 +63,7 @@ export async function POST(request: NextRequest) {
     const xpEarned = calculateXP(interactionType, completionRate)
 
     // Invalidate feed cache to trigger re-ranking
-    if (
-      interactionType === 'SWIPE_LEFT' ||
-      interactionType === 'SWIPE_RIGHT' ||
-      interactionType === 'MARK_TOO_EASY' ||
-      interactionType === 'MARK_TOO_HARD' ||
-      interactionType === 'MARK_JUST_RIGHT'
-    ) {
+    if (interactionType === 'SWIPE_LEFT' || interactionType === 'SWIPE_RIGHT') {
       await feedCache.invalidateUserFeed(userId)
     }
 
@@ -139,18 +133,6 @@ async function updateContentMetrics(
       updates.saveCount = { increment: 1 }
       updates.dopamineScore = { increment: 0.015 }
       break
-    case 'MARK_TOO_EASY':
-      updates.skipCount = { increment: 1 }
-      updates.dopamineScore = { increment: 0.002 }
-      break
-    case 'MARK_TOO_HARD':
-      updates.skipCount = { increment: 1 }
-      updates.dopamineScore = { decrement: 0.008 }
-      break
-    case 'MARK_JUST_RIGHT':
-      updates.viewCount = { increment: 1 }
-      updates.dopamineScore = { increment: 0.01 }
-      break
     case 'SKIP':
       updates.skipCount = { increment: 1 }
       updates.dopamineScore = { decrement: 0.005 }
@@ -184,13 +166,6 @@ async function updateContentMetrics(
 
 // Update user's word knowledge based on content exposure
 async function updateWordExposure(userId: string, contentId: string) {
-  const content = await prisma.content.findUnique({
-    where: { id: contentId },
-    select: { language: true },
-  })
-
-  const targetLanguage = content?.language ?? 'es'
-
   // Get all words in the content
   const contentWords = await prisma.contentWord.findMany({
     where: { contentId },
@@ -203,7 +178,7 @@ async function updateWordExposure(userId: string, contentId: string) {
         userId_word_language: {
           userId,
           word: contentWord.word,
-          language: targetLanguage,
+          language: contentWord.word, // Would get from content
         },
       },
     })
@@ -232,7 +207,7 @@ async function updateWordExposure(userId: string, contentId: string) {
           userId,
           word: contentWord.word,
           lemma: contentWord.lemma,
-          language: targetLanguage,
+          language: contentWord.word, // Would get from content
           exposureCount: 1,
           confidenceScore: 0.1,
         },
@@ -259,20 +234,10 @@ async function updateUserScores(
 
   // Update engagement score based on interaction type
   let engagementDelta = 0
-  if (
-    interactionType === 'DOUBLE_TAP' ||
-    interactionType === 'SWIPE_RIGHT' ||
-    interactionType === 'MARK_JUST_RIGHT'
-  ) {
-    engagementDelta = 0.012
-  } else if (
-    interactionType === 'SKIP' ||
-    interactionType === 'SWIPE_LEFT' ||
-    interactionType === 'MARK_TOO_HARD'
-  ) {
-    engagementDelta = -0.008
-  } else if (interactionType === 'MARK_TOO_EASY') {
-    engagementDelta = -0.003
+  if (interactionType === 'DOUBLE_TAP' || interactionType === 'SWIPE_RIGHT') {
+    engagementDelta = 0.01
+  } else if (interactionType === 'SKIP' || interactionType === 'SWIPE_LEFT') {
+    engagementDelta = -0.005
   }
 
   const newEngagement = Math.max(
@@ -297,9 +262,6 @@ function calculateXP(interactionType: string, completionRate?: number): number {
     DOUBLE_TAP: 3,
     SWIPE_RIGHT: 5,
     REPLAY: 2,
-    MARK_TOO_EASY: 2,
-    MARK_TOO_HARD: 2,
-    MARK_JUST_RIGHT: 6,
   }
 
   let xp = baseXP[interactionType] || 0

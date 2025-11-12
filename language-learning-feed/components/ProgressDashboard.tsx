@@ -6,10 +6,9 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useFeedStore, useCelebrationStore } from '@/lib/store'
-import type { FeedItem } from '@/lib/feed-types'
 
 export default function ProgressDashboard() {
-  const { progress, feedItems, currentIndex } = useFeedStore()
+  const { progress } = useFeedStore()
   const { showConfetti, celebrationMessage } = useCelebrationStore()
   const [xpProgress, setXpProgress] = useState(0)
 
@@ -120,31 +119,8 @@ export default function ProgressDashboard() {
           color="from-green-400 to-teal-500"
         />
       </div>
-
-      {feedItems[currentIndex]?.learningPathId && (
-        <div className="mt-3">
-          <StatCard
-            icon="🚀"
-            value={formatNextArc(feedItems[currentIndex])}
-            label="Current Path"
-            color="from-purple-400 to-fuchsia-500"
-          />
-        </div>
-      )}
     </>
   )
-}
-
-function formatNextArc(item?: FeedItem) {
-  if (!item) return 'Freestyle'
-  const pathLabel = item.learningPathId
-    ? item.learningPathId
-        .split('-')
-        .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
-        .join(' ')
-    : 'Freestyle'
-  const sequence = typeof item.sequenceOrder === 'number' ? `Episode ${item.sequenceOrder}` : 'Flowing'
-  return `${pathLabel} · ${sequence}`
 }
 
 function StatCard({
@@ -161,7 +137,7 @@ function StatCard({
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
-      className={`w-full bg-gradient-to-br ${color} p-4 rounded-xl text-white shadow-lg text-center`}
+      className={`bg-gradient-to-br ${color} p-4 rounded-xl text-white shadow-lg text-center`}
     >
       <div className="text-2xl mb-1">{icon}</div>
       <div className="text-lg font-bold">{value}</div>

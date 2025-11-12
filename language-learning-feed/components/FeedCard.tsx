@@ -3,7 +3,7 @@
 // TikTok-style content card with swipe gestures
 // The core dopamine-delivery mechanism
 
-import { useRef, useEffect, useState, useCallback } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { motion, useMotionValue, useTransform, PanInfo } from 'framer-motion'
 import { FeedItem } from '@/lib/feed-types'
 import VideoPlayer from './VideoPlayer'
@@ -32,23 +32,6 @@ export default function FeedCard({
   const [, setSelectedWord] = useState<string | null>(null)
   const startTimeRef = useRef(Date.now())
   const lastTap = useRef(0)
-
-  const formatPathLabel = useCallback((pathId?: string) => {
-    if (!pathId) return 'Freestyle discovery'
-    return pathId
-      .split('-')
-      .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
-      .join(' ')
-  }, [])
-
-  const formatDifficultyLabel = useCallback((tier?: number) => {
-    if (tier === undefined || tier === null) return 'Adaptive mix'
-    if (tier <= 1) return 'Gentle A0-A1'
-    if (tier === 2) return 'Steady A1'
-    if (tier === 3) return 'Stretch A2'
-    if (tier === 4) return 'Challenge B1'
-    return 'Hero mode'
-  }, [])
 
   // Swipe gesture handling
   const x = useMotionValue(0)
@@ -132,31 +115,7 @@ export default function FeedCard({
       }}
       onClick={handleTap}
     >
-      <div
-        className="relative w-full max-w-md h-[80vh] bg-black rounded-3xl overflow-hidden shadow-2xl"
-        role="article"
-        aria-label={`${item.title} learning episode`}
-      >
-        <div className="absolute top-4 left-4 right-4 flex items-center justify-between text-white pointer-events-none">
-          <div>
-            <div className="text-[11px] font-semibold uppercase tracking-wider text-white/70">
-              {formatPathLabel(item.learningPathId)}
-            </div>
-            {typeof item.sequenceOrder === 'number' && (
-              <div className="text-lg font-bold">Episode {item.sequenceOrder}</div>
-            )}
-          </div>
-          <div className="px-3 py-1 rounded-full bg-white/15 text-xs font-semibold">
-            {formatDifficultyLabel(item.difficultyTier)}
-          </div>
-        </div>
-
-        {item.arcSummary && (
-          <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[85%] text-center text-white/80 text-xs bg-black/40 backdrop-blur rounded-2xl px-4 py-2 pointer-events-none">
-            {item.arcSummary}
-          </div>
-        )}
-
+      <div className="relative w-full max-w-md h-[80vh] bg-black rounded-3xl overflow-hidden shadow-2xl">
         {/* Content based on type */}
         {item.type === 'VIDEO' && (
           <VideoPlayer
@@ -213,7 +172,7 @@ export default function FeedCard({
         )}
 
         {/* Progress indicator */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-white/20" aria-hidden="true">
+        <div className="absolute top-0 left-0 right-0 h-1 bg-white/20">
           <motion.div
             className="h-full bg-gradient-to-r from-purple-500 to-pink-500"
             initial={{ width: '0%' }}
@@ -243,11 +202,6 @@ export default function FeedCard({
           <div className="text-white/50 text-sm">
             Swipe up for next
           </div>
-          {item.learningPathId && (
-            <div className="mt-1 text-white/40 text-xs">
-              Next milestone unlocking {formatPathLabel(item.learningPathId)}
-            </div>
-          )}
         </div>
       </div>
     </motion.div>
