@@ -25,6 +25,9 @@ export default function VideoPlayer({
   const [isBuffering, setIsBuffering] = useState(autoPlay)
   const [hasError, setHasError] = useState(false)
   const [activeCaption, setActiveCaption] = useState<CaptionSegment | null>(null)
+  const [captionsVisible, setCaptionsVisible] = useState(true)
+  const [playbackRate, setPlaybackRate] = useState(1)
+  const [isMuted, setIsMuted] = useState(true)
   const lastCaptionIndex = useRef<number>(-1)
 
   useEffect(() => {
@@ -126,6 +129,18 @@ export default function VideoPlayer({
     }
   }, [autoPlay])
 
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    video.playbackRate = playbackRate
+  }, [playbackRate])
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    video.muted = isMuted
+  }, [isMuted])
+
   const togglePlay = () => {
     const video = videoRef.current
     if (!video) return
@@ -140,6 +155,31 @@ export default function VideoPlayer({
         })
       }
     }
+  }
+
+  const cycleSpeed = () => {
+    const nextRate = playbackRate === 1 ? 0.75 : playbackRate === 0.75 ? 1.25 : 1
+    setPlaybackRate(nextRate)
+  }
+
+  const toggleMuted = () => {
+    setIsMuted((prev) => !prev)
+  }
+
+  const toggleCaptions = () => {
+    setCaptionsVisible((prev) => !prev)
+  }
+
+  const handleDownload = () => {
+    if (!src) return
+    const link = document.createElement('a')
+    link.href = src
+    link.download = ''
+    link.target = '_blank'
+    link.rel = 'noopener noreferrer'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
   }
 
   const handleVideoClick = () => {
@@ -164,7 +204,12 @@ export default function VideoPlayer({
   }
 
   return (
-    <div className="relative w-full h-full bg-black" onClick={handleVideoClick}>
+    <div
+      className="relative w-full h-full bg-black"
+      onClick={handleVideoClick}
+      role="region"
+      aria-label="Immersive language video player"
+    >
       <video
         ref={videoRef}
         className="w-full h-full object-cover"
@@ -178,8 +223,8 @@ export default function VideoPlayer({
       />
 
       {/* Captions */}
-      {activeCaption && (
-        <div className="absolute bottom-20 left-1/2 w-[90%] max-w-2xl -translate-x-1/2">
+      {captionsVisible && activeCaption && (
+        <div className="absolute bottom-24 left-1/2 w-[90%] max-w-2xl -translate-x-1/2" aria-live="polite">
           <div className="rounded-2xl bg-black/65 px-6 py-3 text-center text-white shadow-xl backdrop-blur">
             <p className="text-lg font-semibold leading-snug">{activeCaption.text}</p>
             {activeCaption.translation && (
@@ -213,6 +258,7 @@ export default function VideoPlayer({
               e.stopPropagation()
               togglePlay()
             }}
+            aria-label={isPlaying ? 'Pause video' : 'Play video'}
           >
             {isPlaying ? (
               <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -226,6 +272,51 @@ export default function VideoPlayer({
           </button>
         </div>
       )}
+
+      {/* Accessibility controls */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3 px-4 py-2 rounded-full bg-black/50 backdrop-blur text-white text-xs">
+        <button
+          className={`px-3 py-1 rounded-full border border-white/40 transition ${captionsVisible ? 'bg-white text-purple-900' : 'bg-transparent'}`}
+          onClick={(e) => {
+            e.stopPropagation()
+            toggleCaptions()
+          }}
+          aria-pressed={captionsVisible}
+          aria-label="Toggle bilingual captions"
+        >
+          CC
+        </button>
+        <button
+          className="px-3 py-1 rounded-full border border-white/40 transition hover:bg-white/20"
+          onClick={(e) => {
+            e.stopPropagation()
+            cycleSpeed()
+          }}
+          aria-label={`Change playback speed. Current speed ${playbackRate}x`}
+        >
+          {playbackRate.toFixed(2)}x
+        </button>
+        <button
+          className={`px-3 py-1 rounded-full border border-white/40 transition ${!isMuted ? 'bg-white text-purple-900' : 'hover:bg-white/20'}`}
+          onClick={(e) => {
+            e.stopPropagation()
+            toggleMuted()
+          }}
+          aria-label={isMuted ? 'Unmute video' : 'Mute video'}
+        >
+          {isMuted ? '🔇' : '🔊'}
+        </button>
+        <button
+          className="px-3 py-1 rounded-full border border-white/40 transition hover:bg-white/20"
+          onClick={(e) => {
+            e.stopPropagation()
+            handleDownload()
+          }}
+          aria-label="Download episode for offline practice"
+        >
+          ⬇️
+        </button>
+      </div>
 
       {/* Progress bar */}
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20">

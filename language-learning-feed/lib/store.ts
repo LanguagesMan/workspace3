@@ -20,6 +20,11 @@ interface FeedState {
   
   // Actions
   setFeedItems: (items: FeedItem[], options?: { resetIndex?: boolean }) => void
+  appendFeedItems: (items: FeedItem[]) => void
+  insertAfterCurrent: (item: FeedItem) => void
+  removeItemById: (id: string) => void
+  setLoading: (loading: boolean) => void
+  jumpToIndex: (index: number) => void
   nextItem: () => void
   previousItem: () => void
   addXP: (amount: number) => void
@@ -59,6 +64,59 @@ export const useFeedStore = create<FeedState>((set, get) => ({
         feedItems: [...items],
         currentIndex: nextIndex,
         isLoading: false,
+      }
+    }),
+  
+  appendFeedItems: (items) =>
+    set((state) => {
+      if (items.length === 0) return state
+      const existingIds = new Set(state.feedItems.map((item) => item.id))
+      const deduped = items.filter((item) => !existingIds.has(item.id))
+      return deduped.length
+        ? {
+            ...state,
+            feedItems: [...state.feedItems, ...deduped],
+            isLoading: false,
+          }
+        : state
+    }),
+  
+  insertAfterCurrent: (item) =>
+    set((state) => {
+      const items = [...state.feedItems]
+      const existingIndex = items.findIndex((entry) => entry.id === item.id)
+      if (existingIndex !== -1) {
+        items.splice(existingIndex, 1)
+      }
+
+      const insertIndex = Math.min(state.currentIndex + 1, items.length)
+      items.splice(insertIndex, 0, item)
+
+      return {
+        ...state,
+        feedItems: items,
+      }
+    }),
+  
+  removeItemById: (id) =>
+    set((state) => {
+      const updatedItems = state.feedItems.filter((item) => item.id !== id)
+      const nextIndex = Math.min(state.currentIndex, Math.max(updatedItems.length - 1, 0))
+      return {
+        ...state,
+        feedItems: updatedItems,
+        currentIndex: nextIndex,
+      }
+    }),
+  
+  setLoading: (loading) => set({ isLoading: loading }),
+  
+  jumpToIndex: (index) =>
+    set((state) => {
+      if (index < 0 || index >= state.feedItems.length) return state
+      return {
+        ...state,
+        currentIndex: index,
       }
     }),
   

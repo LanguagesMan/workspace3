@@ -40,6 +40,9 @@ enum InteractionType {
   REPLAY
   WORD_LOOKUP
   COMPLETED
+  MARK_TOO_EASY
+  MARK_TOO_HARD
+  MARK_JUST_RIGHT
 }
 
 enum SRSCardStatus {
@@ -106,6 +109,10 @@ model UserPreference {
   // Behavioral preferences
   averageSessionLength Int   @default(15) // minutes
   preferredDifficulty  Float @default(0.96) // target % known words
+  difficultyBias       Int   @default(0) // Positive nudges harder, negative easier
+  currentPathId        String?
+  currentSequenceOrder Int?
+  recentFeedback       Json  @default("[]") // Last N difficulty events for analytics
   
   updatedAt         DateTime @updatedAt
 }
@@ -135,6 +142,11 @@ model Content {
   // Content metadata
   durationSeconds   Int?
   transcription     String?     @db.Text
+  learningPathId    String?
+  sequenceOrder     Int?
+  difficultyTier    Int         @default(0) // 0 beginner, 5 advanced
+  personaTags       Json        @default("[]")
+  arcSummary        String?
   
   // Difficulty analysis
   cefrLevel         CEFRLevel
@@ -161,6 +173,8 @@ model Content {
   @@index([type, language])
   @@index([dopamineScore])
   @@index([source, sourceId])
+  @@index([learningPathId, sequenceOrder])
+  @@index([difficultyTier])
 }
 
 // Words in specific content (for targeted SRS)

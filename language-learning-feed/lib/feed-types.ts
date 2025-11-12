@@ -26,6 +26,10 @@ export interface FeedItem {
   newWords: string[]
   knownWordsPercentage: number
   captions?: CaptionSegment[]
+  learningPathId?: string
+  sequenceOrder?: number
+  difficultyTier?: number
+  arcSummary?: string
 }
 
 export interface UserProgress {

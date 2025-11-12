@@ -15,6 +15,10 @@ export const FALLBACK_FEED_ITEMS: FeedItem[] = [
     durationSeconds: 58,
     newWords: ['abuela', 'torneo', 'rivales'],
     knownWordsPercentage: 0.94,
+    learningPathId: 'a0-confidence-pilot',
+    sequenceOrder: 1,
+    difficultyTier: 1,
+    arcSummary: 'Confianza instantánea con situaciones divertidas y vocabulario de energía positiva.',
     captions: [
       {
         start: 0,
@@ -47,6 +51,10 @@ export const FALLBACK_FEED_ITEMS: FeedItem[] = [
     durationSeconds: 53,
     newWords: ['viajera', 'encantado', 'acuarela'],
     knownWordsPercentage: 0.91,
+    learningPathId: 'a0-confidence-pilot',
+    sequenceOrder: 2,
+    difficultyTier: 1,
+    arcSummary: 'Historias visuales sencillas que presentan vocabulario sensorial.',
     captions: [
       {
         start: 0,
@@ -79,6 +87,10 @@ export const FALLBACK_FEED_ITEMS: FeedItem[] = [
     durationSeconds: 42,
     newWords: ['urgente', 'explica', 'comenzar'],
     knownWordsPercentage: 0.9,
+    learningPathId: 'a0-confidence-pilot',
+    sequenceOrder: 3,
+    difficultyTier: 1,
+    arcSummary: 'Micro historias cotidianas enfocadas en necesidades básicas.',
     captions: [
       {
         start: 0,
@@ -113,6 +125,10 @@ export const FALLBACK_FEED_ITEMS: FeedItem[] = [
     durationSeconds: 180,
     newWords: ['estrategia', 'expresión', 'pronunciación'],
     knownWordsPercentage: 0.88,
+    learningPathId: 'a0-confidence-pilot',
+    sequenceOrder: 4,
+    difficultyTier: 1,
+    arcSummary: 'Consejos meta para consolidar hábitos de binge learning.',
   },
   {
     id: 'fallback-video-4',
@@ -125,6 +141,10 @@ export const FALLBACK_FEED_ITEMS: FeedItem[] = [
     durationSeconds: 47,
     newWords: ['metas', 'escaleras', 'alcanzar'],
     knownWordsPercentage: 0.93,
+    learningPathId: 'a1-daily-wins',
+    sequenceOrder: 1,
+    difficultyTier: 2,
+    arcSummary: 'Transiciones suaves hacia historias motivacionales nivel A1.',
     captions: [
       {
         start: 0,
@@ -157,6 +177,10 @@ export const FALLBACK_FEED_ITEMS: FeedItem[] = [
     durationSeconds: 16,
     newWords: ['paella', 'platos', 'famosos'],
     knownWordsPercentage: 0.92,
+    learningPathId: 'a1-daily-wins',
+    sequenceOrder: 2,
+    difficultyTier: 2,
+    arcSummary: 'Escenas rápidas para practicar petición y respuesta.',
     captions: [
       {
         start: 0,
